@@ -99,33 +99,33 @@
     <div class="tagline">
       Kasuwar Arewa a Hannunka
     </div>
-<form id="loginForm">
 
-  <label for="email">Email</label>
+    <form id="loginForm">
 
-  <input
-    type="email"
-    id="email"
-    placeholder="Enter your email"
-    required
-  >
+      <label for="email">Email</label>
 
-  <label for="password">Password</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter your email"
+        required
+      >
 
-  <input
-    type="password"
-    id="password"
-    placeholder="Enter your password"
-    required
-  >
+      <label for="password">Password</label>
 
-  <button type="submit" id="loginBtn">
-    Login
-  </button>
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter your password"
+        required
+      >
 
-</form>
+      <button type="submit" id="loginBtn">
+        Login
+      </button>
 
-    
+    </form>
+
     <div id="message"></div>
 
     <div class="register-link">
@@ -134,140 +134,156 @@
     </div>
 
   </div>
- 
-  
-  
-   
-     <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  <script type="module">
 
-import {
-  getAuth,
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-import {
-  getFirestore,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-
-const firebaseConfig = {
-  apiKey: "AIzaSyD48Bay25k24a5WckgM6AmuK3p68oGT6vk",
-  authDomain: "arewa-market-4e603.firebaseapp.com",
-  projectId: "arewa-market-4e603",
-  storageBucket: "arewa-market-4e603.firebasestorage.app",
-  messagingSenderId: "217844252739",
-  appId: "1:217844252739:web:81b00d9ac29277c42d94f6",
-  measurementId: "G-ZTQHETHX4T"
-};
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-
-const loginForm =
-  document.getElementById("loginForm");
-
-const loginBtn =
-  document.getElementById("loginBtn");
+    const firebaseConfig = {
+      apiKey: "AIzaSyD48Bay25k24a5WckM6AmuK3p68oGT6vk",
+      authDomain: "arewa-market-4e603.firebaseapp.com",
+      projectId: "arewa-market-4e603",
+      storageBucket: "arewa-market-4e603.firebasestorage.app",
+      messagingSenderId: "217844252739",
+      appId: "1:217844252739:web:81b00d9ac29277c42d94f6",
+      measurementId: "G-ZTQHETHX4T"
+    };
 
 
-loginForm.addEventListener("submit", async (event) => {
+    const app = initializeApp(firebaseConfig);
 
-  event.preventDefault();
+    const auth = getAuth(app);
 
-  const email =
-    document.getElementById("email")
-      .value
-      .trim();
-
-  const password =
-    document.getElementById("password")
-      .value;
+    const db = getFirestore(app);
 
 
-  loginBtn.disabled = true;
+    const loginForm =
+      document.getElementById("loginForm");
 
-  loginBtn.textContent = "Logging in...";
-
-
-  try {
-
-    const userCredential =
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+    const loginBtn =
+      document.getElementById("loginBtn");
 
 
-    const user =
-      userCredential.user;
+    loginForm.addEventListener("submit", async (event) => {
+
+      event.preventDefault();
+
+      const email =
+        document.getElementById("email")
+          .value
+          .trim();
+
+      const password =
+        document.getElementById("password")
+          .value;
 
 
-    const userDoc =
-      await getDoc(
-        doc(db, "users", user.uid)
-      );
+      loginBtn.disabled = true;
+
+      loginBtn.textContent = "Logging in...";
 
 
-    if (!userDoc.exists()) {
+      try {
 
-      alert(
-        "Your account profile was not found."
-      );
-
-      return;
-    }
-
-
-    const userData =
-      userDoc.data();
+        const userCredential =
+          await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
 
 
-    if (userData.active === false) {
-
-      alert(
-        "Your account has been deactivated."
-      );
-
-      return;
-    }
+        const user =
+          userCredential.user;
 
 
-    // Login successful
-
-    window.location.href =
-      "index.html";
-
-
-  } catch (error) {
-
-    console.error(error);
-
-    alert(
-      "Login failed: " + error.message
-    );
-
-  }
+        const userDoc =
+          await getDoc(
+            doc(db, "users", user.uid)
+          );
 
 
-  loginBtn.disabled = false;
+        /*
+         * IMPORTANT:
+         * Firebase Authentication account alone
+         * is NOT enough to enter Arewa Market.
+         *
+         * The user must also have a users/{uid}
+         * Firestore profile created through registration.
+         */
 
-  loginBtn.textContent = "Login";
+        if (!userDoc.exists()) {
 
-});
+          await signOut(auth);
 
-</script>
+          alert(
+            "Account profile not found. Please create an account first."
+          );
+
+          return;
+        }
 
 
+        const userData =
+          userDoc.data();
+
+
+        if (userData.active === false) {
+
+          await signOut(auth);
+
+          alert(
+            "Your account has been deactivated."
+          );
+
+          return;
+        }
+
+
+        /*
+         * Login successful.
+         * User has a valid Firebase Auth account
+         * AND a valid Arewa Market user profile.
+         */
+
+        window.location.href =
+          "index.html";
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "Login failed: " + error.message
+        );
+
+      } finally {
+
+        loginBtn.disabled = false;
+
+        loginBtn.textContent = "Login";
+
+      }
+
+    });
+
+  </script>
 
 </body>
 </html>
