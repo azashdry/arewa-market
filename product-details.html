@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - Arewa Market</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7f6;
+      color: #222;
+    }
+
+    header {
+      background: #176b43;
+      color: white;
+      padding: 15px 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      font-size: 13px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 15px;
+      color: #176b43;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    }
+
+    .product-image {
+      width: 100%;
+      max-height: 450px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #f2f2f2;
+    }
+
+    .product-name {
+      font-size: 28px;
+      margin: 20px 0 8px;
+    }
+
+    .price {
+      color: #176b43;
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .info {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .description {
+      margin-top: 20px;
+      line-height: 1.7;
+    }
+
+    .seller-box {
+      margin-top: 25px;
+      padding: 18px;
+      background: #f5f7f6;
+      border-radius: 12px;
+    }
+
+    .seller-box h3 {
+      margin-top: 0;
+    }
+
+    .seller-link {
+      color: #176b43;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .seller-link:hover {
+      text-decoration: underline;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn {
+      border: none;
+      padding: 13px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .call {
+      background: #176b43;
+    }
+
+    .whatsapp {
+      background: #128c7e;
+    }
+
+    .loading,
+    .error {
+      text-align: center;
+      padding: 40px 15px;
+    }
+
+    .error {
+      color: #b00020;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 15px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Arewa Market</h1>
+  <p>Kasuwar Arewa a Hannunka</p>
+</header>
+
+<div class="container">
+
+  <a href="index.html" class="back">
+    ← Back to Marketplace
+  </a>
+
+  <div id="productContainer">
+    <div class="loading">
+      Loading product...
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Arewa Market</strong><br>
+  Kasuwar Arewa a Hannunka<br><br>
+  © 2026 Arewa Market. All rights reserved.
+</footer>
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+  import {
+    getFirestore,
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+
+    apiKey:
+      "AIzaSyD48Bay25k24a5WckM6AmuK3p68oGT6vk",
+
+    authDomain:
+      "arewa-market-4e603.firebaseapp.com",
+
+    projectId:
+      "arewa-market-4e603",
+
+    storageBucket:
+      "arewa-market-4e603.firebasestorage.app",
+
+    messagingSenderId:
+      "217844252739",
+
+    appId:
+      "1:217844252739:web:81b00d9ac29277c42d94f6",
+
+    measurementId:
+      "G-ZTQHETHX4T"
+  };
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const db =
+    getFirestore(app);
+
+
+  const productContainer =
+    document.getElementById("productContainer");
+
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  function formatPrice(price) {
+
+    const number =
+      Number(price);
+
+    if (Number.isNaN(number)) {
+
+      return escapeHtml(
+        price || "Price unavailable"
+      );
+
+    }
+
+    return "₦" +
+      number.toLocaleString("en-NG");
+
+  }
+
+
+  /*
+    Convert Nigerian phone numbers
+    into international format.
+
+    08120982352
+        ↓
+    2348120982352
+
+    +2348120982352
+        ↓
+    2348120982352
+  */
+
+  function normalizeNigeriaPhone(phone) {
+
+    let value =
+      String(phone || "").trim();
+
+    if (!value) {
+      return "";
+    }
+
+    value =
+      value.replace(/[^\d+]/g, "");
+
+    if (value.startsWith("+234")) {
+
+      return "234" + value.substring(4);
+
+    }
+
+    if (value.startsWith("234")) {
+
+      return value;
+
+    }
+
+    if (value.startsWith("0")) {
+
+      return "234" + value.substring(1);
+
+    }
+
+    return value;
+
+  }
+
+
+  /*
+    Format phone for tel: link.
+  */
+
+  function cleanPhone(phone) {
+
+    const normalized =
+      normalizeNigeriaPhone(phone);
+
+    if (!normalized) {
+      return "";
+    }
+
+    return "+" + normalized;
+
+  }
+
+
+  /*
+    WhatsApp requires digits only.
+  */
+
+  function cleanWhatsApp(phone) {
+
+    return normalizeNigeriaPhone(phone);
+
+  }
+
+
+  async function loadProduct() {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const productId =
+      params.get("id");
+
+
+    if (!productId) {
+
+      productContainer.innerHTML = `
+        <div class="error">
+          Product ID is missing.
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    try {
+
+      const productRef =
+        doc(
+          db,
+          "products",
+          productId
+        );
+
+
+      const productSnap =
+        await getDoc(productRef);
+
+
+      if (!productSnap.exists()) {
+
+        productContainer.innerHTML = `
+          <div class="error">
+            Product not found.
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      const product =
+        productSnap.data();
+
+
+      const imageUrl =
+        product.imageUrl || "";
+
+
+      /*
+        Seller phone.
+      */
+
+      const phone =
+        cleanPhone(
+          product.sellerPhone
+        );
+
+
+      /*
+        WhatsApp number.
+        If whatsapp is empty,
+        sellerPhone will be used.
+      */
+
+      const whatsapp =
+        cleanWhatsApp(
+          product.whatsapp ||
+          product.sellerPhone
+        );
+
+
+      let imageHtml = "";
+
+
+      if (imageUrl) {
+
+        imageHtml = `
+          <img
+            class="product-image"
+            src="${escapeHtml(imageUrl)}"
+            alt="${escapeHtml(
+              product.name || "Product"
+            )}"
+            onerror="
+              this.style.display='none';
+            "
+          >
+        `;
+
+      } else {
+
+        imageHtml = `
+          <div
+            style="
+              height:300px;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              background:#eee;
+              border-radius:12px;
+              color:#777;
+            "
+          >
+            No Image Available
+          </div>
+        `;
+
+      }
+
+
+      /*
+        Call button.
+      */
+
+      const callButton =
+        phone
+
+          ? `
+            <a
+              class="btn call"
+              href="tel:${escapeHtml(phone)}"
+            >
+              📞 Call Seller
+            </a>
+          `
+
+          : "";
+
+
+      /*
+        WhatsApp button.
+      */
+
+      const whatsappButton =
+        whatsapp
+
+          ? `
+            <a
+              class="btn whatsapp"
+              target="_blank"
+              rel="noopener"
+              href="https://wa.me/${escapeHtml(
+                whatsapp
+              )}"
+            >
+              💬 WhatsApp Seller
+            </a>
+          `
+
+          : "";
+
+
+      const sellerContact =
+        phone || whatsapp
+
+          ? "Seller contact available"
+
+          : "Seller contact unavailable";
+
+
+      productContainer.innerHTML = `
+
+        <div class="product-card">
+
+          ${imageHtml}
+
+
+          <h1 class="product-name">
+
+            ${escapeHtml(
+              product.name ||
+              "Unnamed Product"
+            )}
+
+          </h1>
+
+
+          <div class="price">
+
+            ${formatPrice(
+              product.price
+            )}
+
+          </div>
+
+
+          <div class="info">
+
+            📍 <strong>Location:</strong>
+
+            ${escapeHtml(
+              product.location ||
+              "Not provided"
+            )}
+
+          </div>
+
+
+          <div class="info">
+
+            🛍️ <strong>Category:</strong>
+
+            ${escapeHtml(
+              product.category ||
+              "Not provided"
+            )}
+
+          </div>
+
+
+          <div class="description">
+
+            <h3>
+              Description
+            </h3>
+
+            <p>
+
+              ${escapeHtml(
+                product.description ||
+                "No description provided."
+              )}
+
+            </p>
+
+          </div>
+
+
+          <div class="seller-box">
+
+            <h3>
+              Seller Information
+            </h3>
+
+
+            <p>
+
+              <strong>
+                Seller:
+              </strong>
+
+              <a
+                href="seller-profile.html?id=${encodeURIComponent(
+                  product.sellerId || ""
+                )}"
+                class="seller-link"
+              >
+
+                ${escapeHtml(
+                  product.sellerName ||
+                  "Seller"
+                )}
+
+              </a>
+
+            </p>
+
+
+            <p>
+              ${sellerContact}
+            </p>
+
+
+            <div class="actions">
+
+              ${callButton}
+
+              ${whatsappButton}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+
+    } catch (error) {
+
+      console.error(
+        "Product details error:",
+        error
+      );
+
+
+      productContainer.innerHTML = `
+
+        <div class="error">
+
+          Failed to load product.
+
+          <br><br>
+
+          ${escapeHtml(
+            error.code ||
+            error.message ||
+            ""
+          )}
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  loadProduct();
+
+</script>
+
+</body>
+</html>

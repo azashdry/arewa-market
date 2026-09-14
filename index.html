@@ -1,87 +1,4873 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASPCC - Find Products</title>
-<link rel="stylesheet" href="style.css">
-<style>
-  .search-bar { display:flex; gap:10px; margin-bottom:20px; }
-  .search-bar input { flex:1; padding:10px; border-radius:8px; border:1px solid #ccc; }
-  .search-bar button { padding:10px 20px; border:none; background:#0d47a1; color:white; border-radius:8px; cursor:pointer; }
-</style>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Arewa Market - Kasuwar Arewa a Hannunka
+  </title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      color: #222;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    header {
+      background: #16803c;
+      color: white;
+      padding: 15px 20px;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .logo span {
+      display: block;
+      font-size: 11px;
+      font-weight: normal;
+      margin-top: 3px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .header-actions button,
+    .header-actions a {
+      color: white;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.5);
+      background: transparent;
+      padding: 8px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+
+    .header-actions .seller-btn,
+    .header-actions .pending-btn {
+      background: #f0b429;
+      color: #17231b;
+      border-color: #f0b429;
+      font-weight: bold;
+    }
+
+    .header-actions .logout-btn {
+      background: #b42318;
+      border-color: #b42318;
+    }
+
+    .hero {
+      background: white;
+      padding: 35px 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+    }
+
+    .hero p {
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .search-box {
+      max-width: 650px;
+      margin: auto;
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .search-box button {
+      padding: 14px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #16803c;
+      color: white;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px 20px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .section-title a {
+      color: #16803c;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(120px, 1fr)
+      );
+      gap: 12px;
+      margin-bottom: 35px;
+    }
+
+    .category {
+      background: white;
+      padding: 20px 10px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .category:hover {
+      transform: translateY(-2px);
+    }
+
+    .category.active {
+      border: 2px solid #16803c;
+    }
+
+    .category-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .category-name {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(200px, 1fr)
+      );
+      gap: 15px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      display: block;
+      background: #e9ecef;
+    }
+
+    .product-info {
+      padding: 13px;
+    }
+
+    .product-name {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .product-price {
+      color: #16803c;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .product-location {
+      color: #777;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .product-seller {
+      color: #555;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .product-actions a {
+      flex: 1;
+      padding: 9px 5px;
+      border-radius: 6px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .call-btn {
+      background: #16803c;
+      color: white;
+    }
+
+    .whatsapp-btn {
+      background: #25d366;
+      color: white;
+    }
+
+    .seller-panel {
+      display: none;
+      background: white;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .seller-panel.show {
+      display: block;
+    }
+
+    .seller-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .seller-header h2 {
+      margin: 0;
+      color: #16803c;
+    }
+
+    .seller-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .seller-profile img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .seller-stats {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(150px, 1fr)
+      );
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      background: #f5f6f8;
+      padding: 18px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 25px;
+      font-weight: bold;
+      color: #16803c;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .seller-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .seller-buttons button {
+      padding: 11px 15px;
+      border: none;
+      border-radius: 7px;
+      background: #16803c;
+      color: white;
+      font-weight: bold;
+    }
+
+    .seller-buttons .secondary {
+      background: #555;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      font-size: 14px;
+      background: white;
+    }
+
+    .form-group textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 7px;
+      background: #16803c;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .cancel-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 7px;
+      background: #777;
+      color: white;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .my-products {
+      margin-top: 20px;
+    }
+
+    .my-product-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .my-product-item img {
+      width: 70px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #eee;
+    }
+
+    .my-product-details {
+      flex: 1;
+    }
+
+    .my-product-details strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .my-product-details span {
+      color: #16803c;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .my-product-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .my-product-actions button {
+      padding: 7px 9px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 12px;
+    }
+
+    .edit-btn {
+      background: #16803c;
+    }
+
+    .delete-btn {
+      background: #b42318;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 520px;
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modal-title h2 {
+      margin: 0;
+      color: #16803c;
+      font-size: 21px;
+    }
+
+    .close-btn {
+      border: none;
+      background: #eee;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 20px;
+    }
+
+    .preview-box {
+      display: none;
+      margin-bottom: 15px;
+    }
+
+    .preview-box img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .profile-preview {
+      display: none;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-top: 10px;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .pending-box {
+      background: #fff8e1;
+      border: 1px solid #f0b429;
+      color: #6b4f00;
+      padding: 15px;
+      border-radius: 9px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .pending-box.show {
+      display: block;
+    }
+
+    footer {
+      background: #17231b;
+      color: white;
+      text-align: center;
+      padding: 25px 20px;
+      margin-top: 40px;
+    }
+
+    footer p {
+      margin: 5px 0;
+      color: #ccc;
+      font-size: 13px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 15px 0 20px;
+    }
+
+    .filters select,
+    .filters input {
+      padding: 11px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      min-width: 150px;
+      background: white;
+    }
+
+    .filters button {
+      border: none;
+      padding: 11px 16px;
+      border-radius: 7px;
+      background: #176b43;
+      color: white;
+      font-weight: bold;
+    }
+
+    #clearFilterBtn {
+      background: #777;
+    }
+
+    .no-products {
+      background: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 10px;
+      color: #777;
+    }
+
+    @media (max-width: 600px) {
+
+      .header-inner {
+        align-items: flex-start;
+      }
+
+      .header-actions {
+        max-width: 55%;
+      }
+
+      .header-actions button,
+      .header-actions a {
+        padding: 7px 8px;
+      }
+
+      .hero h1 {
+        font-size: 25px;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-box button {
+        width: 100%;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .product-card img {
+        height: 140px;
+      }
+
+      .product-info {
+        padding: 10px;
+      }
+
+      .product-name {
+        font-size: 14px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .my-product-item {
+        align-items: flex-start;
+      }
+
+      .my-product-actions {
+        flex-direction: column;
+      }
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .filters select,
+      .filters input,
+      .filters button {
+        width: 100%;
+      }
+
+    }
+
+  </style>
+
 </head>
+
+
 <body>
 
-<header style="background:#0d47a1;color:white;padding:15px;text-align:center">
-  <h2>ASPCC Market</h2>
-  <p>Aliko Dangote University, Wudil</p>
+
+<header>
+
+  <div class="header-inner">
+
+    <div class="logo">
+
+      Arewa Market
+
+      <span>
+        Kasuwar Arewa a Hannunka
+      </span>
+
+    </div>
+
+
+    <div
+      class="header-actions"
+      id="headerActions"
+    >
+
+      <a href="login.html">
+        Login
+      </a>
+
+      <a href="register.html">
+        Register
+      </a>
+
+    </div>
+
+  </div>
+
 </header>
 
-<div class="container">
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Nema: Misali, Cable, Littafi, Skirt...">
-    <button id="searchBtn">Nema</button>
+
+<section class="hero">
+
+  <h1>
+    Kasuwar Arewa a Hannunka
+  </h1>
+
+  <p>
+    Buy and sell products across Northern Nigeria.
+  </p>
+
+
+  <div class="search-box">
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Me kake nema? Misali: iPhone, Laptop..."
+    >
+
+    <button id="searchBtn">
+      Search
+    </button>
+
   </div>
 
-  <h3>Duk Kayayyaki</h3>
-  <div id="allProducts" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px">
-    <!-- Products za su fito anan ta atomatik -->
+</section>
+
+
+<main>
+
+
+  <div
+    class="pending-box"
+    id="pendingSellerBox"
+  >
+
+    <strong>
+      Seller Application Pending
+    </strong>
+
+    <br>
+
+    Your seller application has been submitted.
+    Please wait for Super Admin approval.
+
   </div>
+
+
+  <!-- SELLER DASHBOARD -->
+
+  <section
+    class="seller-panel"
+    id="sellerPanel"
+  >
+
+    <div class="seller-header">
+
+      <div>
+
+        <h2>
+          Seller Dashboard
+        </h2>
+
+        <div
+          class="seller-profile"
+          style="margin-top:10px;"
+        >
+
+          <img
+            id="sellerDashboardImage"
+            src=""
+            alt="Seller"
+          >
+
+          <span id="sellerWelcomeText">
+            Welcome Seller
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="seller-stats">
+
+      <div class="stat-box">
+
+        <div
+          class="stat-number"
+          id="myProductCount"
+        >
+          0
+        </div>
+
+        <div class="stat-label">
+          My Products
+        </div>
+
+      </div>
+
+
+      <div class="stat-box">
+
+        <div
+          class="stat-number"
+          id="sellerStatus"
+        >
+          Active
+        </div>
+
+        <div class="stat-label">
+          Seller Status
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="seller-buttons">
+
+      <button id="addProductBtn">
+        + Add Product
+      </button>
+
+      <button
+        class="secondary"
+        id="editProfileBtn"
+      >
+        Edit Seller Profile
+      </button>
+
+      <button
+        class="secondary"
+        id="hideSellerDashboardBtn"
+      >
+        Hide Dashboard
+      </button>
+
+    </div>
+
+
+    <div class="my-products">
+
+      <h3>
+        My Products
+      </h3>
+
+      <div id="myProductsContainer">
+        Loading...
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CATEGORIES -->
+
+  <div class="section-title">
+
+    <h2>
+      Categories
+    </h2>
+
+  </div>
+
+
+  <div
+    class="categories"
+    id="categoriesContainer"
+  >
+
+  </div>
+
+
+  <!-- PRODUCTS -->
+
+  <div class="section-title">
+
+    <h2>
+      Latest Products
+    </h2>
+
+  </div>
+
+
+  <!-- FILTERS -->
+
+  <div class="filters">
+
+    <select id="categoryFilter">
+
+      <option value="">
+        All Categories
+      </option>
+
+    </select>
+
+
+    <select id="locationFilter">
+
+      <option value="">
+        All States
+      </option>
+
+    </select>
+
+
+    <input
+      type="number"
+      id="minPrice"
+      placeholder="Min Price"
+    >
+
+
+    <input
+      type="number"
+      id="maxPrice"
+      placeholder="Max Price"
+    >
+
+
+    <button id="filterBtn">
+      Filter
+    </button>
+
+
+    <button
+      id="clearFilterBtn"
+      type="button"
+    >
+      Clear
+    </button>
+
+  </div>
+
+
+  <div
+    class="products"
+    id="productsContainer"
+  >
+  </div>
+
+
+</main>
+
+
+<footer>
+
+  <strong>
+    Arewa Market
+  </strong>
+
+  <p>
+    Kasuwar Arewa a Hannunka
+  </p>
+
+  <p>
+    © 2026 Arewa Market. All rights reserved.
+  </p>
+
+</footer>
+
+
+<!-- =========================
+     BECOME SELLER MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="sellerModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+
+      <h2>
+        Become a Seller
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closeSellerModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="sellerForm">
+
+      <div class="form-group">
+
+        <label>
+          Full Name
+        </label>
+
+        <input
+          type="text"
+          id="sellerName"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Business Name
+        </label>
+
+        <input
+          type="text"
+          id="businessName"
+          placeholder="Your business name"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label>
+            Phone Number
+          </label>
+
+          <input
+            type="tel"
+            id="sellerPhone"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            WhatsApp Number
+          </label>
+
+          <input
+            type="tel"
+            id="sellerWhatsapp"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Location
+        </label>
+
+        <select
+          id="sellerLocation"
+          required
+        >
+
+          <option value="">
+            Select State
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Business Description
+        </label>
+
+        <textarea
+          id="businessDescription"
+          placeholder="Tell buyers about your business..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Profile Image URL
+        </label>
+
+        <input
+          type="url"
+          id="profileImageUrl"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="form-submit"
+        id="sellerSubmitBtn"
+      >
+        Submit Seller Application
+      </button>
+
+
+      <div
+        class="message"
+        id="sellerMessage"
+      ></div>
+
+    </form>
+
+  </div>
+
 </div>
 
+
+<!-- =========================
+     ADD / EDIT PRODUCT MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="productModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+
+      <h2 id="productModalTitle">
+        Add Product
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closeProductModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="productForm">
+
+      <input
+        type="hidden"
+        id="editingProductId"
+      >
+
+
+      <div class="form-group">
+
+        <label>
+          Product Name
+        </label>
+
+        <input
+          type="text"
+          id="productName"
+          placeholder="e.g. iPhone 13"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label>
+            Price (₦)
+          </label>
+
+          <input
+            type="number"
+            id="productPrice"
+            placeholder="250000"
+            min="0"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Category
+          </label>
+
+          <select
+            id="productCategory"
+            required
+          >
+
+            <option value="">
+              Select Category
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Location
+        </label>
+
+        <select
+          id="productLocation"
+          required
+        >
+
+          <option value="">
+            Select State
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Product Image URL
+        </label>
+
+        <input
+          type="url"
+          id="productImageUrl"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div
+        class="preview-box"
+        id="productPreviewBox"
+      >
+
+        <img
+          id="productPreview"
+          alt="Product preview"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Description
+        </label>
+
+        <textarea
+          id="productDescription"
+          placeholder="Describe your product..."
+        ></textarea>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="form-submit"
+        id="productSubmitBtn"
+      >
+        Save Product
+      </button>
+
+
+      <button
+        type="button"
+        class="cancel-btn"
+        id="cancelProductBtn"
+      >
+        Cancel
+      </button>
+
+
+      <div
+        class="message"
+        id="productMessage"
+      ></div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     SELLER PROFILE MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="profileModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+
+      <h2>
+        Edit Seller Profile
+      </h2>
+
+      <button
+        class="close-btn"
+        id="closeProfileModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="profileForm">
+
+      <div class="form-group">
+
+        <label>
+          Full Name
+        </label>
+
+        <input
+          type="text"
+          id="profileName"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Business Name
+        </label>
+
+        <input
+          type="text"
+          id="profileBusinessName"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label>
+            Phone
+          </label>
+
+          <input
+            type="tel"
+            id="profilePhone"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            WhatsApp
+          </label>
+
+          <input
+            type="tel"
+            id="profileWhatsapp"
+            required
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Location
+        </label>
+
+        <select
+          id="profileLocation"
+          required
+        >
+
+          <option value="">
+            Select State
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Business Description
+        </label>
+
+        <textarea
+          id="profileDescription"
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Profile Image URL
+        </label>
+
+        <input
+          type="url"
+          id="profileImage"
+          placeholder="https://..."
+        >
+
+        <img
+          id="profileImagePreview"
+          class="profile-preview"
+          src=""
+          alt="Seller Profile"
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="form-submit"
+        id="profileSubmitBtn"
+      >
+        Save Profile
+      </button>
+
+
+      <div
+        class="message"
+        id="profileMessage"
+      ></div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
 <script type="module">
-import { db, collection, onSnapshot, query, orderBy } from './firebase.js';
 
-const allProducts = document.getElementById('allProducts');
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
-let allData = [];
 
-// LODA DUK PRODUCTS REAL-TIME
-const q = query(collection(db, "products"), orderBy("timestamp", "desc"));
-onSnapshot(q, (snapshot) => {
-  allData = [];
-  snapshot.forEach((docSnap) => {
-    allData.push(docSnap.data());
-  });
-  displayProducts(allData);
-});
+/* =========================
+   FIREBASE IMPORTS
+========================= */
 
-// NUNA PRODUCTS
-function displayProducts(data){
-  allProducts.innerHTML = '';
-  if(data.length === 0){
-    allProducts.innerHTML = '<p>Babu kayayyaki yanzu</p>';
-    return;
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  addDoc,
+  serverTimestamp,
+  query,
+  limit
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyD48Bay25k24a5WckgM6AmuK3p68oGT6vk",
+
+  authDomain:
+    "arewa-market-4e603.firebaseapp.com",
+
+  projectId:
+    "arewa-market-4e603",
+
+  storageBucket:
+    "arewa-market-4e603.firebasestorage.app",
+
+  messagingSenderId:
+    "217844252739",
+
+  appId:
+    "1:217844252739:web:81b00d9ac29277c42d94f6",
+
+  measurementId:
+    "G-ZTQHETHX4T"
+
+};
+
+
+const app =
+  initializeApp(firebaseConfig);
+
+
+const auth =
+  getAuth(app);
+
+
+const db =
+  getFirestore(app);
+
+
+/* =========================
+   CONSTANT DATA
+========================= */
+
+
+/*
+   ALL AREWA MARKET CATEGORIES
+*/
+
+const MARKET_CATEGORIES = [
+
+  {
+    name: "Phones",
+    icon: "📱"
+  },
+
+  {
+    name: "Computers",
+    icon: "💻"
+  },
+
+  {
+    name: "Accessories",
+    icon: "🎧"
+  },
+
+  {
+    name: "Fashion",
+    icon: "👕"
+  },
+
+  {
+    name: "Furniture",
+    icon: "🛋️"
+  },
+
+  {
+    name: "Vehicles",
+    icon: "🚗"
+  },
+
+  {
+    name: "Property",
+    icon: "🏠"
+  },
+
+  {
+    name: "Agriculture",
+    icon: "🌾"
+  },
+
+  {
+    name: "Services",
+    icon: "🛠️"
   }
-  data.forEach((item) => {
-    const div = document.createElement('div');
-    div.classList.add('product-card');
-    div.innerHTML = `
-      <h4>${item.item}</h4>
-      <p><b>Category:</b> ${item.category}</p>
-      <p><b>Shop:</b> ${item.shop}</p>
-      <p><b>Price:</b> ₦${item.price}</p>
-      <p><b>Location:</b> ${item.location}</p>
-      <a href="tel:${item.phone}" style="display:inline-block;margin-top:8px;padding:8px 12px;background:#25D366;color:white;text-decoration:none;border-radius:5px">Call ${item.phone}</a>
-    `;
-    allProducts.appendChild(div);
-  });
+
+];
+
+
+/*
+   ALL 36 STATES + FCT
+*/
+
+const NIGERIA_STATES = [
+
+  "Abia",
+  "Adamawa",
+  "Akwa Ibom",
+  "Anambra",
+  "Bauchi",
+  "Bayelsa",
+  "Benue",
+  "Borno",
+  "Cross River",
+  "Delta",
+  "Ebonyi",
+  "Edo",
+  "Ekiti",
+  "Enugu",
+  "Gombe",
+  "Imo",
+  "Jigawa",
+  "Kaduna",
+  "Kano",
+  "Katsina",
+  "Kebbi",
+  "Kogi",
+  "Kwara",
+  "Lagos",
+  "Nasarawa",
+  "Niger",
+  "Ogun",
+  "Ondo",
+  "Osun",
+  "Oyo",
+  "Plateau",
+  "Rivers",
+  "Sokoto",
+  "Taraba",
+  "Yobe",
+  "Zamfara",
+  "FCT Abuja"
+
+];
+
+
+/* =========================
+   GLOBAL VARIABLES
+========================= */
+
+let currentUser = null;
+
+let currentUserData = null;
+
+let allProducts = [];
+
+let editingProductId = null;
+
+
+/* =========================
+   DOM ELEMENTS
+========================= */
+
+const headerActions =
+  document.getElementById(
+    "headerActions"
+  );
+
+
+const sellerPanel =
+  document.getElementById(
+    "sellerPanel"
+  );
+
+
+const sellerModal =
+  document.getElementById(
+    "sellerModal"
+  );
+
+
+const productModal =
+  document.getElementById(
+    "productModal"
+  );
+
+
+const profileModal =
+  document.getElementById(
+    "profileModal"
+  );
+
+
+const productsContainer =
+  document.getElementById(
+    "productsContainer"
+  );
+
+
+const categoriesContainer =
+  document.getElementById(
+    "categoriesContainer"
+  );
+
+
+const myProductsContainer =
+  document.getElementById(
+    "myProductsContainer"
+  );
+
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+
+const searchBtn =
+  document.getElementById(
+    "searchBtn"
+  );
+
+
+const pendingSellerBox =
+  document.getElementById(
+    "pendingSellerBox"
+  );
+
+
+const categoryFilter =
+  document.getElementById(
+    "categoryFilter"
+  );
+
+
+const locationFilter =
+  document.getElementById(
+    "locationFilter"
+  );
+
+
+const minPrice =
+  document.getElementById(
+    "minPrice"
+  );
+
+
+const maxPrice =
+  document.getElementById(
+    "maxPrice"
+  );
+
+
+const filterBtn =
+  document.getElementById(
+    "filterBtn"
+  );
+
+
+const clearFilterBtn =
+  document.getElementById(
+    "clearFilterBtn"
+  );
+
+
+const productCategory =
+  document.getElementById(
+    "productCategory"
+  );
+
+
+const productLocation =
+  document.getElementById(
+    "productLocation"
+  );
+
+
+const sellerLocation =
+  document.getElementById(
+    "sellerLocation"
+  );
+
+
+const profileLocation =
+  document.getElementById(
+    "profileLocation"
+  );
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHTML(value) {
+
+  if (
+    value === undefined ||
+    value === null
+  ) {
+
+    return "";
+
+  }
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
 }
 
-// SEARCH
-searchBtn.addEventListener('click', () => {
-  const term = searchInput.value.toLowerCase();
-  const filtered = allData.filter(p => 
-    p.item.toLowerCase().includes(term) || 
-    p.category.toLowerCase().includes(term) ||
-    p.shop.toLowerCase().includes(term)
+
+/* =========================
+   POPULATE ALL STATIC OPTIONS
+========================= */
+
+function populateStaticOptions() {
+
+
+  /*
+     CATEGORY FILTER
+  */
+
+  categoryFilter.innerHTML = `
+    <option value="">
+      All Categories
+    </option>
+  `;
+
+
+  MARKET_CATEGORIES.forEach(
+    (category) => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        category.name;
+
+      option.textContent =
+        category.name;
+
+      categoryFilter.appendChild(
+        option
+      );
+
+    }
   );
-  displayProducts(filtered);
-});
+
+
+  /*
+     CATEGORY IN PRODUCT FORM
+  */
+
+  productCategory.innerHTML = `
+    <option value="">
+      Select Category
+    </option>
+  `;
+
+
+  MARKET_CATEGORIES.forEach(
+    (category) => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        category.name;
+
+      option.textContent =
+        category.name;
+
+      productCategory.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  /*
+     STATE FILTER
+  */
+
+  locationFilter.innerHTML = `
+    <option value="">
+      All States
+    </option>
+  `;
+
+
+  /*
+     SELLER LOCATION
+  */
+
+  sellerLocation.innerHTML = `
+    <option value="">
+      Select State
+    </option>
+  `;
+
+
+  /*
+     PRODUCT LOCATION
+  */
+
+  productLocation.innerHTML = `
+    <option value="">
+      Select State
+    </option>
+  `;
+
+
+  /*
+     PROFILE LOCATION
+  */
+
+  profileLocation.innerHTML = `
+    <option value="">
+      Select State
+    </option>
+  `;
+
+
+  NIGERIA_STATES.forEach(
+    (state) => {
+
+
+      /*
+         FILTER
+      */
+
+      const filterOption =
+        document.createElement(
+          "option"
+        );
+
+      filterOption.value =
+        state;
+
+      filterOption.textContent =
+        state;
+
+      locationFilter.appendChild(
+        filterOption
+      );
+
+
+      /*
+         SELLER
+      */
+
+      const sellerOption =
+        document.createElement(
+          "option"
+        );
+
+      sellerOption.value =
+        state;
+
+      sellerOption.textContent =
+        state;
+
+      sellerLocation.appendChild(
+        sellerOption
+      );
+
+
+      /*
+         PRODUCT
+      */
+
+      const productOption =
+        document.createElement(
+          "option"
+        );
+
+      productOption.value =
+        state;
+
+      productOption.textContent =
+        state;
+
+      productLocation.appendChild(
+        productOption
+      );
+
+
+      /*
+         PROFILE
+      */
+
+      const profileOption =
+        document.createElement(
+          "option"
+        );
+
+      profileOption.value =
+        state;
+
+      profileOption.textContent =
+        state;
+
+      profileLocation.appendChild(
+        profileOption
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   AUTH STATE
+========================= */
+
+onAuthStateChanged(
+  auth,
+  async (user) => {
+
+    currentUser =
+      user;
+
+
+    if (!user) {
+
+      currentUserData =
+        null;
+
+      sellerPanel.classList.remove(
+        "show"
+      );
+
+      pendingSellerBox.classList.remove(
+        "show"
+      );
+
+      showGuestHeader();
+
+      return;
+
+    }
+
+
+    try {
+
+      const userSnapshot =
+        await getDoc(
+          doc(
+            db,
+            "users",
+            user.uid
+          )
+        );
+
+
+      if (
+        !userSnapshot.exists()
+      ) {
+
+        currentUserData =
+          null;
+
+        showGuestHeader();
+
+        return;
+
+      }
+
+
+      currentUserData =
+        userSnapshot.data();
+
+
+      if (
+        currentUserData.active ===
+        false
+      ) {
+
+        alert(
+          "Your account has been deactivated."
+        );
+
+        await signOut(auth);
+
+        return;
+
+      }
+
+
+      showLoggedInHeader();
+
+
+      if (
+
+        currentUserData.isSeller ===
+        true &&
+
+        currentUserData.role ===
+        "seller" &&
+
+        currentUserData.sellerStatus ===
+        "approved"
+
+      ) {
+
+        pendingSellerBox.classList.remove(
+          "show"
+        );
+
+        showSellerDashboard();
+
+      }
+
+
+      else if (
+
+        currentUserData.sellerStatus ===
+        "pending"
+
+      ) {
+
+        sellerPanel.classList.remove(
+          "show"
+        );
+
+        pendingSellerBox.classList.add(
+          "show"
+        );
+
+      }
+
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Auth profile error:",
+        error
+      );
+
+    }
+
+  }
+
+);
+
+
+/* =========================
+   GUEST HEADER
+========================= */
+
+function showGuestHeader() {
+
+  headerActions.innerHTML = `
+
+    <a href="login.html">
+      Login
+    </a>
+
+    <a href="register.html">
+      Register
+    </a>
+
+  `;
+
+}
+
+
+/* =========================
+   LOGGED-IN HEADER
+========================= */
+
+function showLoggedInHeader() {
+
+
+  const isApprovedSeller =
+
+    currentUserData &&
+
+    currentUserData.isSeller ===
+    true &&
+
+    currentUserData.role ===
+    "seller" &&
+
+    currentUserData.sellerStatus ===
+    "approved";
+
+
+  const isPendingSeller =
+
+    currentUserData &&
+
+    currentUserData.sellerStatus ===
+    "pending";
+
+
+  let html = "";
+
+
+  if (isApprovedSeller) {
+
+    html += `
+
+      <button
+        class="seller-btn"
+        id="headerSellerBtn"
+      >
+        Seller Dashboard
+      </button>
+
+    `;
+
+  }
+
+
+  else if (isPendingSeller) {
+
+    html += `
+
+      <button
+        class="pending-btn"
+        id="headerPendingBtn"
+      >
+        Application Pending
+      </button>
+
+    `;
+
+  }
+
+
+  else {
+
+    html += `
+
+      <button
+        class="seller-btn"
+        id="headerBecomeSellerBtn"
+      >
+        Become a Seller
+      </button>
+
+    `;
+
+  }
+
+
+  html += `
+
+    <button
+      id="logoutBtn"
+      class="logout-btn"
+    >
+      Logout
+    </button>
+
+  `;
+
+
+  headerActions.innerHTML =
+    html;
+
+
+  if (isApprovedSeller) {
+
+    const button =
+      document.getElementById(
+        "headerSellerBtn"
+      );
+
+
+    if (button) {
+
+      button.addEventListener(
+        "click",
+        showSellerDashboard
+      );
+
+    }
+
+  }
+
+
+  else if (isPendingSeller) {
+
+    const button =
+      document.getElementById(
+        "headerPendingBtn"
+      );
+
+
+    if (button) {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          pendingSellerBox.classList.add(
+            "show"
+          );
+
+          pendingSellerBox.scrollIntoView({
+            behavior: "smooth"
+          });
+
+        }
+      );
+
+    }
+
+  }
+
+
+  else {
+
+    const button =
+      document.getElementById(
+        "headerBecomeSellerBtn"
+      );
+
+
+    if (button) {
+
+      button.addEventListener(
+        "click",
+        openSellerModal
+      );
+
+    }
+
+  }
+
+
+  const logoutBtn =
+    document.getElementById(
+      "logoutBtn"
+    );
+
+
+  if (logoutBtn) {
+
+    logoutBtn.addEventListener(
+      "click",
+      logoutUser
+    );
+
+  }
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logoutUser() {
+
+  try {
+
+    await signOut(auth);
+
+    sellerPanel.classList.remove(
+      "show"
+    );
+
+    pendingSellerBox.classList.remove(
+      "show"
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Logout failed: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================
+   LOAD CATEGORY DISPLAY
+========================= */
+
+function loadCategories() {
+
+  categoriesContainer.innerHTML =
+    "";
+
+
+  MARKET_CATEGORIES.forEach(
+    (category) => {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "category";
+
+
+      div.innerHTML = `
+
+        <div class="category-icon">
+          ${category.icon}
+        </div>
+
+        <div class="category-name">
+          ${escapeHTML(
+            category.name
+          )}
+        </div>
+
+      `;
+
+
+      div.addEventListener(
+        "click",
+        () => {
+
+          categoryFilter.value =
+            category.name;
+
+          locationFilter.value =
+            "";
+
+          minPrice.value =
+            "";
+
+          maxPrice.value =
+            "";
+
+          applyFilters();
+
+
+          document
+            .querySelector(
+              ".filters"
+            )
+            .scrollIntoView({
+              behavior: "smooth"
+            });
+
+        }
+      );
+
+
+      categoriesContainer.appendChild(
+        div
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   LOAD PRODUCTS
+========================= */
+
+async function loadProducts() {
+
+  try {
+
+    const snapshot =
+      await getDocs(
+
+        query(
+
+          collection(
+            db,
+            "products"
+          ),
+
+          limit(50)
+
+        )
+
+      );
+
+
+    allProducts = [];
+
+
+    snapshot.forEach(
+      (productDoc) => {
+
+        allProducts.push({
+
+          id:
+            productDoc.id,
+
+          ...productDoc.data()
+
+        });
+
+      }
+    );
+
+
+    console.log(
+      "PRODUCTS LOADED:",
+      allProducts
+    );
+
+
+    renderProducts(
+      allProducts
+    );
+
+
+    /*
+       IMPORTANT:
+       Static filters are already
+       populated separately.
+    */
+
+  }
+
+
+  catch (error) {
+
+    console.error(
+      "LOAD PRODUCTS ERROR:",
+      error
+    );
+
+
+    productsContainer.innerHTML = `
+
+      <div
+        style="
+          padding:20px;
+          background:#fff0f0;
+          color:#b00020;
+          border-radius:10px;
+          line-height:1.6;
+        "
+      >
+
+        <strong>
+          Failed to load products.
+        </strong>
+
+        <br><br>
+
+        Code:
+        ${escapeHTML(
+          error.code || "unknown"
+        )}
+
+        <br>
+
+        Message:
+        ${escapeHTML(
+          error.message || "unknown"
+        )}
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================
+   APPLY FILTERS
+========================= */
+
+function applyFilters() {
+
+
+  const selectedCategory =
+    categoryFilter.value.trim();
+
+
+  const selectedLocation =
+    locationFilter.value.trim();
+
+
+  const minimumPrice =
+    minPrice.value.trim();
+
+
+  const maximumPrice =
+    maxPrice.value.trim();
+
+
+  const filteredProducts =
+
+    allProducts.filter(
+      (product) => {
+
+
+        const productCategory =
+          String(
+            product.category || ""
+          ).trim();
+
+
+        const productLocation =
+          String(
+            product.location || ""
+          ).trim();
+
+
+        const productPrice =
+          Number(
+            product.price
+          ) || 0;
+
+
+        if (
+
+          selectedCategory &&
+
+          productCategory !==
+          selectedCategory
+
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+
+          selectedLocation &&
+
+          productLocation !==
+          selectedLocation
+
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+
+          minimumPrice !== "" &&
+
+          productPrice <
+          Number(
+            minimumPrice
+          )
+
+        ) {
+
+          return false;
+
+        }
+
+
+        if (
+
+          maximumPrice !== "" &&
+
+          productPrice >
+          Number(
+            maximumPrice
+          )
+
+        ) {
+
+          return false;
+
+        }
+
+
+        return true;
+
+      }
+    );
+
+
+  renderProducts(
+    filteredProducts
+  );
+
+}
+
+
+/* =========================
+   CLEAR FILTERS
+========================= */
+
+function clearFilters() {
+
+  categoryFilter.value =
+    "";
+
+  locationFilter.value =
+    "";
+
+  minPrice.value =
+    "";
+
+  maxPrice.value =
+    "";
+
+  renderProducts(
+    allProducts
+  );
+
+}
+
+
+/* =========================
+   FILTER EVENTS
+========================= */
+
+filterBtn.addEventListener(
+  "click",
+  applyFilters
+);
+
+
+clearFilterBtn.addEventListener(
+  "click",
+  clearFilters
+);
+
+
+/* =========================
+   RENDER PRODUCTS
+========================= */
+
+function renderProducts(
+  products
+) {
+
+
+  if (!products.length) {
+
+    productsContainer.innerHTML = `
+
+      <div class="no-products">
+
+        No products found
+        for the selected filter.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  productsContainer.innerHTML =
+    "";
+
+
+  products.forEach(
+    (product) => {
+
+
+      const name =
+        product.name ||
+        "Product";
+
+
+      const price =
+        Number(
+          product.price
+        ) || 0;
+
+
+      const location =
+        product.location ||
+        "Northern Nigeria";
+
+
+      const sellerName =
+        product.sellerName ||
+        "Arewa Market Seller";
+
+
+      const image =
+        product.imageUrl ||
+
+        "https://via.placeholder.com/600x400?text=Arewa+Market";
+
+
+      const phone =
+        product.sellerPhone ||
+        "";
+
+
+      const whatsapp =
+        product.whatsapp ||
+        phone;
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "product-card";
+
+
+      let contactButtons =
+        "";
+
+
+      if (phone) {
+
+        contactButtons += `
+
+          <a
+            class="call-btn"
+            href="tel:${encodeURIComponent(
+              phone
+            )}"
+          >
+            Call
+          </a>
+
+        `;
+
+      }
+
+
+      if (whatsapp) {
+
+        const cleanWhatsapp =
+          String(
+            whatsapp
+          ).replace(
+            /[^0-9]/g,
+            ""
+          );
+
+
+        if (cleanWhatsapp) {
+
+          contactButtons += `
+
+            <a
+              class="whatsapp-btn"
+              target="_blank"
+              rel="noopener"
+              href="https://wa.me/${cleanWhatsapp}"
+            >
+              WhatsApp
+            </a>
+
+          `;
+
+        }
+
+      }
+
+
+      card.innerHTML = `
+
+        <img
+          src="${escapeHTML(image)}"
+          alt="${escapeHTML(name)}"
+          onerror="
+            this.src='https://via.placeholder.com/600x400?text=Arewa+Market'
+          "
+        >
+
+
+        <div class="product-info">
+
+          <div class="product-name">
+            ${escapeHTML(name)}
+          </div>
+
+
+          <div class="product-price">
+            ₦${price.toLocaleString()}
+          </div>
+
+
+          <div class="product-location">
+            📍 ${escapeHTML(location)}
+          </div>
+
+
+          <div
+            class="product-seller seller-link"
+            data-seller-id="${escapeHTML(
+              product.sellerId || ""
+            )}"
+            style="cursor:pointer;"
+          >
+
+            Seller:
+            ${escapeHTML(
+              sellerName
+            )}
+
+          </div>
+
+
+          <div class="product-actions">
+
+            ${
+              contactButtons ||
+
+              `
+                <span
+                  style="
+                    color:#777;
+                    font-size:12px;
+                  "
+                >
+                  Seller contact unavailable
+                </span>
+              `
+            }
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      card.style.cursor =
+        "pointer";
+
+
+      /*
+         PRODUCT DETAILS
+      */
+
+      card.addEventListener(
+        "click",
+        (event) => {
+
+          if (
+            event.target.closest(
+              "a"
+            )
+          ) {
+
+            return;
+
+          }
+
+
+          window.location.href =
+            "product-details.html?id=" +
+            encodeURIComponent(
+              product.id
+            );
+
+        }
+      );
+
+
+      /*
+         SELLER PROFILE
+      */
+
+      const sellerLink =
+        card.querySelector(
+          ".seller-link"
+        );
+
+
+      if (sellerLink) {
+
+        sellerLink.addEventListener(
+          "click",
+          function(event) {
+
+            event.stopPropagation();
+
+
+            const sellerId =
+              this.dataset.sellerId;
+
+
+            if (!sellerId) {
+
+              return;
+
+            }
+
+
+            window.location.href =
+              "seller-profile.html?id=" +
+              encodeURIComponent(
+                sellerId
+              );
+
+          }
+        );
+
+      }
+
+
+      productsContainer.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function filterProducts() {
+
+
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+
+  if (!search) {
+
+    renderProducts(
+      allProducts
+    );
+
+    return;
+
+  }
+
+
+  const filtered =
+    allProducts.filter(
+      (product) => {
+
+
+        const name =
+          String(
+            product.name || ""
+          ).toLowerCase();
+
+
+        const category =
+          String(
+            product.category || ""
+          ).toLowerCase();
+
+
+        const location =
+          String(
+            product.location || ""
+          ).toLowerCase();
+
+
+        const description =
+          String(
+            product.description || ""
+          ).toLowerCase();
+
+
+        return (
+
+          name.includes(search) ||
+
+          category.includes(search) ||
+
+          location.includes(search) ||
+
+          description.includes(search)
+
+        );
+
+      }
+    );
+
+
+  renderProducts(
+    filtered
+  );
+
+}
+
+
+searchBtn.addEventListener(
+  "click",
+  filterProducts
+);
+
+
+searchInput.addEventListener(
+  "input",
+  filterProducts
+);
+
+
+/* =========================
+   OPEN SELLER MODAL
+========================= */
+
+function openSellerModal() {
+
+
+  if (!currentUser) {
+
+    alert(
+      "Please login first."
+    );
+
+    return;
+
+  }
+
+
+  if (
+
+    currentUserData &&
+
+    currentUserData.sellerStatus ===
+    "pending"
+
+  ) {
+
+    pendingSellerBox.classList.add(
+      "show"
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "sellerMessage"
+  ).textContent =
+    "";
+
+
+  document.getElementById(
+    "sellerForm"
+  ).reset();
+
+
+  document.getElementById(
+    "sellerName"
+  ).value =
+    currentUserData?.name || "";
+
+
+  sellerModal.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================
+   CLOSE SELLER MODAL
+========================= */
+
+document
+  .getElementById(
+    "closeSellerModal"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      sellerModal.classList.remove(
+        "show"
+      );
+
+    }
+  );
+
+
+/* =========================
+   BECOME SELLER
+========================= */
+
+document
+  .getElementById(
+    "sellerForm"
+  )
+  .addEventListener(
+    "submit",
+    async (event) => {
+
+
+      event.preventDefault();
+
+
+      if (!currentUser) {
+
+        alert(
+          "Please login first."
+        );
+
+        return;
+
+      }
+
+
+      const submitBtn =
+        document.getElementById(
+          "sellerSubmitBtn"
+        );
+
+
+      const message =
+        document.getElementById(
+          "sellerMessage"
+        );
+
+
+      submitBtn.disabled =
+        true;
+
+
+      submitBtn.textContent =
+        "Submitting...";
+
+
+      message.textContent =
+        "";
+
+
+      try {
+
+
+        const sellerData = {
+
+          name:
+            document.getElementById(
+              "sellerName"
+            ).value.trim(),
+
+          businessName:
+            document.getElementById(
+              "businessName"
+            ).value.trim(),
+
+          phone:
+            document.getElementById(
+              "sellerPhone"
+            ).value.trim(),
+
+          whatsapp:
+            document.getElementById(
+              "sellerWhatsapp"
+            ).value.trim(),
+
+          location:
+            document.getElementById(
+              "sellerLocation"
+            ).value,
+
+          businessDescription:
+            document.getElementById(
+              "businessDescription"
+            ).value.trim(),
+
+          profileImageUrl:
+            document.getElementById(
+              "profileImageUrl"
+            ).value.trim(),
+
+          email:
+            currentUser.email || "",
+
+          role:
+            "buyer",
+
+          isSeller:
+            false,
+
+          sellerStatus:
+            "pending",
+
+          active:
+            true,
+
+          sellerApplicationAt:
+            serverTimestamp(),
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+
+        await updateDoc(
+
+          doc(
+            db,
+            "users",
+            currentUser.uid
+          ),
+
+          sellerData
+
+        );
+
+
+        currentUserData = {
+
+          ...currentUserData,
+
+          ...sellerData
+
+        };
+
+
+        message.style.color =
+          "#16803c";
+
+
+        message.textContent =
+          "Seller application submitted successfully. Please wait for Super Admin approval.";
+
+
+        setTimeout(
+          () => {
+
+            sellerModal.classList.remove(
+              "show"
+            );
+
+            pendingSellerBox.classList.add(
+              "show"
+            );
+
+            showLoggedInHeader();
+
+          },
+          800
+        );
+
+
+      }
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        message.style.color =
+          "red";
+
+
+        message.textContent =
+          "Failed: " +
+          error.message;
+
+      }
+
+
+      submitBtn.disabled =
+        false;
+
+
+      submitBtn.textContent =
+        "Submit Seller Application";
+
+    }
+  );
+
+
+/* =========================
+   SHOW SELLER DASHBOARD
+========================= */
+
+async function showSellerDashboard() {
+
+
+  if (!currentUser) {
+
+    return;
+
+  }
+
+
+  if (
+
+    !currentUserData ||
+
+    currentUserData.isSeller !==
+    true ||
+
+    currentUserData.role !==
+    "seller" ||
+
+    currentUserData.sellerStatus !==
+    "approved"
+
+  ) {
+
+
+    if (
+
+      currentUserData?.sellerStatus ===
+      "pending"
+
+    ) {
+
+      pendingSellerBox.classList.add(
+        "show"
+      );
+
+    }
+
+
+    return;
+
+  }
+
+
+  sellerPanel.classList.add(
+    "show"
+  );
+
+
+  pendingSellerBox.classList.remove(
+    "show"
+  );
+
+
+  const sellerName =
+
+    currentUserData.businessName ||
+
+    currentUserData.name ||
+
+    "Seller";
+
+
+  document.getElementById(
+    "sellerWelcomeText"
+  ).textContent =
+    "Welcome, " +
+    sellerName;
+
+
+  const sellerImage =
+    document.getElementById(
+      "sellerDashboardImage"
+    );
+
+
+  if (
+    currentUserData.profileImageUrl
+  ) {
+
+    sellerImage.src =
+      currentUserData.profileImageUrl;
+
+    sellerImage.style.display =
+      "block";
+
+
+    sellerImage.onerror =
+      function() {
+
+        sellerImage.style.display =
+          "none";
+
+      };
+
+  }
+
+  else {
+
+    sellerImage.style.display =
+      "none";
+
+  }
+
+
+  document.getElementById(
+    "sellerStatus"
+  ).textContent =
+    "Approved";
+
+
+  await loadMyProducts();
+
+
+  sellerPanel.scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================
+   HIDE SELLER DASHBOARD
+========================= */
+
+document
+  .getElementById(
+    "hideSellerDashboardBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      sellerPanel.classList.remove(
+        "show"
+      );
+
+    }
+  );
+
+
+/* =========================
+   LOAD MY PRODUCTS
+========================= */
+
+async function loadMyProducts() {
+
+
+  if (!currentUser) {
+
+    return;
+
+  }
+
+
+  try {
+
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "products"
+        )
+      );
+
+
+    const myProducts = [];
+
+
+    snapshot.forEach(
+      (productDoc) => {
+
+
+        const product =
+          productDoc.data();
+
+
+        if (
+          product.sellerId ===
+          currentUser.uid
+        ) {
+
+          myProducts.push({
+
+            id:
+              productDoc.id,
+
+            ...product
+
+          });
+
+        }
+
+      }
+    );
+
+
+    document.getElementById(
+      "myProductCount"
+    ).textContent =
+      myProducts.length;
+
+
+    if (
+      !myProducts.length
+    ) {
+
+      myProductsContainer.innerHTML = `
+
+        <p style="color:#777;">
+
+          You have no products yet.
+
+          Click "Add Product"
+          to start selling.
+
+        </p>
+
+      `;
+
+      return;
+
+    }
+
+
+    myProductsContainer.innerHTML =
+      "";
+
+
+    myProducts.forEach(
+      (product) => {
+
+
+        const image =
+          product.imageUrl ||
+
+          "https://via.placeholder.com/150?text=Product";
+
+
+        const item =
+          document.createElement(
+            "div"
+          );
+
+
+        item.className =
+          "my-product-item";
+
+
+        item.innerHTML = `
+
+          <img
+            src="${escapeHTML(image)}"
+            alt="${escapeHTML(
+              product.name ||
+              "Product"
+            )}"
+            onerror="
+              this.src='https://via.placeholder.com/150?text=Product'
+            "
+          >
+
+
+          <div class="my-product-details">
+
+            <strong>
+              ${escapeHTML(
+                product.name ||
+                "Product"
+              )}
+            </strong>
+
+            <span>
+              ₦${(
+                Number(
+                  product.price
+                ) || 0
+              ).toLocaleString()}
+            </span>
+
+          </div>
+
+
+          <div class="my-product-actions">
+
+            <button
+              class="edit-btn"
+            >
+              Edit
+            </button>
+
+            <button
+              class="delete-btn"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        `;
+
+
+        const editButton =
+          item.querySelector(
+            ".edit-btn"
+          );
+
+
+        const deleteButton =
+          item.querySelector(
+            ".delete-btn"
+          );
+
+
+        editButton.addEventListener(
+          "click",
+          () => {
+
+            openEditProduct(
+              product
+            );
+
+          }
+        );
+
+
+        deleteButton.addEventListener(
+          "click",
+          () => {
+
+            deleteProduct(
+              product.id
+            );
+
+          }
+        );
+
+
+        myProductsContainer.appendChild(
+          item
+        );
+
+      }
+    );
+
+  }
+
+
+  catch (error) {
+
+    console.error(
+      "Failed to load my products:",
+      error
+    );
+
+
+    myProductsContainer.innerHTML = `
+
+      <div
+        style="
+          padding:15px;
+          background:#fff0f0;
+          color:#b00020;
+          border-radius:8px;
+        "
+      >
+
+        Failed to load your products.
+
+        <br><br>
+
+        ${escapeHTML(
+          error.message ||
+          "Unknown error"
+        )}
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================
+   OPEN ADD PRODUCT
+========================= */
+
+document
+  .getElementById(
+    "addProductBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+
+      if (!currentUser) {
+
+        return;
+
+      }
+
+
+      editingProductId =
+        null;
+
+
+      document.getElementById(
+        "editingProductId"
+      ).value =
+        "";
+
+
+      document.getElementById(
+        "productModalTitle"
+      ).textContent =
+        "Add Product";
+
+
+      document.getElementById(
+        "productSubmitBtn"
+      ).textContent =
+        "Save Product";
+
+
+      document.getElementById(
+        "productForm"
+      ).reset();
+
+
+      document.getElementById(
+        "productPreviewBox"
+      ).style.display =
+        "none";
+
+
+      productModal.classList.add(
+        "show"
+      );
+
+    }
+  );
+
+
+/* =========================
+   CLOSE PRODUCT MODAL
+========================= */
+
+function closeProductModal() {
+
+
+  productModal.classList.remove(
+    "show"
+  );
+
+
+  document.getElementById(
+    "productForm"
+  ).reset();
+
+
+  document.getElementById(
+    "productPreviewBox"
+  ).style.display =
+    "none";
+
+
+  editingProductId =
+    null;
+
+}
+
+
+document
+  .getElementById(
+    "closeProductModal"
+  )
+  .addEventListener(
+    "click",
+    closeProductModal
+  );
+
+
+document
+  .getElementById(
+    "cancelProductBtn"
+  )
+  .addEventListener(
+    "click",
+    closeProductModal
+  );
+
+
+/* =========================
+   PRODUCT IMAGE PREVIEW
+========================= */
+
+document
+  .getElementById(
+    "productImageUrl"
+  )
+  .addEventListener(
+    "input",
+    () => {
+
+
+      const url =
+        document.getElementById(
+          "productImageUrl"
+        ).value.trim();
+
+
+      const previewBox =
+        document.getElementById(
+          "productPreviewBox"
+        );
+
+
+      const preview =
+        document.getElementById(
+          "productPreview"
+        );
+
+
+      if (!url) {
+
+        previewBox.style.display =
+          "none";
+
+        return;
+
+      }
+
+
+      preview.src =
+        url;
+
+
+      previewBox.style.display =
+        "block";
+
+    }
+  );
+
+
+/* =========================
+   SAVE PRODUCT
+========================= */
+
+document
+  .getElementById(
+    "productForm"
+  )
+  .addEventListener(
+    "submit",
+    async (event) => {
+
+
+      event.preventDefault();
+
+
+      if (!currentUser) {
+
+        alert(
+          "Please login first."
+        );
+
+        return;
+
+      }
+
+
+      if (
+
+        !currentUserData ||
+
+        currentUserData.isSeller !==
+        true ||
+
+        currentUserData.role !==
+        "seller" ||
+
+        currentUserData.sellerStatus !==
+        "approved"
+
+      ) {
+
+        alert(
+          "Your seller account must be approved first."
+        );
+
+        return;
+
+      }
+
+
+      const submitBtn =
+        document.getElementById(
+          "productSubmitBtn"
+        );
+
+
+      const message =
+        document.getElementById(
+          "productMessage"
+        );
+
+
+      submitBtn.disabled =
+        true;
+
+
+      submitBtn.textContent =
+        editingProductId
+          ? "Updating..."
+          : "Saving...";
+
+
+      message.textContent =
+        "";
+
+
+      try {
+
+
+        const productData = {
+
+          name:
+            document.getElementById(
+              "productName"
+            ).value.trim(),
+
+          price:
+            Number(
+              document.getElementById(
+                "productPrice"
+              ).value
+            ),
+
+          category:
+            document.getElementById(
+              "productCategory"
+            ).value,
+
+          location:
+            document.getElementById(
+              "productLocation"
+            ).value,
+
+          imageUrl:
+            document.getElementById(
+              "productImageUrl"
+            ).value.trim(),
+
+          description:
+            document.getElementById(
+              "productDescription"
+            ).value.trim(),
+
+          sellerId:
+            currentUser.uid,
+
+          sellerName:
+            currentUserData.businessName ||
+            currentUserData.name ||
+            "",
+
+          sellerPhone:
+            currentUserData.phone ||
+            "",
+
+          whatsapp:
+            currentUserData.whatsapp ||
+            currentUserData.phone ||
+            "",
+
+          status:
+            "active",
+
+          featured:
+            false
+
+        };
+
+
+        if (editingProductId) {
+
+
+          await updateDoc(
+
+            doc(
+              db,
+              "products",
+              editingProductId
+            ),
+
+            {
+
+              ...productData,
+
+              updatedAt:
+                serverTimestamp()
+
+            }
+
+          );
+
+
+          message.style.color =
+            "green";
+
+
+          message.textContent =
+            "Product updated successfully.";
+
+        }
+
+
+        else {
+
+
+          await addDoc(
+
+            collection(
+              db,
+              "products"
+            ),
+
+            {
+
+              ...productData,
+
+              createdAt:
+                serverTimestamp()
+
+            }
+
+          );
+
+
+          message.style.color =
+            "green";
+
+
+          message.textContent =
+            "Product added successfully.";
+
+        }
+
+
+        await loadProducts();
+
+        await loadMyProducts();
+
+
+        setTimeout(
+          () => {
+
+            closeProductModal();
+
+          },
+          800
+        );
+
+
+      }
+
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        message.style.color =
+          "red";
+
+
+        message.textContent =
+          "Failed: " +
+          error.message;
+
+      }
+
+
+      submitBtn.disabled =
+        false;
+
+
+      submitBtn.textContent =
+        editingProductId
+          ? "Update Product"
+          : "Save Product";
+
+    }
+  );
+
+
+/* =========================
+   EDIT PRODUCT
+========================= */
+
+function openEditProduct(
+  product
+) {
+
+
+  editingProductId =
+    product.id;
+
+
+  document.getElementById(
+    "editingProductId"
+  ).value =
+    product.id;
+
+
+  document.getElementById(
+    "productModalTitle"
+  ).textContent =
+    "Edit Product";
+
+
+  document.getElementById(
+    "productSubmitBtn"
+  ).textContent =
+    "Update Product";
+
+
+  document.getElementById(
+    "productName"
+  ).value =
+    product.name || "";
+
+
+  document.getElementById(
+    "productPrice"
+  ).value =
+    product.price || "";
+
+
+  document.getElementById(
+    "productCategory"
+  ).value =
+    product.category || "";
+
+
+  document.getElementById(
+    "productLocation"
+  ).value =
+    product.location || "";
+
+
+  document.getElementById(
+    "productImageUrl"
+  ).value =
+    product.imageUrl || "";
+
+
+  document.getElementById(
+    "productDescription"
+  ).value =
+    product.description || "";
+
+
+  if (product.imageUrl) {
+
+    document.getElementById(
+      "productPreview"
+    ).src =
+      product.imageUrl;
+
+
+    document.getElementById(
+      "productPreviewBox"
+    ).style.display =
+      "block";
+
+  }
+
+  else {
+
+    document.getElementById(
+      "productPreviewBox"
+    ).style.display =
+      "none";
+
+  }
+
+
+  document.getElementById(
+    "productMessage"
+  ).textContent =
+    "";
+
+
+  productModal.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================
+   DELETE PRODUCT
+========================= */
+
+async function deleteProduct(
+  productId
+) {
+
+
+  if (!currentUser) {
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      "Are you sure you want to delete this product?"
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  try {
+
+
+    const productRef =
+      doc(
+        db,
+        "products",
+        productId
+      );
+
+
+    const productSnapshot =
+      await getDoc(
+        productRef
+      );
+
+
+    if (
+      !productSnapshot.exists()
+    ) {
+
+      alert(
+        "Product not found."
+      );
+
+      return;
+
+    }
+
+
+    const product =
+      productSnapshot.data();
+
+
+    if (
+      product.sellerId !==
+      currentUser.uid
+    ) {
+
+      alert(
+        "You can only delete your own products."
+      );
+
+      return;
+
+    }
+
+
+    await deleteDoc(
+      productRef
+    );
+
+
+    alert(
+      "Product deleted successfully."
+    );
+
+
+    await loadProducts();
+
+    await loadMyProducts();
+
+  }
+
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Delete failed: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================
+   EDIT SELLER PROFILE
+========================= */
+
+document
+  .getElementById(
+    "editProfileBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+
+      if (!currentUserData) {
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "profileName"
+      ).value =
+        currentUserData.name ||
+        "";
+
+
+      document.getElementById(
+        "profileBusinessName"
+      ).value =
+        currentUserData.businessName ||
+        "";
+
+
+      document.getElementById(
+        "profilePhone"
+      ).value =
+        currentUserData.phone ||
+        "";
+
+
+      document.getElementById(
+        "profileWhatsapp"
+      ).value =
+        currentUserData.whatsapp ||
+        "";
+
+
+      document.getElementById(
+        "profileLocation"
+      ).value =
+        currentUserData.location ||
+        "";
+
+
+      document.getElementById(
+        "profileDescription"
+      ).value =
+        currentUserData.businessDescription ||
+        "";
+
+
+      const profileImage =
+        document.getElementById(
+          "profileImage"
+        );
+
+
+      const profilePreview =
+        document.getElementById(
+          "profileImagePreview"
+        );
+
+
+      profileImage.value =
+        currentUserData.profileImageUrl ||
+        "";
+
+
+      if (
+        currentUserData.profileImageUrl
+      ) {
+
+        profilePreview.src =
+          currentUserData.profileImageUrl;
+
+        profilePreview.style.display =
+          "block";
+
+      }
+
+      else {
+
+        profilePreview.src =
+          "";
+
+        profilePreview.style.display =
+          "none";
+
+      }
+
+
+      document.getElementById(
+        "profileMessage"
+      ).textContent =
+        "";
+
+
+      profileModal.classList.add(
+        "show"
+      );
+
+    }
+  );
+
+
+/* =========================
+   PROFILE IMAGE PREVIEW
+========================= */
+
+document
+  .getElementById(
+    "profileImage"
+  )
+  .addEventListener(
+    "input",
+    function() {
+
+
+      const url =
+        this.value.trim();
+
+
+      const preview =
+        document.getElementById(
+          "profileImagePreview"
+        );
+
+
+      if (url) {
+
+        preview.src =
+          url;
+
+        preview.style.display =
+          "block";
+
+      }
+
+      else {
+
+        preview.src =
+          "";
+
+        preview.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+/* =========================
+   CLOSE PROFILE MODAL
+========================= */
+
+document
+  .getElementById(
+    "closeProfileModal"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      profileModal.classList.remove(
+        "show"
+      );
+
+    }
+  );
+
+
+/* =========================
+   SAVE SELLER PROFILE
+========================= */
+
+document
+  .getElementById(
+    "profileForm"
+  )
+  .addEventListener(
+    "submit",
+    async (event) => {
+
+
+      event.preventDefault();
+
+
+      if (!currentUser) {
+
+        return;
+
+      }
+
+
+      const button =
+        document.getElementById(
+          "profileSubmitBtn"
+        );
+
+
+      const message =
+        document.getElementById(
+          "profileMessage"
+        );
+
+
+      button.disabled =
+        true;
+
+
+      button.textContent =
+        "Saving...";
+
+
+      try {
+
+
+        const profileData = {
+
+          name:
+            document.getElementById(
+              "profileName"
+            ).value.trim(),
+
+          businessName:
+            document.getElementById(
+              "profileBusinessName"
+            ).value.trim(),
+
+          phone:
+            document.getElementById(
+              "profilePhone"
+            ).value.trim(),
+
+          whatsapp:
+            document.getElementById(
+              "profileWhatsapp"
+            ).value.trim(),
+
+          location:
+            document.getElementById(
+              "profileLocation"
+            ).value,
+
+          businessDescription:
+            document.getElementById(
+              "profileDescription"
+            ).value.trim(),
+
+          profileImageUrl:
+            document.getElementById(
+              "profileImage"
+            ).value.trim(),
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+
+        await updateDoc(
+
+          doc(
+            db,
+            "users",
+            currentUser.uid
+          ),
+
+          profileData
+
+        );
+
+
+        currentUserData = {
+
+          ...currentUserData,
+
+          ...profileData
+
+        };
+
+
+        message.style.color =
+          "green";
+
+
+        message.textContent =
+          "Profile updated successfully.";
+
+
+        setTimeout(
+          () => {
+
+            profileModal.classList.remove(
+              "show"
+            );
+
+            showLoggedInHeader();
+
+            showSellerDashboard();
+
+          },
+          700
+        );
+
+      }
+
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        message.style.color =
+          "red";
+
+
+        message.textContent =
+          "Failed: " +
+          error.message;
+
+      }
+
+
+      button.disabled =
+        false;
+
+
+      button.textContent =
+        "Save Profile";
+
+    }
+  );
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+
+/*
+   First create all fixed
+   categories and states.
+*/
+
+populateStaticOptions();
+
+
+/*
+   Then create category cards.
+*/
+
+loadCategories();
+
+
+/*
+   Finally load Firebase products.
+*/
+
+loadProducts();
+
 
 </script>
 
+
 </body>
+
 </html>

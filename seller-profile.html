@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Seller Profile - Arewa Market</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7f9;
+      color: #222;
+    }
+
+    header {
+      background: #0b7a3b;
+      color: white;
+      padding: 16px 20px;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .tagline {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 3px;
+    }
+
+    .back-btn {
+      background: white;
+      color: #0b7a3b;
+      text-decoration: none;
+      padding: 9px 14px;
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .seller-card {
+      background: white;
+      border-radius: 14px;
+      padding: 25px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .seller-top {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .seller-image {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #e8f5ee;
+      background: #eee;
+    }
+
+    .seller-name {
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .verified {
+      display: inline-block;
+      background: #e8f5ee;
+      color: #0b7a3b;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .seller-info {
+      margin-top: 20px;
+      line-height: 1.8;
+      color: #555;
+    }
+
+    .seller-description {
+      margin-top: 12px;
+      line-height: 1.7;
+      color: #444;
+    }
+
+    .seller-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .action-btn {
+      text-decoration: none;
+      padding: 11px 18px;
+      border-radius: 7px;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .call-btn {
+      background: #1769aa;
+    }
+
+    .whatsapp-btn {
+      background: #25d366;
+    }
+
+    .section-title {
+      font-size: 21px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .product-info {
+      padding: 13px;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .product-price {
+      color: #0b7a3b;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .product-location {
+      color: #777;
+      font-size: 13px;
+    }
+
+    .loading,
+    .empty,
+    .error {
+      background: white;
+      padding: 25px;
+      text-align: center;
+      border-radius: 10px;
+      color: #777;
+    }
+
+    .error {
+      color: #b00020;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 25px 15px;
+      text-align: center;
+      background: #111;
+      color: white;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+
+      .header-inner {
+        align-items: flex-start;
+      }
+
+      .logo {
+        font-size: 19px;
+      }
+
+      .seller-top {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .seller-card {
+        padding: 20px;
+      }
+
+      .seller-name {
+        font-size: 21px;
+      }
+
+      .seller-actions {
+        flex-direction: column;
+      }
+
+      .action-btn {
+        text-align: center;
+        width: 100%;
+      }
+
+      .products {
+        grid-template-columns:
+          repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .product-card img {
+        height: 140px;
+      }
+
+      .product-name {
+        font-size: 14px;
+      }
+
+      .product-price {
+        font-size: 16px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <header>
+
+    <div class="header-inner">
+
+      <div>
+
+        <div class="logo">
+          Arewa Market
+        </div>
+
+        <div class="tagline">
+          Kasuwar Arewa a Hannunka
+        </div>
+
+      </div>
+
+      <a
+        href="index.html"
+        class="back-btn"
+      >
+        ← Back
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <main class="container">
+
+    <div
+      id="sellerContainer"
+      class="loading"
+    >
+      Loading seller profile...
+    </div>
+
+
+    <div
+      id="productsSection"
+      style="display:none;"
+    >
+
+      <div class="section-title">
+        Seller Products
+      </div>
+
+      <div
+        id="sellerProducts"
+        class="products"
+      >
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <footer>
+
+    © 2026 Arewa Market.
+    All rights reserved.
+
+  </footer>
+
+
+  <script type="module">
+
+    import {
+      initializeApp
+    }
+    from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      collection,
+      query,
+      where,
+      getDocs
+    }
+    from
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    // =====================================
+    // FIREBASE CONFIG
+    // =====================================
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyD48Bay25k24a5WckM6AmuK3p68oGT6vk",
+
+      authDomain:
+        "arewa-market-4e603.firebaseapp.com",
+
+      projectId:
+        "arewa-market-4e603",
+
+      storageBucket:
+        "arewa-market-4e603.firebasestorage.app",
+
+      messagingSenderId:
+        "217844252739",
+
+      appId:
+        "1:217844252739:web:81b00d9ac29277c42d94f6",
+
+      measurementId:
+        "G-ZTQHETHX4T"
+
+    };
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+    const db =
+      getFirestore(app);
+
+
+    // =====================================
+    // ELEMENTS
+    // =====================================
+
+    const sellerContainer =
+      document.getElementById(
+        "sellerContainer"
+      );
+
+    const productsSection =
+      document.getElementById(
+        "productsSection"
+      );
+
+    const sellerProducts =
+      document.getElementById(
+        "sellerProducts"
+      );
+
+
+    // =====================================
+    // HTML ESCAPE
+    // =====================================
+
+    function escapeHTML(value) {
+
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    // =====================================
+    // NIGERIAN PHONE NORMALIZER
+    // =====================================
+
+    function normalizeNigeriaPhone(phone) {
+
+      let value =
+        String(phone || "").trim();
+
+      if (!value) {
+        return "";
+      }
+
+
+      value =
+        value.replace(/[^\d+]/g, "");
+
+
+      // +2348120982352
+      if (value.startsWith("+234")) {
+
+        return "234" + value.substring(4);
+
+      }
+
+
+      // 2348120982352
+      if (value.startsWith("234")) {
+
+        return value;
+
+      }
+
+
+      // 08120982352
+      if (value.startsWith("0")) {
+
+        return "234" + value.substring(1);
+
+      }
+
+
+      return value;
+
+    }
+
+
+    // =====================================
+    // GET SELLER ID FROM URL
+    // =====================================
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const sellerId =
+      params.get("id");
+
+
+    // =====================================
+    // CHECK SELLER ID
+    // =====================================
+
+    if (!sellerId) {
+
+      sellerContainer.innerHTML = `
+
+        <div class="error">
+
+          Seller ID was not provided.
+
+        </div>
+
+      `;
+
+    } else {
+
+      loadSeller();
+
+    }
+
+
+    // =====================================
+    // LOAD SELLER
+    // =====================================
+
+    async function loadSeller() {
+
+      try {
+
+        const sellerRef =
+          doc(
+            db,
+            "users",
+            sellerId
+          );
+
+
+        const sellerSnap =
+          await getDoc(
+            sellerRef
+          );
+
+
+        if (!sellerSnap.exists()) {
+
+          sellerContainer.innerHTML = `
+
+            <div class="error">
+
+              Seller not found.
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        const seller =
+          sellerSnap.data();
+
+
+        const sellerName =
+          seller.businessName ||
+          seller.name ||
+          "Arewa Market Seller";
+
+
+        const name =
+          seller.name ||
+          sellerName;
+
+
+        const location =
+          seller.location ||
+          "Northern Nigeria";
+
+
+        const rawPhone =
+          seller.phone ||
+          "";
+
+
+        const rawWhatsapp =
+          seller.whatsapp ||
+          rawPhone;
+
+
+        /*
+          Phone for Call.
+
+          08120982352
+          ↓
+          +2348120982352
+        */
+
+        const phone =
+          normalizeNigeriaPhone(
+            rawPhone
+          );
+
+
+        /*
+          Phone for WhatsApp.
+
+          08120982352
+          ↓
+          2348120982352
+        */
+
+        const whatsapp =
+          normalizeNigeriaPhone(
+            rawWhatsapp
+          );
+
+
+        const description =
+          seller.businessDescription ||
+          "This seller has not added a business description yet.";
+
+
+        const profileImage =
+          seller.profileImageUrl ||
+          "https://via.placeholder.com/300x300?text=Seller";
+
+
+        let actions = "";
+
+
+        // =====================================
+        // CALL BUTTON
+        // =====================================
+
+        if (phone) {
+
+          actions += `
+
+            <a
+              class="action-btn call-btn"
+              href="tel:+${escapeHTML(phone)}"
+            >
+              📞 Call Seller
+            </a>
+
+          `;
+
+        }
+
+
+        // =====================================
+        // WHATSAPP BUTTON
+        // =====================================
+
+        if (whatsapp) {
+
+          actions += `
+
+            <a
+              class="action-btn whatsapp-btn"
+              target="_blank"
+              rel="noopener"
+              href="https://wa.me/${escapeHTML(
+                whatsapp
+              )}"
+            >
+              💬 WhatsApp
+            </a>
+
+          `;
+
+        }
+
+
+        sellerContainer.className =
+          "seller-card";
+
+
+        sellerContainer.innerHTML = `
+
+          <div class="seller-top">
+
+            <img
+              class="seller-image"
+              src="${escapeHTML(profileImage)}"
+              alt="${escapeHTML(sellerName)}"
+              onerror="
+                this.src='https://via.placeholder.com/300x300?text=Seller'
+              "
+            >
+
+            <div>
+
+              <div class="seller-name">
+
+                ${escapeHTML(sellerName)}
+
+              </div>
+
+              <span class="verified">
+
+                ✓ Approved Seller
+
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="seller-info">
+
+            <div>
+              👤 ${escapeHTML(name)}
+            </div>
+
+            <div>
+              📍 ${escapeHTML(location)}
+            </div>
+
+          </div>
+
+
+          <div class="seller-description">
+
+            ${escapeHTML(description)}
+
+          </div>
+
+
+          <div class="seller-actions">
+
+            ${
+              actions ||
+              `
+                <span
+                  style="
+                    color:#777;
+                    font-size:14px;
+                  "
+                >
+                  Seller contact unavailable
+                </span>
+              `
+            }
+
+          </div>
+
+        `;
+
+
+        await loadSellerProducts();
+
+
+      } catch (error) {
+
+        console.error(
+          "Seller profile error:",
+          error
+        );
+
+
+        sellerContainer.className =
+          "error";
+
+
+        sellerContainer.innerHTML = `
+
+          Failed to load seller profile.
+
+          <br><br>
+
+          ${escapeHTML(
+            error.code ||
+            error.message ||
+            ""
+          )}
+
+        `;
+
+      }
+
+    }
+
+
+    // =====================================
+    // LOAD SELLER PRODUCTS
+    // =====================================
+
+    async function loadSellerProducts() {
+
+      try {
+
+        const productsQuery =
+          query(
+            collection(
+              db,
+              "products"
+            ),
+            where(
+              "sellerId",
+              "==",
+              sellerId
+            )
+          );
+
+
+        const snapshot =
+          await getDocs(
+            productsQuery
+          );
+
+
+        if (snapshot.empty) {
+
+          productsSection.style.display =
+            "block";
+
+
+          sellerProducts.innerHTML = `
+
+            <div class="empty">
+
+              This seller has no products yet.
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        sellerProducts.innerHTML =
+          "";
+
+
+        snapshot.forEach(
+          (productDoc) => {
+
+            const product =
+              productDoc.data();
+
+
+            const productId =
+              productDoc.id;
+
+
+            const name =
+              product.name ||
+              "Product";
+
+
+            const price =
+              Number(product.price) ||
+              0;
+
+
+            const location =
+              product.location ||
+              "Northern Nigeria";
+
+
+            const image =
+              product.imageUrl ||
+              "https://via.placeholder.com/600x400?text=Arewa+Market";
+
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+
+            card.className =
+              "product-card";
+
+
+            card.innerHTML = `
+
+              <img
+                src="${escapeHTML(image)}"
+                alt="${escapeHTML(name)}"
+                onerror="
+                  this.src='https://via.placeholder.com/600x400?text=Arewa+Market'
+                "
+              >
+
+              <div class="product-info">
+
+                <div class="product-name">
+
+                  ${escapeHTML(name)}
+
+                </div>
+
+                <div class="product-price">
+
+                  ₦${price.toLocaleString()}
+
+                </div>
+
+                <div class="product-location">
+
+                  📍 ${escapeHTML(location)}
+
+                </div>
+
+              </div>
+
+            `;
+
+
+            card.addEventListener(
+              "click",
+              function() {
+
+                window.location.href =
+                  "product-details.html?id=" +
+                  encodeURIComponent(
+                    productId
+                  );
+
+              }
+            );
+
+
+            sellerProducts.appendChild(
+              card
+            );
+
+          }
+        );
+
+
+        productsSection.style.display =
+          "block";
+
+
+      } catch (error) {
+
+        console.error(
+          "Seller products error:",
+          error
+        );
+
+
+        productsSection.style.display =
+          "block";
+
+
+        sellerProducts.innerHTML = `
+
+          <div class="error">
+
+            Failed to load seller products.
+
+            <br><br>
+
+            ${escapeHTML(
+              error.code ||
+              error.message ||
+              ""
+            )}
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+  </script>
+
+</body>
+
+</html>

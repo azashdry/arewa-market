@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Arewa Market - Register</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .register-box {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .tagline {
+      text-align: center;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #16803c;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+    }
+
+    #message {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .login-link a {
+      color: #16803c;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="register-box">
+
+    <h1>Arewa Market</h1>
+
+    <div class="tagline">
+      Kasuwar Arewa a Hannunka
+    </div>
+
+    <form id="registerForm">
+
+      <label for="name">Full Name</label>
+
+      <input
+        type="text"
+        id="name"
+        placeholder="Enter your full name"
+        required
+      >
+
+      <label for="email">Email</label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter your email"
+        required
+      >
+
+      <label for="phone">Phone Number</label>
+
+      <input
+        type="tel"
+        id="phone"
+        placeholder="08012345678"
+        required
+      >
+
+      <label for="password">Password</label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Create a password"
+        required
+      >
+
+      <button type="submit" id="registerBtn">
+        Create Account
+      </button>
+
+    </form>
+
+    <div id="message"></div>
+
+    <div class="login-link">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </div>
+
+  </div>
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD48Bay25k24a5WckgM6AmuK3p68oGT6vk",
+  authDomain: "arewa-market-4e603.firebaseapp.com",
+  projectId: "arewa-market-4e603",
+  storageBucket: "arewa-market-4e603.firebasestorage.app",
+  messagingSenderId: "217844252739",
+  appId: "1:217844252739:web:81b00d9ac29277c42d94f6",
+  measurementId: "G-ZTQHETHX4T"
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+
+const registerForm = document.getElementById("registerForm");
+
+const registerBtn = document.getElementById("registerBtn");
+
+const message = document.getElementById("message");
+
+
+registerForm.addEventListener("submit", async (event) => {
+
+  event.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+
+  const email = document.getElementById("email").value.trim();
+
+  const phone = document.getElementById("phone").value.trim();
+
+  const password = document.getElementById("password").value;
+
+
+  registerBtn.disabled = true;
+
+  registerBtn.textContent = "Creating Account...";
+
+  message.textContent = "";
+
+
+  try {
+
+    const userCredential =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+    const user = userCredential.user;
+
+
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        name: name,
+        email: email,
+        phone: phone,
+        role: "buyer",
+        active: true,
+        isSeller: false,
+        createdAt: serverTimestamp()
+      }
+    );
+
+
+    message.style.color = "green";
+
+    message.textContent =
+      "Account created successfully!";
+
+
+    registerForm.reset();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    message.style.color = "red";
+
+    message.textContent =
+      "Registration failed: " + error.message;
+
+  }
+
+
+  registerBtn.disabled = false;
+
+  registerBtn.textContent = "Create Account";
+
+});
+
+</script>
+
+</body>
+</html>
