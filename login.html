@@ -1,289 +1,240 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Arewa Market - Login</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f6f8;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .login-box {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 5px;
-    }
-
-    .tagline {
-      text-align: center;
-      color: #777;
-      margin-bottom: 25px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      background: #16803c;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-    }
-
-    #message {
-      margin-top: 15px;
-      text-align: center;
-    }
-
-    .register-link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .register-link a {
-      color: #16803c;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="login-box">
-
-    <h1>Arewa Market</h1>
-
-    <div class="tagline">
-      Kasuwar Arewa a Hannunka
-    </div>
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Arewa Market - Login</title>    <style>  
+    * {  
+      box-sizing: border-box;  
+    }  
+  
+    body {  
+      margin: 0;  
+      font-family: Arial, sans-serif;  
+      background: #f5f6f8;  
+      min-height: 100vh;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      padding: 20px;  
+    }  
+  
+    .login-box {  
+      width: 100%;  
+      max-width: 420px;  
+      background: white;  
+      padding: 25px;  
+      border-radius: 12px;  
+      box-shadow: 0 5px 25px rgba(0,0,0,0.08);  
+    }  
+  
+    h1 {  
+      text-align: center;  
+      margin-bottom: 5px;  
+    }  
+  
+    .tagline {  
+      text-align: center;  
+      color: #777;  
+      margin-bottom: 25px;  
+    }  
+  
+    label {  
+      display: block;  
+      margin-bottom: 6px;  
+      font-weight: bold;  
+    }  
+  
+    input {  
+      width: 100%;  
+      padding: 13px;  
+      margin-bottom: 15px;  
+      border: 1px solid #ddd;  
+      border-radius: 8px;  
+      font-size: 15px;  
+    }  
+  
+    button {  
+      width: 100%;  
+      padding: 14px;  
+      border: none;  
+      border-radius: 8px;  
+      background: #16803c;  
+      color: white;  
+      font-size: 16px;  
+      cursor: pointer;  
+    }  
+  
+    button:disabled {  
+      opacity: 0.6;  
+    }  
+  
+    #message {  
+      margin-top: 15px;  
+      text-align: center;  
+    }  
+  
+    .register-link {  
+      text-align: center;  
+      margin-top: 20px;  
+    }  
+  
+    .register-link a {  
+      color: #16803c;  
+      text-decoration: none;  
+      font-weight: bold;  
+    }  
+  </style>  </head>  <body>    <div class="login-box">  <h1>Arewa Market</h1>  
+
+<div class="tagline">  
+  Kasuwar Arewa a Hannunka  
+</div>
+
+<form id="loginForm">  <label for="email">Email</label>
+
+<input
+type="email"
+id="email"
+placeholder="Enter your email"
+required
+
+> 
+
+<label for="password">Password</label>
 
-    <form id="loginForm">
+<input
+type="password"
+id="password"
+placeholder="Enter your password"
+required
 
-      <label for="email">Email</label>
+> 
 
-      <input
-        type="email"
-        id="email"
-        placeholder="Enter your email"
-        required
-      >
+  <button type="submit" id="loginBtn">  
+    Login  
+  </button>  </form>  <div id="message"></div>  
 
-      <label for="password">Password</label>
+<div class="register-link">  
+  Don't have an account?  
+  <a href="register.html">Create Account</a>  
+</div>
 
-      <input
-        type="password"
-        id="password"
-        placeholder="Enter your password"
-        required
-      >
+  </div>  <script type="module">
 
-      <button type="submit" id="loginBtn">
-        Login
-      </button>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-    </form>
+import {
+getAuth,
+signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    <div id="message"></div>
+import {
+getFirestore,
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-    <div class="register-link">
-      Don't have an account?
-      <a href="register.html">Create Account</a>
-    </div>
+const firebaseConfig = {
+apiKey: "AIzaSyD48Bay25k24a5WckgM6AmuK3p68oGT6vk",
+authDomain: "arewa-market-4e603.firebaseapp.com",
+projectId: "arewa-market-4e603",
+storageBucket: "arewa-market-4e603.firebasestorage.app",
+messagingSenderId: "217844252739",
+appId: "1:217844252739:web:81b00d9ac29277c42d94f6",
+measurementId: "G-ZTQHETHX4T"
+};
 
-  </div>
+const app = initializeApp(firebaseConfig);
 
-  <script type="module">
+const auth = getAuth(app);
 
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+const db = getFirestore(app);
 
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+const loginForm =
+document.getElementById("loginForm");
 
-    import {
-      getFirestore,
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+const loginBtn =
+document.getElementById("loginBtn");
 
+loginForm.addEventListener("submit", async (event) => {
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD48Bay25k24a5WckM6AmuK3p68oGT6vk",
-      authDomain: "arewa-market-4e603.firebaseapp.com",
-      projectId: "arewa-market-4e603",
-      storageBucket: "arewa-market-4e603.firebasestorage.app",
-      messagingSenderId: "217844252739",
-      appId: "1:217844252739:web:81b00d9ac29277c42d94f6",
-      measurementId: "G-ZTQHETHX4T"
-    };
+event.preventDefault();
 
+const email =
+document.getElementById("email")
+.value
+.trim();
 
-    const app = initializeApp(firebaseConfig);
+const password =
+document.getElementById("password")
+.value;
 
-    const auth = getAuth(app);
+loginBtn.disabled = true;
 
-    const db = getFirestore(app);
+loginBtn.textContent = "Logging in...";
 
+try {
 
-    const loginForm =
-      document.getElementById("loginForm");
+const userCredential =  
+  await signInWithEmailAndPassword(  
+    auth,  
+    email,  
+    password  
+  );  
 
-    const loginBtn =
-      document.getElementById("loginBtn");
 
+const user =  
+  userCredential.user;  
 
-    loginForm.addEventListener("submit", async (event) => {
 
-      event.preventDefault();
+const userDoc =  
+  await getDoc(  
+    doc(db, "users", user.uid)  
+  );  
 
-      const email =
-        document.getElementById("email")
-          .value
-          .trim();
 
-      const password =
-        document.getElementById("password")
-          .value;
+if (!userDoc.exists()) {  
 
+  alert(  
+    "Your account profile was not found."  
+  );  
 
-      loginBtn.disabled = true;
+  return;  
+}  
 
-      loginBtn.textContent = "Logging in...";
 
+const userData =  
+  userDoc.data();  
 
-      try {
 
-        const userCredential =
-          await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
+if (userData.active === false) {  
 
+  alert(  
+    "Your account has been deactivated."  
+  );  
 
-        const user =
-          userCredential.user;
+  return;  
+}  
 
 
-        const userDoc =
-          await getDoc(
-            doc(db, "users", user.uid)
-          );
+// Login successful  
 
+window.location.href =  
+  "index.html";
 
-        /*
-         * IMPORTANT:
-         * Firebase Authentication account alone
-         * is NOT enough to enter Arewa Market.
-         *
-         * The user must also have a users/{uid}
-         * Firestore profile created through registration.
-         */
+} catch (error) {
 
-        if (!userDoc.exists()) {
+console.error(error);  
 
-          await signOut(auth);
+alert(  
+  "Login failed: " + error.message  
+);
 
-          alert(
-            "Account profile not found. Please create an account first."
-          );
+}
 
-          return;
-        }
+loginBtn.disabled = false;
 
+loginBtn.textContent = "Login";
 
-        const userData =
-          userDoc.data();
+});
 
-
-        if (userData.active === false) {
-
-          await signOut(auth);
-
-          alert(
-            "Your account has been deactivated."
-          );
-
-          return;
-        }
-
-
-        /*
-         * Login successful.
-         * User has a valid Firebase Auth account
-         * AND a valid Arewa Market user profile.
-         */
-
-        window.location.href =
-          "index.html";
-
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert(
-          "Login failed: " + error.message
-        );
-
-      } finally {
-
-        loginBtn.disabled = false;
-
-        loginBtn.textContent = "Login";
-
-      }
-
-    });
-
-  </script>
-
-</body>
+</script>  </body>  
 </html>
