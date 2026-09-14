@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Arewa Market - Login</title>
-
-  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Arewa Market - Login</title>  <style>
     * {
       box-sizing: border-box;
     }
@@ -87,55 +82,46 @@
       text-decoration: none;
       font-weight: bold;
     }
-  </style>
-</head>
+  </style></head><body>  <div class="login-box"><h1>Arewa Market</h1>
 
-<body>
+<div class="tagline">
+  Kasuwar Arewa a Hannunka
+</div>
 
-  <div class="login-box">
+<form id="loginForm">
 
-    <h1>Arewa Market</h1>
+  <label for="email">Email</label>
 
-    <div class="tagline">
-      Kasuwar Arewa a Hannunka
-    </div>
+  <input
+    type="email"
+    id="email"
+    placeholder="Enter your email"
+    required
+  >
 
-    <form id="loginForm">
+  <label for="password">Password</label>
 
-      <label for="email">Email</label>
+  <input
+    type="password"
+    id="password"
+    placeholder="Enter your password"
+    required
+  >
 
-      <input
-        type="email"
-        id="email"
-        placeholder="Enter your email"
-        required
-      >
+  <button type="submit" id="loginBtn">
+    Login
+  </button>
 
-      <label for="password">Password</label>
+</form>
 
-      <input
-        type="password"
-        id="password"
-        placeholder="Enter your password"
-        required
-      >
+<div id="message"></div>
 
-      <button type="submit" id="loginBtn">
-        Login
-      </button>
+<div class="register-link">
+  Don't have an account?
+  <a href="register.html">Create Account</a>
+</div>
 
-    </form>
-
-    <div id="message"></div>
-
-    <div class="register-link">
-      Don't have an account?
-      <a href="register.html">Create Account</a>
-    </div>
-
-  </div>
-
-  <script type="module">
+  </div>  <script type="module">
 
     import { initializeApp }
       from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -207,11 +193,14 @@
             password
           );
 
-
+console.log("LOGIN SUCCESS UID:", userCredential.user.uid);
+console.log("AUTH CURRENT USER:", auth.currentUser?.uid);
         const user =
           userCredential.user;
 
-
+console.log("LOGIN USER UID:", user.uid);
+console.log("LOGIN USER EMAIL:", user.email);
+console.log("LOGIN AUTH CURRENT USER:", auth.currentUser?.uid);
         const userDoc =
           await getDoc(
             doc(db, "users", user.uid)
@@ -219,7 +208,6 @@
 
 
         /*
-         * IMPORTANT:
          * Firebase Authentication account alone
          * ba ya isa ya zama Arewa Market account.
          *
@@ -254,10 +242,52 @@
         }
 
 
-        // Login successful
+        // ==========================================
+        // LOGIN SUCCESSFUL
+        // CHECK IF USER WAS TRYING TO PLACE ORDER
+        // ==========================================
 
-        window.location.href =
-          "index.html";
+        const pendingProductId =
+          localStorage.getItem(
+            "pendingOrderProductId"
+          );
+        console.log(
+  "PENDING ORDER PRODUCT:",
+  pendingProductId
+);
+
+
+        if (pendingProductId) {
+
+          console.log(
+            "Pending order found:",
+            pendingProductId
+          );
+
+          /*
+           * Return to index.html with the exact
+           * product ID so the Order modal can reopen.
+           */
+
+          window.location.replace(
+            "index.html?resumeOrder=" +
+            encodeURIComponent(
+              pendingProductId
+            )
+          );
+
+        } else {
+
+          /*
+           * Normal login:
+           * simply return to homepage.
+           */
+
+          window.location.replace(
+            "index.html"
+          );
+
+        }
 
 
       } catch (error) {
@@ -278,7 +308,5 @@
 
     });
 
-  </script>
-
-</body>
+  </script></body>
 </html>

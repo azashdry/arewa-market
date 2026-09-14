@@ -1,744 +1,733 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>
-    Arewa Market - Kasuwar Arewa a Hannunka
-  </title>
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f6f8;
-      color: #222;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font-family: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    header {
-      background: #16803c;
-      color: white;
-      padding: 15px 20px;
-    }
-
-    .header-inner {
-      max-width: 1200px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .logo span {
-      display: block;
-      font-size: 11px;
-      font-weight: normal;
-      margin-top: 3px;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .header-actions button,
-    .header-actions a {
-      color: white;
-      text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.5);
-      background: transparent;
-      padding: 8px 12px;
-      border-radius: 7px;
-      font-size: 13px;
-    }
-
-    .header-actions .seller-btn,
-    .header-actions .pending-btn {
-      background: #f0b429;
-      color: #17231b;
-      border-color: #f0b429;
-      font-weight: bold;
-    }
-
-    .header-actions .logout-btn {
-      background: #b42318;
-      border-color: #b42318;
-    }
-
-    .hero {
-      background: white;
-      padding: 35px 20px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      margin: 0 0 10px;
-      font-size: 30px;
-    }
-
-    .hero p {
-      color: #666;
-      margin-bottom: 25px;
-    }
-
-    .search-box {
-      max-width: 650px;
-      margin: auto;
-      display: flex;
-      gap: 8px;
-    }
-
-    .search-box input {
-      flex: 1;
-      padding: 14px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    .search-box button {
-      padding: 14px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #16803c;
-      color: white;
-      font-weight: bold;
-    }
-
-    main {
-      max-width: 1200px;
-      margin: auto;
-      padding: 25px 20px;
-    }
-
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-
-    .section-title h2 {
-      margin: 0;
-      font-size: 21px;
-    }
-
-    .section-title a {
-      color: #16803c;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .categories {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fit,
-        minmax(120px, 1fr)
-      );
-      gap: 12px;
-      margin-bottom: 35px;
-    }
-
-    .category {
-      background: white;
-      padding: 20px 10px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .category:hover {
-      transform: translateY(-2px);
-    }
-
-    .category.active {
-      border: 2px solid #16803c;
-    }
-
-    .category-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
-
-    .category-name {
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fill,
-        minmax(200px, 1fr)
-      );
-      gap: 15px;
-    }
-
-    .product-card {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-
-    .product-card img {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      display: block;
-      background: #e9ecef;
-    }
-
-    .product-info {
-      padding: 13px;
-    }
-
-    .product-name {
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .product-price {
-      color: #16803c;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .product-location {
-      color: #777;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .product-seller {
-      color: #555;
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 7px;
-    }
-
-    .product-actions a {
-      flex: 1;
-      padding: 9px 5px;
-      border-radius: 6px;
-      text-align: center;
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .call-btn {
-      background: #16803c;
-      color: white;
-    }
-
-    .whatsapp-btn {
-      background: #25d366;
-      color: white;
-    }
-
-    .seller-panel {
-      display: none;
-      background: white;
-      margin-bottom: 30px;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-    }
-
-    .seller-panel.show {
-      display: block;
-    }
-
-    .seller-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .seller-header h2 {
-      margin: 0;
-      color: #16803c;
-    }
-
-    .seller-profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .seller-profile img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #eee;
-    }
-
-    .seller-stats {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fit,
-        minmax(150px, 1fr)
-      );
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .stat-box {
-      background: #f5f6f8;
-      padding: 18px;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 25px;
-      font-weight: bold;
-      color: #16803c;
-    }
-
-    .stat-label {
-      color: #666;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    .seller-buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .seller-buttons button {
-      padding: 11px 15px;
-      border: none;
-      border-radius: 7px;
-      background: #16803c;
-      color: white;
-      font-weight: bold;
-    }
-
-    .seller-buttons .secondary {
-      background: #555;
-    }
-
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 7px;
-      font-size: 14px;
-      background: white;
-    }
-
-    .form-group textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .form-submit {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 7px;
-      background: #16803c;
-      color: white;
-      font-weight: bold;
-      font-size: 15px;
-    }
-
-    .cancel-btn {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 7px;
-      background: #777;
-      color: white;
-      font-weight: bold;
-      margin-top: 8px;
-    }
-
-    .my-products {
-      margin-top: 20px;
-    }
-
-    .my-product-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .my-product-item img {
-      width: 70px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 6px;
-      background: #eee;
-    }
-
-    .my-product-details {
-      flex: 1;
-    }
-
-    .my-product-details strong {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .my-product-details span {
-      color: #16803c;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .my-product-actions {
-      display: flex;
-      gap: 5px;
-    }
-
-    .my-product-actions button {
-      padding: 7px 9px;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      font-size: 12px;
-    }
-
-    .edit-btn {
-      background: #16803c;
-    }
-
-    .delete-btn {
-      background: #b42318;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .modal.show {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-box {
-      width: 100%;
-      max-width: 520px;
-      background: white;
-      border-radius: 12px;
-      padding: 22px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-    }
-
-    .modal-title h2 {
-      margin: 0;
-      color: #16803c;
-      font-size: 21px;
-    }
-
-    .close-btn {
-      border: none;
-      background: #eee;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      font-size: 20px;
-    }
-
-    .preview-box {
-      display: none;
-      margin-bottom: 15px;
-    }
-
-    .preview-box img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .profile-preview {
-      display: none;
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-top: 10px;
-    }
-
-    .message {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    .pending-box {
-      background: #fff8e1;
-      border: 1px solid #f0b429;
-      color: #6b4f00;
-      padding: 15px;
-      border-radius: 9px;
-      margin-bottom: 20px;
-      display: none;
-    }
-
-    .pending-box.show {
-      display: block;
-    }
-
-    footer {
-      background: #17231b;
-      color: white;
-      text-align: center;
-      padding: 25px 20px;
-      margin-top: 40px;
-    }
-
-    footer p {
-      margin: 5px 0;
-      color: #ccc;
-      font-size: 13px;
-    }
-
-    .filters {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 15px 0 20px;
-    }
-
-    .filters select,
-    .filters input {
-      padding: 11px;
-      border: 1px solid #ddd;
-      border-radius: 7px;
-      min-width: 150px;
-      background: white;
-    }
-
-    .filters button {
-      border: none;
-      padding: 11px 16px;
-      border-radius: 7px;
-      background: #176b43;
-      color: white;
-      font-weight: bold;
-    }
-
-    #clearFilterBtn {
-      background: #777;
-    }
-
-    .no-products {
-      background: white;
-      padding: 30px;
-      text-align: center;
-      border-radius: 10px;
-      color: #777;
-    }
-
-    @media (max-width: 600px) {
-
-      .header-inner {
-        align-items: flex-start;
-      }
-
-      .header-actions {
-        max-width: 55%;
-      }
-
-      .header-actions button,
-      .header-actions a {
-        padding: 7px 8px;
-      }
-
-      .hero h1 {
-        font-size: 25px;
-      }
-
-      .search-box {
-        flex-direction: column;
-      }
-
-      .search-box button {
-        width: 100%;
-      }
-
-      .products {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
-
-      .product-card img {
-        height: 140px;
-      }
-
-      .product-info {
-        padding: 10px;
-      }
-
-      .product-name {
-        font-size: 14px;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-      }
-
-      .my-product-item {
-        align-items: flex-start;
-      }
-
-      .my-product-actions {
-        flex-direction: column;
-      }
-
-      .filters {
-        flex-direction: column;
-      }
-
-      .filters select,
-      .filters input,
-      .filters button {
-        width: 100%;
-      }
-
-    }
-
-  </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arewa Market - Kasuwar Arewa a Hannunka</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f6f8;
+  color:#222;
+}
+
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+
+header{
+  background:#16803c;
+  color:white;
+  padding:15px 20px;
+}
+
+.header-inner{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+.logo span{
+  display:block;
+  font-size:11px;
+  font-weight:normal;
+  margin-top:3px;
+}
+
+.header-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.header-actions button,
+.header-actions a{
+  color:white;
+  text-decoration:none;
+  border:1px solid rgba(255,255,255,.5);
+  background:transparent;
+  padding:8px 12px;
+  border-radius:7px;
+  font-size:13px;
+}
+
+.header-actions .seller-btn,
+.header-actions .pending-btn{
+  background:#f0b429;
+  color:#17231b;
+  border-color:#f0b429;
+  font-weight:bold;
+}
+
+.header-actions .logout-btn{
+  background:#b42318;
+  border-color:#b42318;
+}
+
+.hero{
+  background:white;
+  padding:35px 20px;
+  text-align:center;
+}
+
+.hero h1{
+  margin:0 0 10px;
+  font-size:30px;
+}
+
+.hero p{
+  color:#666;
+  margin-bottom:25px;
+}
+
+.search-box{
+  max-width:650px;
+  margin:auto;
+  display:flex;
+  gap:8px;
+}
+
+.search-box input{
+  flex:1;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:15px;
+}
+
+.search-box button{
+  padding:14px 20px;
+  border:none;
+  border-radius:8px;
+  background:#16803c;
+  color:white;
+  font-weight:bold;
+}
+
+main{
+  max-width:1200px;
+  margin:auto;
+  padding:25px 20px;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.section-title h2{
+  margin:0;
+  font-size:21px;
+}
+
+.categories{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:12px;
+  margin-bottom:35px;
+}
+
+.category{
+  background:white;
+  padding:20px 10px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+  cursor:pointer;
+  transition:.2s;
+}
+
+.category:hover{transform:translateY(-2px)}
+.category.active{border:2px solid #16803c}
+
+.category-icon{
+  font-size:28px;
+  margin-bottom:8px;
+}
+
+.category-name{
+  font-size:14px;
+  font-weight:bold;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:15px;
+}
+
+.product-card{
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.product-card img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  display:block;
+  background:#e9ecef;
+}
+
+.product-info{padding:13px}
+
+.product-name{
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.product-price{
+  color:#16803c;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.product-location{
+  color:#777;
+  font-size:13px;
+  margin-bottom:8px;
+}
+
+.product-seller{
+  color:#555;
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.product-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.product-actions a{
+  flex:1;
+  padding:9px 5px;
+  border-radius:6px;
+  text-align:center;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.call-btn{
+  background:#16803c;
+  color:white;
+}
+
+.whatsapp-btn{
+  background:#25d366;
+  color:white;
+}
+
+.order-btn{
+  flex:1;
+  min-width:75px;
+  padding:9px 5px;
+  border:none;
+  border-radius:6px;
+  background:#f0b429;
+  color:#17231b;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.seller-panel{
+  display:none;
+  background:white;
+  margin-bottom:30px;
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+
+.seller-panel.show{display:block}
+
+.seller-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+
+.seller-header h2{
+  margin:0;
+  color:#16803c;
+}
+
+.seller-profile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.seller-profile img{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#eee;
+}
+
+.seller-stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#f5f6f8;
+  padding:18px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.stat-number{
+  font-size:25px;
+  font-weight:bold;
+  color:#16803c;
+}
+
+.stat-label{
+  color:#666;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.seller-buttons{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.seller-buttons button{
+  padding:11px 15px;
+  border:none;
+  border-radius:7px;
+  background:#16803c;
+  color:white;
+  font-weight:bold;
+}
+
+.seller-buttons .secondary{background:#555}
+
+.form-group{margin-bottom:14px}
+
+.form-group label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:6px;
+  font-size:14px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:7px;
+  font-size:14px;
+  background:white;
+}
+
+.form-group textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.form-submit{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:7px;
+  background:#16803c;
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+}
+
+.cancel-btn{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:7px;
+  background:#777;
+  color:white;
+  font-weight:bold;
+  margin-top:8px;
+}
+
+.my-products{margin-top:20px}
+
+.my-product-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border:1px solid #eee;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+.my-product-item img{
+  width:70px;
+  height:60px;
+  object-fit:cover;
+  border-radius:6px;
+  background:#eee;
+}
+
+.my-product-details{flex:1}
+
+.my-product-details strong{
+  display:block;
+  margin-bottom:5px;
+}
+
+.my-product-details span{
+  color:#16803c;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.my-product-actions{
+  display:flex;
+  gap:5px;
+}
+
+.my-product-actions button{
+  padding:7px 9px;
+  border:none;
+  border-radius:5px;
+  color:white;
+  font-size:12px;
+}
+
+.edit-btn{background:#16803c}
+.delete-btn{background:#b42318}
+
+.modal{
+  display:none;
+  position:fixed;
+  z-index:9999;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  padding:20px;
+  overflow-y:auto;
+}
+
+.modal.show{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-box{
+  width:100%;
+  max-width:520px;
+  background:white;
+  border-radius:12px;
+  padding:22px;
+  max-height:90vh;
+  overflow-y:auto;
+}
+
+.modal-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.modal-title h2{
+  margin:0;
+  color:#16803c;
+  font-size:21px;
+}
+
+.close-btn{
+  border:none;
+  background:#eee;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  font-size:20px;
+}
+
+.preview-box{
+  display:none;
+  margin-bottom:15px;
+}
+
+.preview-box img{
+  width:100%;
+  max-height:200px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.profile-preview{
+  display:none;
+  width:100px;
+  height:100px;
+  object-fit:cover;
+  border-radius:50%;
+  margin-top:10px;
+}
+
+.message{
+  text-align:center;
+  margin-top:10px;
+  font-size:14px;
+}
+
+.pending-box{
+  background:#fff8e1;
+  border:1px solid #f0b429;
+  color:#6b4f00;
+  padding:15px;
+  border-radius:9px;
+  margin-bottom:20px;
+  display:none;
+}
+
+.pending-box.show{display:block}
+
+footer{
+  background:#17231b;
+  color:white;
+  text-align:center;
+  padding:25px 20px;
+  margin-top:40px;
+}
+
+footer p{
+  margin:5px 0;
+  color:#ccc;
+  font-size:13px;
+}
+
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:15px 0 20px;
+}
+
+.filters select,
+.filters input{
+  padding:11px;
+  border:1px solid #ddd;
+  border-radius:7px;
+  min-width:150px;
+  background:white;
+}
+
+.filters button{
+  border:none;
+  padding:11px 16px;
+  border-radius:7px;
+  background:#176b43;
+  color:white;
+  font-weight:bold;
+}
+
+#clearFilterBtn{background:#777}
+
+.no-products{
+  background:white;
+  padding:30px;
+  text-align:center;
+  border-radius:10px;
+  color:#777;
+}
+
+.order-product-box{
+  background:#f5f6f8;
+  border-radius:8px;
+  padding:12px;
+  margin-bottom:15px;
+}
+
+.order-product-box img{
+  width:80px;
+  height:70px;
+  object-fit:cover;
+  border-radius:7px;
+  float:left;
+  margin-right:10px;
+}
+
+.order-product-box::after{
+  content:"";
+  display:block;
+  clear:both;
+}
+
+.order-price{
+  color:#16803c;
+  font-weight:bold;
+  margin-top:5px;
+}
+
+.quantity-control{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.quantity-control button{
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:7px;
+  background:#16803c;
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.quantity-control input{
+  width:70px;
+  text-align:center;
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:7px;
+}
+
+.cod-box{
+  background:#f0fff5;
+  border:1px solid #16803c;
+  border-radius:8px;
+  padding:12px;
+  margin:15px 0;
+}
+
+.order-total{
+  font-size:18px;
+  font-weight:bold;
+  color:#16803c;
+  text-align:right;
+  margin:15px 0;
+}
+
+@media(max-width:600px){
+
+  .header-inner{
+    align-items:flex-start;
+  }
+
+  .header-actions{
+    max-width:55%;
+  }
+
+  .header-actions button,
+  .header-actions a{
+    padding:7px 8px;
+  }
+
+  .hero h1{font-size:25px}
+
+  .search-box{flex-direction:column}
+
+  .search-box button{width:100%}
+
+  .products{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .product-card img{height:140px}
+
+  .product-info{padding:10px}
+
+  .product-name{font-size:14px}
+
+  .product-actions{flex-wrap:wrap}
+
+  .product-actions a,
+  .product-actions .order-btn{
+    min-width:calc(50% - 4px);
+  }
+
+  .form-row{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .my-product-item{
+    align-items:flex-start;
+  }
+
+  .my-product-actions{
+    flex-direction:column;
+  }
+
+  .filters{
+    flex-direction:column;
+  }
+
+  .filters select,
+  .filters input,
+  .filters button{
+    width:100%;
+  }
+}
+</style>
 </head>
-
 
 <body>
 
-
 <header>
-
   <div class="header-inner">
 
     <div class="logo">
-
       Arewa Market
-
-      <span>
-        Kasuwar Arewa a Hannunka
-      </span>
-
+      <span>Kasuwar Arewa a Hannunka</span>
     </div>
 
-
-    <div
-      class="header-actions"
-      id="headerActions"
-    >
-
-      <a href="login.html">
-        Login
-      </a>
-
-      <a href="register.html">
-        Register
-      </a>
-
+    <div class="header-actions" id="headerActions">
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
     </div>
 
   </div>
-
 </header>
-
 
 <section class="hero">
 
-  <h1>
-    Kasuwar Arewa a Hannunka
-  </h1>
+  <h1>Kasuwar Arewa a Hannunka</h1>
 
   <p>
     Buy and sell products across Northern Nigeria.
   </p>
-
 
   <div class="search-box">
 
@@ -756,18 +745,14 @@
 
 </section>
 
-
 <main>
-
 
   <div
     class="pending-box"
     id="pendingSellerBox"
   >
 
-    <strong>
-      Seller Application Pending
-    </strong>
+    <strong>Seller Application Pending</strong>
 
     <br>
 
@@ -788,9 +773,7 @@
 
       <div>
 
-        <h2>
-          Seller Dashboard
-        </h2>
+        <h2>Seller Dashboard</h2>
 
         <div
           class="seller-profile"
@@ -875,9 +858,7 @@
 
     <div class="my-products">
 
-      <h3>
-        My Products
-      </h3>
+      <h3>My Products</h3>
 
       <div id="myProductsContainer">
         Loading...
@@ -888,33 +869,19 @@
   </section>
 
 
-  <!-- CATEGORIES -->
-
   <div class="section-title">
-
-    <h2>
-      Categories
-    </h2>
-
+    <h2>Categories</h2>
   </div>
 
 
   <div
     class="categories"
     id="categoriesContainer"
-  >
+  ></div>
 
-  </div>
-
-
-  <!-- PRODUCTS -->
 
   <div class="section-title">
-
-    <h2>
-      Latest Products
-    </h2>
-
+    <h2>Latest Products</h2>
   </div>
 
 
@@ -923,22 +890,12 @@
   <div class="filters">
 
     <select id="categoryFilter">
-
-      <option value="">
-        All Categories
-      </option>
-
+      <option value="">All Categories</option>
     </select>
-
 
     <select id="locationFilter">
-
-      <option value="">
-        All States
-      </option>
-
+      <option value="">All States</option>
     </select>
-
 
     <input
       type="number"
@@ -946,18 +903,15 @@
       placeholder="Min Price"
     >
 
-
     <input
       type="number"
       id="maxPrice"
       placeholder="Max Price"
     >
 
-
     <button id="filterBtn">
       Filter
     </button>
-
 
     <button
       id="clearFilterBtn"
@@ -972,22 +926,16 @@
   <div
     class="products"
     id="productsContainer"
-  >
-  </div>
-
+  ></div>
 
 </main>
 
 
 <footer>
 
-  <strong>
-    Arewa Market
-  </strong>
+  <strong>Arewa Market</strong>
 
-  <p>
-    Kasuwar Arewa a Hannunka
-  </p>
+  <p>Kasuwar Arewa a Hannunka</p>
 
   <p>
     © 2026 Arewa Market. All rights reserved.
@@ -1009,13 +957,12 @@
 
     <div class="modal-title">
 
-      <h2>
-        Become a Seller
-      </h2>
+      <h2>Become a Seller</h2>
 
       <button
         class="close-btn"
         id="closeSellerModal"
+        type="button"
       >
         ×
       </button>
@@ -1027,9 +974,7 @@
 
       <div class="form-group">
 
-        <label>
-          Full Name
-        </label>
+        <label>Full Name</label>
 
         <input
           type="text"
@@ -1042,9 +987,7 @@
 
       <div class="form-group">
 
-        <label>
-          Business Name
-        </label>
+        <label>Business Name</label>
 
         <input
           type="text"
@@ -1060,9 +1003,7 @@
 
         <div class="form-group">
 
-          <label>
-            Phone Number
-          </label>
+          <label>Phone Number</label>
 
           <input
             type="tel"
@@ -1075,9 +1016,7 @@
 
         <div class="form-group">
 
-          <label>
-            WhatsApp Number
-          </label>
+          <label>WhatsApp Number</label>
 
           <input
             type="tel"
@@ -1092,9 +1031,7 @@
 
       <div class="form-group">
 
-        <label>
-          Location
-        </label>
+        <label>Location</label>
 
         <select
           id="sellerLocation"
@@ -1112,9 +1049,7 @@
 
       <div class="form-group">
 
-        <label>
-          Business Description
-        </label>
+        <label>Business Description</label>
 
         <textarea
           id="businessDescription"
@@ -1126,9 +1061,7 @@
 
       <div class="form-group">
 
-        <label>
-          Profile Image URL
-        </label>
+        <label>Profile Image URL</label>
 
         <input
           type="url"
@@ -1180,6 +1113,7 @@
       <button
         class="close-btn"
         id="closeProductModal"
+        type="button"
       >
         ×
       </button>
@@ -1197,9 +1131,7 @@
 
       <div class="form-group">
 
-        <label>
-          Product Name
-        </label>
+        <label>Product Name</label>
 
         <input
           type="text"
@@ -1215,9 +1147,7 @@
 
         <div class="form-group">
 
-          <label>
-            Price (₦)
-          </label>
+          <label>Price (₦)</label>
 
           <input
             type="number"
@@ -1232,9 +1162,7 @@
 
         <div class="form-group">
 
-          <label>
-            Category
-          </label>
+          <label>Category</label>
 
           <select
             id="productCategory"
@@ -1254,9 +1182,7 @@
 
       <div class="form-group">
 
-        <label>
-          Location
-        </label>
+        <label>Location</label>
 
         <select
           id="productLocation"
@@ -1274,9 +1200,7 @@
 
       <div class="form-group">
 
-        <label>
-          Product Image URL
-        </label>
+        <label>Product Image URL</label>
 
         <input
           type="url"
@@ -1302,9 +1226,7 @@
 
       <div class="form-group">
 
-        <label>
-          Description
-        </label>
+        <label>Description</label>
 
         <textarea
           id="productDescription"
@@ -1357,13 +1279,12 @@
 
     <div class="modal-title">
 
-      <h2>
-        Edit Seller Profile
-      </h2>
+      <h2>Edit Seller Profile</h2>
 
       <button
         class="close-btn"
         id="closeProfileModal"
+        type="button"
       >
         ×
       </button>
@@ -1375,9 +1296,7 @@
 
       <div class="form-group">
 
-        <label>
-          Full Name
-        </label>
+        <label>Full Name</label>
 
         <input
           type="text"
@@ -1390,9 +1309,7 @@
 
       <div class="form-group">
 
-        <label>
-          Business Name
-        </label>
+        <label>Business Name</label>
 
         <input
           type="text"
@@ -1407,9 +1324,7 @@
 
         <div class="form-group">
 
-          <label>
-            Phone
-          </label>
+          <label>Phone</label>
 
           <input
             type="tel"
@@ -1422,9 +1337,7 @@
 
         <div class="form-group">
 
-          <label>
-            WhatsApp
-          </label>
+          <label>WhatsApp</label>
 
           <input
             type="tel"
@@ -1439,9 +1352,7 @@
 
       <div class="form-group">
 
-        <label>
-          Location
-        </label>
+        <label>Location</label>
 
         <select
           id="profileLocation"
@@ -1459,9 +1370,7 @@
 
       <div class="form-group">
 
-        <label>
-          Business Description
-        </label>
+        <label>Business Description</label>
 
         <textarea
           id="profileDescription"
@@ -1472,9 +1381,7 @@
 
       <div class="form-group">
 
-        <label>
-          Profile Image URL
-        </label>
+        <label>Profile Image URL</label>
 
         <input
           type="url"
@@ -1513,24 +1420,196 @@
 </div>
 
 
+<!-- =========================
+     ORDER / COD MODAL
+========================= -->
+
+<div
+  class="modal"
+  id="orderModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-title">
+
+      <h2>Place Order</h2>
+
+      <button
+        class="close-btn"
+        id="closeOrderModal"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      class="order-product-box"
+      id="orderProductBox"
+    ></div>
+
+
+    <form id="orderForm">
+
+      <div class="form-group">
+
+        <label>Full Name</label>
+
+        <input
+          type="text"
+          id="orderBuyerName"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Phone Number</label>
+
+        <input
+          type="tel"
+          id="orderBuyerPhone"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>State</label>
+
+        <select
+          id="orderLocation"
+          required
+        >
+
+          <option value="">
+            Select State
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Delivery Address</label>
+
+        <textarea
+          id="orderDeliveryAddress"
+          placeholder="Enter your full delivery address..."
+          required
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Quantity</label>
+
+        <div class="quantity-control">
+
+          <button
+            type="button"
+            id="decreaseOrderQty"
+          >
+            −
+          </button>
+
+          <input
+            type="number"
+            id="orderQuantity"
+            value="1"
+            min="1"
+            readonly
+          >
+
+          <button
+            type="button"
+            id="increaseOrderQty"
+          >
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="cod-box">
+
+        <strong>
+          💵 Cash on Delivery
+        </strong>
+
+        <br>
+
+        You will pay when your order is delivered.
+
+      </div>
+
+
+      <div
+        class="order-total"
+        id="orderTotal"
+      >
+        Total: ₦0
+      </div>
+
+
+      <button
+        type="submit"
+        class="form-submit"
+        id="placeOrderBtn"
+      >
+        Place Order
+      </button>
+
+
+      <button
+        type="button"
+        class="cancel-btn"
+        id="cancelOrderBtn"
+      >
+        Cancel
+      </button>
+
+
+      <div
+        class="message"
+        id="orderMessage"
+      ></div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
 <script type="module">
 
-
-/* =========================
-   FIREBASE IMPORTS
-========================= */
+/* =====================================================
+   FIREBASE
+===================================================== */
 
 import {
   initializeApp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
 
 import {
   getAuth,
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
 
 import {
   getFirestore,
@@ -1547,14 +1626,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/* =========================
-   FIREBASE CONFIG
-========================= */
-
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyD48Bay25k24a5WckgM6AmuK3p68oGT6vk",
+    "AIzaSyD48Bay25k24a5WckmG6AmuK3p68oGT6vk",
 
   authDomain:
     "arewa-market-4e603.firebaseapp.com",
@@ -1580,77 +1655,31 @@ const firebaseConfig = {
 const app =
   initializeApp(firebaseConfig);
 
-
 const auth =
   getAuth(app);
-
 
 const db =
   getFirestore(app);
 
 
-/* =========================
-   CONSTANT DATA
-========================= */
-
-
-/*
-   ALL AREWA MARKET CATEGORIES
-*/
+/* =====================================================
+   CONSTANTS
+===================================================== */
 
 const MARKET_CATEGORIES = [
 
-  {
-    name: "Phones",
-    icon: "📱"
-  },
-
-  {
-    name: "Computers",
-    icon: "💻"
-  },
-
-  {
-    name: "Accessories",
-    icon: "🎧"
-  },
-
-  {
-    name: "Fashion",
-    icon: "👕"
-  },
-
-  {
-    name: "Furniture",
-    icon: "🛋️"
-  },
-
-  {
-    name: "Vehicles",
-    icon: "🚗"
-  },
-
-  {
-    name: "Property",
-    icon: "🏠"
-  },
-
-  {
-    name: "Agriculture",
-    icon: "🌾"
-  },
-
-  {
-    name: "Services",
-    icon: "🛠️"
-  }
+  {name:"Phones",icon:"📱"},
+  {name:"Computers",icon:"💻"},
+  {name:"Accessories",icon:"🎧"},
+  {name:"Fashion",icon:"👕"},
+  {name:"Furniture",icon:"🛋️"},
+  {name:"Vehicles",icon:"🚗"},
+  {name:"Property",icon:"🏠"},
+  {name:"Agriculture",icon:"🌾"},
+  {name:"Services",icon:"🛠️"}
 
 ];
 
-
-/*
-   ALL 36 STATES + FCT
-*/
 
 const NIGERIA_STATES = [
 
@@ -1695,392 +1724,221 @@ const NIGERIA_STATES = [
 ];
 
 
-/* =========================
+/* =====================================================
    GLOBAL VARIABLES
-========================= */
+===================================================== */
 
 let currentUser = null;
-
 let currentUserData = null;
-
 let allProducts = [];
-
 let editingProductId = null;
 
+let selectedOrderProduct = null;
+let orderQuantity = 1;
 
-/* =========================
-   DOM ELEMENTS
-========================= */
+
+/*
+ * ORDER RESUME READINESS
+ *
+ * We wait until:
+ *
+ * 1. Firebase Auth is ready
+ * 2. User profile is ready
+ * 3. Products have finished loading
+ *
+ * This prevents the login -> index -> modal
+ * timing/race problem.
+ */
+
+let authReady = false;
+let productsReady = false;
+let resumeOrderRunning = false;
+
+
+/* =====================================================
+   DOM
+===================================================== */
 
 const headerActions =
-  document.getElementById(
-    "headerActions"
-  );
-
+  document.getElementById("headerActions");
 
 const sellerPanel =
-  document.getElementById(
-    "sellerPanel"
-  );
-
+  document.getElementById("sellerPanel");
 
 const sellerModal =
-  document.getElementById(
-    "sellerModal"
-  );
-
+  document.getElementById("sellerModal");
 
 const productModal =
-  document.getElementById(
-    "productModal"
-  );
-
+  document.getElementById("productModal");
 
 const profileModal =
-  document.getElementById(
-    "profileModal"
-  );
+  document.getElementById("profileModal");
 
+const orderModal =
+  document.getElementById("orderModal");
 
 const productsContainer =
-  document.getElementById(
-    "productsContainer"
-  );
-
+  document.getElementById("productsContainer");
 
 const categoriesContainer =
-  document.getElementById(
-    "categoriesContainer"
-  );
-
+  document.getElementById("categoriesContainer");
 
 const myProductsContainer =
-  document.getElementById(
-    "myProductsContainer"
-  );
-
+  document.getElementById("myProductsContainer");
 
 const searchInput =
-  document.getElementById(
-    "searchInput"
-  );
-
+  document.getElementById("searchInput");
 
 const searchBtn =
-  document.getElementById(
-    "searchBtn"
-  );
-
+  document.getElementById("searchBtn");
 
 const pendingSellerBox =
-  document.getElementById(
-    "pendingSellerBox"
-  );
-
+  document.getElementById("pendingSellerBox");
 
 const categoryFilter =
-  document.getElementById(
-    "categoryFilter"
-  );
-
+  document.getElementById("categoryFilter");
 
 const locationFilter =
-  document.getElementById(
-    "locationFilter"
-  );
-
+  document.getElementById("locationFilter");
 
 const minPrice =
-  document.getElementById(
-    "minPrice"
-  );
-
+  document.getElementById("minPrice");
 
 const maxPrice =
-  document.getElementById(
-    "maxPrice"
-  );
-
+  document.getElementById("maxPrice");
 
 const filterBtn =
-  document.getElementById(
-    "filterBtn"
-  );
-
+  document.getElementById("filterBtn");
 
 const clearFilterBtn =
-  document.getElementById(
-    "clearFilterBtn"
-  );
-
+  document.getElementById("clearFilterBtn");
 
 const productCategory =
-  document.getElementById(
-    "productCategory"
-  );
-
+  document.getElementById("productCategory");
 
 const productLocation =
-  document.getElementById(
-    "productLocation"
-  );
-
+  document.getElementById("productLocation");
 
 const sellerLocation =
-  document.getElementById(
-    "sellerLocation"
-  );
-
+  document.getElementById("sellerLocation");
 
 const profileLocation =
-  document.getElementById(
-    "profileLocation"
-  );
+  document.getElementById("profileLocation");
 
 
-/* =========================
+/* =====================================================
    ESCAPE HTML
-========================= */
+===================================================== */
 
-function escapeHTML(value) {
+function escapeHTML(value){
 
-  if (
+  if(
     value === undefined ||
     value === null
-  ) {
-
+  ){
     return "";
-
   }
 
   return String(value)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
-/* =========================
-   POPULATE ALL STATIC OPTIONS
-========================= */
+/* =====================================================
+   POPULATE OPTIONS
+===================================================== */
 
-function populateStaticOptions() {
+function populateStaticOptions(){
 
+  categoryFilter.innerHTML =
+    `<option value="">All Categories</option>`;
 
-  /*
-     CATEGORY FILTER
-  */
-
-  categoryFilter.innerHTML = `
-    <option value="">
-      All Categories
-    </option>
-  `;
+  productCategory.innerHTML =
+    `<option value="">Select Category</option>`;
 
 
   MARKET_CATEGORIES.forEach(
-    (category) => {
+    category => {
 
-      const option =
-        document.createElement(
-          "option"
-        );
+      const filterOption =
+        document.createElement("option");
 
-      option.value =
+      filterOption.value =
         category.name;
 
-      option.textContent =
+      filterOption.textContent =
         category.name;
 
       categoryFilter.appendChild(
-        option
-      );
-
-    }
-  );
-
-
-  /*
-     CATEGORY IN PRODUCT FORM
-  */
-
-  productCategory.innerHTML = `
-    <option value="">
-      Select Category
-    </option>
-  `;
-
-
-  MARKET_CATEGORIES.forEach(
-    (category) => {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-      option.value =
-        category.name;
-
-      option.textContent =
-        category.name;
-
-      productCategory.appendChild(
-        option
-      );
-
-    }
-  );
-
-
-  /*
-     STATE FILTER
-  */
-
-  locationFilter.innerHTML = `
-    <option value="">
-      All States
-    </option>
-  `;
-
-
-  /*
-     SELLER LOCATION
-  */
-
-  sellerLocation.innerHTML = `
-    <option value="">
-      Select State
-    </option>
-  `;
-
-
-  /*
-     PRODUCT LOCATION
-  */
-
-  productLocation.innerHTML = `
-    <option value="">
-      Select State
-    </option>
-  `;
-
-
-  /*
-     PROFILE LOCATION
-  */
-
-  profileLocation.innerHTML = `
-    <option value="">
-      Select State
-    </option>
-  `;
-
-
-  NIGERIA_STATES.forEach(
-    (state) => {
-
-
-      /*
-         FILTER
-      */
-
-      const filterOption =
-        document.createElement(
-          "option"
-        );
-
-      filterOption.value =
-        state;
-
-      filterOption.textContent =
-        state;
-
-      locationFilter.appendChild(
         filterOption
       );
 
 
-      /*
-         SELLER
-      */
-
-      const sellerOption =
-        document.createElement(
-          "option"
-        );
-
-      sellerOption.value =
-        state;
-
-      sellerOption.textContent =
-        state;
-
-      sellerLocation.appendChild(
-        sellerOption
-      );
-
-
-      /*
-         PRODUCT
-      */
-
       const productOption =
-        document.createElement(
-          "option"
-        );
+        document.createElement("option");
 
       productOption.value =
-        state;
+        category.name;
 
       productOption.textContent =
-        state;
+        category.name;
 
-      productLocation.appendChild(
+      productCategory.appendChild(
         productOption
       );
 
+    }
+  );
 
-      /*
-         PROFILE
-      */
 
-      const profileOption =
-        document.createElement(
-          "option"
-        );
+  locationFilter.innerHTML =
+    `<option value="">All States</option>`;
 
-      profileOption.value =
-        state;
+  sellerLocation.innerHTML =
+    `<option value="">Select State</option>`;
 
-      profileOption.textContent =
-        state;
+  productLocation.innerHTML =
+    `<option value="">Select State</option>`;
 
-      profileLocation.appendChild(
-        profileOption
+  profileLocation.innerHTML =
+    `<option value="">Select State</option>`;
+
+
+  const orderLocation =
+    document.getElementById(
+      "orderLocation"
+    );
+
+  orderLocation.innerHTML =
+    `<option value="">Select State</option>`;
+
+
+  NIGERIA_STATES.forEach(
+    state => {
+
+      [
+        locationFilter,
+        sellerLocation,
+        productLocation,
+        profileLocation,
+        orderLocation
+      ].forEach(
+        select => {
+
+          const option =
+            document.createElement("option");
+
+          option.value = state;
+          option.textContent = state;
+
+          select.appendChild(option);
+
+        }
       );
 
     }
@@ -2089,39 +1947,103 @@ function populateStaticOptions() {
 }
 
 
-/* =========================
+/* =====================================================
+   TRY RESUME PENDING ORDER
+===================================================== */
+
+async function tryResumePendingOrder(){
+
+  /*
+   * Do not try until all required
+   * Firebase/page data is ready.
+   */
+
+  if(!authReady){
+
+    console.log(
+      "RESUME WAITING: AUTH NOT READY"
+    );
+
+    return;
+  }
+
+
+  if(!productsReady){
+
+    console.log(
+      "RESUME WAITING: PRODUCTS NOT READY"
+    );
+
+    return;
+  }
+
+
+  if(!currentUser){
+
+    console.log(
+      "RESUME WAITING: USER NOT LOGGED IN"
+    );
+
+    return;
+  }
+
+
+  if(!currentUserData){
+
+    console.log(
+      "RESUME WAITING: USER PROFILE NOT READY"
+    );
+
+    return;
+  }
+
+
+  await resumePendingOrder();
+
+}
+
+
+/* =====================================================
    AUTH STATE
-========================= */
+===================================================== */
 
 onAuthStateChanged(
   auth,
-  async (user) => {
+  async user => {
 
     currentUser =
       user;
 
 
-    if (!user) {
+    console.log(
+      "AUTH STATE:",
+      user
+        ? user.uid
+        : "NOT LOGGED IN"
+    );
 
-      currentUserData =
-        null;
 
-      sellerPanel.classList.remove(
-        "show"
-      );
+    if(!user){
 
-      pendingSellerBox.classList.remove(
-        "show"
-      );
+      currentUserData = null;
+
+      sellerPanel.classList.remove("show");
+
+      pendingSellerBox.classList.remove("show");
 
       showGuestHeader();
 
-      return;
+      authReady = true;
 
+      /*
+       * No order can resume without login.
+       */
+
+      return;
     }
 
 
-    try {
+    try{
 
       const userSnapshot =
         await getDoc(
@@ -2133,17 +2055,19 @@ onAuthStateChanged(
         );
 
 
-      if (
-        !userSnapshot.exists()
-      ) {
+      if(!userSnapshot.exists()){
 
-        currentUserData =
-          null;
+        currentUserData = null;
 
         showGuestHeader();
 
-        return;
+        console.warn(
+          "USER PROFILE NOT FOUND"
+        );
 
+        authReady = true;
+
+        return;
       }
 
 
@@ -2151,10 +2075,9 @@ onAuthStateChanged(
         userSnapshot.data();
 
 
-      if (
-        currentUserData.active ===
-        false
-      ) {
+      if(
+        currentUserData.active === false
+      ){
 
         alert(
           "Your account has been deactivated."
@@ -2162,26 +2085,39 @@ onAuthStateChanged(
 
         await signOut(auth);
 
-        return;
+        authReady = true;
 
+        return;
       }
 
 
       showLoggedInHeader();
 
 
-      if (
+      /*
+       * AUTH + USER PROFILE ARE NOW READY.
+       */
 
-        currentUserData.isSeller ===
-        true &&
+      authReady = true;
 
-        currentUserData.role ===
-        "seller" &&
 
-        currentUserData.sellerStatus ===
-        "approved"
+      /*
+       * Try resume only after products
+       * are also ready.
+       */
 
-      ) {
+      await tryResumePendingOrder();
+
+
+      if(
+
+        currentUserData.isSeller === true &&
+
+        currentUserData.role === "seller" &&
+
+        currentUserData.sellerStatus === "approved"
+
+      ){
 
         pendingSellerBox.classList.remove(
           "show"
@@ -2192,12 +2128,12 @@ onAuthStateChanged(
       }
 
 
-      else if (
+      else if(
 
         currentUserData.sellerStatus ===
         "pending"
 
-      ) {
+      ){
 
         sellerPanel.classList.remove(
           "show"
@@ -2209,28 +2145,28 @@ onAuthStateChanged(
 
       }
 
-
     }
 
-    catch (error) {
+    catch(error){
 
       console.error(
-        "Auth profile error:",
+        "AUTH PROFILE ERROR:",
         error
       );
+
+      authReady = true;
 
     }
 
   }
-
 );
 
 
-/* =========================
+/* =====================================================
    GUEST HEADER
-========================= */
+===================================================== */
 
-function showGuestHeader() {
+function showGuestHeader(){
 
   headerActions.innerHTML = `
 
@@ -2247,39 +2183,34 @@ function showGuestHeader() {
 }
 
 
-/* =========================
-   LOGGED-IN HEADER
-========================= */
+/* =====================================================
+   LOGGED IN HEADER
+===================================================== */
 
-function showLoggedInHeader() {
-
+function showLoggedInHeader(){
 
   const isApprovedSeller =
 
     currentUserData &&
 
-    currentUserData.isSeller ===
-    true &&
+    currentUserData.isSeller === true &&
 
-    currentUserData.role ===
-    "seller" &&
+    currentUserData.role === "seller" &&
 
-    currentUserData.sellerStatus ===
-    "approved";
+    currentUserData.sellerStatus === "approved";
 
 
   const isPendingSeller =
 
     currentUserData &&
 
-    currentUserData.sellerStatus ===
-    "pending";
+    currentUserData.sellerStatus === "pending";
 
 
   let html = "";
 
 
-  if (isApprovedSeller) {
+  if(isApprovedSeller){
 
     html += `
 
@@ -2294,8 +2225,7 @@ function showLoggedInHeader() {
 
   }
 
-
-  else if (isPendingSeller) {
+  else if(isPendingSeller){
 
     html += `
 
@@ -2310,8 +2240,7 @@ function showLoggedInHeader() {
 
   }
 
-
-  else {
+  else{
 
     html += `
 
@@ -2343,15 +2272,14 @@ function showLoggedInHeader() {
     html;
 
 
-  if (isApprovedSeller) {
+  if(isApprovedSeller){
 
     const button =
       document.getElementById(
         "headerSellerBtn"
       );
 
-
-    if (button) {
+    if(button){
 
       button.addEventListener(
         "click",
@@ -2363,15 +2291,14 @@ function showLoggedInHeader() {
   }
 
 
-  else if (isPendingSeller) {
+  else if(isPendingSeller){
 
     const button =
       document.getElementById(
         "headerPendingBtn"
       );
 
-
-    if (button) {
+    if(button){
 
       button.addEventListener(
         "click",
@@ -2382,7 +2309,7 @@ function showLoggedInHeader() {
           );
 
           pendingSellerBox.scrollIntoView({
-            behavior: "smooth"
+            behavior:"smooth"
           });
 
         }
@@ -2393,15 +2320,14 @@ function showLoggedInHeader() {
   }
 
 
-  else {
+  else{
 
     const button =
       document.getElementById(
         "headerBecomeSellerBtn"
       );
 
-
-    if (button) {
+    if(button){
 
       button.addEventListener(
         "click",
@@ -2419,7 +2345,7 @@ function showLoggedInHeader() {
     );
 
 
-  if (logoutBtn) {
+  if(logoutBtn){
 
     logoutBtn.addEventListener(
       "click",
@@ -2431,19 +2357,17 @@ function showLoggedInHeader() {
 }
 
 
-/* =========================
+/* =====================================================
    LOGOUT
-========================= */
+===================================================== */
 
-async function logoutUser() {
+async function logoutUser(){
 
-  try {
+  try{
 
     await signOut(auth);
 
-    sellerPanel.classList.remove(
-      "show"
-    );
+    sellerPanel.classList.remove("show");
 
     pendingSellerBox.classList.remove(
       "show"
@@ -2451,7 +2375,7 @@ async function logoutUser() {
 
   }
 
-  catch (error) {
+  catch(error){
 
     console.error(error);
 
@@ -2465,24 +2389,20 @@ async function logoutUser() {
 }
 
 
-/* =========================
-   LOAD CATEGORY DISPLAY
-========================= */
+/* =====================================================
+   CATEGORIES
+===================================================== */
 
-function loadCategories() {
+function loadCategories(){
 
-  categoriesContainer.innerHTML =
-    "";
+  categoriesContainer.innerHTML = "";
 
 
   MARKET_CATEGORIES.forEach(
-    (category) => {
+    category => {
 
       const div =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       div.className =
         "category";
@@ -2495,9 +2415,7 @@ function loadCategories() {
         </div>
 
         <div class="category-name">
-          ${escapeHTML(
-            category.name
-          )}
+          ${escapeHTML(category.name)}
         </div>
 
       `;
@@ -2510,24 +2428,16 @@ function loadCategories() {
           categoryFilter.value =
             category.name;
 
-          locationFilter.value =
-            "";
-
-          minPrice.value =
-            "";
-
-          maxPrice.value =
-            "";
+          locationFilter.value = "";
+          minPrice.value = "";
+          maxPrice.value = "";
 
           applyFilters();
 
-
           document
-            .querySelector(
-              ".filters"
-            )
+            .querySelector(".filters")
             .scrollIntoView({
-              behavior: "smooth"
+              behavior:"smooth"
             });
 
         }
@@ -2544,28 +2454,23 @@ function loadCategories() {
 }
 
 
-/* =========================
+/* =====================================================
    LOAD PRODUCTS
-========================= */
+===================================================== */
 
-async function loadProducts() {
+async function loadProducts(){
 
-  try {
+  try{
 
     const snapshot =
       await getDocs(
-
         query(
-
           collection(
             db,
             "products"
           ),
-
           limit(50)
-
         )
-
       );
 
 
@@ -2573,7 +2478,7 @@ async function loadProducts() {
 
 
     snapshot.forEach(
-      (productDoc) => {
+      productDoc => {
 
         allProducts.push({
 
@@ -2590,7 +2495,7 @@ async function loadProducts() {
 
     console.log(
       "PRODUCTS LOADED:",
-      allProducts
+      allProducts.length
     );
 
 
@@ -2599,16 +2504,9 @@ async function loadProducts() {
     );
 
 
-    /*
-       IMPORTANT:
-       Static filters are already
-       populated separately.
-    */
-
   }
 
-
-  catch (error) {
+  catch(error){
 
     console.error(
       "LOAD PRODUCTS ERROR:",
@@ -2652,49 +2550,66 @@ async function loadProducts() {
 
   }
 
+  finally{
+
+    /*
+     * IMPORTANT:
+     *
+     * Mark product loading as finished
+     * even when the initial list fails.
+     *
+     * resumePendingOrder() can still try
+     * to get the exact product directly
+     * from Firestore.
+     */
+
+    productsReady = true;
+
+
+    /*
+     * Now both Auth and Products can
+     * decide whether an order should resume.
+     */
+
+    await tryResumePendingOrder();
+
+  }
+
 }
 
 
-/* =========================
-   APPLY FILTERS
-========================= */
+/* =====================================================
+   FILTERS
+===================================================== */
 
-function applyFilters() {
-
+function applyFilters(){
 
   const selectedCategory =
     categoryFilter.value.trim();
 
-
   const selectedLocation =
     locationFilter.value.trim();
 
-
   const minimumPrice =
     minPrice.value.trim();
-
 
   const maximumPrice =
     maxPrice.value.trim();
 
 
   const filteredProducts =
-
     allProducts.filter(
-      (product) => {
-
+      product => {
 
         const productCategory =
           String(
             product.category || ""
           ).trim();
 
-
         const productLocation =
           String(
             product.location || ""
           ).trim();
-
 
         const productPrice =
           Number(
@@ -2702,63 +2617,39 @@ function applyFilters() {
           ) || 0;
 
 
-        if (
-
+        if(
           selectedCategory &&
-
           productCategory !==
           selectedCategory
-
-        ) {
-
+        ){
           return false;
-
         }
 
 
-        if (
-
+        if(
           selectedLocation &&
-
           productLocation !==
           selectedLocation
-
-        ) {
-
+        ){
           return false;
-
         }
 
 
-        if (
-
+        if(
           minimumPrice !== "" &&
-
           productPrice <
-          Number(
-            minimumPrice
-          )
-
-        ) {
-
+          Number(minimumPrice)
+        ){
           return false;
-
         }
 
 
-        if (
-
+        if(
           maximumPrice !== "" &&
-
           productPrice >
-          Number(
-            maximumPrice
-          )
-
-        ) {
-
+          Number(maximumPrice)
+        ){
           return false;
-
         }
 
 
@@ -2775,23 +2666,12 @@ function applyFilters() {
 }
 
 
-/* =========================
-   CLEAR FILTERS
-========================= */
+function clearFilters(){
 
-function clearFilters() {
-
-  categoryFilter.value =
-    "";
-
-  locationFilter.value =
-    "";
-
-  minPrice.value =
-    "";
-
-  maxPrice.value =
-    "";
+  categoryFilter.value = "";
+  locationFilter.value = "";
+  minPrice.value = "";
+  maxPrice.value = "";
 
   renderProducts(
     allProducts
@@ -2799,10 +2679,6 @@ function clearFilters() {
 
 }
 
-
-/* =========================
-   FILTER EVENTS
-========================= */
 
 filterBtn.addEventListener(
   "click",
@@ -2816,16 +2692,13 @@ clearFilterBtn.addEventListener(
 );
 
 
-/* =========================
+/* =====================================================
    RENDER PRODUCTS
-========================= */
+===================================================== */
 
-function renderProducts(
-  products
-) {
+function renderProducts(products){
 
-
-  if (!products.length) {
+  if(!products.length){
 
     productsContainer.innerHTML = `
 
@@ -2839,49 +2712,37 @@ function renderProducts(
     `;
 
     return;
-
   }
 
 
-  productsContainer.innerHTML =
-    "";
+  productsContainer.innerHTML = "";
 
 
   products.forEach(
-    (product) => {
-
+    product => {
 
       const name =
         product.name ||
         "Product";
 
-
       const price =
-        Number(
-          product.price
-        ) || 0;
-
+        Number(product.price) || 0;
 
       const location =
         product.location ||
         "Northern Nigeria";
 
-
       const sellerName =
         product.sellerName ||
         "Arewa Market Seller";
 
-
       const image =
         product.imageUrl ||
-
         "https://via.placeholder.com/600x400?text=Arewa+Market";
-
 
       const phone =
         product.sellerPhone ||
         "";
-
 
       const whatsapp =
         product.whatsapp ||
@@ -2889,28 +2750,22 @@ function renderProducts(
 
 
       const card =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       card.className =
         "product-card";
 
 
-      let contactButtons =
-        "";
+      let contactButtons = "";
 
 
-      if (phone) {
+      if(phone){
 
         contactButtons += `
 
           <a
             class="call-btn"
-            href="tel:${encodeURIComponent(
-              phone
-            )}"
+            href="tel:${encodeURIComponent(phone)}"
           >
             Call
           </a>
@@ -2920,7 +2775,7 @@ function renderProducts(
       }
 
 
-      if (whatsapp) {
+      if(whatsapp){
 
         const cleanWhatsapp =
           String(
@@ -2931,7 +2786,7 @@ function renderProducts(
           );
 
 
-        if (cleanWhatsapp) {
+        if(cleanWhatsapp){
 
           contactButtons += `
 
@@ -2961,23 +2816,19 @@ function renderProducts(
           "
         >
 
-
         <div class="product-info">
 
           <div class="product-name">
             ${escapeHTML(name)}
           </div>
 
-
           <div class="product-price">
             ₦${price.toLocaleString()}
           </div>
 
-
           <div class="product-location">
             📍 ${escapeHTML(location)}
           </div>
-
 
           <div
             class="product-seller seller-link"
@@ -2986,31 +2837,20 @@ function renderProducts(
             )}"
             style="cursor:pointer;"
           >
-
             Seller:
-            ${escapeHTML(
-              sellerName
-            )}
-
+            ${escapeHTML(sellerName)}
           </div>
-
 
           <div class="product-actions">
 
-            ${
-              contactButtons ||
+            ${contactButtons}
 
-              `
-                <span
-                  style="
-                    color:#777;
-                    font-size:12px;
-                  "
-                >
-                  Seller contact unavailable
-                </span>
-              `
-            }
+            <button
+              type="button"
+              class="order-btn"
+            >
+              Order Now
+            </button>
 
           </div>
 
@@ -3023,22 +2863,16 @@ function renderProducts(
         "pointer";
 
 
-      /*
-         PRODUCT DETAILS
-      */
-
       card.addEventListener(
         "click",
-        (event) => {
+        event => {
 
-          if (
+          if(
             event.target.closest(
-              "a"
+              "a, button"
             )
-          ) {
-
+          ){
             return;
-
           }
 
 
@@ -3052,33 +2886,27 @@ function renderProducts(
       );
 
 
-      /*
-         SELLER PROFILE
-      */
-
       const sellerLink =
         card.querySelector(
           ".seller-link"
         );
 
 
-      if (sellerLink) {
+      if(sellerLink){
 
         sellerLink.addEventListener(
           "click",
-          function(event) {
+          event => {
 
             event.stopPropagation();
 
 
             const sellerId =
-              this.dataset.sellerId;
+              sellerLink.dataset.sellerId;
 
 
-            if (!sellerId) {
-
+            if(!sellerId){
               return;
-
             }
 
 
@@ -3087,6 +2915,30 @@ function renderProducts(
               encodeURIComponent(
                 sellerId
               );
+
+          }
+        );
+
+      }
+
+
+      const orderButton =
+        card.querySelector(
+          ".order-btn"
+        );
+
+
+      if(orderButton){
+
+        orderButton.addEventListener(
+          "click",
+          event => {
+
+            event.stopPropagation();
+
+            openOrderModal(
+              product
+            );
 
           }
         );
@@ -3104,12 +2956,11 @@ function renderProducts(
 }
 
 
-/* =========================
+/* =====================================================
    SEARCH
-========================= */
+===================================================== */
 
-function filterProducts() {
-
+function filterProducts(){
 
   const search =
     searchInput.value
@@ -3117,39 +2968,34 @@ function filterProducts() {
       .toLowerCase();
 
 
-  if (!search) {
+  if(!search){
 
     renderProducts(
       allProducts
     );
 
     return;
-
   }
 
 
   const filtered =
     allProducts.filter(
-      (product) => {
-
+      product => {
 
         const name =
           String(
             product.name || ""
           ).toLowerCase();
 
-
         const category =
           String(
             product.category || ""
           ).toLowerCase();
 
-
         const location =
           String(
             product.location || ""
           ).toLowerCase();
-
 
         const description =
           String(
@@ -3160,11 +3006,8 @@ function filterProducts() {
         return (
 
           name.includes(search) ||
-
           category.includes(search) ||
-
           location.includes(search) ||
-
           description.includes(search)
 
         );
@@ -3192,46 +3035,38 @@ searchInput.addEventListener(
 );
 
 
-/* =========================
-   OPEN SELLER MODAL
-========================= */
+/* =====================================================
+   SELLER MODAL
+===================================================== */
 
-function openSellerModal() {
+function openSellerModal(){
 
+  if(!currentUser){
 
-  if (!currentUser) {
-
-    alert(
-      "Please login first."
-    );
+    window.location.href =
+      "login.html";
 
     return;
-
   }
 
 
-  if (
-
+  if(
     currentUserData &&
-
     currentUserData.sellerStatus ===
     "pending"
-
-  ) {
+  ){
 
     pendingSellerBox.classList.add(
       "show"
     );
 
     return;
-
   }
 
 
   document.getElementById(
     "sellerMessage"
-  ).textContent =
-    "";
+  ).textContent = "";
 
 
   document.getElementById(
@@ -3252,14 +3087,8 @@ function openSellerModal() {
 }
 
 
-/* =========================
-   CLOSE SELLER MODAL
-========================= */
-
 document
-  .getElementById(
-    "closeSellerModal"
-  )
+  .getElementById("closeSellerModal")
   .addEventListener(
     "click",
     () => {
@@ -3272,30 +3101,26 @@ document
   );
 
 
-/* =========================
-   BECOME SELLER
-========================= */
+/* =====================================================
+   SELLER APPLICATION
+===================================================== */
 
 document
-  .getElementById(
-    "sellerForm"
-  )
+  .getElementById("sellerForm")
   .addEventListener(
     "submit",
-    async (event) => {
-
+    async event => {
 
       event.preventDefault();
 
 
-      if (!currentUser) {
+      if(!currentUser){
 
         alert(
           "Please login first."
         );
 
         return;
-
       }
 
 
@@ -3304,27 +3129,20 @@ document
           "sellerSubmitBtn"
         );
 
-
       const message =
         document.getElementById(
           "sellerMessage"
         );
 
 
-      submitBtn.disabled =
-        true;
-
-
+      submitBtn.disabled = true;
       submitBtn.textContent =
         "Submitting...";
 
-
-      message.textContent =
-        "";
+      message.textContent = "";
 
 
-      try {
-
+      try{
 
         const sellerData = {
 
@@ -3366,17 +3184,13 @@ document
           email:
             currentUser.email || "",
 
-          role:
-            "buyer",
+          role:"buyer",
 
-          isSeller:
-            false,
+          isSeller:false,
 
-          sellerStatus:
-            "pending",
+          sellerStatus:"pending",
 
-          active:
-            true,
+          active:true,
 
           sellerApplicationAt:
             serverTimestamp(),
@@ -3403,7 +3217,6 @@ document
         currentUserData = {
 
           ...currentUserData,
-
           ...sellerData
 
         };
@@ -3411,7 +3224,6 @@ document
 
         message.style.color =
           "#16803c";
-
 
         message.textContent =
           "Seller application submitted successfully. Please wait for Super Admin approval.";
@@ -3434,19 +3246,14 @@ document
           800
         );
 
-
       }
 
-      catch (error) {
+      catch(error){
 
-        console.error(
-          error
-        );
-
+        console.error(error);
 
         message.style.color =
           "red";
-
 
         message.textContent =
           "Failed: " +
@@ -3455,9 +3262,7 @@ document
       }
 
 
-      submitBtn.disabled =
-        false;
-
+      submitBtn.disabled = false;
 
       submitBtn.textContent =
         "Submit Seller Application";
@@ -3466,42 +3271,33 @@ document
   );
 
 
-/* =========================
-   SHOW SELLER DASHBOARD
-========================= */
+/* =====================================================
+   SELLER DASHBOARD
+===================================================== */
 
-async function showSellerDashboard() {
+async function showSellerDashboard(){
 
-
-  if (!currentUser) {
-
+  if(!currentUser){
     return;
-
   }
 
 
-  if (
+  if(
 
     !currentUserData ||
 
-    currentUserData.isSeller !==
-    true ||
+    currentUserData.isSeller !== true ||
 
-    currentUserData.role !==
-    "seller" ||
+    currentUserData.role !== "seller" ||
 
-    currentUserData.sellerStatus !==
-    "approved"
+    currentUserData.sellerStatus !== "approved"
 
-  ) {
+  ){
 
-
-    if (
-
+    if(
       currentUserData?.sellerStatus ===
       "pending"
-
-    ) {
+    ){
 
       pendingSellerBox.classList.add(
         "show"
@@ -3509,9 +3305,7 @@ async function showSellerDashboard() {
 
     }
 
-
     return;
-
   }
 
 
@@ -3519,18 +3313,14 @@ async function showSellerDashboard() {
     "show"
   );
 
-
   pendingSellerBox.classList.remove(
     "show"
   );
 
 
   const sellerName =
-
     currentUserData.businessName ||
-
     currentUserData.name ||
-
     "Seller";
 
 
@@ -3547,9 +3337,9 @@ async function showSellerDashboard() {
     );
 
 
-  if (
+  if(
     currentUserData.profileImageUrl
-  ) {
+  ){
 
     sellerImage.src =
       currentUserData.profileImageUrl;
@@ -3559,7 +3349,7 @@ async function showSellerDashboard() {
 
 
     sellerImage.onerror =
-      function() {
+      () => {
 
         sellerImage.style.display =
           "none";
@@ -3568,7 +3358,7 @@ async function showSellerDashboard() {
 
   }
 
-  else {
+  else{
 
     sellerImage.style.display =
       "none";
@@ -3586,15 +3376,11 @@ async function showSellerDashboard() {
 
 
   sellerPanel.scrollIntoView({
-    behavior: "smooth"
+    behavior:"smooth"
   });
 
 }
 
-
-/* =========================
-   HIDE SELLER DASHBOARD
-========================= */
 
 document
   .getElementById(
@@ -3612,22 +3398,18 @@ document
   );
 
 
-/* =========================
+/* =====================================================
    LOAD MY PRODUCTS
-========================= */
+===================================================== */
 
-async function loadMyProducts() {
+async function loadMyProducts(){
 
-
-  if (!currentUser) {
-
+  if(!currentUser){
     return;
-
   }
 
 
-  try {
-
+  try{
 
     const snapshot =
       await getDocs(
@@ -3642,17 +3424,16 @@ async function loadMyProducts() {
 
 
     snapshot.forEach(
-      (productDoc) => {
-
+      productDoc => {
 
         const product =
           productDoc.data();
 
 
-        if (
+        if(
           product.sellerId ===
           currentUser.uid
-        ) {
+        ){
 
           myProducts.push({
 
@@ -3675,47 +3456,34 @@ async function loadMyProducts() {
       myProducts.length;
 
 
-    if (
-      !myProducts.length
-    ) {
+    if(!myProducts.length){
 
       myProductsContainer.innerHTML = `
 
         <p style="color:#777;">
-
           You have no products yet.
-
-          Click "Add Product"
-          to start selling.
-
+          Click "Add Product" to start selling.
         </p>
 
       `;
 
       return;
-
     }
 
 
-    myProductsContainer.innerHTML =
-      "";
+    myProductsContainer.innerHTML = "";
 
 
     myProducts.forEach(
-      (product) => {
-
+      product => {
 
         const image =
           product.imageUrl ||
-
           "https://via.placeholder.com/150?text=Product";
 
 
         const item =
-          document.createElement(
-            "div"
-          );
-
+          document.createElement("div");
 
         item.className =
           "my-product-item";
@@ -3726,46 +3494,36 @@ async function loadMyProducts() {
           <img
             src="${escapeHTML(image)}"
             alt="${escapeHTML(
-              product.name ||
-              "Product"
+              product.name || "Product"
             )}"
             onerror="
               this.src='https://via.placeholder.com/150?text=Product'
             "
           >
 
-
           <div class="my-product-details">
 
             <strong>
               ${escapeHTML(
-                product.name ||
-                "Product"
+                product.name || "Product"
               )}
             </strong>
 
             <span>
               ₦${(
-                Number(
-                  product.price
-                ) || 0
+                Number(product.price) || 0
               ).toLocaleString()}
             </span>
 
           </div>
 
-
           <div class="my-product-actions">
 
-            <button
-              class="edit-btn"
-            >
+            <button class="edit-btn">
               Edit
             </button>
 
-            <button
-              class="delete-btn"
-            >
+            <button class="delete-btn">
               Delete
             </button>
 
@@ -3774,40 +3532,32 @@ async function loadMyProducts() {
         `;
 
 
-        const editButton =
-          item.querySelector(
-            ".edit-btn"
+        item
+          .querySelector(".edit-btn")
+          .addEventListener(
+            "click",
+            () => {
+
+              openEditProduct(
+                product
+              );
+
+            }
           );
 
 
-        const deleteButton =
-          item.querySelector(
-            ".delete-btn"
+        item
+          .querySelector(".delete-btn")
+          .addEventListener(
+            "click",
+            () => {
+
+              deleteProduct(
+                product.id
+              );
+
+            }
           );
-
-
-        editButton.addEventListener(
-          "click",
-          () => {
-
-            openEditProduct(
-              product
-            );
-
-          }
-        );
-
-
-        deleteButton.addEventListener(
-          "click",
-          () => {
-
-            deleteProduct(
-              product.id
-            );
-
-          }
-        );
 
 
         myProductsContainer.appendChild(
@@ -3819,8 +3569,7 @@ async function loadMyProducts() {
 
   }
 
-
-  catch (error) {
+  catch(error){
 
     console.error(
       "Failed to load my products:",
@@ -3857,9 +3606,9 @@ async function loadMyProducts() {
 }
 
 
-/* =========================
-   OPEN ADD PRODUCT
-========================= */
+/* =====================================================
+   ADD PRODUCT
+===================================================== */
 
 document
   .getElementById(
@@ -3869,22 +3618,17 @@ document
     "click",
     () => {
 
-
-      if (!currentUser) {
-
+      if(!currentUser){
         return;
-
       }
 
 
-      editingProductId =
-        null;
+      editingProductId = null;
 
 
       document.getElementById(
         "editingProductId"
-      ).value =
-        "";
+      ).value = "";
 
 
       document.getElementById(
@@ -3918,31 +3662,22 @@ document
   );
 
 
-/* =========================
-   CLOSE PRODUCT MODAL
-========================= */
-
-function closeProductModal() {
-
+function closeProductModal(){
 
   productModal.classList.remove(
     "show"
   );
 
-
   document.getElementById(
     "productForm"
   ).reset();
-
 
   document.getElementById(
     "productPreviewBox"
   ).style.display =
     "none";
 
-
-  editingProductId =
-    null;
+  editingProductId = null;
 
 }
 
@@ -3967,9 +3702,9 @@ document
   );
 
 
-/* =========================
+/* =====================================================
    PRODUCT IMAGE PREVIEW
-========================= */
+===================================================== */
 
 document
   .getElementById(
@@ -3978,7 +3713,6 @@ document
   .addEventListener(
     "input",
     () => {
-
 
       const url =
         document.getElementById(
@@ -3991,26 +3725,22 @@ document
           "productPreviewBox"
         );
 
-
       const preview =
         document.getElementById(
           "productPreview"
         );
 
 
-      if (!url) {
+      if(!url){
 
         previewBox.style.display =
           "none";
 
         return;
-
       }
 
 
-      preview.src =
-        url;
-
+      preview.src = url;
 
       previewBox.style.display =
         "block";
@@ -4019,9 +3749,9 @@ document
   );
 
 
-/* =========================
+/* =====================================================
    SAVE PRODUCT
-========================= */
+===================================================== */
 
 document
   .getElementById(
@@ -4029,44 +3759,38 @@ document
   )
   .addEventListener(
     "submit",
-    async (event) => {
-
+    async event => {
 
       event.preventDefault();
 
 
-      if (!currentUser) {
+      if(!currentUser){
 
         alert(
           "Please login first."
         );
 
         return;
-
       }
 
 
-      if (
+      if(
 
         !currentUserData ||
 
-        currentUserData.isSeller !==
-        true ||
+        currentUserData.isSeller !== true ||
 
-        currentUserData.role !==
-        "seller" ||
+        currentUserData.role !== "seller" ||
 
-        currentUserData.sellerStatus !==
-        "approved"
+        currentUserData.sellerStatus !== "approved"
 
-      ) {
+      ){
 
         alert(
           "Your seller account must be approved first."
         );
 
         return;
-
       }
 
 
@@ -4075,29 +3799,23 @@ document
           "productSubmitBtn"
         );
 
-
       const message =
         document.getElementById(
           "productMessage"
         );
 
 
-      submitBtn.disabled =
-        true;
-
+      submitBtn.disabled = true;
 
       submitBtn.textContent =
         editingProductId
           ? "Updating..."
           : "Saving...";
 
-
-      message.textContent =
-        "";
+      message.textContent = "";
 
 
-      try {
-
+      try{
 
         const productData = {
 
@@ -4150,17 +3868,14 @@ document
             currentUserData.phone ||
             "",
 
-          status:
-            "active",
+          status:"active",
 
-          featured:
-            false
+          featured:false
 
         };
 
 
-        if (editingProductId) {
-
+        if(editingProductId){
 
           await updateDoc(
 
@@ -4171,12 +3886,9 @@ document
             ),
 
             {
-
               ...productData,
-
               updatedAt:
                 serverTimestamp()
-
             }
 
           );
@@ -4185,15 +3897,12 @@ document
           message.style.color =
             "green";
 
-
           message.textContent =
             "Product updated successfully.";
 
         }
 
-
-        else {
-
+        else{
 
           await addDoc(
 
@@ -4203,12 +3912,9 @@ document
             ),
 
             {
-
               ...productData,
-
               createdAt:
                 serverTimestamp()
-
             }
 
           );
@@ -4216,7 +3922,6 @@ document
 
           message.style.color =
             "green";
-
 
           message.textContent =
             "Product added successfully.";
@@ -4238,20 +3943,14 @@ document
           800
         );
 
-
       }
 
+      catch(error){
 
-      catch (error) {
-
-        console.error(
-          error
-        );
-
+        console.error(error);
 
         message.style.color =
           "red";
-
 
         message.textContent =
           "Failed: " +
@@ -4260,9 +3959,7 @@ document
       }
 
 
-      submitBtn.disabled =
-        false;
-
+      submitBtn.disabled = false;
 
       submitBtn.textContent =
         editingProductId
@@ -4273,14 +3970,11 @@ document
   );
 
 
-/* =========================
+/* =====================================================
    EDIT PRODUCT
-========================= */
+===================================================== */
 
-function openEditProduct(
-  product
-) {
-
+function openEditProduct(product){
 
   editingProductId =
     product.id;
@@ -4340,13 +4034,12 @@ function openEditProduct(
     product.description || "";
 
 
-  if (product.imageUrl) {
+  if(product.imageUrl){
 
     document.getElementById(
       "productPreview"
     ).src =
       product.imageUrl;
-
 
     document.getElementById(
       "productPreviewBox"
@@ -4355,7 +4048,7 @@ function openEditProduct(
 
   }
 
-  else {
+  else{
 
     document.getElementById(
       "productPreviewBox"
@@ -4367,8 +4060,7 @@ function openEditProduct(
 
   document.getElementById(
     "productMessage"
-  ).textContent =
-    "";
+  ).textContent = "";
 
 
   productModal.classList.add(
@@ -4378,19 +4070,14 @@ function openEditProduct(
 }
 
 
-/* =========================
+/* =====================================================
    DELETE PRODUCT
-========================= */
+===================================================== */
 
-async function deleteProduct(
-  productId
-) {
+async function deleteProduct(productId){
 
-
-  if (!currentUser) {
-
+  if(!currentUser){
     return;
-
   }
 
 
@@ -4400,15 +4087,12 @@ async function deleteProduct(
     );
 
 
-  if (!confirmed) {
-
+  if(!confirmed){
     return;
-
   }
 
 
-  try {
-
+  try{
 
     const productRef =
       doc(
@@ -4424,16 +4108,13 @@ async function deleteProduct(
       );
 
 
-    if (
-      !productSnapshot.exists()
-    ) {
+    if(!productSnapshot.exists()){
 
       alert(
         "Product not found."
       );
 
       return;
-
     }
 
 
@@ -4441,17 +4122,16 @@ async function deleteProduct(
       productSnapshot.data();
 
 
-    if (
+    if(
       product.sellerId !==
       currentUser.uid
-    ) {
+    ){
 
       alert(
         "You can only delete your own products."
       );
 
       return;
-
     }
 
 
@@ -4471,13 +4151,9 @@ async function deleteProduct(
 
   }
 
+  catch(error){
 
-  catch (error) {
-
-    console.error(
-      error
-    );
-
+    console.error(error);
 
     alert(
       "Delete failed: " +
@@ -4489,9 +4165,9 @@ async function deleteProduct(
 }
 
 
-/* =========================
-   EDIT SELLER PROFILE
-========================= */
+/* =====================================================
+   EDIT PROFILE
+===================================================== */
 
 document
   .getElementById(
@@ -4501,54 +4177,45 @@ document
     "click",
     () => {
 
-
-      if (!currentUserData) {
-
+      if(!currentUserData){
         return;
-
       }
 
 
       document.getElementById(
         "profileName"
       ).value =
-        currentUserData.name ||
-        "";
+        currentUserData.name || "";
 
 
       document.getElementById(
         "profileBusinessName"
       ).value =
-        currentUserData.businessName ||
-        "";
+        currentUserData.businessName || "";
 
 
       document.getElementById(
         "profilePhone"
       ).value =
-        currentUserData.phone ||
-        "";
+        currentUserData.phone || "";
 
 
       document.getElementById(
         "profileWhatsapp"
       ).value =
-        currentUserData.whatsapp ||
-        "";
+        currentUserData.whatsapp || "";
 
 
       document.getElementById(
         "profileLocation"
       ).value =
-        currentUserData.location ||
-        "";
+        currentUserData.location || "";
 
 
       document.getElementById(
         "profileDescription"
       ).value =
-        currentUserData.businessDescription ||
-        "";
+        currentUserData.businessDescription || "";
 
 
       const profileImage =
@@ -4564,13 +4231,12 @@ document
 
 
       profileImage.value =
-        currentUserData.profileImageUrl ||
-        "";
+        currentUserData.profileImageUrl || "";
 
 
-      if (
+      if(
         currentUserData.profileImageUrl
-      ) {
+      ){
 
         profilePreview.src =
           currentUserData.profileImageUrl;
@@ -4580,10 +4246,9 @@ document
 
       }
 
-      else {
+      else{
 
-        profilePreview.src =
-          "";
+        profilePreview.src = "";
 
         profilePreview.style.display =
           "none";
@@ -4593,8 +4258,7 @@ document
 
       document.getElementById(
         "profileMessage"
-      ).textContent =
-        "";
+      ).textContent = "";
 
 
       profileModal.classList.add(
@@ -4605,9 +4269,9 @@ document
   );
 
 
-/* =========================
-   PROFILE IMAGE PREVIEW
-========================= */
+/* =====================================================
+   PROFILE IMAGE
+===================================================== */
 
 document
   .getElementById(
@@ -4615,8 +4279,7 @@ document
   )
   .addEventListener(
     "input",
-    function() {
-
+    function(){
 
       const url =
         this.value.trim();
@@ -4628,20 +4291,18 @@ document
         );
 
 
-      if (url) {
+      if(url){
 
-        preview.src =
-          url;
+        preview.src = url;
 
         preview.style.display =
           "block";
 
       }
 
-      else {
+      else{
 
-        preview.src =
-          "";
+        preview.src = "";
 
         preview.style.display =
           "none";
@@ -4651,10 +4312,6 @@ document
     }
   );
 
-
-/* =========================
-   CLOSE PROFILE MODAL
-========================= */
 
 document
   .getElementById(
@@ -4672,9 +4329,9 @@ document
   );
 
 
-/* =========================
-   SAVE SELLER PROFILE
-========================= */
+/* =====================================================
+   SAVE PROFILE
+===================================================== */
 
 document
   .getElementById(
@@ -4682,16 +4339,13 @@ document
   )
   .addEventListener(
     "submit",
-    async (event) => {
-
+    async event => {
 
       event.preventDefault();
 
 
-      if (!currentUser) {
-
+      if(!currentUser){
         return;
-
       }
 
 
@@ -4700,23 +4354,19 @@ document
           "profileSubmitBtn"
         );
 
-
       const message =
         document.getElementById(
           "profileMessage"
         );
 
 
-      button.disabled =
-        true;
-
+      button.disabled = true;
 
       button.textContent =
         "Saving...";
 
 
-      try {
-
+      try{
 
         const profileData = {
 
@@ -4777,7 +4427,6 @@ document
         currentUserData = {
 
           ...currentUserData,
-
           ...profileData
 
         };
@@ -4785,7 +4434,6 @@ document
 
         message.style.color =
           "green";
-
 
         message.textContent =
           "Profile updated successfully.";
@@ -4808,17 +4456,12 @@ document
 
       }
 
+      catch(error){
 
-      catch (error) {
-
-        console.error(
-          error
-        );
-
+        console.error(error);
 
         message.style.color =
           "red";
-
 
         message.textContent =
           "Failed: " +
@@ -4827,9 +4470,7 @@ document
       }
 
 
-      button.disabled =
-        false;
-
+      button.disabled = false;
 
       button.textContent =
         "Save Profile";
@@ -4838,36 +4479,775 @@ document
   );
 
 
-/* =========================
+/* =====================================================
+   ORDER SYSTEM
+===================================================== */
+
+
+/* =====================================================
+   OPEN ORDER MODAL
+===================================================== */
+
+function openOrderModal(product){
+
+  /*
+   * NOT LOGGED IN
+   *
+   * Save product ID before going
+   * to login page.
+   */
+
+  if(!currentUser){
+
+    localStorage.setItem(
+      "pendingOrderProductId",
+      product.id
+    );
+
+
+    console.log(
+      "PENDING ORDER SAVED:",
+      product.id
+    );
+
+
+    window.location.href =
+      "login.html?returnTo=index.html&resumeOrder=" +
+      encodeURIComponent(
+        product.id
+      );
+
+
+    return;
+  }
+
+
+  showOrderModal(product);
+
+}
+
+
+/* =====================================================
+   SHOW ORDER MODAL
+===================================================== */
+
+function showOrderModal(product){
+
+  selectedOrderProduct =
+    product;
+
+  orderQuantity =
+    1;
+
+
+  document.getElementById(
+    "orderQuantity"
+  ).value =
+    "1";
+
+
+  document.getElementById(
+    "orderMessage"
+  ).textContent =
+    "";
+
+
+  const image =
+    product.imageUrl ||
+    "https://via.placeholder.com/600x400?text=Arewa+Market";
+
+
+  const price =
+    Number(product.price) || 0;
+
+
+  document.getElementById(
+    "orderProductBox"
+  ).innerHTML = `
+
+    <img
+      src="${escapeHTML(image)}"
+      alt="${escapeHTML(
+        product.name || "Product"
+      )}"
+      onerror="
+        this.src='https://via.placeholder.com/600x400?text=Arewa+Market'
+      "
+    >
+
+    <strong>
+      ${escapeHTML(
+        product.name || "Product"
+      )}
+    </strong>
+
+    <div class="order-price">
+      ₦${price.toLocaleString()}
+    </div>
+
+    <small>
+      📍 ${escapeHTML(
+        product.location ||
+        "Northern Nigeria"
+      )}
+    </small>
+
+  `;
+
+
+  document.getElementById(
+    "orderBuyerName"
+  ).value =
+    currentUserData?.name || "";
+
+
+  document.getElementById(
+    "orderBuyerPhone"
+  ).value =
+    currentUserData?.phone || "";
+
+
+  document.getElementById(
+    "orderLocation"
+  ).value =
+    currentUserData?.location || "";
+
+
+  document.getElementById(
+    "orderDeliveryAddress"
+  ).value =
+    "";
+
+
+  updateOrderTotal();
+
+
+  orderModal.classList.add(
+    "show"
+  );
+
+
+  console.log(
+    "ORDER MODAL OPENED:",
+    product.id
+  );
+
+}
+
+
+/* =====================================================
+   RESUME PENDING ORDER
+   ROBUST LOGIN -> ORDER FIX
+===================================================== */
+
+async function resumePendingOrder(){
+
+  if(resumeOrderRunning){
+
+    console.log(
+      "RESUME ORDER ALREADY RUNNING"
+    );
+
+    return;
+  }
+
+
+  if(!currentUser){
+
+    console.log(
+      "RESUME ORDER: USER NOT READY"
+    );
+
+    return;
+  }
+
+
+  if(!currentUserData){
+
+    console.log(
+      "RESUME ORDER: USER PROFILE NOT READY"
+    );
+
+    return;
+  }
+
+
+  /*
+   * IMPORTANT:
+   *
+   * URL parameter gets priority because
+   * it is the newest login redirect.
+   */
+
+  const urlParams =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const urlProductId =
+    urlParams.get(
+      "resumeOrder"
+    );
+
+
+  let pendingProductId =
+    urlProductId ||
+    localStorage.getItem(
+      "pendingOrderProductId"
+    );
+
+
+  /*
+   * If URL contains the product ID,
+   * keep it in localStorage as backup.
+   */
+
+  if(urlProductId){
+
+    localStorage.setItem(
+      "pendingOrderProductId",
+      urlProductId
+    );
+
+  }
+
+
+  /*
+   * Nothing to resume.
+   */
+
+  if(!pendingProductId){
+
+    console.log(
+      "RESUME ORDER: NO PENDING ORDER"
+    );
+
+    return;
+  }
+
+
+  resumeOrderRunning = true;
+
+
+  console.log(
+    "RESUME ORDER PRODUCT:",
+    pendingProductId
+  );
+
+
+  try{
+
+    let product = null;
+
+
+    /*
+     * FIRST:
+     *
+     * Search already loaded products.
+     */
+
+    product =
+      allProducts.find(
+        item =>
+          item.id ===
+          pendingProductId
+      );
+
+
+    /*
+     * SECOND:
+     *
+     * If the product is not among the
+     * first 50 products, get it directly.
+     */
+
+    if(!product){
+
+      console.log(
+        "Getting pending product from Firestore..."
+      );
+
+
+      const productSnap =
+        await getDoc(
+          doc(
+            db,
+            "products",
+            pendingProductId
+          )
+        );
+
+
+      if(productSnap.exists()){
+
+        product = {
+
+          id:
+            productSnap.id,
+
+          ...productSnap.data()
+
+        };
+
+      }
+
+    }
+
+
+    /*
+     * Product not found.
+     */
+
+    if(!product){
+
+      console.warn(
+        "Pending product not found:",
+        pendingProductId
+      );
+
+
+      localStorage.removeItem(
+        "pendingOrderProductId"
+      );
+
+
+      return;
+    }
+
+
+    /*
+     * IMPORTANT:
+     *
+     * Open the exact product's
+     * order modal.
+     */
+
+    showOrderModal(
+      product
+    );
+
+
+    /*
+     * Only remove the pending ID
+     * AFTER successful modal opening.
+     */
+
+    localStorage.removeItem(
+      "pendingOrderProductId"
+    );
+
+
+    /*
+     * Clean resumeOrder from URL
+     * without reloading the page.
+     *
+     * pathname is used instead of
+     * hardcoded index.html.
+     */
+
+    if(urlProductId){
+
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+      );
+
+    }
+
+
+    console.log(
+      "PENDING ORDER RESUMED SUCCESSFULLY:",
+      product.id
+    );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "RESUME ORDER ERROR:",
+      error
+    );
+
+  }
+
+  finally{
+
+    resumeOrderRunning =
+      false;
+
+  }
+
+}
+
+
+/* =====================================================
+   ORDER TOTAL
+===================================================== */
+
+function updateOrderTotal(){
+
+  if(!selectedOrderProduct){
+    return;
+  }
+
+
+  const price =
+    Number(
+      selectedOrderProduct.price
+    ) || 0;
+
+
+  const total =
+    price *
+    orderQuantity;
+
+
+  document.getElementById(
+    "orderTotal"
+  ).textContent =
+    "Total: ₦" +
+    total.toLocaleString();
+
+}
+
+
+/* =====================================================
+   QUANTITY
+===================================================== */
+
+document
+  .getElementById(
+    "decreaseOrderQty"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      if(orderQuantity > 1){
+
+        orderQuantity--;
+
+      }
+
+
+      document.getElementById(
+        "orderQuantity"
+      ).value =
+        orderQuantity;
+
+
+      updateOrderTotal();
+
+    }
+  );
+
+
+document
+  .getElementById(
+    "increaseOrderQty"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      orderQuantity++;
+
+
+      document.getElementById(
+        "orderQuantity"
+      ).value =
+        orderQuantity;
+
+
+      updateOrderTotal();
+
+    }
+  );
+
+
+/* =====================================================
+   CLOSE ORDER
+===================================================== */
+
+function closeOrderModal(){
+
+  orderModal.classList.remove(
+    "show"
+  );
+
+
+  selectedOrderProduct =
+    null;
+
+
+  orderQuantity = 1;
+
+
+  document.getElementById(
+    "orderForm"
+  ).reset();
+
+
+  document.getElementById(
+    "orderMessage"
+  ).textContent = "";
+
+}
+
+
+document
+  .getElementById(
+    "closeOrderModal"
+  )
+  .addEventListener(
+    "click",
+    closeOrderModal
+  );
+
+
+document
+  .getElementById(
+    "cancelOrderBtn"
+  )
+  .addEventListener(
+    "click",
+    closeOrderModal
+  );
+
+
+/* =====================================================
+   PLACE ORDER - COD
+===================================================== */
+
+document
+  .getElementById(
+    "orderForm"
+  )
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      if(!currentUser){
+
+        alert(
+          "Please login first."
+        );
+
+        return;
+      }
+
+
+      if(!selectedOrderProduct){
+
+        alert(
+          "Please select a product."
+        );
+
+        return;
+      }
+
+
+      const button =
+        document.getElementById(
+          "placeOrderBtn"
+        );
+
+      const message =
+        document.getElementById(
+          "orderMessage"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Placing Order...";
+
+      message.textContent = "";
+
+
+      try{
+
+        const price =
+          Number(
+            selectedOrderProduct.price
+          ) || 0;
+
+
+        const total =
+          price *
+          orderQuantity;
+
+
+        const orderData = {
+
+          buyerId:
+            currentUser.uid,
+
+          buyerName:
+            document.getElementById(
+              "orderBuyerName"
+            ).value.trim(),
+
+          buyerPhone:
+            document.getElementById(
+              "orderBuyerPhone"
+            ).value.trim(),
+
+          productId:
+            selectedOrderProduct.id,
+
+          productName:
+            selectedOrderProduct.name ||
+            "Product",
+
+          productImage:
+            selectedOrderProduct.imageUrl ||
+            "",
+
+          price:
+            price,
+
+          quantity:
+            orderQuantity,
+
+          total:
+            total,
+
+          sellerId:
+            selectedOrderProduct.sellerId ||
+            "",
+
+          sellerName:
+            selectedOrderProduct.sellerName ||
+            "",
+
+          sellerPhone:
+            selectedOrderProduct.sellerPhone ||
+            "",
+
+          location:
+            document.getElementById(
+              "orderLocation"
+            ).value,
+
+          deliveryAddress:
+            document.getElementById(
+              "orderDeliveryAddress"
+            ).value.trim(),
+
+          paymentMethod:
+            "cash_on_delivery",
+
+          paymentStatus:
+            "pending",
+
+          status:
+            "pending",
+
+          createdAt:
+            serverTimestamp(),
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+
+        await addDoc(
+
+          collection(
+            db,
+            "orders"
+          ),
+
+          orderData
+
+        );
+
+
+        message.style.color =
+          "#16803c";
+
+
+        message.textContent =
+          "Order placed successfully! Your order is pending confirmation.";
+
+
+        button.textContent =
+          "Order Placed";
+
+
+        setTimeout(
+          () => {
+
+            closeOrderModal();
+
+          },
+          1200
+        );
+
+      }
+
+      catch(error){
+
+        console.error(
+          "ORDER ERROR:",
+          error
+        );
+
+
+        message.style.color =
+          "#b42318";
+
+
+        message.textContent =
+          "Order failed: " +
+          error.message;
+
+
+        button.disabled =
+          false;
+
+
+        button.textContent =
+          "Place Order";
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
    INITIAL LOAD
-========================= */
-
-
-/*
-   First create all fixed
-   categories and states.
-*/
+===================================================== */
 
 populateStaticOptions();
 
-
-/*
-   Then create category cards.
-*/
-
 loadCategories();
-
-
-/*
-   Finally load Firebase products.
-*/
 
 loadProducts();
 
 
+/*
+ * No old 1.5-second timeout is needed.
+ *
+ * The new readiness system automatically
+ * resumes the pending order when BOTH:
+ *
+ * Auth + Products
+ *
+ * are ready.
+ */
+
 </script>
 
-
 </body>
-
 </html>
