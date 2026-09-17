@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Product Details - Arewa Market</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f5f7f6;
+      color:#222;
+    }
+
+    /* ================= HEADER ================= */
+
+    header{
+      background:#0b6b3a;
+      color:white;
+      padding:15px 20px;
+      position:sticky;
+      top:0;
+      z-index:1000;
+      box-shadow:0 2px 8px rgba(0,0,0,.15);
+    }
+
+    .header-inner{
+      max-width:1200px;
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    .brand{
+      text-decoration:none;
+      color:white;
+    }
+
+    .brand h1{
+      font-size:23px;
+    }
+
+    .brand p{
+      font-size:12px;
+      opacity:.9;
+      margin-top:3px;
+    }
+
+    nav{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    nav a,
+    nav button{
+      border:none;
+      text-decoration:none;
+      background:white;
+      color:#0b6b3a;
+      padding:9px 13px;
+      border-radius:6px;
+      font-size:13px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    nav a.seller-btn{
+      background:#d6a21d;
+      color:white;
+    }
+
+    nav button.logout{
+      background:#b42318;
+      color:white;
+    }
+
+    /* ================= MAIN ================= */
+
+    main{
+      max-width:1100px;
+      margin:auto;
+      padding:30px 15px 60px;
+    }
+
+    .back-btn{
+      display:inline-block;
+      margin-bottom:20px;
+      padding:10px 15px;
+      background:white;
+      color:#0b6b3a;
+      border:1px solid #0b6b3a;
+      border-radius:7px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:14px;
+    }
+
+    .back-btn:hover{
+      background:#0b6b3a;
+      color:white;
+    }
+
+    /* ================= PRODUCT ================= */
+
+    .product-details{
+      background:white;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 3px 15px rgba(0,0,0,.08);
+      display:grid;
+      grid-template-columns:1fr 1fr;
+    }
+
+    .product-image-area{
+      background:#eee;
+      min-height:430px;
+    }
+
+    .product-image{
+      width:100%;
+      height:100%;
+      min-height:430px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .product-info{
+      padding:30px;
+    }
+
+    .featured{
+      display:inline-block;
+      background:#d6a21d;
+      color:white;
+      padding:5px 9px;
+      border-radius:5px;
+      font-size:12px;
+      margin-bottom:12px;
+      font-weight:bold;
+    }
+
+    .product-info h2{
+      font-size:30px;
+      color:#222;
+      margin-bottom:12px;
+    }
+
+    .price{
+      color:#0b6b3a;
+      font-size:27px;
+      font-weight:bold;
+      margin-bottom:20px;
+    }
+
+    .meta{
+      border-top:1px solid #eee;
+      border-bottom:1px solid #eee;
+      padding:15px 0;
+      margin-bottom:20px;
+    }
+
+    .meta div{
+      margin-bottom:9px;
+      color:#555;
+      font-size:14px;
+    }
+
+    .meta div:last-child{
+      margin-bottom:0;
+    }
+
+    .description-title{
+      color:#0b6b3a;
+      margin-bottom:8px;
+      font-size:18px;
+    }
+
+    .description{
+      color:#666;
+      line-height:1.7;
+      font-size:14px;
+      white-space:pre-wrap;
+    }
+
+    /* ================= SELLER ================= */
+
+    .seller-box{
+      margin-top:25px;
+      padding:18px;
+      background:#f5f7f6;
+      border-radius:9px;
+    }
+
+    .seller-box h3{
+      color:#0b6b3a;
+      margin-bottom:8px;
+    }
+
+    .seller-name{
+      font-weight:bold;
+      margin-bottom:12px;
+    }
+
+    .seller-link{
+      display:inline-block;
+      background:#0b6b3a;
+      color:white;
+      text-decoration:none;
+      padding:10px 15px;
+      border-radius:6px;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .seller-link:hover{
+      background:#07502b;
+    }
+
+    /* ================= LOADING ================= */
+
+    .loading,
+    .error-box{
+      background:white;
+      padding:50px 20px;
+      text-align:center;
+      border-radius:10px;
+      box-shadow:0 2px 10px rgba(0,0,0,.06);
+    }
+
+    .loading{
+      color:#0b6b3a;
+    }
+
+    .error-box h2{
+      color:#0b6b3a;
+      margin-bottom:10px;
+    }
+
+    .error-box p{
+      color:#666;
+      margin-bottom:20px;
+    }
+
+    .home-btn{
+      display:inline-block;
+      background:#0b6b3a;
+      color:white;
+      text-decoration:none;
+      padding:10px 16px;
+      border-radius:6px;
+      font-weight:bold;
+    }
+
+    /* ================= MESSAGE ================= */
+
+    #message{
+      display:none;
+      position:fixed;
+      top:80px;
+      right:15px;
+      z-index:2000;
+      max-width:320px;
+      padding:13px 16px;
+      border-radius:7px;
+      color:white;
+      background:#0b6b3a;
+      box-shadow:0 3px 12px rgba(0,0,0,.2);
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer{
+      background:#073d24;
+      color:white;
+      padding:25px 15px;
+      text-align:center;
+    }
+
+    footer p{
+      font-size:13px;
+      opacity:.9;
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media(max-width:700px){
+
+      .header-inner{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      nav{
+        width:100%;
+      }
+
+      nav a,
+      nav button{
+        flex:1;
+        text-align:center;
+      }
+
+      .product-details{
+        grid-template-columns:1fr;
+      }
+
+      .product-image-area{
+        min-height:280px;
+      }
+
+      .product-image{
+        min-height:280px;
+        max-height:350px;
+      }
+
+      .product-info{
+        padding:20px;
+      }
+
+      .product-info h2{
+        font-size:24px;
+      }
+
+      .price{
+        font-size:23px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header>
+
+    <div class="header-inner">
+
+      <a href="index.html" class="brand">
+
+        <h1>
+          Arewa Market
+        </h1>
+
+        <p>
+          Kasuwar Arewa a Hannunka
+        </p>
+
+      </a>
+
+      <nav id="navArea">
+
+        <a href="login.html">
+          Login
+        </a>
+
+        <a href="register.html">
+          Register
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main>
+
+    <a
+      href="index.html"
+      class="back-btn"
+    >
+      ← Back to Marketplace
+    </a>
+
+
+    <div id="content">
+
+      <div class="loading">
+        Loading product...
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    <p>
+      © 2026 Arewa Market
+    </p>
+
+    <p style="margin-top:6px;">
+      Buy and sell products across Northern Nigeria.
+    </p>
+
+  </footer>
+
+
+  <!-- ================= MESSAGE ================= -->
+
+  <div id="message"></div>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script type="module">
+
+    import {
+      auth,
+      db
+    } from "./firebase.js";
+
+
+    import {
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+    import {
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    // =================================================
+    // ELEMENTS
+    // =================================================
+
+    const content =
+      document.getElementById("content");
+
+    const navArea =
+      document.getElementById("navArea");
+
+    const messageBox =
+      document.getElementById("message");
+
+
+    // =================================================
+    // MESSAGE
+    // =================================================
+
+    function showMessage(text){
+
+      messageBox.textContent = text;
+
+      messageBox.style.display = "block";
+
+      setTimeout(() => {
+
+        messageBox.style.display = "none";
+
+      },3000);
+
+    }
+
+
+    // =================================================
+    // AUTH
+    // =================================================
+
+    onAuthStateChanged(auth, async (user) => {
+
+      if(!user){
+
+        renderLoggedOutNav();
+
+        return;
+
+      }
+
+      let userData = null;
+
+      try{
+
+        const userSnap =
+          await getDoc(
+            doc(db,"users",user.uid)
+          );
+
+        if(userSnap.exists()){
+
+          userData =
+            userSnap.data();
+
+        }
+
+      }catch(error){
+
+        console.error(
+          "User profile error:",
+          error
+        );
+
+      }
+
+      renderLoggedInNav(userData);
+
+    });
+
+
+    // =================================================
+    // LOGGED OUT NAV
+    // =================================================
+
+    function renderLoggedOutNav(){
+
+      navArea.innerHTML = `
+
+        <a href="login.html">
+          Login
+        </a>
+
+        <a href="register.html">
+          Register
+        </a>
+
+      `;
+
+    }
+
+
+    // =================================================
+    // LOGGED IN NAV
+    // =================================================
+
+    function renderLoggedInNav(userData){
+
+      let html = "";
+
+      const isApprovedSeller =
+        userData &&
+        userData.role === "seller" &&
+        userData.isSeller === true &&
+        userData.sellerStatus === "approved";
+
+
+      if(isApprovedSeller){
+
+        html += `
+
+          <a
+            href="seller-dashboard.html"
+            class="seller-btn"
+          >
+            Seller Dashboard
+          </a>
+
+        `;
+
+      }else{
+
+        const isBuyer =
+          !userData ||
+          userData.role === "buyer";
+
+        if(isBuyer){
+
+          html += `
+
+            <a
+              href="seller-apply.html"
+              class="seller-btn"
+            >
+              Become a Seller
+            </a>
+
+          `;
+
+        }
+
+      }
+
+
+      html += `
+
+        <button
+          class="logout"
+          id="logoutBtn"
+        >
+          Logout
+        </button>
+
+      `;
+
+
+      navArea.innerHTML = html;
+
+
+      const logoutBtn =
+        document.getElementById("logoutBtn");
+
+
+      if(logoutBtn){
+
+        logoutBtn.addEventListener(
+          "click",
+          async () => {
+
+            try{
+
+              await signOut(auth);
+
+              showMessage(
+                "You have been logged out."
+              );
+
+              setTimeout(() => {
+
+                window.location.reload();
+
+              },700);
+
+            }catch(error){
+
+              console.error(error);
+
+              showMessage(
+                "Logout failed."
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+    }
+
+
+    // =================================================
+    // GET PRODUCT ID
+    // =================================================
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const productId =
+      params.get("id");
+
+
+    // =================================================
+    // LOAD PRODUCT
+    // =================================================
+
+    async function loadProduct(){
+
+      if(!productId){
+
+        showError(
+          "Product not found.",
+          "No product ID was provided."
+        );
+
+        return;
+
+      }
+
+
+      try{
+
+        const productRef =
+          doc(
+            db,
+            "products",
+            productId
+          );
+
+
+        const productSnap =
+          await getDoc(productRef);
+
+
+        if(
+          !productSnap.exists()
+        ){
+
+          showError(
+            "Product not found.",
+            "This product may have been removed."
+          );
+
+          return;
+
+        }
+
+
+        const product =
+          productSnap.data();
+
+
+        if(
+          product.status !== "active"
+        ){
+
+          showError(
+            "Product unavailable.",
+            "This product is currently not available."
+          );
+
+          return;
+
+        }
+
+
+        renderProduct(product);
+
+      }catch(error){
+
+        console.error(
+          "Product loading error:",
+          error
+        );
+
+
+        showError(
+          "Unable to load product.",
+          "Please check your connection and try again."
+        );
+
+      }
+
+    }
+
+
+    // =================================================
+    // RENDER PRODUCT
+    // =================================================
+
+    function renderProduct(product){
+
+      const image =
+        product.imageUrl ||
+        "https://via.placeholder.com/700x500?text=Arewa+Market";
+
+
+      const name =
+        product.name ||
+        "Unnamed Product";
+
+
+      const price =
+        Number(
+          product.price || 0
+        ).toLocaleString(
+          "en-NG"
+        );
+
+
+      const category =
+        product.category ||
+        "Uncategorized";
+
+
+      const location =
+        product.location ||
+        "Northern Nigeria";
+
+
+      const sellerName =
+        product.sellerName ||
+        "Arewa Market";
+
+
+      const description =
+        product.description ||
+        "No description available.";
+
+
+      const featured =
+        product.featured === true
+          ? `
+            <span class="featured">
+              Featured
+            </span>
+          `
+          : "";
+
+
+      let sellerBox = "";
+
+
+      if(
+        product.sellerId &&
+        product.sellerId !== "admin"
+      ){
+
+        sellerBox = `
+
+          <div class="seller-box">
+
+            <h3>
+              Seller
+            </h3>
+
+            <div class="seller-name">
+              ${escapeHtml(sellerName)}
+            </div>
+
+            <a
+              class="seller-link"
+              href="seller-profile.html?id=${encodeURIComponent(
+                product.sellerId
+              )}"
+            >
+              View Seller Profile →
+            </a>
+
+          </div>
+
+        `;
+
+      }else{
+
+        sellerBox = `
+
+          <div class="seller-box">
+
+            <h3>
+              Seller
+            </h3>
+
+            <div class="seller-name">
+              Arewa Market
+            </div>
+
+          </div>
+
+        `;
+
+      }
+
+
+      content.innerHTML = `
+
+        <article class="product-details">
+
+          <div class="product-image-area">
+
+            <img
+              class="product-image"
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(name)}"
+              onerror="
+                this.src='https://via.placeholder.com/700x500?text=Arewa+Market'
+              "
+            >
+
+          </div>
+
+
+          <div class="product-info">
+
+            ${featured}
+
+
+            <h2>
+              ${escapeHtml(name)}
+            </h2>
+
+
+            <div class="price">
+              ₦${price}
+            </div>
+
+
+            <div class="meta">
+
+              <div>
+                📂 <strong>Category:</strong>
+                ${escapeHtml(category)}
+              </div>
+
+              <div>
+                📍 <strong>Location:</strong>
+                ${escapeHtml(location)}
+              </div>
+
+              <div>
+                👤 <strong>Seller:</strong>
+                ${escapeHtml(sellerName)}
+              </div>
+
+            </div>
+
+
+            <h3 class="description-title">
+              Product Description
+            </h3>
+
+
+            <div class="description">
+              ${escapeHtml(description)}
+            </div>
+
+
+            ${sellerBox}
+
+          </div>
+
+        </article>
+
+      `;
+
+
+      document.title =
+        `${name} - Arewa Market`;
+
+    }
+
+
+    // =================================================
+    // ERROR
+    // =================================================
+
+    function showError(title,text){
+
+      content.innerHTML = `
+
+        <div class="error-box">
+
+          <h2>
+            ${escapeHtml(title)}
+          </h2>
+
+          <p>
+            ${escapeHtml(text)}
+          </p>
+
+          <a
+            href="index.html"
+            class="home-btn"
+          >
+            Back to Marketplace
+          </a>
+
+        </div>
+
+      `;
+
+    }
+
+
+    // =================================================
+    // ESCAPE HTML
+    // =================================================
+
+    function escapeHtml(value){
+
+      return String(value ?? "")
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    // =================================================
+    // START
+    // =================================================
+
+    loadProduct();
+
+  </script>
+
+</body>
+</html>

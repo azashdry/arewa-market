@@ -1,984 +1,1337 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <title>Seller Profile - Arewa Market</title>
+<title>Arewa Market - Seller Profile</title>
 
-  <style>
+<style>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7f9;
-      color: #222;
-    }
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f7f5;
+  color:#222;
+}
 
-    header {
-      background: #0b7a3b;
-      color: white;
-      padding: 16px 20px;
-    }
+/* =========================
+   HEADER
+========================= */
 
-    .header-inner {
-      max-width: 1100px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
+header{
+  background:#087f5b;
+  color:white;
+  padding:15px 20px;
 
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-    }
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 
-    .tagline {
-      font-size: 12px;
-      opacity: 0.9;
-      margin-top: 3px;
-    }
+  gap:15px;
+  flex-wrap:wrap;
+}
 
-    .back-btn {
-      background: white;
-      color: #0b7a3b;
-      text-decoration: none;
-      padding: 9px 14px;
-      border-radius: 7px;
-      font-size: 14px;
-      font-weight: bold;
-    }
+.logo{
+  font-size:22px;
+  font-weight:bold;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: 25px auto;
-      padding: 0 15px;
-    }
+.logo small{
+  display:block;
+  font-size:12px;
+  font-weight:normal;
+  margin-top:3px;
+}
 
-    .seller-card {
-      background: white;
-      border-radius: 14px;
-      padding: 25px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-    }
+.header-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
 
-    .seller-top {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
+.btn{
+  border:none;
+  padding:10px 15px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
+  text-decoration:none;
+  display:inline-block;
+}
 
-    .seller-image {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #e8f5ee;
-      background: #eee;
-    }
+.btn-light{
+  background:white;
+  color:#087f5b;
+}
 
-    .seller-name {
-      font-size: 25px;
-      font-weight: bold;
-      margin-bottom: 7px;
-    }
+.btn-gold{
+  background:#d4a017;
+  color:white;
+}
 
-    .verified {
-      display: inline-block;
-      background: #e8f5ee;
-      color: #0b7a3b;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
+.btn-danger{
+  background:#dc3545;
+  color:white;
+}
 
-    .seller-info {
-      margin-top: 20px;
-      line-height: 1.8;
-      color: #555;
-    }
+.btn-green{
+  background:#087f5b;
+  color:white;
+}
 
-    .seller-description {
-      margin-top: 12px;
-      line-height: 1.7;
-      color: #444;
-    }
+.btn:hover{
+  opacity:.9;
+}
 
-    .seller-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
+/* =========================
+   CONTAINER
+========================= */
 
-    .action-btn {
-      text-decoration: none;
-      padding: 11px 18px;
-      border-radius: 7px;
-      color: white;
-      font-weight: bold;
-      font-size: 14px;
-    }
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
 
-    .call-btn {
-      background: #1769aa;
-    }
+/* =========================
+   MESSAGE
+========================= */
 
-    .whatsapp-btn {
-      background: #25d366;
-    }
+.message{
+  display:none;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:7px;
+}
 
-    .section-title {
-      font-size: 21px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
+.message.error{
+  display:block;
+  background:#f8d7da;
+  color:#721c24;
+}
 
-    .products {
-      display: grid;
-      grid-template-columns:
-        repeat(auto-fill, minmax(220px, 1fr));
-      gap: 18px;
-    }
+/* =========================
+   SELLER PROFILE
+========================= */
 
-    .product-card {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
+.profile-panel{
+  background:white;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  margin-bottom:25px;
+}
 
-    .product-card:hover {
-      transform: translateY(-3px);
-    }
+.profile-top{
+  display:flex;
+  align-items:center;
+  gap:25px;
+  flex-wrap:wrap;
+}
 
-    .product-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      background: #eee;
-    }
+.profile-image{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#ddd;
+  border:4px solid #087f5b;
+}
 
-    .product-info {
-      padding: 13px;
-    }
+.profile-info{
+  flex:1;
+  min-width:240px;
+}
 
-    .product-name {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
+.profile-info h1{
+  color:#087f5b;
+  margin-bottom:6px;
+  font-size:30px;
+}
 
-    .product-price {
-      color: #0b7a3b;
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 7px;
-    }
+.business-name{
+  font-size:18px;
+  color:#555;
+  margin-bottom:12px;
+}
 
-    .product-location {
-      color: #777;
-      font-size: 13px;
-    }
+.profile-detail{
+  margin:7px 0;
+  color:#555;
+}
 
-    .loading,
-    .empty,
-    .error {
-      background: white;
-      padding: 25px;
-      text-align: center;
-      border-radius: 10px;
-      color: #777;
-    }
+.profile-detail strong{
+  color:#222;
+}
 
-    .error {
-      color: #b00020;
-    }
+.status{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
 
-    footer {
-      margin-top: 40px;
-      padding: 25px 15px;
-      text-align: center;
-      background: #111;
-      color: white;
-      font-size: 13px;
-    }
+.status-approved{
+  background:#d4edda;
+  color:#155724;
+}
 
-    @media (max-width: 600px) {
+.description{
+  margin-top:15px;
+  line-height:1.6;
+  color:#555;
+}
 
-      .header-inner {
-        align-items: flex-start;
-      }
+/* =========================
+   CONTACT
+========================= */
 
-      .logo {
-        font-size: 19px;
-      }
+.contact-actions{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
 
-      .seller-top {
-        flex-direction: column;
-        text-align: center;
-      }
+.contact-actions a{
+  text-decoration:none;
+}
 
-      .seller-card {
-        padding: 20px;
-      }
+/* =========================
+   PRODUCTS
+========================= */
 
-      .seller-name {
-        font-size: 21px;
-      }
+.products-panel{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
 
-      .seller-actions {
-        flex-direction: column;
-      }
+.products-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
 
-      .action-btn {
-        text-align: center;
-        width: 100%;
-      }
+.products-header h2{
+  color:#087f5b;
+}
 
-      .products {
-        grid-template-columns:
-          repeat(2, 1fr);
-        gap: 10px;
-      }
+.products-count{
+  color:#666;
+  font-size:14px;
+}
 
-      .product-card img {
-        height: 140px;
-      }
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
 
-      .product-name {
-        font-size: 14px;
-      }
+.product-card{
+  border:1px solid #ddd;
+  border-radius:10px;
+  overflow:hidden;
+  background:white;
+}
 
-      .product-price {
-        font-size: 16px;
-      }
+.product-image{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  background:#eee;
+}
 
-    }
+.product-body{
+  padding:15px;
+}
 
-  </style>
+.product-body h3{
+  color:#087f5b;
+  margin-bottom:8px;
+}
+
+.price{
+  color:#d4a017;
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+.product-meta{
+  color:#666;
+  font-size:14px;
+  margin:5px 0;
+}
+
+.product-description{
+  color:#555;
+  font-size:14px;
+  line-height:1.5;
+  margin-top:10px;
+}
+
+.view-product{
+  display:block;
+  margin-top:14px;
+  background:#087f5b;
+  color:white;
+  text-align:center;
+  padding:10px;
+  border-radius:7px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.view-product:hover{
+  opacity:.9;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading{
+  text-align:center;
+  padding:35px;
+  color:#087f5b;
+  font-weight:bold;
+}
+
+.empty{
+  text-align:center;
+  padding:35px;
+  color:#777;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#777;
+  font-size:14px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
+
+  .products-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:600px){
+
+  header{
+    align-items:flex-start;
+  }
+
+  .header-actions{
+    width:100%;
+  }
+
+  .header-actions .btn{
+    flex:1;
+    text-align:center;
+  }
+
+  .container{
+    padding:12px;
+  }
+
+  .profile-panel{
+    padding:18px;
+  }
+
+  .profile-top{
+    justify-content:center;
+    text-align:center;
+  }
+
+  .profile-info{
+    width:100%;
+  }
+
+  .profile-info h1{
+    font-size:25px;
+  }
+
+  .contact-actions{
+    justify-content:center;
+  }
+
+  .products-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
 
 </head>
 
+
 <body>
 
-  <header>
 
-    <div class="header-inner">
+<header>
 
-      <div>
+  <div class="logo">
 
-        <div class="logo">
-          Arewa Market
-        </div>
+    Arewa Market
 
-        <div class="tagline">
-          Kasuwar Arewa a Hannunka
-        </div>
+    <small>
+      Seller Profile
+    </small>
 
-      </div>
-
-      <a
-        href="index.html"
-        class="back-btn"
-      >
-        ← Back
-      </a>
-
-    </div>
-
-  </header>
+  </div>
 
 
-  <main class="container">
+  <div class="header-actions">
 
-    <div
-      id="sellerContainer"
-      class="loading"
+    <a
+      href="./index.html"
+      class="btn btn-light"
     >
+      Marketplace
+    </a>
+
+
+    <a
+      href="./login.html"
+      id="loginBtn"
+      class="btn btn-gold"
+    >
+      Login
+    </a>
+
+
+    <a
+      href="./seller-dashboard.html"
+      id="dashboardBtn"
+      class="btn btn-gold"
+      style="display:none;"
+    >
+      Seller Dashboard
+    </a>
+
+
+    <button
+      id="logoutBtn"
+      class="btn btn-danger"
+      style="display:none;"
+    >
+      Logout
+    </button>
+
+  </div>
+
+</header>
+
+
+
+<div class="container">
+
+
+  <div
+    id="message"
+    class="message"
+  ></div>
+
+
+  <div
+    id="profilePanel"
+    class="profile-panel"
+  >
+
+    <div class="loading">
       Loading seller profile...
     </div>
 
+  </div>
 
-    <div
-      id="productsSection"
-      style="display:none;"
-    >
 
-      <div class="section-title">
+
+  <div class="products-panel">
+
+    <div class="products-header">
+
+      <h2>
         Seller Products
-      </div>
+      </h2>
 
       <div
-        id="sellerProducts"
-        class="products"
+        id="productsCount"
+        class="products-count"
       >
+        Loading...
       </div>
 
     </div>
 
-  </main>
+
+    <div id="productsContainer">
+
+      <div class="loading">
+        Loading products...
+      </div>
+
+    </div>
+
+  </div>
 
 
-  <footer>
-
-    © 2026 Arewa Market.
-    All rights reserved.
-
-  </footer>
+</div>
 
 
-  <script type="module">
 
-    import {
-      initializeApp
-    }
-    from
-      "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+<footer>
 
+  © 2026 Arewa Market -
+  Kasuwar Arewa a Hannunka
 
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      collection,
-      query,
-      where,
-      getDocs
-    }
-    from
-      "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+</footer>
 
 
-    // =====================================
-    // FIREBASE CONFIG
-    // =====================================
 
-    const firebaseConfig = {
-
-      apiKey:
-        "AIzaSyD48Bay25k24a5WckM6AmuK3p68oGT6vk",
-
-      authDomain:
-        "arewa-market-4e603.firebaseapp.com",
-
-      projectId:
-        "arewa-market-4e603",
-
-      storageBucket:
-        "arewa-market-4e603.firebasestorage.app",
-
-      messagingSenderId:
-        "217844252739",
-
-      appId:
-        "1:217844252739:web:81b00d9ac29277c42d94f6",
-
-      measurementId:
-        "G-ZTQHETHX4T"
-
-    };
+<script type="module">
 
 
-    const app =
-      initializeApp(firebaseConfig);
+/* =========================================
+   FIREBASE
+========================================= */
 
-    const db =
-      getFirestore(app);
-
-
-    // =====================================
-    // ELEMENTS
-    // =====================================
-
-    const sellerContainer =
-      document.getElementById(
-        "sellerContainer"
-      );
-
-    const productsSection =
-      document.getElementById(
-        "productsSection"
-      );
-
-    const sellerProducts =
-      document.getElementById(
-        "sellerProducts"
-      );
+import {
+  auth,
+  db
+} from "./firebase.js";
 
 
-    // =====================================
-    // HTML ESCAPE
-    // =====================================
-
-    function escapeHTML(value) {
-
-      return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
-    // =====================================
-    // NIGERIAN PHONE NORMALIZER
-    // =====================================
-
-    function normalizeNigeriaPhone(phone) {
-
-      let value =
-        String(phone || "").trim();
-
-      if (!value) {
-        return "";
-      }
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-      value =
-        value.replace(/[^\d+]/g, "");
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const profilePanel =
+  document.getElementById(
+    "profilePanel"
+  );
 
 
-      // +2348120982352
-      if (value.startsWith("+234")) {
-
-        return "234" + value.substring(4);
-
-      }
+const productsContainer =
+  document.getElementById(
+    "productsContainer"
+  );
 
 
-      // 2348120982352
-      if (value.startsWith("234")) {
-
-        return value;
-
-      }
+const productsCount =
+  document.getElementById(
+    "productsCount"
+  );
 
 
-      // 08120982352
-      if (value.startsWith("0")) {
-
-        return "234" + value.substring(1);
-
-      }
+const messageBox =
+  document.getElementById(
+    "message"
+  );
 
 
-      return value;
+const loginBtn =
+  document.getElementById(
+    "loginBtn"
+  );
+
+
+const dashboardBtn =
+  document.getElementById(
+    "dashboardBtn"
+  );
+
+
+const logoutBtn =
+  document.getElementById(
+    "logoutBtn"
+  );
+
+
+
+/* =========================================
+   SELLER ID
+========================================= */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const sellerId =
+  params.get("id");
+
+
+
+/* =========================================
+   AUTH STATE
+========================================= */
+
+onAuthStateChanged(
+  auth,
+  (user) => {
+
+    if(user){
+
+      loginBtn.style.display =
+        "none";
+
+      logoutBtn.style.display =
+        "inline-block";
+
+
+      loadCurrentUser(user);
+
+    }else{
+
+      loginBtn.style.display =
+        "inline-block";
+
+      dashboardBtn.style.display =
+        "none";
+
+      logoutBtn.style.display =
+        "none";
 
     }
 
+  }
+);
 
-    // =====================================
-    // GET SELLER ID FROM URL
-    // =====================================
 
-    const params =
-      new URLSearchParams(
-        window.location.search
+
+/* =========================================
+   CURRENT USER
+========================================= */
+
+async function loadCurrentUser(user){
+
+  try{
+
+    const userSnap =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        )
       );
 
-    const sellerId =
-      params.get("id");
+
+    if(!userSnap.exists()){
+
+      return;
+
+    }
 
 
-    // =====================================
-    // CHECK SELLER ID
-    // =====================================
+    const data =
+      userSnap.data();
 
-    if (!sellerId) {
 
-      sellerContainer.innerHTML = `
+    if(
+      data.role === "seller" &&
+      data.isSeller === true &&
+      data.sellerStatus === "approved"
+    ){
 
-        <div class="error">
+      dashboardBtn.style.display =
+        "inline-block";
 
-          Seller ID was not provided.
+    }
+
+  }catch(error){
+
+    console.error(
+      "Current user error:",
+      error
+    );
+
+  }
+
+}
+
+
+
+/* =========================================
+   LOAD SELLER PROFILE
+========================================= */
+
+async function loadSeller(){
+
+  if(!sellerId){
+
+    showError(
+      "Seller profile link is missing."
+    );
+
+    productsCount.textContent =
+      "0 products";
+
+    productsContainer.innerHTML =
+      `
+      <div class="empty">
+        Seller profile link is missing.
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  try{
+
+    const sellerSnap =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          sellerId
+        )
+      );
+
+
+    if(!sellerSnap.exists()){
+
+      showError(
+        "Seller profile not found."
+      );
+
+      productsCount.textContent =
+        "0 products";
+
+      productsContainer.innerHTML =
+        `
+        <div class="empty">
+          Seller not found.
+        </div>
+        `;
+
+      return;
+
+    }
+
+
+    const seller =
+      sellerSnap.data();
+
+
+    if(
+      seller.role !== "seller" ||
+      seller.isSeller !== true ||
+      seller.sellerStatus !== "approved"
+    ){
+
+      showError(
+        "This seller profile is not available."
+      );
+
+      productsCount.textContent =
+        "0 products";
+
+      productsContainer.innerHTML =
+        `
+        <div class="empty">
+          Seller profile is not available.
+        </div>
+        `;
+
+      return;
+
+    }
+
+
+    renderSeller(seller);
+
+
+    await loadSellerProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+    showError(
+      "Failed to load seller profile: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+
+/* =========================================
+   RENDER SELLER PROFILE
+========================================= */
+
+function renderSeller(seller){
+
+  const name =
+    seller.name ||
+    "Seller";
+
+
+  const business =
+    seller.businessName ||
+    "Arewa Market Seller";
+
+
+  const profileImage =
+    seller.profileImageUrl ||
+    "https://via.placeholder.com/150?text=Seller";
+
+
+  const phone =
+    seller.phone ||
+    "";
+
+
+  const whatsapp =
+    seller.whatsapp ||
+    "";
+
+
+  const location =
+    seller.location ||
+    "-";
+
+
+  const description =
+    seller.businessDescription ||
+    "This seller has not added a business description yet.";
+
+
+  let contactButtons = "";
+
+
+  if(phone){
+
+    const phoneNumber =
+      phone.replace(
+        /[^0-9+]/g,
+        ""
+      );
+
+
+    contactButtons += `
+
+      <a
+        class="btn btn-green"
+        href="tel:${escapeHtml(phoneNumber)}"
+      >
+        📞 Call Seller
+      </a>
+
+    `;
+
+  }
+
+
+  if(whatsapp){
+
+    let whatsappNumber =
+      whatsapp.replace(
+        /[^0-9]/g,
+        ""
+      );
+
+
+    if(
+      whatsappNumber.startsWith("0")
+    ){
+
+      whatsappNumber =
+        "234" +
+        whatsappNumber.substring(1);
+
+    }
+
+
+    contactButtons += `
+
+      <a
+        class="btn btn-gold"
+        href="https://wa.me/${escapeHtml(whatsappNumber)}"
+        target="_blank"
+        rel="noopener"
+      >
+        💬 WhatsApp
+      </a>
+
+    `;
+
+  }
+
+
+  profilePanel.innerHTML = `
+
+    <div class="profile-top">
+
+      <img
+        class="profile-image"
+        src="${escapeHtml(profileImage)}"
+        alt="${escapeHtml(name)}"
+        onerror="
+          this.src='https://via.placeholder.com/150?text=Seller'
+        "
+      >
+
+
+      <div class="profile-info">
+
+        <h1>
+          ${escapeHtml(name)}
+        </h1>
+
+
+        <div class="business-name">
+          ${escapeHtml(business)}
+        </div>
+
+
+        <div class="profile-detail">
+
+          <strong>
+            📍 Location:
+          </strong>
+
+          ${escapeHtml(location)}
 
         </div>
 
+
+        ${
+          phone
+          ?
+          `
+          <div class="profile-detail">
+
+            <strong>
+              📞 Phone:
+            </strong>
+
+            ${escapeHtml(phone)}
+
+          </div>
+          `
+          :
+          ""
+        }
+
+
+        ${
+          whatsapp
+          ?
+          `
+          <div class="profile-detail">
+
+            <strong>
+              💬 WhatsApp:
+            </strong>
+
+            ${escapeHtml(whatsapp)}
+
+          </div>
+          `
+          :
+          ""
+        }
+
+
+        <div class="profile-detail">
+
+          <span class="status status-approved">
+            Approved Seller
+          </span>
+
+        </div>
+
+
+        <div class="description">
+
+          ${escapeHtml(description)}
+
+        </div>
+
+
+        <div class="contact-actions">
+
+          ${contactButtons}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+
+/* =========================================
+   LOAD SELLER PRODUCTS
+========================================= */
+
+async function loadSellerProducts(){
+
+  productsContainer.innerHTML =
+    `
+    <div class="loading">
+      Loading products...
+    </div>
+    `;
+
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "products"
+        )
+      );
+
+
+    const products = [];
+
+
+    snapshot.forEach(
+      (productDoc) => {
+
+        const data =
+          productDoc.data();
+
+
+        if(
+          data.sellerId === sellerId &&
+          data.status === "active"
+        ){
+
+          products.push({
+
+            id:
+              productDoc.id,
+
+            ...data
+
+          });
+
+        }
+
+      }
+    );
+
+
+    productsCount.textContent =
+      products.length +
+      (
+        products.length === 1
+          ? " product"
+          : " products"
+      );
+
+
+    if(products.length === 0){
+
+      productsContainer.innerHTML =
+        `
+        <div class="empty">
+
+          <h3>
+            No active products yet
+          </h3>
+
+          <p>
+            This seller has not published
+            any active products.
+          </p>
+
+        </div>
+        `;
+
+      return;
+
+    }
+
+
+    productsContainer.innerHTML =
+      `
+      <div class="products-grid">
+
+        ${products
+          .map(productCard)
+          .join("")
+        }
+
+      </div>
       `;
 
-    } else {
+  }catch(error){
 
-      loadSeller();
+    console.error(error);
 
-    }
+    productsCount.textContent =
+      "Unable to load";
 
 
-    // =====================================
-    // LOAD SELLER
-    // =====================================
+    productsContainer.innerHTML =
+      `
+      <div class="empty">
 
-    async function loadSeller() {
+        Failed to load seller products.
 
-      try {
+      </div>
+      `;
 
-        const sellerRef =
-          doc(
-            db,
-            "users",
-            sellerId
-          );
+  }
 
+}
 
-        const sellerSnap =
-          await getDoc(
-            sellerRef
-          );
 
 
-        if (!sellerSnap.exists()) {
+/* =========================================
+   PRODUCT CARD
+========================================= */
 
-          sellerContainer.innerHTML = `
+function productCard(product){
 
-            <div class="error">
+  const image =
+    product.imageUrl ||
+    "https://via.placeholder.com/500x300?text=No+Image";
 
-              Seller not found.
 
-            </div>
+  const price =
+    Number(
+      product.price || 0
+    ).toLocaleString();
 
-          `;
 
-          return;
+  return `
 
-        }
+    <div class="product-card">
 
+      <img
+        class="product-image"
+        src="${escapeHtml(image)}"
+        alt="${escapeHtml(product.name || "Product")}"
+        onerror="
+          this.src='https://via.placeholder.com/500x300?text=No+Image'
+        "
+      >
 
-        const seller =
-          sellerSnap.data();
 
+      <div class="product-body">
 
-        const sellerName =
-          seller.businessName ||
-          seller.name ||
-          "Arewa Market Seller";
+        <h3>
+          ${escapeHtml(
+            product.name ||
+            "Unnamed Product"
+          )}
+        </h3>
 
 
-        const name =
-          seller.name ||
-          sellerName;
+        <div class="price">
+          ₦${price}
+        </div>
 
 
-        const location =
-          seller.location ||
-          "Northern Nigeria";
+        <div class="product-meta">
 
+          <strong>
+            Category:
+          </strong>
 
-        const rawPhone =
-          seller.phone ||
-          "";
-
-
-        const rawWhatsapp =
-          seller.whatsapp ||
-          rawPhone;
-
-
-        /*
-          Phone for Call.
-
-          08120982352
-          ↓
-          +2348120982352
-        */
-
-        const phone =
-          normalizeNigeriaPhone(
-            rawPhone
-          );
-
-
-        /*
-          Phone for WhatsApp.
-
-          08120982352
-          ↓
-          2348120982352
-        */
-
-        const whatsapp =
-          normalizeNigeriaPhone(
-            rawWhatsapp
-          );
-
-
-        const description =
-          seller.businessDescription ||
-          "This seller has not added a business description yet.";
-
-
-        const profileImage =
-          seller.profileImageUrl ||
-          "https://via.placeholder.com/300x300?text=Seller";
-
-
-        let actions = "";
-
-
-        // =====================================
-        // CALL BUTTON
-        // =====================================
-
-        if (phone) {
-
-          actions += `
-
-            <a
-              class="action-btn call-btn"
-              href="tel:+${escapeHTML(phone)}"
-            >
-              📞 Call Seller
-            </a>
-
-          `;
-
-        }
-
-
-        // =====================================
-        // WHATSAPP BUTTON
-        // =====================================
-
-        if (whatsapp) {
-
-          actions += `
-
-            <a
-              class="action-btn whatsapp-btn"
-              target="_blank"
-              rel="noopener"
-              href="https://wa.me/${escapeHTML(
-                whatsapp
-              )}"
-            >
-              💬 WhatsApp
-            </a>
-
-          `;
-
-        }
-
-
-        sellerContainer.className =
-          "seller-card";
-
-
-        sellerContainer.innerHTML = `
-
-          <div class="seller-top">
-
-            <img
-              class="seller-image"
-              src="${escapeHTML(profileImage)}"
-              alt="${escapeHTML(sellerName)}"
-              onerror="
-                this.src='https://via.placeholder.com/300x300?text=Seller'
-              "
-            >
-
-            <div>
-
-              <div class="seller-name">
-
-                ${escapeHTML(sellerName)}
-
-              </div>
-
-              <span class="verified">
-
-                ✓ Approved Seller
-
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <div class="seller-info">
-
-            <div>
-              👤 ${escapeHTML(name)}
-            </div>
-
-            <div>
-              📍 ${escapeHTML(location)}
-            </div>
-
-          </div>
-
-
-          <div class="seller-description">
-
-            ${escapeHTML(description)}
-
-          </div>
-
-
-          <div class="seller-actions">
-
-            ${
-              actions ||
-              `
-                <span
-                  style="
-                    color:#777;
-                    font-size:14px;
-                  "
-                >
-                  Seller contact unavailable
-                </span>
-              `
-            }
-
-          </div>
-
-        `;
-
-
-        await loadSellerProducts();
-
-
-      } catch (error) {
-
-        console.error(
-          "Seller profile error:",
-          error
-        );
-
-
-        sellerContainer.className =
-          "error";
-
-
-        sellerContainer.innerHTML = `
-
-          Failed to load seller profile.
-
-          <br><br>
-
-          ${escapeHTML(
-            error.code ||
-            error.message ||
-            ""
+          ${escapeHtml(
+            product.category ||
+            "-"
           )}
 
-        `;
+        </div>
 
-      }
+
+        <div class="product-meta">
+
+          <strong>
+            Location:
+          </strong>
+
+          ${escapeHtml(
+            product.location ||
+            "-"
+          )}
+
+        </div>
+
+
+        <div class="product-description">
+
+          ${escapeHtml(
+            product.description ||
+            "No description."
+          )}
+
+        </div>
+
+
+        <a
+          class="view-product"
+          href="product.html?id=${encodeURIComponent(product.id)}"
+        >
+          View Product →
+        </a>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value){
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+function showError(text){
+
+  messageBox.textContent =
+    text;
+
+  messageBox.className =
+    "message error";
+
+}
+
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+logoutBtn.addEventListener(
+  "click",
+  async () => {
+
+    try{
+
+      await signOut(auth);
+
+      window.location.replace(
+        "index.html"
+      );
+
+    }catch(error){
+
+      console.error(error);
+
+      showError(
+        "Logout failed: " +
+        error.message
+      );
 
     }
 
+  }
+);
 
-    // =====================================
-    // LOAD SELLER PRODUCTS
-    // =====================================
 
-    async function loadSellerProducts() {
 
-      try {
+/* =========================================
+   START
+========================================= */
 
-        const productsQuery =
-          query(
-            collection(
-              db,
-              "products"
-            ),
-            where(
-              "sellerId",
-              "==",
-              sellerId
-            )
-          );
+loadSeller();
 
-
-        const snapshot =
-          await getDocs(
-            productsQuery
-          );
-
-
-        if (snapshot.empty) {
-
-          productsSection.style.display =
-            "block";
-
-
-          sellerProducts.innerHTML = `
-
-            <div class="empty">
-
-              This seller has no products yet.
-
-            </div>
-
-          `;
-
-          return;
-
-        }
-
-
-        sellerProducts.innerHTML =
-          "";
-
-
-        snapshot.forEach(
-          (productDoc) => {
-
-            const product =
-              productDoc.data();
-
-
-            const productId =
-              productDoc.id;
-
-
-            const name =
-              product.name ||
-              "Product";
-
-
-            const price =
-              Number(product.price) ||
-              0;
-
-
-            const location =
-              product.location ||
-              "Northern Nigeria";
-
-
-            const image =
-              product.imageUrl ||
-              "https://via.placeholder.com/600x400?text=Arewa+Market";
-
-
-            const card =
-              document.createElement(
-                "div"
-              );
-
-
-            card.className =
-              "product-card";
-
-
-            card.innerHTML = `
-
-              <img
-                src="${escapeHTML(image)}"
-                alt="${escapeHTML(name)}"
-                onerror="
-                  this.src='https://via.placeholder.com/600x400?text=Arewa+Market'
-                "
-              >
-
-              <div class="product-info">
-
-                <div class="product-name">
-
-                  ${escapeHTML(name)}
-
-                </div>
-
-                <div class="product-price">
-
-                  ₦${price.toLocaleString()}
-
-                </div>
-
-                <div class="product-location">
-
-                  📍 ${escapeHTML(location)}
-
-                </div>
-
-              </div>
-
-            `;
-
-
-            card.addEventListener(
-              "click",
-              function() {
-
-                window.location.href =
-                  "product-details.html?id=" +
-                  encodeURIComponent(
-                    productId
-                  );
-
-              }
-            );
-
-
-            sellerProducts.appendChild(
-              card
-            );
-
-          }
-        );
-
-
-        productsSection.style.display =
-          "block";
-
-
-      } catch (error) {
-
-        console.error(
-          "Seller products error:",
-          error
-        );
-
-
-        productsSection.style.display =
-          "block";
-
-
-        sellerProducts.innerHTML = `
-
-          <div class="error">
-
-            Failed to load seller products.
-
-            <br><br>
-
-            ${escapeHTML(
-              error.code ||
-              error.message ||
-              ""
-            )}
-
-          </div>
-
-        `;
-
-      }
-
-    }
-
-  </script>
+</script>
 
 </body>
-
 </html>

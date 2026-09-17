@@ -284,6 +284,25 @@
       text-decoration:underline;
     }
 
+    /* ================= VIEW PRODUCT ================= */
+
+    .view-product{
+      display:block;
+      margin-top:10px;
+      background:#0b6b3a;
+      color:white;
+      text-align:center;
+      padding:10px;
+      border-radius:6px;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .view-product:hover{
+      background:#07502b;
+    }
+
     /* ================= EMPTY ================= */
 
     .empty{
@@ -747,6 +766,7 @@
         messageBox.style.display = "none";
 
       },3000);
+
     }
 
 
@@ -1479,6 +1499,7 @@
 
             ${featured}
 
+
             <h3>
               ${escapeHtml(
                 product.name ||
@@ -1530,6 +1551,18 @@
 
 
             ${sellerLink}
+
+
+            <!-- VIEW PRODUCT -->
+
+            <a
+              class="view-product"
+              href="product.html?id=${encodeURIComponent(
+                product.id
+              )}"
+            >
+              View Product →
+            </a>
 
           </div>
 

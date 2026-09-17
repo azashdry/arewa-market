@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Login - Arewa Market</title>
+<title>Arewa Market - Login</title>
 
 <style>
-
 *{
   box-sizing:border-box;
   margin:0;
@@ -19,66 +18,59 @@ body{
   background:#f5f7f2;
   min-height:100vh;
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   padding:20px;
 }
 
-.container{
+.login-box{
   width:100%;
-  max-width:430px;
+  max-width:420px;
+  background:#fff;
+  padding:30px 25px;
+  border-radius:14px;
+  box-shadow:0 8px 30px rgba(0,0,0,.10);
 }
 
 .logo{
   text-align:center;
-  margin-bottom:20px;
+  margin-bottom:25px;
 }
 
 .logo h1{
-  color:#087443;
-  font-size:30px;
+  color:#176b3a;
+  font-size:28px;
+  margin-bottom:6px;
 }
 
 .logo p{
-  color:#666;
-  margin-top:5px;
-}
-
-.card{
-  background:white;
-  padding:25px;
-  border-radius:14px;
-  box-shadow:0 3px 15px rgba(0,0,0,.08);
-}
-
-.card h2{
-  text-align:center;
-  color:#087443;
-  margin-bottom:20px;
+  color:#777;
+  font-size:14px;
 }
 
 .form-group{
-  margin-bottom:16px;
+  margin-bottom:18px;
 }
 
 label{
   display:block;
-  font-size:14px;
+  margin-bottom:7px;
   font-weight:bold;
-  margin-bottom:6px;
+  color:#333;
+  font-size:14px;
 }
 
 input{
   width:100%;
-  padding:12px;
-  border:1px solid #ddd;
+  padding:13px;
+  border:1px solid #ccc;
   border-radius:8px;
   font-size:15px;
   outline:none;
 }
 
 input:focus{
-  border-color:#087443;
+  border-color:#176b3a;
 }
 
 .password-box{
@@ -86,215 +78,152 @@ input:focus{
 }
 
 .password-box input{
-  padding-right:48px;
+  padding-right:50px;
 }
 
-.toggle-password{
+.eye{
   position:absolute;
   right:12px;
   top:50%;
   transform:translateY(-50%);
-  border:0;
-  background:none;
   cursor:pointer;
-  font-size:19px;
-  padding:3px;
-  width:auto;
-  color:#666;
+  color:#555;
+  font-size:18px;
 }
 
-.forgot{
-  text-align:right;
-  margin-top:-7px;
-  margin-bottom:18px;
-}
-
-.forgot a{
-  color:#087443;
-  font-size:13px;
-  font-weight:bold;
-  text-decoration:none;
-}
-
-.login-btn{
+button{
   width:100%;
-  padding:13px;
-  border:0;
+  padding:14px;
+  border:none;
   border-radius:8px;
-  background:#087443;
+  background:#176b3a;
   color:white;
   font-size:16px;
   font-weight:bold;
   cursor:pointer;
 }
 
-.login-btn:disabled{
+button:hover{
+  background:#12572f;
+}
+
+button:disabled{
   opacity:.6;
   cursor:not-allowed;
 }
 
-.message{
-  display:none;
-  padding:10px;
-  border-radius:7px;
-  margin-bottom:15px;
-  font-size:13px;
+.forgot{
+  text-align:right;
+  margin:8px 0 20px;
 }
 
-.error{
-  display:block;
-  background:#ffe8e8;
-  color:#b00020;
-}
-
-.success{
-  display:block;
-  background:#e5f7eb;
-  color:#087443;
+.forgot a{
+  color:#176b3a;
+  text-decoration:none;
+  font-size:14px;
 }
 
 .register{
   text-align:center;
-  margin-top:18px;
+  margin-top:20px;
   color:#666;
   font-size:14px;
 }
 
 .register a{
-  color:#087443;
+  color:#176b3a;
   font-weight:bold;
   text-decoration:none;
 }
 
+.message{
+  display:none;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:18px;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.message.error{
+  display:block;
+  background:#ffeaea;
+  color:#a00000;
+}
+
+.message.success{
+  display:block;
+  background:#e8f7ed;
+  color:#176b3a;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="login-box">
 
   <div class="logo">
-
     <h1>Arewa Market</h1>
-
     <p>Kasuwar Arewa a Hannunka</p>
-
   </div>
 
+  <div id="message" class="message"></div>
 
-  <div class="card">
+  <form id="loginForm">
 
-    <h2>Login</h2>
-
-
-    <div
-      id="message"
-      class="message">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter your email"
+        required
+        autocomplete="email"
+      >
     </div>
 
+    <div class="form-group">
+      <label for="password">Password</label>
 
-    <form id="loginForm">
-
-
-      <div class="form-group">
-
-        <label for="email">
-          Email
-        </label>
-
+      <div class="password-box">
         <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          autocomplete="email"
-          required>
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          required
+          autocomplete="current-password"
+        >
 
+        <span class="eye" id="togglePassword">👁</span>
       </div>
-
-
-      <div class="form-group">
-
-        <label for="password">
-          Password
-        </label>
-
-        <div class="password-box">
-
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            required>
-
-          <button
-            type="button"
-            class="toggle-password"
-            id="togglePassword"
-            aria-label="Show password">
-
-            👁️
-
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="forgot">
-
-        <a
-          href="#"
-          id="forgotPassword">
-
-          Forgot Password?
-
-        </a>
-
-      </div>
-
-
-      <button
-        type="submit"
-        class="login-btn"
-        id="loginBtn">
-
-        Login
-
-      </button>
-
-    </form>
-
-
-    <div class="register">
-
-      Don't have an account?
-
-      <a href="register.html">
-        Create Account
-      </a>
-
     </div>
 
+    <div class="forgot">
+      <a href="#" id="forgotPassword">Forgot password?</a>
+    </div>
+
+    <button type="submit" id="loginBtn">
+      Login
+    </button>
+
+  </form>
+
+  <div class="register">
+    Don't have an account?
+    <a href="register.html">Create account</a>
   </div>
 
 </div>
 
-
 <script type="module">
 
-import {
-  auth,
-  db
-} from "./firebase.js";
-
+import { auth, db } from "./firebase.js";
 
 import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
 
 import {
   doc,
@@ -302,392 +231,330 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-const form =
-  document.getElementById(
-    "loginForm"
-  );
+const loginForm =
+  document.getElementById("loginForm");
 
+const emailInput =
+  document.getElementById("email");
 
-const button =
-  document.getElementById(
-    "loginBtn"
-  );
+const passwordInput =
+  document.getElementById("password");
 
+const loginBtn =
+  document.getElementById("loginBtn");
 
-const message =
-  document.getElementById(
-    "message"
-  );
-
-
-const password =
-  document.getElementById(
-    "password"
-  );
-
+const messageBox =
+  document.getElementById("message");
 
 const togglePassword =
-  document.getElementById(
-    "togglePassword"
-  );
+  document.getElementById("togglePassword");
+
+const forgotPassword =
+  document.getElementById("forgotPassword");
 
 
-/* ==========================================
+function showMessage(text,type="error"){
+
+  messageBox.textContent = text;
+
+  messageBox.className =
+    "message " + type;
+}
+
+
+function hideMessage(){
+
+  messageBox.textContent = "";
+
+  messageBox.className = "message";
+}
+
+
+/* =========================
    SHOW / HIDE PASSWORD
-========================================== */
+========================= */
 
-togglePassword.addEventListener(
-  "click",
-  () => {
+togglePassword.addEventListener("click",()=>{
 
-    if(
-      password.type === "password"
-    ){
+  if(passwordInput.type === "password"){
 
-      password.type =
-        "text";
+    passwordInput.type = "text";
 
-      togglePassword.textContent =
-        "🙈";
+    togglePassword.textContent = "🙈";
 
-      togglePassword.setAttribute(
-        "aria-label",
-        "Hide password"
+  }else{
+
+    passwordInput.type = "password";
+
+    togglePassword.textContent = "👁";
+  }
+
+});
+
+
+/* =========================
+   FORGOT PASSWORD
+========================= */
+
+forgotPassword.addEventListener("click",async(event)=>{
+
+  event.preventDefault();
+
+  hideMessage();
+
+  const email =
+    emailInput.value.trim();
+
+  if(!email){
+
+    showMessage(
+      "Please enter your email first."
+    );
+
+    emailInput.focus();
+
+    return;
+  }
+
+  try{
+
+    await sendPasswordResetEmail(
+      auth,
+      email
+    );
+
+    showMessage(
+      "Password reset email sent. Check your email inbox.",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error(
+      "PASSWORD RESET ERROR:",
+      error.code,
+      error.message
+    );
+
+    if(error.code === "auth/user-not-found"){
+
+      showMessage(
+        "No account was found with this email."
+      );
+
+    }else if(error.code === "auth/invalid-email"){
+
+      showMessage(
+        "Please enter a valid email address."
       );
 
     }else{
 
-      password.type =
-        "password";
-
-      togglePassword.textContent =
-        "👁️";
-
-      togglePassword.setAttribute(
-        "aria-label",
-        "Show password"
+      showMessage(
+        "Unable to send password reset email."
       );
-
     }
 
   }
-);
+
+});
 
 
-/* ==========================================
-   MESSAGE
-========================================== */
-
-function showMessage(
-  text,
-  type
-){
-
-  message.textContent =
-    text;
-
-  message.className =
-    "message " + type;
-
-}
-
-
-/* ==========================================
+/* =========================
    LOGIN
-========================================== */
+========================= */
 
-form.addEventListener(
-  "submit",
-  async (event) => {
+loginForm.addEventListener("submit",async(event)=>{
 
-    event.preventDefault();
+  event.preventDefault();
 
+  hideMessage();
 
-    const email =
-      document.getElementById(
-        "email"
-      ).value.trim();
+  const email =
+    emailInput.value.trim();
 
+  const password =
+    passwordInput.value;
 
-    const passwordValue =
-      password.value;
+  if(!email || !password){
 
+    showMessage(
+      "Please enter your email and password."
+    );
 
-    button.disabled =
-      true;
+    return;
+  }
 
-    button.textContent =
-      "Logging in...";
+  loginBtn.disabled = true;
 
+  loginBtn.textContent = "Logging in...";
 
-    try{
+  try{
 
-      /*
-        FIREBASE AUTH LOGIN
-      */
+    /*
+      LOGIN ONLY
+      No Order / Resume Order logic
+    */
 
-      const credential =
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          passwordValue
-        );
-
-
-      const user =
-        credential.user;
-
-
-      /*
-        GET USER PROFILE
-      */
-
-      const userSnap =
-        await getDoc(
-          doc(
-            db,
-            "users",
-            user.uid
-          )
-        );
-
-
-      if(!userSnap.exists()){
-
-        showMessage(
-          "User profile was not found.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      const userData =
-        userSnap.data();
-
-
-      /*
-        CHECK ACCOUNT STATUS
-      */
-
-      if(
-        userData.active === false
-      ){
-
-        showMessage(
-          "Your account is inactive. Please contact Arewa Market.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      showMessage(
-        "Login successful. Please wait...",
-        "success"
+    const credential =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
       );
 
-
-      /*
-        APPROVED SELLER
-      */
-
-      if(
-        userData.role === "seller" &&
-        userData.isSeller === true &&
-        userData.sellerStatus === "approved"
-      ){
-
-        window.location.replace(
-          "seller-dashboard.html"
-        );
-
-        return;
-      }
+    const user =
+      credential.user;
 
 
-      /*
-        NORMAL BUYER
-      */
+    /*
+      Check user's Firestore document
+    */
+
+    const userRef =
+      doc(
+        db,
+        "users",
+        user.uid
+      );
+
+    const userSnap =
+      await getDoc(userRef);
+
+
+    if(!userSnap.exists()){
+
+      showMessage(
+        "Your account was created, but your user profile was not found."
+      );
+
+      return;
+    }
+
+
+    const userData =
+      userSnap.data();
+
+
+    /*
+      Check account status
+    */
+
+    if(userData.active === false){
+
+      showMessage(
+        "Your account has been deactivated. Please contact Arewa Market."
+      );
+
+      return;
+    }
+
+
+    /*
+      Approved seller
+      → Seller Dashboard
+    */
+
+    if(
+      userData.role === "seller" &&
+      userData.isSeller === true &&
+      userData.sellerStatus === "approved"
+    ){
 
       window.location.replace(
-        "index.html"
+        "seller-dashboard.html"
       );
 
-
-    }catch(error){
-
-      console.error(
-  "LOGIN ERROR CODE:",
-  error.code
-);
-
-console.error(
-  "LOGIN ERROR MESSAGE:",
-  error.message
-);
-
-alert(
-  "Firebase Error:\n" +
-  error.code +
-  "\n\n" +
-  error.message
-);
+      return;
+    }
 
 
-      let text =
-        "Unable to login.";
+    /*
+      Normal buyer
+      → Homepage
+    */
+
+    window.location.replace(
+      "index.html"
+    );
 
 
-      if(
-        error.code ===
-        "auth/invalid-credential"
-      ){
+  }catch(error){
 
-        text =
-          "Incorrect email or password.";
+    console.error(
+      "LOGIN ERROR CODE:",
+      error.code
+    );
 
-      }else if(
-        error.code ===
-        "auth/user-not-found"
-      ){
+    console.error(
+      "LOGIN ERROR MESSAGE:",
+      error.message
+    );
 
-        text =
-          "No account was found with this email.";
 
-      }else if(
-        error.code ===
-        "auth/wrong-password"
-      ){
-
-        text =
-          "Incorrect password.";
-
-      }else if(
-        error.code ===
-        "auth/invalid-email"
-      ){
-
-        text =
-          "Please enter a valid email.";
-
-      }else if(
-        error.code ===
-        "auth/too-many-requests"
-      ){
-
-        text =
-          "Too many attempts. Please try again later.";
-
-      }
-
+    if(error.code === "auth/invalid-credential"){
 
       showMessage(
-        text,
-        "error"
+        "Incorrect email or password."
       );
 
+    }else if(
+      error.code === "auth/wrong-password"
+    ){
 
-      button.disabled =
-        false;
+      showMessage(
+        "Incorrect password."
+      );
 
-      button.textContent =
-        "Login";
+    }else if(
+      error.code === "auth/user-not-found"
+    ){
+
+      showMessage(
+        "No account was found with this email."
+      );
+
+    }else if(
+      error.code === "auth/invalid-email"
+    ){
+
+      showMessage(
+        "Please enter a valid email address."
+      );
+
+    }else if(
+      error.code === "auth/too-many-requests"
+    ){
+
+      showMessage(
+        "Too many login attempts. Please try again later."
+      );
+
+    }else if(
+      error.code === "auth/network-request-failed"
+    ){
+
+      showMessage(
+        "Network connection problem. Please check your internet connection and try again."
+      );
+
+    }else{
+
+      showMessage(
+        "Unable to login. Please try again."
+      );
 
     }
+
+  }finally{
+
+    loginBtn.disabled = false;
+
+    loginBtn.textContent = "Login";
 
   }
-);
 
-
-/* ==========================================
-   FORGOT PASSWORD
-========================================== */
-
-document
-  .getElementById(
-    "forgotPassword"
-  )
-  .addEventListener(
-    "click",
-    async (event) => {
-
-      event.preventDefault();
-
-
-      const email =
-        document.getElementById(
-          "email"
-        ).value.trim();
-
-
-      if(!email){
-
-        showMessage(
-          "Enter your email address first, then click Forgot Password.",
-          "error"
-        );
-
-        return;
-      }
-
-
-      try{
-
-        await sendPasswordResetEmail(
-          auth,
-          email
-        );
-
-
-        showMessage(
-          "Password reset email sent. Check your email inbox.",
-          "success"
-        );
-
-
-      }catch(error){
-
-        console.error(
-          "PASSWORD RESET ERROR:",
-          error
-        );
-
-
-        let text =
-          "Unable to send password reset email.";
-
-
-        if(
-          error.code ===
-          "auth/user-not-found"
-        ){
-
-          text =
-            "No account was found with this email.";
-
-        }else if(
-          error.code ===
-          "auth/invalid-email"
-        ){
-
-          text =
-            "Please enter a valid email.";
-
-        }
-
-
-        showMessage(
-          text,
-          "error"
-        );
-
-      }
-
-    }
-  );
+});
 
 </script>
 
