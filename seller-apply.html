@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Become a Seller - Arewa Market</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f5f7f6;
+      color:#222;
+    }
+
+    header{
+      background:#0b6b3a;
+      color:white;
+      padding:15px 20px;
+    }
+
+    .header-inner{
+      max-width:900px;
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    .brand{
+      color:white;
+      text-decoration:none;
+    }
+
+    .brand h1{
+      font-size:22px;
+    }
+
+    .brand p{
+      font-size:12px;
+      margin-top:3px;
+      opacity:.9;
+    }
+
+    .back-btn{
+      background:white;
+      color:#0b6b3a;
+      text-decoration:none;
+      padding:9px 14px;
+      border-radius:6px;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    main{
+      max-width:700px;
+      margin:35px auto;
+      padding:0 15px 50px;
+    }
+
+    .card{
+      background:white;
+      border-radius:12px;
+      padding:25px;
+      box-shadow:0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .title{
+      text-align:center;
+      margin-bottom:8px;
+      color:#0b6b3a;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#666;
+      font-size:14px;
+      line-height:1.6;
+      margin-bottom:25px;
+    }
+
+    .form-group{
+      margin-bottom:17px;
+    }
+
+    label{
+      display:block;
+      font-size:14px;
+      font-weight:bold;
+      margin-bottom:7px;
+    }
+
+    input,
+    select,
+    textarea{
+      width:100%;
+      padding:12px;
+      border:1px solid #ddd;
+      border-radius:7px;
+      outline:none;
+      font-size:14px;
+      background:white;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus{
+      border-color:#0b6b3a;
+    }
+
+    textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    .hint{
+      color:#777;
+      font-size:11px;
+      margin-top:5px;
+    }
+
+    .submit-btn{
+      width:100%;
+      border:none;
+      background:#0b6b3a;
+      color:white;
+      padding:13px;
+      border-radius:7px;
+      font-size:15px;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:5px;
+    }
+
+    .submit-btn:hover{
+      background:#09572f;
+    }
+
+    .submit-btn:disabled{
+      background:#999;
+      cursor:not-allowed;
+    }
+
+    .status-box{
+      display:none;
+      padding:15px;
+      border-radius:8px;
+      margin-bottom:20px;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .success{
+      background:#e7f7ed;
+      color:#116b38;
+      border:1px solid #b8e5c8;
+    }
+
+    .warning{
+      background:#fff7df;
+      color:#7a5a00;
+      border:1px solid #efd98b;
+    }
+
+    .error{
+      background:#fdecec;
+      color:#a51d1d;
+      border:1px solid #efb4b4;
+    }
+
+    .login-message{
+      text-align:center;
+      margin-top:20px;
+      font-size:13px;
+      color:#666;
+    }
+
+    .login-message a{
+      color:#0b6b3a;
+      font-weight:bold;
+      text-decoration:none;
+    }
+
+    footer{
+      text-align:center;
+      padding:25px 15px;
+      background:#073d24;
+      color:white;
+      font-size:13px;
+    }
+
+    @media(max-width:600px){
+
+      header{
+        padding:13px 15px;
+      }
+
+      .header-inner{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .back-btn{
+        width:100%;
+        text-align:center;
+      }
+
+      .card{
+        padding:20px 15px;
+      }
+
+      main{
+        margin:20px auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header>
+
+    <div class="header-inner">
+
+      <a href="index.html" class="brand">
+
+        <h1>
+          Arewa Market
+        </h1>
+
+        <p>
+          Kasuwar Arewa a Hannunka
+        </p>
+
+      </a>
+
+      <a
+        href="index.html"
+        class="back-btn"
+      >
+        ← Back to Marketplace
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main>
+
+    <div class="card">
+
+      <h2 class="title">
+        Become a Seller
+      </h2>
+
+      <p class="subtitle">
+        Join Arewa Market as a seller and showcase
+        your products to customers across Northern Nigeria.
+      </p>
+
+
+      <!-- STATUS -->
+
+      <div
+        id="statusBox"
+        class="status-box"
+      ></div>
+
+
+      <!-- FORM -->
+
+      <form id="sellerForm">
+
+        <!-- NAME -->
+
+        <div class="form-group">
+
+          <label for="name">
+            Full Name
+          </label>
+
+          <input
+            type="text"
+            id="name"
+            placeholder="Enter your full name"
+            required
+          >
+
+        </div>
+
+
+        <!-- BUSINESS NAME -->
+
+        <div class="form-group">
+
+          <label for="businessName">
+            Business Name
+          </label>
+
+          <input
+            type="text"
+            id="businessName"
+            placeholder="Enter your business name"
+            required
+          >
+
+        </div>
+
+
+        <!-- PHONE -->
+
+        <div class="form-group">
+
+          <label for="phone">
+            Phone Number
+          </label>
+
+          <input
+            type="tel"
+            id="phone"
+            placeholder="e.g. 08012345678"
+            required
+          >
+
+        </div>
+
+
+        <!-- WHATSAPP -->
+
+        <div class="form-group">
+
+          <label for="whatsapp">
+            WhatsApp Number
+          </label>
+
+          <input
+            type="tel"
+            id="whatsapp"
+            placeholder="e.g. 08012345678"
+            required
+          >
+
+          <div class="hint">
+            Enter the number customers can use to contact you on WhatsApp.
+          </div>
+
+        </div>
+
+
+        <!-- STATE -->
+
+        <div class="form-group">
+
+          <label for="location">
+            State
+          </label>
+
+          <select
+            id="location"
+            required
+          >
+
+            <option value="">
+              Select your state
+            </option>
+
+            <option value="Adamawa">
+              Adamawa
+            </option>
+
+            <option value="Bauchi">
+              Bauchi
+            </option>
+
+            <option value="Borno">
+              Borno
+            </option>
+
+            <option value="Gombe">
+              Gombe
+            </option>
+
+            <option value="Jigawa">
+              Jigawa
+            </option>
+
+            <option value="Kaduna">
+              Kaduna
+            </option>
+
+            <option value="Kano">
+              Kano
+            </option>
+
+            <option value="Katsina">
+              Katsina
+            </option>
+
+            <option value="Kebbi">
+              Kebbi
+            </option>
+
+            <option value="Kogi">
+              Kogi
+            </option>
+
+            <option value="Kwara">
+              Kwara
+            </option>
+
+            <option value="Nasarawa">
+              Nasarawa
+            </option>
+
+            <option value="Niger">
+              Niger
+            </option>
+
+            <option value="Plateau">
+              Plateau
+            </option>
+
+            <option value="Sokoto">
+              Sokoto
+            </option>
+
+            <option value="Taraba">
+              Taraba
+            </option>
+
+            <option value="Yobe">
+              Yobe
+            </option>
+
+            <option value="Zamfara">
+              Zamfara
+            </option>
+
+            <option value="FCT">
+              FCT
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- BUSINESS DESCRIPTION -->
+
+        <div class="form-group">
+
+          <label for="businessDescription">
+            Tell Us About Your Business
+          </label>
+
+          <textarea
+            id="businessDescription"
+            placeholder="Describe what you sell or the services you provide..."
+            required
+          ></textarea>
+
+        </div>
+
+
+        <!-- PROFILE IMAGE -->
+
+        <div class="form-group">
+
+          <label for="profileImageUrl">
+            Profile Image URL
+          </label>
+
+          <input
+            type="url"
+            id="profileImageUrl"
+            placeholder="https://example.com/image.jpg"
+          >
+
+          <div class="hint">
+            Optional. You can add your profile image URL later.
+          </div>
+
+        </div>
+
+
+        <!-- SUBMIT -->
+
+        <button
+          type="submit"
+          class="submit-btn"
+          id="submitBtn"
+        >
+          Submit Seller Application
+        </button>
+
+      </form>
+
+
+      <div class="login-message">
+
+        Want to go back?
+
+        <a href="index.html">
+          Return to Marketplace
+        </a>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    © 2026 Arewa Market
+
+  </footer>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script type="module">
+
+    import {
+      auth,
+      db
+    } from "./firebase.js";
+
+
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+    import {
+      doc,
+      getDoc,
+      updateDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    // =================================================
+    // ELEMENTS
+    // =================================================
+
+    const form =
+      document.getElementById(
+        "sellerForm"
+      );
+
+    const submitBtn =
+      document.getElementById(
+        "submitBtn"
+      );
+
+    const statusBox =
+      document.getElementById(
+        "statusBox"
+      );
+
+    let currentUser = null;
+    let currentUserData = null;
+
+
+    // =================================================
+    // STATUS MESSAGE
+    // =================================================
+
+    function showStatus(
+      message,
+      type
+    ){
+
+      statusBox.textContent =
+        message;
+
+      statusBox.className =
+        "status-box " + type;
+
+      statusBox.style.display =
+        "block";
+
+    }
+
+
+    // =================================================
+    // CHECK LOGIN
+    // =================================================
+
+    onAuthStateChanged(
+      auth,
+      async (user) => {
+
+        if(!user){
+
+          showStatus(
+            "Please login first before applying to become a seller.",
+            "warning"
+          );
+
+          form.style.display =
+            "none";
+
+          return;
+
+        }
+
+
+        currentUser =
+          user;
+
+
+        try{
+
+          const userSnap =
+            await getDoc(
+              doc(
+                db,
+                "users",
+                user.uid
+              )
+            );
+
+
+          if(
+            !userSnap.exists()
+          ){
+
+            showStatus(
+              "Your user profile could not be found.",
+              "error"
+            );
+
+            form.style.display =
+              "none";
+
+            return;
+
+          }
+
+
+          currentUserData =
+            userSnap.data();
+
+
+          // ==========================================
+          // ALREADY APPROVED
+          // ==========================================
+
+          if(
+            currentUserData.role === "seller" &&
+            currentUserData.isSeller === true &&
+            currentUserData.sellerStatus === "approved"
+          ){
+
+            showStatus(
+              "You are already an approved seller.",
+              "success"
+            );
+
+            form.style.display =
+              "none";
+
+            setTimeout(() => {
+
+              window.location.replace(
+                "seller-dashboard.html"
+              );
+
+            },1500);
+
+            return;
+
+          }
+
+
+          // ==========================================
+          // APPLICATION ALREADY PENDING
+          // ==========================================
+
+          if(
+            currentUserData.sellerStatus === "pending"
+          ){
+
+            showStatus(
+              "Your seller application is already pending. Please wait for Admin approval.",
+              "warning"
+            );
+
+            form.style.display =
+              "none";
+
+            return;
+
+          }
+
+
+          // ==========================================
+          // REJECTED APPLICATION
+          // ==========================================
+
+          if(
+            currentUserData.sellerStatus === "rejected"
+          ){
+
+            showStatus(
+              "Your previous seller application was rejected. You can submit a new application.",
+              "warning"
+            );
+
+          }
+
+
+          // ==========================================
+          // FILL EXISTING DATA
+          // ==========================================
+
+          document.getElementById(
+            "name"
+          ).value =
+            currentUserData.name || "";
+
+
+          document.getElementById(
+            "businessName"
+          ).value =
+            currentUserData.businessName || "";
+
+
+          document.getElementById(
+            "phone"
+          ).value =
+            currentUserData.phone || "";
+
+
+          document.getElementById(
+            "whatsapp"
+          ).value =
+            currentUserData.whatsapp || "";
+
+
+          document.getElementById(
+            "location"
+          ).value =
+            currentUserData.location || "";
+
+
+          document.getElementById(
+            "businessDescription"
+          ).value =
+            currentUserData.businessDescription || "";
+
+
+          document.getElementById(
+            "profileImageUrl"
+          ).value =
+            currentUserData.profileImageUrl || "";
+
+        }catch(error){
+
+          console.error(
+            "User loading error:",
+            error
+          );
+
+          showStatus(
+            "Unable to load your profile. Please try again.",
+            "error"
+          );
+
+        }
+
+      }
+    );
+
+
+    // =================================================
+    // SUBMIT APPLICATION
+    // =================================================
+
+    form.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+
+        if(!currentUser){
+
+          showStatus(
+            "Please login first.",
+            "warning"
+          );
+
+          return;
+
+        }
+
+
+        // ============================================
+        // GET FORM VALUES
+        // ============================================
+
+        const name =
+          document.getElementById(
+            "name"
+          ).value.trim();
+
+
+        const businessName =
+          document.getElementById(
+            "businessName"
+          ).value.trim();
+
+
+        const phone =
+          document.getElementById(
+            "phone"
+          ).value.trim();
+
+
+        const whatsapp =
+          document.getElementById(
+            "whatsapp"
+          ).value.trim();
+
+
+        const location =
+          document.getElementById(
+            "location"
+          ).value;
+
+
+        const businessDescription =
+          document.getElementById(
+            "businessDescription"
+          ).value.trim();
+
+
+        const profileImageUrl =
+          document.getElementById(
+            "profileImageUrl"
+          ).value.trim();
+
+
+        // ============================================
+        // BASIC VALIDATION
+        // ============================================
+
+        if(
+          !name ||
+          !businessName ||
+          !phone ||
+          !whatsapp ||
+          !location ||
+          !businessDescription
+        ){
+
+          showStatus(
+            "Please fill all required fields.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        // ============================================
+        // DISABLE BUTTON
+        // ============================================
+
+        submitBtn.disabled =
+          true;
+
+        submitBtn.textContent =
+          "Submitting...";
+
+
+        try{
+
+          // ==========================================
+          // UPDATE USER DOCUMENT
+          // ==========================================
+
+          await updateDoc(
+            doc(
+              db,
+              "users",
+              currentUser.uid
+            ),
+            {
+
+              name:name,
+
+              businessName:
+                businessName,
+
+              phone:
+                phone,
+
+              whatsapp:
+                whatsapp,
+
+              location:
+                location,
+
+              businessDescription:
+                businessDescription,
+
+              profileImageUrl:
+                profileImageUrl,
+
+              sellerStatus:
+                "pending",
+
+              updatedAt:
+                serverTimestamp()
+
+            }
+          );
+
+
+          // ==========================================
+          // SUCCESS
+          // ==========================================
+
+          showStatus(
+            "Your seller application has been submitted successfully. Please wait for Admin approval.",
+            "success"
+          );
+
+
+          form.style.display =
+            "none";
+
+
+        }catch(error){
+
+          console.error(
+            "Seller application error:",
+            error
+          );
+
+
+          showStatus(
+            "Application failed: " +
+            error.message,
+            "error"
+          );
+
+
+          submitBtn.disabled =
+            false;
+
+          submitBtn.textContent =
+            "Submit Seller Application";
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

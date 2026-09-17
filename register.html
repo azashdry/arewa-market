@@ -1,272 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Arewa Market - Register</title>
+<title>Register - Arewa Market</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f6f8;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    .register-box {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-    }
+body{
+  font-family:Arial,sans-serif;
+  background:#f5f7f2;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 5px;
-    }
+.container{
+  width:100%;
+  max-width:430px;
+}
 
-    .tagline {
-      text-align: center;
-      color: #777;
-      margin-bottom: 25px;
-    }
+.logo{
+  text-align:center;
+  margin-bottom:20px;
+}
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
+.logo h1{
+  color:#087443;
+  font-size:30px;
+}
 
-    input {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+.logo p{
+  color:#666;
+  margin-top:5px;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      background: #16803c;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.card{
+  background:white;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 3px 15px rgba(0,0,0,.08);
+}
 
-    button:disabled {
-      opacity: 0.6;
-    }
+.card h2{
+  text-align:center;
+  color:#087443;
+  margin-bottom:20px;
+}
 
-    #message {
-      margin-top: 15px;
-      text-align: center;
-    }
+.form-group{
+  margin-bottom:15px;
+}
 
-    .login-link {
-      text-align: center;
-      margin-top: 20px;
-    }
+label{
+  display:block;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:6px;
+}
 
-    .login-link a {
-      color: #16803c;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
+input{
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus{
+  border-color:#087443;
+}
+
+button{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:8px;
+  background:#087443;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.message{
+  display:none;
+  padding:10px;
+  border-radius:7px;
+  margin-bottom:15px;
+  font-size:13px;
+}
+
+.error{
+  display:block;
+  background:#ffe8e8;
+  color:#b00020;
+}
+
+.success{
+  display:block;
+  background:#e5f7eb;
+  color:#087443;
+}
+
+.login{
+  text-align:center;
+  margin-top:18px;
+  font-size:14px;
+  color:#666;
+}
+
+.login a{
+  color:#087443;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+</style>
 </head>
 
 <body>
 
-  <div class="register-box">
+<div class="container">
+
+  <div class="logo">
 
     <h1>Arewa Market</h1>
 
-    <div class="tagline">
-      Kasuwar Arewa a Hannunka
+    <p>Kasuwar Arewa a Hannunka</p>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>Create Account</h2>
+
+
+    <div
+      id="message"
+      class="message">
     </div>
+
 
     <form id="registerForm">
 
-      <label for="name">Full Name</label>
 
-      <input
-        type="text"
-        id="name"
-        placeholder="Enter your full name"
-        required
-      >
+      <div class="form-group">
 
-      <label for="email">Email</label>
+        <label for="name">
+          Full Name
+        </label>
 
-      <input
-        type="email"
-        id="email"
-        placeholder="Enter your email"
-        required
-      >
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter your full name"
+          required>
 
-      <label for="phone">Phone Number</label>
+      </div>
 
-      <input
-        type="tel"
-        id="phone"
-        placeholder="08012345678"
-        required
-      >
 
-      <label for="password">Password</label>
+      <div class="form-group">
 
-      <input
-        type="password"
-        id="password"
-        placeholder="Create a password"
-        required
-      >
+        <label for="email">
+          Email
+        </label>
 
-      <button type="submit" id="registerBtn">
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Create password"
+          minlength="6"
+          required>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="confirmPassword">
+          Confirm Password
+        </label>
+
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirm password"
+          minlength="6"
+          required>
+
+      </div>
+
+
+      <button
+        type="submit"
+        id="registerBtn">
+
         Create Account
+
       </button>
 
     </form>
 
-    <div id="message"></div>
 
-    <div class="login-link">
+    <div class="login">
+
       Already have an account?
-      <a href="login.html">Login</a>
+
+      <a href="login.html">
+        Login
+      </a>
+
     </div>
 
   </div>
-  <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+</div>
+
+
+<script type="module">
 
 import {
-  getAuth,
-  createUserWithEmailAndPassword
+  auth,
+  db
+} from "./firebase.js";
+
+
+import {
+  createUserWithEmailAndPassword,
+  updateProfile
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
+
 import {
-  getFirestore,
   doc,
   setDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD48Bay25k24a5WckgM6AmuK3p68oGT6vk",
-  authDomain: "arewa-market-4e603.firebaseapp.com",
-  projectId: "arewa-market-4e603",
-  storageBucket: "arewa-market-4e603.firebasestorage.app",
-  messagingSenderId: "217844252739",
-  appId: "1:217844252739:web:81b00d9ac29277c42d94f6",
-  measurementId: "G-ZTQHETHX4T"
-};
+const form =
+  document.getElementById(
+    "registerForm"
+  );
 
 
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-
-const registerForm = document.getElementById("registerForm");
-
-const registerBtn = document.getElementById("registerBtn");
-
-const message = document.getElementById("message");
+const button =
+  document.getElementById(
+    "registerBtn"
+  );
 
 
-registerForm.addEventListener("submit", async (event) => {
-
-  event.preventDefault();
-
-  const name = document.getElementById("name").value.trim();
-
-  const email = document.getElementById("email").value.trim();
-
-  const phone = document.getElementById("phone").value.trim();
-
-  const password = document.getElementById("password").value;
+const message =
+  document.getElementById(
+    "message"
+  );
 
 
-  registerBtn.disabled = true;
+function showMessage(
+  text,
+  type
+){
 
-  registerBtn.textContent = "Creating Account...";
+  message.textContent =
+    text;
 
-  message.textContent = "";
+  message.className =
+    "message " + type;
+
+}
 
 
-  try {
+/* ==========================================
+   REGISTER
+========================================== */
 
-    const userCredential =
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
+form.addEventListener(
+  "submit",
+  async (event) => {
+
+    event.preventDefault();
+
+
+    const name =
+      document.getElementById(
+        "name"
+      ).value.trim();
+
+
+    const email =
+      document.getElementById(
+        "email"
+      ).value.trim();
+
+
+    const password =
+      document.getElementById(
+        "password"
+      ).value;
+
+
+    const confirmPassword =
+      document.getElementById(
+        "confirmPassword"
+      ).value;
+
+
+    if(password !== confirmPassword){
+
+      showMessage(
+        "Passwords do not match.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(password.length < 6){
+
+      showMessage(
+        "Password must be at least 6 characters.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    button.disabled =
+      true;
+
+    button.textContent =
+      "Creating account...";
+
+
+    try{
+
+      /*
+        CREATE FIREBASE AUTH ACCOUNT
+      */
+
+      const credential =
+        await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+
+      const user =
+        credential.user;
+
+
+      /*
+        SAVE DISPLAY NAME
+      */
+
+      await updateProfile(
+        user,
+        {
+          displayName:name
+        }
       );
 
 
-    const user = userCredential.user;
+      /*
+        CREATE FIRESTORE USER DOCUMENT
+      */
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+
+          name:name,
+
+          email:email,
+
+          role:"buyer",
+
+          isSeller:false,
+
+          sellerStatus:"none",
+
+          active:true,
+
+          createdAt:
+            serverTimestamp(),
+
+          updatedAt:
+            serverTimestamp()
+
+        }
+      );
 
 
-    await setDoc(
-      doc(db, "users", user.uid),
-      {
-        name: name,
-        email: email,
-        phone: phone,
-        role: "buyer",
-        active: true,
-        isSeller: false,
-        createdAt: serverTimestamp()
+      showMessage(
+        "Account created successfully.",
+        "success"
+      );
+
+
+      /*
+        GO TO HOMEPAGE
+      */
+
+      setTimeout(
+        () => {
+
+          window.location.replace(
+            "index.html"
+          );
+
+        },
+        700
+      );
+
+
+    }catch(error){
+
+      console.error(
+        "REGISTER ERROR:",
+        error
+      );
+
+
+      let text =
+        "Unable to create account.";
+
+
+      if(
+        error.code ===
+        "auth/email-already-in-use"
+      ){
+
+        text =
+          "This email is already registered.";
+
+      }else if(
+        error.code ===
+        "auth/invalid-email"
+      ){
+
+        text =
+          "Invalid email address.";
+
+      }else if(
+        error.code ===
+        "auth/weak-password"
+      ){
+
+        text =
+          "Password is too weak.";
+
       }
-    );
 
 
-    message.style.color = "green";
-
-    message.textContent =
-      "Account created successfully!";
-
-
-    registerForm.reset();
+      showMessage(
+        text,
+        "error"
+      );
 
 
-  } catch (error) {
+      button.disabled =
+        false;
 
-    console.error(error);
+      button.textContent =
+        "Create Account";
 
-    message.style.color = "red";
-
-    message.textContent =
-      "Registration failed: " + error.message;
+    }
 
   }
-
-
-  registerBtn.disabled = false;
-
-  registerBtn.textContent = "Create Account";
-
-});
+);
 
 </script>
 

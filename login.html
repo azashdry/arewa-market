@@ -1,312 +1,695 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Arewa Market - Login</title>  <style>
-    * {
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f6f8;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+<title>Login - Arewa Market</title>
 
-    .login-box {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-    }
+<style>
 
-    h1 {
-      text-align: center;
-      margin-bottom: 5px;
-    }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    .tagline {
-      text-align: center;
-      color: #777;
-      margin-bottom: 25px;
-    }
+body{
+  font-family:Arial,sans-serif;
+  background:#f5f7f2;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
+.container{
+  width:100%;
+  max-width:430px;
+}
 
-    input {
-      width: 100%;
-      padding: 13px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+.logo{
+  text-align:center;
+  margin-bottom:20px;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      background: #16803c;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.logo h1{
+  color:#087443;
+  font-size:30px;
+}
 
-    button:disabled {
-      opacity: 0.6;
-    }
+.logo p{
+  color:#666;
+  margin-top:5px;
+}
 
-    #message {
-      margin-top: 15px;
-      text-align: center;
-    }
+.card{
+  background:white;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 3px 15px rgba(0,0,0,.08);
+}
 
-    .register-link {
-      text-align: center;
-      margin-top: 20px;
-    }
+.card h2{
+  text-align:center;
+  color:#087443;
+  margin-bottom:20px;
+}
 
-    .register-link a {
-      color: #16803c;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style></head><body>  <div class="login-box"><h1>Arewa Market</h1>
+.form-group{
+  margin-bottom:16px;
+}
 
-<div class="tagline">
-  Kasuwar Arewa a Hannunka
+label{
+  display:block;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:6px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus{
+  border-color:#087443;
+}
+
+.password-box{
+  position:relative;
+}
+
+.password-box input{
+  padding-right:48px;
+}
+
+.toggle-password{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  border:0;
+  background:none;
+  cursor:pointer;
+  font-size:19px;
+  padding:3px;
+  width:auto;
+  color:#666;
+}
+
+.forgot{
+  text-align:right;
+  margin-top:-7px;
+  margin-bottom:18px;
+}
+
+.forgot a{
+  color:#087443;
+  font-size:13px;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.login-btn{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:8px;
+  background:#087443;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.login-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.message{
+  display:none;
+  padding:10px;
+  border-radius:7px;
+  margin-bottom:15px;
+  font-size:13px;
+}
+
+.error{
+  display:block;
+  background:#ffe8e8;
+  color:#b00020;
+}
+
+.success{
+  display:block;
+  background:#e5f7eb;
+  color:#087443;
+}
+
+.register{
+  text-align:center;
+  margin-top:18px;
+  color:#666;
+  font-size:14px;
+}
+
+.register a{
+  color:#087443;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="logo">
+
+    <h1>Arewa Market</h1>
+
+    <p>Kasuwar Arewa a Hannunka</p>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>Login</h2>
+
+
+    <div
+      id="message"
+      class="message">
+    </div>
+
+
+    <form id="loginForm">
+
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          autocomplete="email"
+          required>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <div class="password-box">
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required>
+
+          <button
+            type="button"
+            class="toggle-password"
+            id="togglePassword"
+            aria-label="Show password">
+
+            👁️
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="forgot">
+
+        <a
+          href="#"
+          id="forgotPassword">
+
+          Forgot Password?
+
+        </a>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="login-btn"
+        id="loginBtn">
+
+        Login
+
+      </button>
+
+    </form>
+
+
+    <div class="register">
+
+      Don't have an account?
+
+      <a href="register.html">
+        Create Account
+      </a>
+
+    </div>
+
+  </div>
+
 </div>
 
-<form id="loginForm">
 
-  <label for="email">Email</label>
+<script type="module">
 
-  <input
-    type="email"
-    id="email"
-    placeholder="Enter your email"
-    required
-  >
-
-  <label for="password">Password</label>
-
-  <input
-    type="password"
-    id="password"
-    placeholder="Enter your password"
-    required
-  >
-
-  <button type="submit" id="loginBtn">
-    Login
-  </button>
-
-</form>
-
-<div id="message"></div>
-
-<div class="register-link">
-  Don't have an account?
-  <a href="register.html">Create Account</a>
-</div>
-
-  </div>  <script type="module">
-
-    import { initializeApp }
-      from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-    import {
-      getFirestore,
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import {
+  auth,
+  db
+} from "./firebase.js";
 
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD48Bay25k24a5WckgM6AmuK3p68oGT6vk",
-      authDomain: "arewa-market-4e603.firebaseapp.com",
-      projectId: "arewa-market-4e603",
-      storageBucket: "arewa-market-4e603.firebasestorage.app",
-      messagingSenderId: "217844252739",
-      appId: "1:217844252739:web:81b00d9ac29277c42d94f6",
-      measurementId: "G-ZTQHETHX4T"
-    };
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 
-    const app = initializeApp(firebaseConfig);
-
-    const auth = getAuth(app);
-
-    const db = getFirestore(app);
-
-
-    const loginForm =
-      document.getElementById("loginForm");
-
-    const loginBtn =
-      document.getElementById("loginBtn");
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-    loginForm.addEventListener("submit", async (event) => {
+const form =
+  document.getElementById(
+    "loginForm"
+  );
+
+
+const button =
+  document.getElementById(
+    "loginBtn"
+  );
+
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+
+const password =
+  document.getElementById(
+    "password"
+  );
+
+
+const togglePassword =
+  document.getElementById(
+    "togglePassword"
+  );
+
+
+/* ==========================================
+   SHOW / HIDE PASSWORD
+========================================== */
+
+togglePassword.addEventListener(
+  "click",
+  () => {
+
+    if(
+      password.type === "password"
+    ){
+
+      password.type =
+        "text";
+
+      togglePassword.textContent =
+        "🙈";
+
+      togglePassword.setAttribute(
+        "aria-label",
+        "Hide password"
+      );
+
+    }else{
+
+      password.type =
+        "password";
+
+      togglePassword.textContent =
+        "👁️";
+
+      togglePassword.setAttribute(
+        "aria-label",
+        "Show password"
+      );
+
+    }
+
+  }
+);
+
+
+/* ==========================================
+   MESSAGE
+========================================== */
+
+function showMessage(
+  text,
+  type
+){
+
+  message.textContent =
+    text;
+
+  message.className =
+    "message " + type;
+
+}
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+form.addEventListener(
+  "submit",
+  async (event) => {
+
+    event.preventDefault();
+
+
+    const email =
+      document.getElementById(
+        "email"
+      ).value.trim();
+
+
+    const passwordValue =
+      password.value;
+
+
+    button.disabled =
+      true;
+
+    button.textContent =
+      "Logging in...";
+
+
+    try{
+
+      /*
+        FIREBASE AUTH LOGIN
+      */
+
+      const credential =
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          passwordValue
+        );
+
+
+      const user =
+        credential.user;
+
+
+      /*
+        GET USER PROFILE
+      */
+
+      const userSnap =
+        await getDoc(
+          doc(
+            db,
+            "users",
+            user.uid
+          )
+        );
+
+
+      if(!userSnap.exists()){
+
+        showMessage(
+          "User profile was not found.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const userData =
+        userSnap.data();
+
+
+      /*
+        CHECK ACCOUNT STATUS
+      */
+
+      if(
+        userData.active === false
+      ){
+
+        showMessage(
+          "Your account is inactive. Please contact Arewa Market.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      showMessage(
+        "Login successful. Please wait...",
+        "success"
+      );
+
+
+      /*
+        APPROVED SELLER
+      */
+
+      if(
+        userData.role === "seller" &&
+        userData.isSeller === true &&
+        userData.sellerStatus === "approved"
+      ){
+
+        window.location.replace(
+          "seller-dashboard.html"
+        );
+
+        return;
+      }
+
+
+      /*
+        NORMAL BUYER
+      */
+
+      window.location.replace(
+        "index.html"
+      );
+
+
+    }catch(error){
+
+      console.error(
+  "LOGIN ERROR CODE:",
+  error.code
+);
+
+console.error(
+  "LOGIN ERROR MESSAGE:",
+  error.message
+);
+
+alert(
+  "Firebase Error:\n" +
+  error.code +
+  "\n\n" +
+  error.message
+);
+
+
+      let text =
+        "Unable to login.";
+
+
+      if(
+        error.code ===
+        "auth/invalid-credential"
+      ){
+
+        text =
+          "Incorrect email or password.";
+
+      }else if(
+        error.code ===
+        "auth/user-not-found"
+      ){
+
+        text =
+          "No account was found with this email.";
+
+      }else if(
+        error.code ===
+        "auth/wrong-password"
+      ){
+
+        text =
+          "Incorrect password.";
+
+      }else if(
+        error.code ===
+        "auth/invalid-email"
+      ){
+
+        text =
+          "Please enter a valid email.";
+
+      }else if(
+        error.code ===
+        "auth/too-many-requests"
+      ){
+
+        text =
+          "Too many attempts. Please try again later.";
+
+      }
+
+
+      showMessage(
+        text,
+        "error"
+      );
+
+
+      button.disabled =
+        false;
+
+      button.textContent =
+        "Login";
+
+    }
+
+  }
+);
+
+
+/* ==========================================
+   FORGOT PASSWORD
+========================================== */
+
+document
+  .getElementById(
+    "forgotPassword"
+  )
+  .addEventListener(
+    "click",
+    async (event) => {
 
       event.preventDefault();
 
 
       const email =
-        document.getElementById("email")
-          .value
-          .trim();
-
-      const password =
-        document.getElementById("password")
-          .value;
+        document.getElementById(
+          "email"
+        ).value.trim();
 
 
-      loginBtn.disabled = true;
+      if(!email){
 
-      loginBtn.textContent = "Logging in...";
-
-
-      try {
-
-        const userCredential =
-          await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
-
-console.log("LOGIN SUCCESS UID:", userCredential.user.uid);
-console.log("AUTH CURRENT USER:", auth.currentUser?.uid);
-        const user =
-          userCredential.user;
-
-console.log("LOGIN USER UID:", user.uid);
-console.log("LOGIN USER EMAIL:", user.email);
-console.log("LOGIN AUTH CURRENT USER:", auth.currentUser?.uid);
-        const userDoc =
-          await getDoc(
-            doc(db, "users", user.uid)
-          );
-
-
-        /*
-         * Firebase Authentication account alone
-         * ba ya isa ya zama Arewa Market account.
-         *
-         * Dole ne users/{uid} profile ya kasance.
-         */
-
-        if (!userDoc.exists()) {
-
-          await signOut(auth);
-
-          alert(
-            "Your account profile was not found. Please create an account first."
-          );
-
-          return;
-        }
-
-
-        const userData =
-          userDoc.data();
-
-
-        if (userData.active === false) {
-
-          await signOut(auth);
-
-          alert(
-            "Your account has been deactivated."
-          );
-
-          return;
-        }
-
-
-        // ==========================================
-        // LOGIN SUCCESSFUL
-        // CHECK IF USER WAS TRYING TO PLACE ORDER
-        // ==========================================
-
-        const pendingProductId =
-          localStorage.getItem(
-            "pendingOrderProductId"
-          );
-        console.log(
-  "PENDING ORDER PRODUCT:",
-  pendingProductId
-);
-
-
-        if (pendingProductId) {
-
-          console.log(
-            "Pending order found:",
-            pendingProductId
-          );
-
-          /*
-           * Return to index.html with the exact
-           * product ID so the Order modal can reopen.
-           */
-
-          window.location.replace(
-            "index.html?resumeOrder=" +
-            encodeURIComponent(
-              pendingProductId
-            )
-          );
-
-        } else {
-
-          /*
-           * Normal login:
-           * simply return to homepage.
-           */
-
-          window.location.replace(
-            "index.html"
-          );
-
-        }
-
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert(
-          "Login failed: " + error.message
+        showMessage(
+          "Enter your email address first, then click Forgot Password.",
+          "error"
         );
 
-      } finally {
+        return;
+      }
 
-        loginBtn.disabled = false;
 
-        loginBtn.textContent = "Login";
+      try{
+
+        await sendPasswordResetEmail(
+          auth,
+          email
+        );
+
+
+        showMessage(
+          "Password reset email sent. Check your email inbox.",
+          "success"
+        );
+
+
+      }catch(error){
+
+        console.error(
+          "PASSWORD RESET ERROR:",
+          error
+        );
+
+
+        let text =
+          "Unable to send password reset email.";
+
+
+        if(
+          error.code ===
+          "auth/user-not-found"
+        ){
+
+          text =
+            "No account was found with this email.";
+
+        }else if(
+          error.code ===
+          "auth/invalid-email"
+        ){
+
+          text =
+            "Please enter a valid email.";
+
+        }
+
+
+        showMessage(
+          text,
+          "error"
+        );
 
       }
 
-    });
+    }
+  );
 
-  </script></body>
+</script>
+
+</body>
 </html>

@@ -1,0 +1,2559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arewa Market - Seller Dashboard</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial, sans-serif;
+  background:#f4f7f5;
+  color:#222;
+}
+
+header{
+  background:#087f5b;
+  color:white;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:bold;
+}
+
+.logo small{
+  display:block;
+  font-size:12px;
+  font-weight:normal;
+  margin-top:3px;
+}
+
+.header-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+button,
+.btn{
+  border:none;
+  padding:10px 15px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
+  text-decoration:none;
+  display:inline-block;
+}
+
+.btn-light{
+  background:white;
+  color:#087f5b;
+}
+
+.btn-gold{
+  background:#d4a017;
+  color:white;
+}
+
+.btn-danger{
+  background:#dc3545;
+  color:white;
+}
+
+.btn-green{
+  background:#087f5b;
+  color:white;
+}
+
+.btn-gray{
+  background:#6c757d;
+  color:white;
+}
+
+button:hover,
+.btn:hover{
+  opacity:.9;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+
+.welcome{
+  margin-bottom:20px;
+}
+
+.welcome h2{
+  color:#087f5b;
+  margin-bottom:5px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.stat{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  text-align:center;
+}
+
+.stat h3{
+  font-size:30px;
+  color:#087f5b;
+  margin-bottom:5px;
+}
+
+.stat p{
+  color:#666;
+}
+
+.panel{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:25px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.panel-header h2{
+  color:#087f5b;
+}
+
+.profile-box{
+  display:flex;
+  gap:20px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.profile-image{
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#ddd;
+  border:3px solid #087f5b;
+}
+
+.profile-info{
+  flex:1;
+  min-width:220px;
+}
+
+.profile-info h3{
+  font-size:23px;
+  color:#087f5b;
+  margin-bottom:5px;
+}
+
+.profile-info p{
+  margin:5px 0;
+  color:#555;
+}
+
+.status{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.status-active{
+  background:#d4edda;
+  color:#155724;
+}
+
+.status-inactive{
+  background:#f8d7da;
+  color:#721c24;
+}
+
+.status-pending{
+  background:#fff3cd;
+  color:#856404;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+}
+
+.form-group.full{
+  grid-column:1 / -1;
+}
+
+label{
+  font-weight:bold;
+  margin-bottom:6px;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  padding:11px;
+  border:1px solid #ccc;
+  border-radius:7px;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:#087f5b;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.form-actions{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+  flex-wrap:wrap;
+}
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.product-card{
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.product-image{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  background:#eee;
+}
+
+.product-body{
+  padding:15px;
+}
+
+.product-body h3{
+  color:#087f5b;
+  margin-bottom:8px;
+}
+
+.price{
+  color:#d4a017;
+  font-weight:bold;
+  font-size:18px;
+  margin-bottom:7px;
+}
+
+.product-meta{
+  color:#666;
+  font-size:14px;
+  margin:5px 0;
+}
+
+.product-description{
+  margin-top:10px;
+  font-size:14px;
+  color:#555;
+  line-height:1.5;
+}
+
+.product-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:15px;
+}
+
+.product-actions button{
+  font-size:12px;
+  padding:8px 10px;
+}
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#777;
+}
+
+.message{
+  padding:12px;
+  border-radius:7px;
+  margin-bottom:15px;
+  display:none;
+}
+
+.message.success{
+  display:block;
+  background:#d4edda;
+  color:#155724;
+}
+
+.message.error{
+  display:block;
+  background:#f8d7da;
+  color:#721c24;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:1000;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-content{
+  background:white;
+  width:100%;
+  max-width:700px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-radius:10px;
+  padding:20px;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.modal-header h2{
+  color:#087f5b;
+}
+
+.close{
+  background:#dc3545;
+  color:white;
+  font-size:18px;
+  width:35px;
+  height:35px;
+  padding:0;
+}
+
+.image-preview{
+  margin-top:10px;
+  display:none;
+}
+
+.image-preview img{
+  width:120px;
+  height:90px;
+  object-fit:cover;
+  border-radius:7px;
+  border:1px solid #ddd;
+}
+
+.loading{
+  text-align:center;
+  padding:30px;
+  color:#087f5b;
+  font-weight:bold;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#777;
+  font-size:14px;
+}
+
+/* MOBILE */
+@media(max-width:800px){
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .products-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:600px){
+  header{
+    align-items:flex-start;
+  }
+
+  .header-actions{
+    width:100%;
+  }
+
+  .header-actions .btn{
+    flex:1;
+    text-align:center;
+  }
+
+  .container{
+    padding:12px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-group.full{
+    grid-column:auto;
+  }
+
+  .products-grid{
+    grid-template-columns:1fr;
+  }
+
+  .profile-box{
+    text-align:center;
+    justify-content:center;
+  }
+
+  .profile-info{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    Arewa Market
+    <small>Seller Dashboard</small>
+  </div>
+
+  <div class="header-actions">
+    <a href="index.html" class="btn btn-light">
+      Marketplace
+    </a>
+
+    <a
+      href="#"
+      id="publicProfileBtn"
+      class="btn btn-gold"
+    >
+      My Public Profile
+    </a>
+
+    <button
+      id="logoutBtn"
+      class="btn btn-danger"
+    >
+      Logout
+    </button>
+  </div>
+
+</header>
+
+
+<div class="container">
+
+  <div id="message" class="message"></div>
+
+  <div class="welcome">
+    <h2>Welcome, <span id="welcomeName">Seller</span></h2>
+    <p>Manage your seller profile and products from here.</p>
+  </div>
+
+
+  <!-- STATS -->
+
+  <div class="stats">
+
+    <div class="stat">
+      <h3 id="totalProducts">0</h3>
+      <p>My Products</p>
+    </div>
+
+    <div class="stat">
+      <h3 id="activeProducts">0</h3>
+      <p>Active Products</p>
+    </div>
+
+    <div class="stat">
+      <h3 id="inactiveProducts">0</h3>
+      <p>Inactive Products</p>
+    </div>
+
+  </div>
+
+
+  <!-- PROFILE -->
+
+  <div class="panel">
+
+    <div class="panel-header">
+      <h2>Seller Profile</h2>
+
+      <button
+        id="editProfileBtn"
+        class="btn btn-green"
+      >
+        Edit Profile
+      </button>
+    </div>
+
+    <div class="profile-box">
+
+      <img
+        id="profileImage"
+        class="profile-image"
+        src=""
+        alt="Seller Profile"
+      >
+
+      <div class="profile-info">
+
+        <h3 id="profileName">
+          Seller
+        </h3>
+
+        <p>
+          <strong>Business:</strong>
+          <span id="profileBusiness">-</span>
+        </p>
+
+        <p>
+          <strong>Phone:</strong>
+          <span id="profilePhone">-</span>
+        </p>
+
+        <p>
+          <strong>WhatsApp:</strong>
+          <span id="profileWhatsapp">-</span>
+        </p>
+
+        <p>
+          <strong>Location:</strong>
+          <span id="profileLocation">-</span>
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          <span class="status status-active">
+            Approved Seller
+          </span>
+        </p>
+
+        <p id="profileDescription">
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRODUCTS -->
+
+  <div class="panel">
+
+    <div class="panel-header">
+
+      <h2>My Products</h2>
+
+      <button
+        id="addProductBtn"
+        class="btn btn-green"
+      >
+        + Add Product
+      </button>
+
+    </div>
+
+    <div id="productsContainer">
+
+      <div class="loading">
+        Loading products...
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<footer>
+  © 2026 Arewa Market - Kasuwar Arewa a Hannunka
+</footer>
+
+
+
+<!-- PRODUCT MODAL -->
+
+<div
+  id="productModal"
+  class="modal"
+>
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+
+      <h2 id="productModalTitle">
+        Add Product
+      </h2>
+
+      <button
+        class="close"
+        id="closeProductModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <form id="productForm">
+
+      <input
+        type="hidden"
+        id="productId"
+      >
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label>
+            Product Name
+          </label>
+
+          <input
+            type="text"
+            id="productName"
+            required
+            placeholder="e.g. Farar Masara"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Price (₦)
+          </label>
+
+          <input
+            type="number"
+            id="productPrice"
+            min="0"
+            required
+            placeholder="25000"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Category
+          </label>
+
+          <select
+            id="productCategory"
+            required
+          >
+
+            <option value="">
+              Select Category
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Location
+          </label>
+
+          <select
+            id="productLocation"
+            required
+          >
+
+            <option value="">
+              Select State
+            </option>
+
+            <option>Adamawa</option>
+            <option>Bauchi</option>
+            <option>Borno</option>
+            <option>Gombe</option>
+            <option>Jigawa</option>
+            <option>Kaduna</option>
+            <option>Kano</option>
+            <option>Katsina</option>
+            <option>Kebbi</option>
+            <option>Kogi</option>
+            <option>Kwara</option>
+            <option>Nasarawa</option>
+            <option>Niger</option>
+            <option>Plateau</option>
+            <option>Sokoto</option>
+            <option>Taraba</option>
+            <option>Yobe</option>
+            <option>Zamfara</option>
+            <option>FCT Abuja</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Product Image URL
+          </label>
+
+          <input
+            type="url"
+            id="productImage"
+            placeholder="https://example.com/image.jpg"
+          >
+
+          <div
+            id="productImagePreview"
+            class="image-preview"
+          >
+            <img id="productPreviewImg" src="" alt="Preview">
+          </div>
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Description
+          </label>
+
+          <textarea
+            id="productDescription"
+            placeholder="Describe your product..."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="submit"
+          class="btn btn-green"
+          id="saveProductBtn"
+        >
+          Save Product
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-gray"
+          id="cancelProductBtn"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- PROFILE MODAL -->
+
+<div
+  id="profileModal"
+  class="modal"
+>
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+
+      <h2>
+        Edit Seller Profile
+      </h2>
+
+      <button
+        class="close"
+        id="closeProfileModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="profileForm">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label>
+            Full Name
+          </label>
+
+          <input
+            type="text"
+            id="sellerName"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Business Name
+          </label>
+
+          <input
+            type="text"
+            id="sellerBusiness"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Phone
+          </label>
+
+          <input
+            type="tel"
+            id="sellerPhone"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            WhatsApp
+          </label>
+
+          <input
+            type="tel"
+            id="sellerWhatsapp"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Location
+          </label>
+
+          <select id="sellerLocation">
+
+            <option value="">
+              Select State
+            </option>
+
+            <option>Adamawa</option>
+            <option>Bauchi</option>
+            <option>Borno</option>
+            <option>Gombe</option>
+            <option>Jigawa</option>
+            <option>Kaduna</option>
+            <option>Kano</option>
+            <option>Katsina</option>
+            <option>Kebbi</option>
+            <option>Kogi</option>
+            <option>Kwara</option>
+            <option>Nasarawa</option>
+            <option>Niger</option>
+            <option>Plateau</option>
+            <option>Sokoto</option>
+            <option>Taraba</option>
+            <option>Yobe</option>
+            <option>Zamfara</option>
+            <option>FCT Abuja</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Profile Image URL
+          </label>
+
+          <input
+            type="url"
+            id="sellerProfileImage"
+            placeholder="https://example.com/profile.jpg"
+          >
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Business Description
+          </label>
+
+          <textarea
+            id="sellerDescription"
+            placeholder="Tell customers about your business..."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="submit"
+          class="btn btn-green"
+        >
+          Save Profile
+        </button>
+
+        <button
+          type="button"
+          id="cancelProfileBtn"
+          class="btn btn-gray"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<script type="module">
+
+import {
+  auth,
+  db
+} from "./firebase.js";
+
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+/* =========================================
+   GLOBAL VARIABLES
+========================================= */
+
+let currentUser = null;
+let sellerData = null;
+let allProducts = [];
+
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const messageBox =
+  document.getElementById("message");
+
+const welcomeName =
+  document.getElementById("welcomeName");
+
+const totalProducts =
+  document.getElementById("totalProducts");
+
+const activeProducts =
+  document.getElementById("activeProducts");
+
+const inactiveProducts =
+  document.getElementById("inactiveProducts");
+
+const productsContainer =
+  document.getElementById("productsContainer");
+
+const productModal =
+  document.getElementById("productModal");
+
+const profileModal =
+  document.getElementById("profileModal");
+
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(text, type="success"){
+
+  messageBox.textContent = text;
+
+  messageBox.className =
+    "message " + type;
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  setTimeout(() => {
+
+    messageBox.className = "message";
+
+  }, 4000);
+}
+
+
+
+/* =========================================
+   AUTH CHECK
+========================================= */
+
+onAuthStateChanged(auth, async (user) => {
+
+  if(!user){
+
+    window.location.replace("login.html");
+
+    return;
+  }
+
+
+  currentUser = user;
+
+
+  try{
+
+    const userRef =
+      doc(db,"users",user.uid);
+
+    const userSnap =
+      await getDoc(userRef);
+
+
+    if(!userSnap.exists()){
+
+      alert("Seller profile not found.");
+
+      await signOut(auth);
+
+      window.location.replace("login.html");
+
+      return;
+    }
+
+
+    sellerData =
+      userSnap.data();
+
+
+    if(
+      sellerData.role !== "seller" ||
+      sellerData.isSeller !== true ||
+      sellerData.sellerStatus !== "approved"
+    ){
+
+      alert(
+        "Your seller account is not approved."
+      );
+
+      window.location.replace("index.html");
+
+      return;
+    }
+
+
+    renderSellerProfile();
+
+    await loadCategories();
+
+    await loadProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "Failed to load seller dashboard: " +
+      error.message,
+      "error"
+    );
+
+  }
+
+});
+
+
+
+/* =========================================
+   RENDER SELLER PROFILE
+========================================= */
+
+function renderSellerProfile(){
+
+  const name =
+    sellerData.name ||
+    currentUser.displayName ||
+    "Seller";
+
+
+  welcomeName.textContent =
+    name;
+
+
+  document.getElementById(
+    "profileName"
+  ).textContent =
+    name;
+
+
+  document.getElementById(
+    "profileBusiness"
+  ).textContent =
+    sellerData.businessName ||
+    "-";
+
+
+  document.getElementById(
+    "profilePhone"
+  ).textContent =
+    sellerData.phone ||
+    "-";
+
+
+  document.getElementById(
+    "profileWhatsapp"
+  ).textContent =
+    sellerData.whatsapp ||
+    "-";
+
+
+  document.getElementById(
+    "profileLocation"
+  ).textContent =
+    sellerData.location ||
+    "-";
+
+
+  document.getElementById(
+    "profileDescription"
+  ).textContent =
+    sellerData.businessDescription ||
+    "";
+
+
+  const profileImage =
+    document.getElementById(
+      "profileImage"
+    );
+
+
+  if(sellerData.profileImageUrl){
+
+    profileImage.src =
+      sellerData.profileImageUrl;
+
+  }else{
+
+    profileImage.src =
+      "https://via.placeholder.com/110?text=Seller";
+
+  }
+
+
+  document.getElementById(
+    "publicProfileBtn"
+  ).href =
+    "seller-profile.html?id=" +
+    encodeURIComponent(currentUser.uid);
+}
+
+
+
+/* =========================================
+   LOAD CATEGORIES
+========================================= */
+
+async function loadCategories(){
+  const categorySelect = document.getElementById("productCategory");
+
+  categorySelect.innerHTML = `
+    <option value="">Loading categories...</option>
+  `;
+
+  try {
+    const snapshot = await getDocs(collection(db, "categories"));
+
+    categorySelect.innerHTML = `
+      <option value="">Select Category</option>
+    `;
+
+    if (snapshot.empty) {
+      categorySelect.innerHTML = `
+        <option value="">No categories available</option>
+      `;
+      return;
+    }
+
+    snapshot.forEach(categoryDoc => {
+      const data = categoryDoc.data();
+
+      if (data.name) {
+        const option = document.createElement("option");
+        option.value = data.name;
+        option.textContent = data.name;
+
+        categorySelect.appendChild(option);
+      }
+    });
+
+  } catch (error) {
+    console.error("Category loading error:", error);
+
+    categorySelect.innerHTML = `
+      <option value="">Unable to load categories</option>
+    `;
+  }
+}
+
+
+
+/* =========================================
+   LOAD PRODUCTS
+========================================= */
+
+async function loadProducts(){
+
+  productsContainer.innerHTML =
+    `<div class="loading">
+      Loading products...
+    </div>`;
+
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(db,"products")
+      );
+
+
+    allProducts = [];
+
+
+    snapshot.forEach(productDoc => {
+
+      const data =
+        productDoc.data();
+
+
+      if(
+        data.sellerId === currentUser.uid
+      ){
+
+        allProducts.push({
+
+          id:productDoc.id,
+
+          ...data
+
+        });
+
+      }
+
+    });
+
+
+    updateStats();
+
+    renderProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+    productsContainer.innerHTML =
+      `<div class="empty">
+        Failed to load products.
+      </div>`;
+
+    showMessage(
+      "Failed to load products: " +
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+
+/* =========================================
+   UPDATE STATS
+========================================= */
+
+function updateStats(){
+
+  const total =
+    allProducts.length;
+
+
+  const active =
+    allProducts.filter(
+      p => p.status === "active"
+    ).length;
+
+
+  const inactive =
+    allProducts.filter(
+      p => p.status !== "active"
+    ).length;
+
+
+  totalProducts.textContent =
+    total;
+
+
+  activeProducts.textContent =
+    active;
+
+
+  inactiveProducts.textContent =
+    inactive;
+
+}
+
+
+
+/* =========================================
+   RENDER PRODUCTS
+========================================= */
+
+function renderProducts(){
+
+  if(allProducts.length === 0){
+
+    productsContainer.innerHTML =
+      `<div class="empty">
+
+        <h3>No products yet</h3>
+
+        <p>
+          Add your first product to start selling.
+        </p>
+
+      </div>`;
+
+    return;
+  }
+
+
+  productsContainer.innerHTML =
+    `<div class="products-grid">
+      ${allProducts.map(
+        productCard
+      ).join("")}
+    </div>`;
+
+}
+
+
+
+/* =========================================
+   PRODUCT CARD
+========================================= */
+
+function productCard(product){
+
+  const image =
+    product.imageUrl ||
+    "https://via.placeholder.com/500x300?text=No+Image";
+
+
+  const status =
+    product.status === "active";
+
+
+  const statusClass =
+    status
+      ? "status-active"
+      : "status-inactive";
+
+
+  const statusText =
+    status
+      ? "Active"
+      : "Inactive";
+
+
+  const toggleText =
+    status
+      ? "Deactivate"
+      : "Activate";
+
+
+  const toggleClass =
+    status
+      ? "btn-gray"
+      : "btn-green";
+
+
+  const price =
+    Number(product.price || 0)
+      .toLocaleString();
+
+
+  return `
+
+    <div class="product-card">
+
+      <img
+        class="product-image"
+        src="${escapeHtml(image)}"
+        alt="${escapeHtml(product.name || "Product")}"
+        onerror="this.src='https://via.placeholder.com/500x300?text=No+Image'"
+      >
+
+      <div class="product-body">
+
+        <h3>
+          ${escapeHtml(product.name || "Unnamed Product")}
+        </h3>
+
+        <div class="price">
+          ₦${price}
+        </div>
+
+        <div class="product-meta">
+          <strong>Category:</strong>
+          ${escapeHtml(product.category || "-")}
+        </div>
+
+        <div class="product-meta">
+          <strong>Location:</strong>
+          ${escapeHtml(product.location || "-")}
+        </div>
+
+        <div class="product-meta">
+
+          <span class="status ${statusClass}">
+            ${statusText}
+          </span>
+
+        </div>
+
+        <div class="product-description">
+          ${escapeHtml(product.description || "No description.")}
+        </div>
+
+        <div class="product-actions">
+
+          <button
+            class="btn btn-green"
+            onclick="editProduct('${product.id}')"
+          >
+            Edit
+          </button>
+
+          <button
+            class="btn ${toggleClass}"
+            onclick="toggleProductStatus(
+              '${product.id}',
+              ${status}
+            )"
+          >
+            ${toggleText}
+          </button>
+
+          <button
+            class="btn btn-danger"
+            onclick="deleteProduct('${product.id}')"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+
+/* =========================================
+   OPEN ADD PRODUCT
+========================================= */
+
+document
+  .getElementById("addProductBtn")
+  .addEventListener("click", () => {
+
+    document.getElementById(
+      "productModalTitle"
+    ).textContent =
+      "Add Product";
+
+
+    document.getElementById(
+      "productForm"
+    ).reset();
+
+
+    document.getElementById(
+      "productId"
+    ).value = "";
+
+
+    document.getElementById(
+      "productImagePreview"
+    ).style.display =
+      "none";
+
+
+    productModal.classList.add("show");
+
+  });
+
+
+
+/* =========================================
+   EDIT PRODUCT
+========================================= */
+
+window.editProduct = function(productId){
+
+  const product =
+    allProducts.find(
+      p => p.id === productId
+    );
+
+
+  if(!product){
+
+    showMessage(
+      "Product not found.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  document.getElementById(
+    "productModalTitle"
+  ).textContent =
+    "Edit Product";
+
+
+  document.getElementById(
+    "productId"
+  ).value =
+    product.id;
+
+
+  document.getElementById(
+    "productName"
+  ).value =
+    product.name || "";
+
+
+  document.getElementById(
+    "productPrice"
+  ).value =
+    product.price || "";
+
+
+  document.getElementById(
+    "productCategory"
+  ).value =
+    product.category || "";
+
+
+  document.getElementById(
+    "productLocation"
+  ).value =
+    product.location || "";
+
+
+  document.getElementById(
+    "productImage"
+  ).value =
+    product.imageUrl || "";
+
+
+  document.getElementById(
+    "productDescription"
+  ).value =
+    product.description || "";
+
+
+  updateProductImagePreview();
+
+
+  productModal.classList.add("show");
+
+};
+
+
+
+/* =========================================
+   SAVE PRODUCT
+========================================= */
+
+document
+  .getElementById("productForm")
+  .addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+
+    if(!currentUser){
+
+      showMessage(
+        "You are not logged in.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    const productId =
+      document.getElementById(
+        "productId"
+      ).value.trim();
+
+
+    const name =
+      document.getElementById(
+        "productName"
+      ).value.trim();
+
+
+    const price =
+      Number(
+        document.getElementById(
+          "productPrice"
+        ).value
+      );
+
+
+    const category =
+      document.getElementById(
+        "productCategory"
+      ).value;
+
+
+    const location =
+      document.getElementById(
+        "productLocation"
+      ).value;
+
+
+    const imageUrl =
+      document.getElementById(
+        "productImage"
+      ).value.trim();
+
+
+    const description =
+      document.getElementById(
+        "productDescription"
+      ).value.trim();
+
+
+    if(!name){
+
+      showMessage(
+        "Product name is required.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(price < 0 || Number.isNaN(price)){
+
+      showMessage(
+        "Enter a valid price.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(!category){
+
+      showMessage(
+        "Please select a category.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(!location){
+
+      showMessage(
+        "Please select a location.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    const saveButton =
+      document.getElementById(
+        "saveProductBtn"
+      );
+
+
+    saveButton.disabled = true;
+
+    saveButton.textContent =
+      "Saving...";
+
+
+    try{
+
+      if(productId){
+
+        /*
+          EDIT PRODUCT
+        */
+
+        const existing =
+          allProducts.find(
+            p => p.id === productId
+          );
+
+
+        if(!existing){
+
+          throw new Error(
+            "Product not found."
+          );
+        }
+
+
+        if(
+          existing.sellerId !==
+          currentUser.uid
+        ){
+
+          throw new Error(
+            "You can only edit your own products."
+          );
+        }
+
+
+        await updateDoc(
+          doc(
+            db,
+            "products",
+            productId
+          ),
+          {
+
+            name:name,
+
+            price:price,
+
+            category:category,
+
+            location:location,
+
+            imageUrl:imageUrl,
+
+            description:description,
+
+            updatedAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        showMessage(
+          "Product updated successfully."
+        );
+
+
+      }else{
+
+        /*
+          ADD PRODUCT
+        */
+
+        await addDoc(
+          collection(
+            db,
+            "products"
+          ),
+          {
+
+            name:name,
+
+            price:price,
+
+            category:category,
+
+            location:location,
+
+            imageUrl:imageUrl,
+
+            description:description,
+
+            featured:false,
+
+            sellerId:
+              currentUser.uid,
+
+            sellerName:
+              sellerData.name || "",
+
+            sellerPhone:
+              sellerData.phone || "",
+
+            whatsapp:
+              sellerData.whatsapp || "",
+
+            status:"active",
+
+            createdAt:
+              serverTimestamp(),
+
+            updatedAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        showMessage(
+          "Product added successfully."
+        );
+
+      }
+
+
+      closeProductModal();
+
+      await loadProducts();
+
+    }catch(error){
+
+      console.error(error);
+
+      showMessage(
+        "Failed to save product: " +
+        error.message,
+        "error"
+      );
+
+    }finally{
+
+      saveButton.disabled = false;
+
+      saveButton.textContent =
+        "Save Product";
+
+    }
+
+  });
+
+
+
+/* =========================================
+   TOGGLE PRODUCT STATUS
+========================================= */
+
+window.toggleProductStatus =
+async function(productId,currentStatus){
+
+  try{
+
+    const product =
+      allProducts.find(
+        p => p.id === productId
+      );
+
+
+    if(!product){
+
+      showMessage(
+        "Product not found.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(
+      product.sellerId !==
+      currentUser.uid
+    ){
+
+      showMessage(
+        "You can only change your own product.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    await updateDoc(
+      doc(
+        db,
+        "products",
+        productId
+      ),
+      {
+
+        status:
+          currentStatus
+            ? "inactive"
+            : "active",
+
+        updatedAt:
+          serverTimestamp()
+
+      }
+    );
+
+
+    showMessage(
+      currentStatus
+        ? "Product deactivated."
+        : "Product activated."
+    );
+
+
+    await loadProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "Failed to change product status: " +
+      error.message,
+      "error"
+    );
+
+  }
+
+};
+
+
+
+/* =========================================
+   DELETE PRODUCT
+========================================= */
+
+window.deleteProduct =
+async function(productId){
+
+  const product =
+    allProducts.find(
+      p => p.id === productId
+    );
+
+
+  if(!product){
+
+    showMessage(
+      "Product not found.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(
+    product.sellerId !==
+    currentUser.uid
+  ){
+
+    showMessage(
+      "You can only delete your own products.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      `Delete "${product.name}"?\n\nThis action cannot be undone.`
+    );
+
+
+  if(!confirmed){
+
+    return;
+  }
+
+
+  try{
+
+    await deleteDoc(
+      doc(
+        db,
+        "products",
+        productId
+      )
+    );
+
+
+    showMessage(
+      "Product deleted successfully."
+    );
+
+
+    await loadProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+    showMessage(
+      "Failed to delete product: " +
+      error.message,
+      "error"
+    );
+
+  }
+
+};
+
+
+
+/* =========================================
+   PRODUCT IMAGE PREVIEW
+========================================= */
+
+function updateProductImagePreview(){
+
+  const url =
+    document.getElementById(
+      "productImage"
+    ).value.trim();
+
+
+  const preview =
+    document.getElementById(
+      "productImagePreview"
+    );
+
+
+  const image =
+    document.getElementById(
+      "productPreviewImg"
+    );
+
+
+  if(url){
+
+    image.src = url;
+
+    preview.style.display =
+      "block";
+
+  }else{
+
+    preview.style.display =
+      "none";
+
+  }
+
+}
+
+
+document
+  .getElementById("productImage")
+  .addEventListener(
+    "input",
+    updateProductImagePreview
+  );
+
+
+
+/* =========================================
+   CLOSE PRODUCT MODAL
+========================================= */
+
+function closeProductModal(){
+
+  productModal.classList.remove(
+    "show"
+  );
+
+}
+
+
+document
+  .getElementById("closeProductModal")
+  .addEventListener(
+    "click",
+    closeProductModal
+  );
+
+
+document
+  .getElementById("cancelProductBtn")
+  .addEventListener(
+    "click",
+    closeProductModal
+  );
+
+
+
+/* =========================================
+   PROFILE MODAL
+========================================= */
+
+document
+  .getElementById("editProfileBtn")
+  .addEventListener(
+    "click",
+    openProfileModal
+  );
+
+
+function openProfileModal(){
+
+  document.getElementById(
+    "sellerName"
+  ).value =
+    sellerData.name || "";
+
+
+  document.getElementById(
+    "sellerBusiness"
+  ).value =
+    sellerData.businessName || "";
+
+
+  document.getElementById(
+    "sellerPhone"
+  ).value =
+    sellerData.phone || "";
+
+
+  document.getElementById(
+    "sellerWhatsapp"
+  ).value =
+    sellerData.whatsapp || "";
+
+
+  document.getElementById(
+    "sellerLocation"
+  ).value =
+    sellerData.location || "";
+
+
+  document.getElementById(
+    "sellerProfileImage"
+  ).value =
+    sellerData.profileImageUrl || "";
+
+
+  document.getElementById(
+    "sellerDescription"
+  ).value =
+    sellerData.businessDescription || "";
+
+
+  profileModal.classList.add(
+    "show"
+  );
+
+}
+
+
+
+/* =========================================
+   SAVE PROFILE
+========================================= */
+
+document
+  .getElementById("profileForm")
+  .addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+
+    if(!currentUser){
+
+      return;
+    }
+
+
+    const name =
+      document.getElementById(
+        "sellerName"
+      ).value.trim();
+
+
+    const businessName =
+      document.getElementById(
+        "sellerBusiness"
+      ).value.trim();
+
+
+    const phone =
+      document.getElementById(
+        "sellerPhone"
+      ).value.trim();
+
+
+    const whatsapp =
+      document.getElementById(
+        "sellerWhatsapp"
+      ).value.trim();
+
+
+    const location =
+      document.getElementById(
+        "sellerLocation"
+      ).value;
+
+
+    const profileImageUrl =
+      document.getElementById(
+        "sellerProfileImage"
+      ).value.trim();
+
+
+    const businessDescription =
+      document.getElementById(
+        "sellerDescription"
+      ).value.trim();
+
+
+    if(!name){
+
+      showMessage(
+        "Name is required.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "users",
+          currentUser.uid
+        ),
+        {
+
+          name:name,
+
+          businessName:
+            businessName,
+
+          phone:
+            phone,
+
+          whatsapp:
+            whatsapp,
+
+          location:
+            location,
+
+          profileImageUrl:
+            profileImageUrl,
+
+          businessDescription:
+            businessDescription,
+
+          updatedAt:
+            serverTimestamp()
+
+        }
+      );
+
+
+      sellerData = {
+
+        ...sellerData,
+
+        name:name,
+
+        businessName:
+          businessName,
+
+        phone:
+          phone,
+
+        whatsapp:
+          whatsapp,
+
+        location:
+          location,
+
+        profileImageUrl:
+          profileImageUrl,
+
+        businessDescription:
+          businessDescription
+
+      };
+
+
+      renderSellerProfile();
+
+
+      closeProfileModal();
+
+
+      showMessage(
+        "Seller profile updated successfully."
+      );
+
+
+    }catch(error){
+
+      console.error(error);
+
+      showMessage(
+        "Failed to update profile: " +
+        error.message,
+        "error"
+      );
+
+    }
+
+  });
+
+
+
+/* =========================================
+   CLOSE PROFILE MODAL
+========================================= */
+
+function closeProfileModal(){
+
+  profileModal.classList.remove(
+    "show"
+  );
+
+}
+
+
+document
+  .getElementById("closeProfileModal")
+  .addEventListener(
+    "click",
+    closeProfileModal
+  );
+
+
+document
+  .getElementById("cancelProfileBtn")
+  .addEventListener(
+    "click",
+    closeProfileModal
+  );
+
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      try{
+
+        await signOut(auth);
+
+        window.location.replace(
+          "login.html"
+        );
+
+      }catch(error){
+
+        console.error(error);
+
+        showMessage(
+          "Logout failed: " +
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+
+
+/* =========================================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+========================================= */
+
+productModal.addEventListener(
+  "click",
+  (event) => {
+
+    if(event.target === productModal){
+
+      closeProductModal();
+
+    }
+
+  }
+);
+
+
+profileModal.addEventListener(
+  "click",
+  (event) => {
+
+    if(event.target === profileModal){
+
+      closeProfileModal();
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>
