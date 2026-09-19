@@ -497,6 +497,7 @@ h1{
   <form id="loginForm">
 
     <label>Admin Email</label>
+
     <input
       type="email"
       id="email"
@@ -505,6 +506,7 @@ h1{
     >
 
     <label>Password</label>
+
     <input
       type="password"
       id="password"
@@ -1076,19 +1078,16 @@ const message =
 const adminEmail =
   document.getElementById("adminEmail");
 
-
 const usersList =
   document.getElementById("usersList");
 
 const usersSearch =
   document.getElementById("usersSearch");
 
-
 const sellerApplicationsList =
   document.getElementById(
     "sellerApplicationsList"
   );
-
 
 const categoryList =
   document.getElementById("categoryList");
@@ -1103,7 +1102,6 @@ const categoryName =
     "categoryName"
   );
 
-
 const productList =
   document.getElementById("productList");
 
@@ -1117,7 +1115,6 @@ const productsSearch =
     "productsSearch"
   );
 
-
 const ordersList =
   document.getElementById("ordersList");
 
@@ -1125,7 +1122,6 @@ const ordersSearch =
   document.getElementById(
     "ordersSearch"
   );
-
 
 const imagePreviewBox =
   document.getElementById(
@@ -1184,9 +1180,11 @@ function showMessage(
   type="error"
 ){
 
-  message.textContent = text;
+  message.textContent =
+    text;
 
-  message.className = type;
+  message.className =
+    type;
 
   message.style.display =
     "block";
@@ -1225,7 +1223,8 @@ loginForm.addEventListener(
         .getElementById("password")
         .value;
 
-    loginBtn.disabled = true;
+    loginBtn.disabled =
+      true;
 
     loginBtn.textContent =
       "Checking...";
@@ -1299,7 +1298,6 @@ onAuthStateChanged(
           )
         );
 
-
       if(!adminSnap.exists()){
 
         await signOut(auth);
@@ -1311,10 +1309,8 @@ onAuthStateChanged(
         return;
       }
 
-
       const adminData =
         adminSnap.data();
-
 
       if(
         adminData.role !==
@@ -1331,7 +1327,6 @@ onAuthStateChanged(
         return;
       }
 
-
       loginBox.style.display =
         "none";
 
@@ -1341,7 +1336,6 @@ onAuthStateChanged(
       adminEmail.textContent =
         "Logged in as: " +
         user.email;
-
 
       await refreshAll();
 
@@ -1371,9 +1365,10 @@ async function refreshAll(){
     loadUsers(),
     loadCategories(),
     loadProducts(),
-    loadSellerApplications(),
     loadOrders()
   ]);
+
+  await loadSellerApplications();
 
   updateAnalytics();
 }
@@ -1423,7 +1418,6 @@ async function loadUsers(){
       }
     );
 
-
     renderUsers(
       allUsers
     );
@@ -1458,9 +1452,7 @@ function renderUsers(users){
     return;
   }
 
-
   usersList.innerHTML = "";
-
 
   users.forEach(user => {
 
@@ -1475,7 +1467,6 @@ function renderUsers(users){
     const active =
       user.active !== false;
 
-
     const item =
       document.createElement(
         "div"
@@ -1483,7 +1474,6 @@ function renderUsers(users){
 
     item.className =
       "item";
-
 
     item.innerHTML = `
 
@@ -1543,7 +1533,6 @@ function renderUsers(users){
 
       </div>
 
-
       <div class="actions">
 
         <button
@@ -1561,7 +1550,6 @@ function renderUsers(users){
           }
         </button>
 
-
         <button
           class="edit"
           onclick="
@@ -1578,7 +1566,6 @@ function renderUsers(users){
           }
         </button>
 
-
         <button
           class="delete"
           onclick="
@@ -1592,7 +1579,6 @@ function renderUsers(users){
 
       </div>
     `;
-
 
     usersList.appendChild(item);
 
@@ -1678,7 +1664,6 @@ window.deleteUserProfile =
       )
     ) return;
 
-
     try{
 
       await deleteDoc(
@@ -1724,7 +1709,6 @@ usersSearch.addEventListener(
         .toLowerCase()
         .trim();
 
-
     renderUsers(
       allUsers.filter(
         user => {
@@ -1738,7 +1722,6 @@ usersSearch.addEventListener(
               user.phone
             )
             .toLowerCase();
-
 
           return text.includes(q);
         }
@@ -1769,7 +1752,6 @@ async function loadSellerApplications(){
           "pending"
       );
 
-
     renderSellerApplications(
       allSellerApplications
     );
@@ -1798,10 +1780,8 @@ function renderSellerApplications(
     return;
   }
 
-
   sellerApplicationsList.innerHTML =
     "";
-
 
   applications.forEach(user => {
 
@@ -1812,7 +1792,6 @@ function renderSellerApplications(
 
     item.className =
       "item";
-
 
     item.innerHTML = `
 
@@ -1829,6 +1808,7 @@ function renderSellerApplications(
           Business:
           ${escapeHtml(
             user.businessName ||
+            user.business ||
             "Not provided"
           )}
         </small>
@@ -1861,6 +1841,7 @@ function renderSellerApplications(
           Location:
           ${escapeHtml(
             user.location ||
+            user.state ||
             "Not provided"
           )}
         </small>
@@ -1869,6 +1850,7 @@ function renderSellerApplications(
           Description:
           ${escapeHtml(
             user.businessDescription ||
+            user.description ||
             "No description"
           )}
         </small>
@@ -1878,7 +1860,6 @@ function renderSellerApplications(
         </span>
 
       </div>
-
 
       <div class="actions">
 
@@ -1907,7 +1888,6 @@ function renderSellerApplications(
       </div>
     `;
 
-
     sellerApplicationsList.appendChild(
       item
     );
@@ -1924,7 +1904,6 @@ window.approveSeller =
         "Approve this user as a Seller?"
       )
     ) return;
-
 
     try{
 
@@ -1967,7 +1946,6 @@ window.rejectSeller =
         "Reject this seller application?"
       )
     ) return;
-
 
     try{
 
@@ -2039,9 +2017,7 @@ async function loadCategories(){
         )
       );
 
-
     allCategories = [];
-
 
     snapshot.forEach(
       categoryDoc => {
@@ -2054,7 +2030,6 @@ async function loadCategories(){
       }
     );
 
-
     allCategories.sort(
       (a,b) =>
         (a.name || "")
@@ -2063,12 +2038,10 @@ async function loadCategories(){
           )
     );
 
-
     document.getElementById(
       "categoriesCount"
     ).textContent =
       allCategories.length;
-
 
     renderCategories(
       allCategories
@@ -2102,10 +2075,8 @@ function renderCategories(
     return;
   }
 
-
   categoryList.innerHTML =
     "";
-
 
   categories.forEach(category => {
 
@@ -2116,7 +2087,6 @@ function renderCategories(
 
     item.className =
       "item";
-
 
     item.innerHTML = `
 
@@ -2137,7 +2107,6 @@ function renderCategories(
         </small>
 
       </div>
-
 
       <div class="actions">
 
@@ -2167,7 +2136,6 @@ function renderCategories(
 
       </div>
     `;
-
 
     categoryList.appendChild(item);
 
@@ -2238,7 +2206,6 @@ document
       const name =
         categoryName.value.trim();
 
-
       if(!name){
 
         alert(
@@ -2247,7 +2214,6 @@ document
 
         return;
       }
-
 
       try{
 
@@ -2286,7 +2252,6 @@ document
             "Category added successfully."
           );
         }
-
 
         closeCategoryForm();
 
@@ -2337,7 +2302,6 @@ window.deleteCategory =
       )
     ) return;
 
-
     try{
 
       await deleteDoc(
@@ -2385,9 +2349,7 @@ async function loadProducts(){
         )
       );
 
-
     allProducts = [];
-
 
     snapshot.forEach(
       productDoc => {
@@ -2399,7 +2361,6 @@ async function loadProducts(){
 
       }
     );
-
 
     renderProducts(
       allProducts
@@ -2433,10 +2394,8 @@ function renderProducts(products){
     return;
   }
 
-
   productList.innerHTML =
     "";
-
 
   products.forEach(product => {
 
@@ -2447,7 +2406,6 @@ function renderProducts(products){
 
     item.className =
       "item product";
-
 
     const image =
       product.imageUrl
@@ -2476,7 +2434,6 @@ function renderProducts(products){
             No Image
           </div>
         `;
-
 
     item.innerHTML = `
 
@@ -2550,7 +2507,6 @@ function renderProducts(products){
 
       </div>
 
-
       <div class="actions">
 
         <button
@@ -2610,7 +2566,6 @@ function renderProducts(products){
       </div>
     `;
 
-
     productList.appendChild(item);
 
   });
@@ -2651,7 +2606,6 @@ function resetProductForm(){
     "productFeatured"
   ).checked = false;
 
-
   imagePreviewBox.style.display =
     "none";
 
@@ -2659,13 +2613,11 @@ function resetProductForm(){
     "src"
   );
 
-
   delete document
     .getElementById(
       "saveProductBtn"
     )
     .dataset.editingId;
-
 
   document
     .getElementById(
@@ -2721,7 +2673,6 @@ productImageUrl.addEventListener(
     const url =
       productImageUrl.value.trim();
 
-
     if(!url){
 
       imagePreviewBox.style.display =
@@ -2729,7 +2680,6 @@ productImageUrl.addEventListener(
 
       return;
     }
-
 
     imagePreviewBox.style.display =
       "block";
@@ -2808,7 +2758,6 @@ document
           )
           .checked;
 
-
       if(
         !name ||
         !price ||
@@ -2823,12 +2772,10 @@ document
         return;
       }
 
-
       const saveBtn =
         document.getElementById(
           "saveProductBtn"
         );
-
 
       saveBtn.disabled =
         true;
@@ -2836,13 +2783,11 @@ document
       saveBtn.textContent =
         "Saving...";
 
-
       try{
 
         const editingId =
           saveBtn.dataset
             .editingId;
-
 
         const data = {
 
@@ -2863,7 +2808,6 @@ document
           updatedAt:
             serverTimestamp()
         };
-
 
         if(editingId){
 
@@ -2912,7 +2856,6 @@ document
           );
         }
 
-
         resetProductForm();
 
         productFormBox.style.display =
@@ -2953,7 +2896,6 @@ window.editProduct =
           )
         );
 
-
       if(!snap.exists()){
 
         alert(
@@ -2963,10 +2905,8 @@ window.editProduct =
         return;
       }
 
-
       const product =
         snap.data();
-
 
       document.getElementById(
         "productName"
@@ -3003,7 +2943,6 @@ window.editProduct =
       ).checked =
         product.featured === true;
 
-
       if(product.imageUrl){
 
         imagePreviewBox.style.display =
@@ -3018,12 +2957,10 @@ window.editProduct =
           "none";
       }
 
-
       const saveBtn =
         document.getElementById(
           "saveProductBtn"
         );
-
 
       saveBtn.textContent =
         "Update Product";
@@ -3031,10 +2968,8 @@ window.editProduct =
       saveBtn.dataset.editingId =
         productId;
 
-
       productFormBox.style.display =
         "block";
-
 
       productFormBox.scrollIntoView({
         behavior:"smooth",
@@ -3059,7 +2994,6 @@ window.deleteProduct =
         "Are you sure you want to delete this product?"
       )
     ) return;
-
 
     try{
 
@@ -3098,7 +3032,6 @@ window.toggleProductStatus =
         "inactive"
         ? "active"
         : "inactive";
-
 
     try{
 
@@ -3170,7 +3103,6 @@ productsSearch.addEventListener(
         .toLowerCase()
         .trim();
 
-
     renderProducts(
       allProducts.filter(
         product => {
@@ -3186,7 +3118,6 @@ productsSearch.addEventListener(
               product.sellerName
             )
             .toLowerCase();
-
 
           return text.includes(q);
         }
@@ -3217,9 +3148,7 @@ async function loadOrders(){
         )
       );
 
-
     allOrders = [];
-
 
     snapshot.forEach(
       orderDoc => {
@@ -3231,7 +3160,6 @@ async function loadOrders(){
 
       }
     );
-
 
     renderOrders(
       allOrders
@@ -3246,9 +3174,7 @@ async function loadOrders(){
       error
     );
 
-
     allOrders = [];
-
 
     ordersList.innerHTML =
       `<div class="empty">
@@ -3259,7 +3185,6 @@ async function loadOrders(){
           <b>orders</b> collection is created.
         </small>
       </div>`;
-
 
     updateAnalytics();
   }
@@ -3278,17 +3203,14 @@ function renderOrders(orders){
     return;
   }
 
-
   ordersList.innerHTML =
     "";
-
 
   orders.forEach(order => {
 
     const status =
       order.status ||
       "pending";
-
 
     const item =
       document.createElement(
@@ -3297,7 +3219,6 @@ function renderOrders(orders){
 
     item.className =
       "item";
-
 
     item.innerHTML = `
 
@@ -3354,7 +3275,6 @@ function renderOrders(orders){
 
       </div>
 
-
       <div class="actions">
 
         <button
@@ -3394,7 +3314,6 @@ function renderOrders(orders){
 
       </div>
     `;
-
 
     ordersList.appendChild(item);
 
@@ -3444,7 +3363,6 @@ ordersSearch.addEventListener(
         .toLowerCase()
         .trim();
 
-
     renderOrders(
       allOrders.filter(
         order => {
@@ -3462,7 +3380,6 @@ ordersSearch.addEventListener(
               order.status
             )
             .toLowerCase();
-
 
           return text.includes(q);
         }
@@ -3491,7 +3408,6 @@ function updateAnalytics(){
   const users =
     allUsers.length;
 
-
   const sellers =
     allUsers.filter(
       user =>
@@ -3499,18 +3415,15 @@ function updateAnalytics(){
         user.isSeller === true
     ).length;
 
-
   const activeUsers =
     allUsers.filter(
       user =>
         user.active !== false
     ).length;
 
-
   const inactiveUsers =
     users -
     activeUsers;
-
 
   const pendingSellers =
     allUsers.filter(
@@ -3519,21 +3432,19 @@ function updateAnalytics(){
         "pending"
     ).length;
 
-
   const activeProducts =
     allProducts.filter(
       product =>
         product.status !==
-        "inactive"
+        "inactive" &&
+        product.active !== false
     ).length;
-
 
   const featuredProducts =
     allProducts.filter(
       product =>
         product.featured === true
     ).length;
-
 
   const productValue =
     allProducts.reduce(
@@ -3545,7 +3456,6 @@ function updateAnalytics(){
       0
     );
 
-
   const pendingOrders =
     allOrders.filter(
       order =>
@@ -3553,7 +3463,6 @@ function updateAnalytics(){
         order.status ===
           "pending"
     ).length;
-
 
   const orderRevenue =
     allOrders
@@ -3569,130 +3478,1046 @@ function updateAnalytics(){
         0
       );
 
-
   document.getElementById(
     "usersCount"
   ).textContent =
     users;
-
 
   document.getElementById(
     "sellersCount"
   ).textContent =
     sellers;
 
-
   document.getElementById(
     "productsCount"
   ).textContent =
     allProducts.length;
-
 
   document.getElementById(
     "categoriesCount"
   ).textContent =
     allCategories.length;
 
-
   document.getElementById(
     "activeUsersCount"
   ).textContent =
     activeUsers;
-
 
   document.getElementById(
     "inactiveUsersCount"
   ).textContent =
     inactiveUsers;
 
-
   document.getElementById(
     "pendingSellersCount"
   ).textContent =
     pendingSellers;
-
 
   document.getElementById(
     "activeProductsCount"
   ).textContent =
     activeProducts;
 
-
   document.getElementById(
     "featuredProductsCount"
   ).textContent =
     featuredProducts;
-
 
   document.getElementById(
     "productValue"
   ).textContent =
     money(productValue);
 
-
   document.getElementById(
     "ordersCount"
   ).textContent =
     allOrders.length;
-
 
   document.getElementById(
     "pendingOrdersCount"
   ).textContent =
     pendingOrders;
 
-
   document.getElementById(
     "orderRevenue"
   ).textContent =
     money(orderRevenue);
+};
+
+
+/* =========================================================
+   PROFESSIONAL EXPORT SYSTEM
+   ========================================================= */
+
+
+/* ------------------------------------------
+   EXPORT LIBRARIES
+------------------------------------------ */
+
+let exportLibraries = {
+  pdf:null,
+  excel:null
+};
+
+
+/* ------------------------------------------
+   LOAD EXTERNAL SCRIPT
+------------------------------------------ */
+
+function loadExternalScript(src){
+
+  return new Promise(
+    (resolve,reject) => {
+
+      const existing =
+        document.querySelector(
+          `script[src="${src}"]`
+        );
+
+      if(existing){
+
+        if(
+          existing.dataset.loaded ===
+          "true"
+        ){
+
+          resolve();
+          return;
+        }
+
+        existing.addEventListener(
+          "load",
+          () => resolve(),
+          {once:true}
+        );
+
+        existing.addEventListener(
+          "error",
+          () =>
+            reject(
+              new Error(
+                "Library failed to load."
+              )
+            ),
+          {once:true}
+        );
+
+        return;
+      }
+
+
+      const script =
+        document.createElement(
+          "script"
+        );
+
+      script.src =
+        src;
+
+      script.async =
+        true;
+
+      script.onload =
+        () => {
+
+          script.dataset.loaded =
+            "true";
+
+          resolve();
+
+        };
+
+      script.onerror =
+        () => {
+
+          reject(
+            new Error(
+              "Could not load export library."
+            )
+          );
+
+        };
+
+      document.head.appendChild(
+        script
+      );
+
+    }
+  );
+
 }
 
 
-/* ==========================================
-   CSV EXPORT
-========================================== */
+/* ------------------------------------------
+   LOAD PDF LIBRARIES
+------------------------------------------ */
 
-function downloadCSV(
-  filename,
-  rows
+async function loadPDFLibraries(){
+
+  if(exportLibraries.pdf){
+
+    return exportLibraries.pdf;
+
+  }
+
+  const promise =
+    (async () => {
+
+      await loadExternalScript(
+        "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+      );
+
+      await loadExternalScript(
+        "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"
+      );
+
+      return true;
+
+    })();
+
+  exportLibraries.pdf =
+    promise;
+
+  try{
+
+    await promise;
+
+  }catch(error){
+
+    exportLibraries.pdf =
+      null;
+
+    throw error;
+
+  }
+
+  return promise;
+
+}
+
+
+/* ------------------------------------------
+   LOAD EXCEL LIBRARY
+------------------------------------------ */
+
+async function loadExcelLibrary(){
+
+  if(exportLibraries.excel){
+
+    return exportLibraries.excel;
+
+  }
+
+  const promise =
+    loadExternalScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"
+    );
+
+  exportLibraries.excel =
+    promise;
+
+  try{
+
+    await promise;
+
+  }catch(error){
+
+    exportLibraries.excel =
+      null;
+
+    throw error;
+
+  }
+
+  return promise;
+
+}
+
+
+/* ------------------------------------------
+   FORMAT FIREBASE DATE
+------------------------------------------ */
+
+function formatExportDate(value){
+
+  if(!value){
+
+    return "N/A";
+
+  }
+
+  try{
+
+    let date = null;
+
+
+    if(
+      value &&
+      typeof value.toDate ===
+      "function"
+    ){
+
+      date =
+        value.toDate();
+
+    }
+
+    else if(
+      value &&
+      typeof value.seconds ===
+      "number"
+    ){
+
+      date =
+        new Date(
+          value.seconds *
+          1000
+        );
+
+    }
+
+    else if(
+      value &&
+      typeof value._seconds ===
+      "number"
+    ){
+
+      date =
+        new Date(
+          value._seconds *
+          1000
+        );
+
+    }
+
+    else if(
+      value instanceof Date
+    ){
+
+      date =
+        value;
+
+    }
+
+    else if(
+      typeof value ===
+      "number"
+    ){
+
+      date =
+        new Date(value);
+
+    }
+
+    else if(
+      typeof value ===
+      "string"
+    ){
+
+      date =
+        new Date(value);
+
+    }
+
+
+    if(
+      !date ||
+      isNaN(
+        date.getTime()
+      )
+    ){
+
+      return "N/A";
+
+    }
+
+
+    return new Intl.DateTimeFormat(
+      "en-NG",
+      {
+        day:"2-digit",
+        month:"short",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    ).format(date);
+
+  }catch(error){
+
+    return "N/A";
+
+  }
+
+}
+
+
+/* ------------------------------------------
+   CLEAN EXPORT VALUE
+------------------------------------------ */
+
+function cleanExportValue(value){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
+
+    return "";
+
+  }
+
+
+  if(
+    value &&
+    typeof value.toDate ===
+    "function"
+  ){
+
+    return formatExportDate(
+      value
+    );
+
+  }
+
+
+  if(
+    value &&
+    typeof value.seconds ===
+    "number"
+  ){
+
+    return formatExportDate(
+      value
+    );
+
+  }
+
+
+  if(
+    typeof value ===
+    "object"
+  ){
+
+    try{
+
+      return JSON.stringify(
+        value
+      );
+
+    }catch(error){
+
+      return String(value);
+
+    }
+
+  }
+
+
+  return String(value);
+
+}
+
+
+/* ------------------------------------------
+   SELLER NAME
+------------------------------------------ */
+
+function getSellerName(product){
+
+  return (
+    product.sellerName ||
+    product.seller ||
+    product.vendorName ||
+    product.ownerName ||
+    "N/A"
+  );
+
+}
+
+
+/* ------------------------------------------
+   ORDER TOTAL
+------------------------------------------ */
+
+function getExportOrderTotal(
+  order
 ){
 
-  if(!rows.length){
+  const value =
+    order.total ??
+    order.totalAmount ??
+    order.amount ??
+    order.price ??
+    order.orderTotal ??
+    0;
+
+  const number =
+    Number(value);
+
+  return isNaN(number)
+    ? 0
+    : number;
+
+}
+
+
+/* ------------------------------------------
+   MONEY
+------------------------------------------ */
+
+function formatExportMoney(
+  value
+){
+
+  const number =
+    Number(
+      value || 0
+    );
+
+  if(
+    isNaN(number)
+  ){
+
+    return "₦0";
+
+  }
+
+  return (
+    "₦" +
+    number.toLocaleString(
+      "en-NG"
+    )
+  );
+
+}
+
+
+/* ------------------------------------------
+   USERS REPORT
+------------------------------------------ */
+
+function createUsersReport(){
+
+  return allUsers.map(
+    (user,index) => {
+
+      const isSeller =
+        user.role === "seller" ||
+        user.role === "Seller" ||
+        user.isSeller === true ||
+        user.sellerStatus === "approved";
+
+      const role =
+        isSeller
+          ? "Seller"
+          : "Buyer";
+
+      return {
+
+        "#":
+          index + 1,
+
+        "Name":
+          user.name ||
+          user.fullName ||
+          "N/A",
+
+        "Email":
+          user.email ||
+          "N/A",
+
+        "Phone":
+          user.phone ||
+          "N/A",
+
+        "State":
+          user.state ||
+          user.location ||
+          "N/A",
+
+        "Role":
+          role,
+
+        "Seller Status":
+          user.sellerStatus ||
+          "N/A",
+
+        "Status":
+          user.active === false
+            ? "Inactive"
+            : "Active"
+
+      };
+
+    }
+  );
+
+}
+
+
+/* ------------------------------------------
+   SELLERS REPORT
+------------------------------------------ */
+
+function createSellersReport(){
+
+  const sellers =
+    allUsers.filter(
+      user =>
+        user.role === "seller" ||
+        user.role === "Seller" ||
+        user.isSeller === true ||
+        user.sellerStatus === "approved"
+    );
+
+  return sellers.map(
+    (user,index) => {
+
+      return {
+
+        "#":
+          index + 1,
+
+        "Name":
+          user.name ||
+          user.fullName ||
+          "N/A",
+
+        "Business":
+          user.business ||
+          user.businessName ||
+          "N/A",
+
+        "Email":
+          user.email ||
+          "N/A",
+
+        "Phone":
+          user.phone ||
+          "N/A",
+
+        "WhatsApp":
+          user.whatsapp ||
+          user.whatsApp ||
+          "N/A",
+
+        "State":
+          user.state ||
+          user.location ||
+          "N/A",
+
+        "Seller Status":
+          user.sellerStatus ||
+          "N/A",
+
+        "Account Status":
+          user.active === false
+            ? "Inactive"
+            : "Active"
+
+      };
+
+    }
+  );
+
+}
+
+
+/* ------------------------------------------
+   PRODUCTS REPORT
+------------------------------------------ */
+
+function createProductsReport(){
+
+  return allProducts.map(
+    (product,index) => {
+
+      return {
+
+        "#":
+          index + 1,
+
+        "Product":
+          product.name ||
+          product.productName ||
+          "N/A",
+
+        "Price":
+          formatExportMoney(
+            product.price
+          ),
+
+        "Category":
+          product.category ||
+          "N/A",
+
+        "State":
+          product.state ||
+          product.location ||
+          "N/A",
+
+        "Seller":
+          getSellerName(
+            product
+          ),
+
+        "Seller Phone":
+          product.sellerPhone ||
+          product.phone ||
+          "N/A",
+
+        "Status":
+          product.active === false ||
+          product.status === "inactive"
+            ? "Inactive"
+            : (
+                product.status ||
+                "Active"
+              ),
+
+        "Featured":
+          product.featured === true
+            ? "Yes"
+            : "No",
+
+        "Created At":
+          formatExportDate(
+            product.createdAt
+          )
+
+      };
+
+    }
+  );
+
+}
+
+
+/* ------------------------------------------
+   CATEGORIES REPORT
+------------------------------------------ */
+
+function createCategoriesReport(){
+
+  return allCategories.map(
+    (category,index) => {
+
+      return {
+
+        "#":
+          index + 1,
+
+        "Category Name":
+          category.name ||
+          category.categoryName ||
+          "N/A",
+
+        "Category ID":
+          category.id ||
+          "N/A",
+
+        "Created At":
+          formatExportDate(
+            category.createdAt
+          )
+
+      };
+
+    }
+  );
+
+}
+
+
+/* ------------------------------------------
+   SELLER APPLICATIONS REPORT
+------------------------------------------ */
+
+function createSellerApplicationsReport(){
+
+  const applications =
+    allSellerApplications.length
+      ? allSellerApplications
+      : allUsers.filter(
+          user =>
+            user.sellerStatus ===
+            "pending"
+        );
+
+  return applications.map(
+    (user,index) => {
+
+      return {
+
+        "#":
+          index + 1,
+
+        "Name":
+          user.name ||
+          user.fullName ||
+          "N/A",
+
+        "Business":
+          user.business ||
+          user.businessName ||
+          "N/A",
+
+        "Email":
+          user.email ||
+          "N/A",
+
+        "Phone":
+          user.phone ||
+          "N/A",
+
+        "WhatsApp":
+          user.whatsapp ||
+          user.whatsApp ||
+          "N/A",
+
+        "State":
+          user.state ||
+          user.location ||
+          "N/A",
+
+        "Description":
+          user.businessDescription ||
+          user.description ||
+          "N/A",
+
+        "Status":
+          user.sellerStatus ||
+          "Pending"
+
+      };
+
+    }
+  );
+
+}
+
+
+/* ------------------------------------------
+   ORDERS REPORT
+------------------------------------------ */
+
+function createOrdersReport(){
+
+  return allOrders.map(
+    (order,index) => {
+
+      return {
+
+        "#":
+          index + 1,
+
+        "Order ID":
+          order.id ||
+          order.orderId ||
+          "N/A",
+
+        "Buyer":
+          order.buyerName ||
+          order.customerName ||
+          order.userName ||
+          order.buyer ||
+          "N/A",
+
+        "Buyer Phone":
+          order.buyerPhone ||
+          order.customerPhone ||
+          order.phone ||
+          "N/A",
+
+        "Seller":
+          order.sellerName ||
+          order.seller ||
+          "N/A",
+
+        "Amount":
+          formatExportMoney(
+            getExportOrderTotal(
+              order
+            )
+          ),
+
+        "Status":
+          order.status ||
+          "Pending",
+
+        "Created At":
+          formatExportDate(
+            order.createdAt
+          ),
+
+        "Updated At":
+          formatExportDate(
+            order.updatedAt
+          )
+
+      };
+
+    }
+  );
+
+}
+
+
+/* ------------------------------------------
+   GET REPORT
+------------------------------------------ */
+
+function getExportReport(
+  reportType
+){
+
+  switch(reportType){
+
+    case "users":
+
+      return {
+        title:"Users Report",
+        rows:createUsersReport()
+      };
+
+
+    case "sellers":
+
+      return {
+        title:"Sellers Report",
+        rows:createSellersReport()
+      };
+
+
+    case "products":
+
+      return {
+        title:"Products Report",
+        rows:createProductsReport()
+      };
+
+
+    case "categories":
+
+      return {
+        title:"Categories Report",
+        rows:createCategoriesReport()
+      };
+
+
+    case "sellerApplications":
+
+      return {
+        title:
+          "Seller Applications Report",
+        rows:
+          createSellerApplicationsReport()
+      };
+
+
+    case "orders":
+
+      return {
+        title:"Orders Report",
+        rows:createOrdersReport()
+      };
+
+
+    default:
+
+      return {
+        title:"Arewa Market Report",
+        rows:[]
+      };
+
+  }
+
+}
+
+
+/* ------------------------------------------
+   CSV EXPORT
+------------------------------------------ */
+
+function exportCSV(
+  reportType
+){
+
+  const report =
+    getExportReport(
+      reportType
+    );
+
+  if(!report.rows.length){
 
     alert(
       "No data available to export."
     );
 
     return;
+
   }
 
 
   const headers =
-    Object.keys(rows[0]);
+    Object.keys(
+      report.rows[0]
+    );
 
 
-  const csv = [
+  const csvRows = [];
 
-    headers.join(","),
 
-    ...rows.map(row =>
-      headers.map(
-        header =>
-          '"' +
-          String(
-            row[header] ??
-            ""
-          )
+  csvRows.push(
+    headers.map(
+      header =>
+        `"${String(header)
           .replace(
             /"/g,
             '""'
-          ) +
-          '"'
-      ).join(",")
-    )
+          )}"`
+    ).join(",")
+  );
 
-  ].join("\n");
+
+  report.rows.forEach(
+    row => {
+
+      csvRows.push(
+
+        headers.map(
+          header => {
+
+            const value =
+              cleanExportValue(
+                row[header]
+              );
+
+            return (
+              '"' +
+              String(value)
+                .replace(
+                  /"/g,
+                  '""'
+                ) +
+              '"'
+            );
+
+          }
+        ).join(",")
+
+      );
+
+    }
+  );
+
+
+  const csv =
+    "\uFEFF" +
+    csvRows.join(
+      "\r\n"
+    );
 
 
   const blob =
@@ -3720,15 +4545,968 @@ function downloadCSV(
     url;
 
   link.download =
-    filename;
+    `arewa-market-${reportType}-${getFileDate()}.csv`;
+
+  document.body.appendChild(
+    link
+  );
 
   link.click();
+
+  link.remove();
 
   URL.revokeObjectURL(
     url
   );
+
 }
 
+
+/* ------------------------------------------
+   EXCEL EXPORT
+------------------------------------------ */
+
+async function exportExcel(
+  reportType
+){
+
+  const report =
+    getExportReport(
+      reportType
+    );
+
+  if(!report.rows.length){
+
+    alert(
+      "No data available to export."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    await loadExcelLibrary();
+
+
+    if(!window.XLSX){
+
+      throw new Error(
+        "Excel library unavailable."
+      );
+
+    }
+
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        report.rows
+      );
+
+
+    const headers =
+      Object.keys(
+        report.rows[0]
+      );
+
+
+    worksheet["!cols"] =
+      headers.map(
+        header => {
+
+          let width =
+            String(header)
+              .length + 4;
+
+
+          report.rows.forEach(
+            row => {
+
+              const length =
+                String(
+                  row[header] ??
+                  ""
+                ).length;
+
+
+              if(
+                length + 2 >
+                width
+              ){
+
+                width =
+                  length + 2;
+
+              }
+
+            }
+          );
+
+
+          return {
+
+            wch:
+              Math.min(
+                Math.max(
+                  width,
+                  12
+                ),
+                35
+              )
+
+          };
+
+        }
+      );
+
+
+    const workbook =
+      XLSX.utils.book_new();
+
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      report.title.substring(
+        0,
+        31
+      )
+    );
+
+
+    XLSX.writeFile(
+      workbook,
+      `arewa-market-${reportType}-${getFileDate()}.xlsx`
+    );
+
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Excel export failed. Please check your internet connection and try again."
+    );
+
+  }
+
+}
+
+
+/* ------------------------------------------
+   PDF EXPORT
+------------------------------------------ */
+
+async function exportPDF(
+  reportType
+){
+
+  const report =
+    getExportReport(
+      reportType
+    );
+
+
+  if(!report.rows.length){
+
+    alert(
+      "No data available to export."
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    await loadPDFLibraries();
+
+
+    if(
+      !window.jspdf ||
+      !window.jspdf.jsPDF
+    ){
+
+      throw new Error(
+        "PDF library unavailable."
+      );
+
+    }
+
+
+    const {
+      jsPDF
+    } =
+      window.jspdf;
+
+
+    const pdfDoc =
+      new jsPDF({
+
+        orientation:
+          "landscape",
+
+        unit:
+          "mm",
+
+        format:
+          "a4"
+
+      });
+
+
+    if(
+      typeof pdfDoc.autoTable !==
+      "function"
+    ){
+
+      throw new Error(
+        "PDF table plugin unavailable."
+      );
+
+    }
+
+
+    const headers =
+      Object.keys(
+        report.rows[0]
+      );
+
+
+    const body =
+      report.rows.map(
+        row =>
+          headers.map(
+            header =>
+              cleanExportValue(
+                row[header]
+              )
+          )
+      );
+
+
+    const generatedDate =
+      new Intl.DateTimeFormat(
+        "en-NG",
+        {
+          day:"2-digit",
+          month:"short",
+          year:"numeric",
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      ).format(
+        new Date()
+      );
+
+
+    /* --------------------------------------
+       SUMMARY
+    -------------------------------------- */
+
+    let summaryText =
+      `Total Records: ${report.rows.length}`;
+
+
+    if(
+      reportType ===
+      "users"
+    ){
+
+      const sellers =
+        allUsers.filter(
+          user =>
+            user.role === "seller" ||
+            user.role === "Seller" ||
+            user.isSeller === true ||
+            user.sellerStatus === "approved"
+        ).length;
+
+
+      const buyers =
+        allUsers.length -
+        sellers;
+
+
+      summaryText +=
+        `   |   Sellers: ${sellers}` +
+        `   |   Buyers: ${buyers}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "sellers"
+    ){
+
+      const active =
+        allUsers.filter(
+          user =>
+            (
+              user.role === "seller" ||
+              user.role === "Seller" ||
+              user.isSeller === true ||
+              user.sellerStatus === "approved"
+            ) &&
+            user.active !== false
+        ).length;
+
+
+      const inactive =
+        allUsers.filter(
+          user =>
+            (
+              user.role === "seller" ||
+              user.role === "Seller" ||
+              user.isSeller === true ||
+              user.sellerStatus === "approved"
+            ) &&
+            user.active === false
+        ).length;
+
+
+      summaryText +=
+        `   |   Active: ${active}` +
+        `   |   Inactive: ${inactive}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "products"
+    ){
+
+      const active =
+        allProducts.filter(
+          product =>
+            product.active !== false &&
+            product.status !== "inactive"
+        ).length;
+
+
+      const featured =
+        allProducts.filter(
+          product =>
+            product.featured === true
+        ).length;
+
+
+      summaryText +=
+        `   |   Active: ${active}` +
+        `   |   Featured: ${featured}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "categories"
+    ){
+
+      summaryText +=
+        `   |   Categories: ${allCategories.length}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "sellerApplications"
+    ){
+
+      const pending =
+        allSellerApplications.filter(
+          user =>
+            user.sellerStatus ===
+            "pending"
+        ).length;
+
+
+      summaryText +=
+        `   |   Pending: ${pending}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "orders"
+    ){
+
+      const pending =
+        allOrders.filter(
+          order =>
+            String(
+              order.status ||
+              ""
+            ).toLowerCase() ===
+            "pending"
+        ).length;
+
+
+      const completed =
+        allOrders.filter(
+          order =>
+            String(
+              order.status ||
+              ""
+            ).toLowerCase() ===
+            "completed"
+        ).length;
+
+
+      const cancelled =
+        allOrders.filter(
+          order =>
+            String(
+              order.status ||
+              ""
+            ).toLowerCase() ===
+            "cancelled"
+        ).length;
+
+
+      const revenue =
+        allOrders
+          .filter(
+            order =>
+              String(
+                order.status ||
+                ""
+              ).toLowerCase() ===
+              "completed"
+          )
+          .reduce(
+            (
+              total,
+              order
+            ) =>
+              total +
+              getExportOrderTotal(
+                order
+              ),
+            0
+          );
+
+
+      summaryText +=
+        `   |   Pending: ${pending}` +
+        `   |   Completed: ${completed}` +
+        `   |   Cancelled: ${cancelled}` +
+        `   |   Revenue: ${formatExportMoney(revenue)}`;
+
+    }
+
+
+    /* --------------------------------------
+       TABLE
+    -------------------------------------- */
+
+    pdfDoc.autoTable({
+
+      head:[
+        headers
+      ],
+
+      body:
+        body,
+
+      startY:
+        43,
+
+      margin:{
+        top:43,
+        right:10,
+        bottom:18,
+        left:10
+      },
+
+      theme:
+        "grid",
+
+      styles:{
+
+        font:
+          "helvetica",
+
+        fontSize:
+          7,
+
+        cellPadding:
+          2.2,
+
+        overflow:
+          "linebreak",
+
+        valign:
+          "middle"
+
+      },
+
+      headStyles:{
+
+        fontStyle:
+          "bold",
+
+        fontSize:
+          7
+
+      },
+
+      alternateRowStyles:{
+        overflow:
+          "linebreak"
+      },
+
+      didDrawPage:
+        function(){
+
+          /* HEADER */
+
+          pdfDoc.setFontSize(
+            18
+          );
+
+          pdfDoc.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          pdfDoc.text(
+            "AREWA MARKET",
+            14,
+            14
+          );
+
+
+          pdfDoc.setFontSize(
+            12
+          );
+
+          pdfDoc.setFont(
+            "helvetica",
+            "normal"
+          );
+
+          pdfDoc.text(
+            report.title,
+            14,
+            22
+          );
+
+
+          pdfDoc.setFontSize(
+            8
+          );
+
+          pdfDoc.text(
+            `Generated: ${generatedDate}`,
+            14,
+            28
+          );
+
+
+          pdfDoc.setFontSize(
+            8
+          );
+
+          pdfDoc.setFont(
+            "helvetica",
+            "bold"
+          );
+
+          pdfDoc.text(
+            summaryText,
+            14,
+            36
+          );
+
+        }
+
+    });
+
+
+    /* --------------------------------------
+       PAGE NUMBERS
+    -------------------------------------- */
+
+    const pageCount =
+      pdfDoc.internal
+        .getNumberOfPages();
+
+
+    for(
+      let page = 1;
+      page <= pageCount;
+      page++
+    ){
+
+      pdfDoc.setPage(
+        page
+      );
+
+
+      pdfDoc.setFontSize(
+        8
+      );
+
+      pdfDoc.setFont(
+        "helvetica",
+        "normal"
+      );
+
+
+      pdfDoc.text(
+        `Arewa Market • Page ${page} of ${pageCount}`,
+        14,
+        202
+      );
+
+
+      pdfDoc.text(
+        "Kasuwar Arewa a Hannunka",
+        287,
+        202,
+        {
+          align:
+            "right"
+        }
+      );
+
+    }
+
+
+    /* --------------------------------------
+       SAVE
+    -------------------------------------- */
+
+    pdfDoc.save(
+      `arewa-market-${reportType}-${getFileDate()}.pdf`
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "PDF EXPORT ERROR:",
+      error
+    );
+
+    alert(
+      "PDF export failed. Please check your internet connection and try again."
+    );
+
+  }
+
+}
+
+
+/* ------------------------------------------
+   FILE DATE
+------------------------------------------ */
+
+function getFileDate(){
+
+  const now =
+    new Date();
+
+  const year =
+    now.getFullYear();
+
+  const month =
+    String(
+      now.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+  const day =
+    String(
+      now.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+  return (
+    `${year}-${month}-${day}`
+  );
+
+}
+
+
+/* ------------------------------------------
+   EXPORT MENU
+------------------------------------------ */
+
+function showExportMenu(
+  reportType
+){
+
+  const report =
+    getExportReport(
+      reportType
+    );
+
+
+  const overlay =
+    document.createElement(
+      "div"
+    );
+
+
+  overlay.style.cssText = `
+
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:99999;
+    padding:20px;
+
+  `;
+
+
+  const box =
+    document.createElement(
+      "div"
+    );
+
+
+  box.style.cssText = `
+
+    background:#fff;
+    width:100%;
+    max-width:430px;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    text-align:center;
+
+  `;
+
+
+  box.innerHTML = `
+
+    <div style="
+      font-size:28px;
+      margin-bottom:8px;
+    ">
+      📥
+    </div>
+
+    <h2 style="
+      margin:0 0 8px;
+      color:#166534;
+    ">
+      Export ${escapeHtml(
+        report.title
+      )}
+    </h2>
+
+    <p style="
+      margin:0 0 20px;
+      color:#666;
+      font-size:14px;
+    ">
+      Choose the format you want to download.
+    </p>
+
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    ">
+
+      <button
+        id="exportPDFChoice"
+        style="
+          padding:14px 8px;
+          border:0;
+          border-radius:10px;
+          cursor:pointer;
+          background:#dc2626;
+          color:white;
+          font-weight:bold;
+        "
+      >
+        📄<br>
+        PDF
+      </button>
+
+      <button
+        id="exportExcelChoice"
+        style="
+          padding:14px 8px;
+          border:0;
+          border-radius:10px;
+          cursor:pointer;
+          background:#15803d;
+          color:white;
+          font-weight:bold;
+        "
+      >
+        📊<br>
+        Excel
+      </button>
+
+      <button
+        id="exportCSVChoice"
+        style="
+          padding:14px 8px;
+          border:0;
+          border-radius:10px;
+          cursor:pointer;
+          background:#ca8a04;
+          color:white;
+          font-weight:bold;
+        "
+      >
+        📋<br>
+        CSV
+      </button>
+
+    </div>
+
+    <button
+      id="closeExportChoice"
+      style="
+        margin-top:15px;
+        width:100%;
+        padding:11px;
+        border:1px solid #ddd;
+        border-radius:9px;
+        background:#f5f5f5;
+        color:#333;
+        cursor:pointer;
+      "
+    >
+      Cancel
+    </button>
+
+  `;
+
+
+  overlay.appendChild(
+    box
+  );
+
+
+  document.body.appendChild(
+    overlay
+  );
+
+
+  /* PDF */
+
+  box
+    .querySelector(
+      "#exportPDFChoice"
+    )
+    .addEventListener(
+      "click",
+      async () => {
+
+        overlay.remove();
+
+        await exportPDF(
+          reportType
+        );
+
+      }
+    );
+
+
+  /* EXCEL */
+
+  box
+    .querySelector(
+      "#exportExcelChoice"
+    )
+    .addEventListener(
+      "click",
+      async () => {
+
+        overlay.remove();
+
+        await exportExcel(
+          reportType
+        );
+
+      }
+    );
+
+
+  /* CSV */
+
+  box
+    .querySelector(
+      "#exportCSVChoice"
+    )
+    .addEventListener(
+      "click",
+      () => {
+
+        overlay.remove();
+
+        exportCSV(
+          reportType
+        );
+
+      }
+    );
+
+
+  /* CANCEL */
+
+  box
+    .querySelector(
+      "#closeExportChoice"
+    )
+    .addEventListener(
+      "click",
+      () => {
+
+        overlay.remove();
+
+      }
+    );
+
+
+  /* OUTSIDE CLICK */
+
+  overlay.addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        overlay
+      ){
+
+        overlay.remove();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ==========================================
+   EXPORT BUTTONS
+========================================== */
 
 document
   .getElementById(
@@ -3738,10 +5516,10 @@ document
     "click",
     () => {
 
-      downloadCSV(
-        "arewa-market-users.csv",
-        allUsers
+      showExportMenu(
+        "users"
       );
+
     }
   );
 
@@ -3754,10 +5532,10 @@ document
     "click",
     () => {
 
-      downloadCSV(
-        "arewa-market-products.csv",
-        allProducts
+      showExportMenu(
+        "products"
       );
+
     }
   );
 
@@ -3770,12 +5548,165 @@ document
     "click",
     () => {
 
-      downloadCSV(
-        "arewa-market-orders.csv",
-        allOrders
+      showExportMenu(
+        "orders"
       );
+
     }
   );
+
+
+/* ==========================================
+   EXTRA EXPORT BUTTONS
+========================================== */
+
+function addExtraExportButtons(){
+
+  const tools =
+    document.querySelector(
+      ".dashboard-tools"
+    );
+
+
+  if(!tools){
+
+    return;
+
+  }
+
+
+  /* SELLERS */
+
+  if(
+    !document.getElementById(
+      "exportSellersBtn"
+    )
+  ){
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+
+    button.id =
+      "exportSellersBtn";
+
+    button.className =
+      "warning";
+
+    button.innerHTML =
+      "📥 Export Sellers";
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        showExportMenu(
+          "sellers"
+        );
+
+      }
+    );
+
+
+    tools.appendChild(
+      button
+    );
+
+  }
+
+
+  /* CATEGORIES */
+
+  if(
+    !document.getElementById(
+      "exportCategoriesBtn"
+    )
+  ){
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+
+    button.id =
+      "exportCategoriesBtn";
+
+    button.className =
+      "warning";
+
+    button.innerHTML =
+      "📥 Export Categories";
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        showExportMenu(
+          "categories"
+        );
+
+      }
+    );
+
+
+    tools.appendChild(
+      button
+    );
+
+  }
+
+
+  /* SELLER APPLICATIONS */
+
+  if(
+    !document.getElementById(
+      "exportApplicationsBtn"
+    )
+  ){
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+
+    button.id =
+      "exportApplicationsBtn";
+
+    button.className =
+      "warning";
+
+    button.innerHTML =
+      "📥 Export Applications";
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        showExportMenu(
+          "sellerApplications"
+        );
+
+      }
+    );
+
+
+    tools.appendChild(
+      button
+    );
+
+  }
+
+}
+
+
+addExtraExportButtons();
 
 
 /* ==========================================
@@ -3788,11 +5719,16 @@ logoutBtn.addEventListener(
 
     try{
 
-      await signOut(auth);
+      await signOut(
+        auth
+      );
 
     }catch(error){
 
-      console.error(error);
+      console.error(
+        error
+      );
+
     }
 
   }
