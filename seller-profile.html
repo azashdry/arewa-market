@@ -609,12 +609,22 @@ const sellerId =
 
 
 /* =========================================
+   CURRENT USER
+========================================= */
+
+let currentUser = null;
+
+
+
+/* =========================================
    AUTH STATE
 ========================================= */
 
 onAuthStateChanged(
   auth,
   (user) => {
+
+    currentUser = user;
 
     if(user){
 
@@ -693,6 +703,89 @@ async function loadCurrentUser(user){
     );
 
   }
+
+}
+
+
+
+/* =========================================
+   MESSAGE SELLER
+========================================= */
+
+function messageSeller(){
+
+  if(!sellerId){
+
+    showError(
+      "Seller ID is missing."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Prevent seller from messaging
+    himself/herself.
+  */
+
+  if(
+    currentUser &&
+    currentUser.uid === sellerId
+  ){
+
+    showError(
+      "You cannot message yourself."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    USER NOT LOGGED IN
+    =================
+
+    Save the exact messaging URL
+    before sending user to login.
+
+    This is important because login.html
+    will read this value after login.
+  */
+
+  if(!currentUser){
+
+    const messageUrl =
+      "messages.html?sellerId=" +
+      encodeURIComponent(sellerId);
+
+
+    sessionStorage.setItem(
+      "arewaMarketRedirect",
+      messageUrl
+    );
+
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  /*
+    USER ALREADY LOGGED IN
+    ======================
+
+    Open messages directly.
+  */
+
+  window.location.href =
+    "messages.html?sellerId=" +
+    encodeURIComponent(sellerId);
 
 }
 
@@ -851,6 +944,27 @@ function renderSeller(seller){
   let contactButtons = "";
 
 
+  /* =========================
+     MESSAGE SELLER
+  ========================= */
+
+  contactButtons += `
+
+    <button
+      type="button"
+      class="btn btn-green"
+      id="messageSellerBtn"
+    >
+      💬 Message Seller
+    </button>
+
+  `;
+
+
+  /* =========================
+     CALL SELLER
+  ========================= */
+
   if(phone){
 
     const phoneNumber =
@@ -873,6 +987,10 @@ function renderSeller(seller){
 
   }
 
+
+  /* =========================
+     WHATSAPP
+  ========================= */
 
   if(whatsapp){
 
@@ -1012,6 +1130,22 @@ function renderSeller(seller){
     </div>
 
   `;
+
+
+  const messageSellerBtn =
+    document.getElementById(
+      "messageSellerBtn"
+    );
+
+
+  if(messageSellerBtn){
+
+    messageSellerBtn.addEventListener(
+      "click",
+      messageSeller
+    );
+
+  }
 
 }
 

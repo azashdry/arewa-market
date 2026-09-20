@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arewa Market Firebase Test</title>
+</head>
+
+<body>
+
+  <h2>Arewa Market</h2>
+
+  <p id="status">Testing Firebase...</p>
+
+  <script type="module">
+
+    import {
+      auth,
+      db
+    } from "./firebase.js";
+
+    const status =
+      document.getElementById("status");
+
+    if(auth && db){
+
+      status.textContent =
+        "Firebase connected successfully ✅";
+
+      status.style.color = "green";
+
+    }else{
+
+      status.textContent =
+        "Firebase connection failed ❌";
+
+      status.style.color = "red";
+
+    }
+
+  </script>
+
+</body>
+</html>

@@ -174,6 +174,7 @@ button:disabled{
 
     <div class="form-group">
       <label for="email">Email</label>
+
       <input
         type="email"
         id="email"
@@ -184,9 +185,11 @@ button:disabled{
     </div>
 
     <div class="form-group">
+
       <label for="password">Password</label>
 
       <div class="password-box">
+
         <input
           type="password"
           id="password"
@@ -196,11 +199,15 @@ button:disabled{
         >
 
         <span class="eye" id="togglePassword">👁</span>
+
       </div>
+
     </div>
 
     <div class="forgot">
-      <a href="#" id="forgotPassword">Forgot password?</a>
+      <a href="#" id="forgotPassword">
+        Forgot password?
+      </a>
     </div>
 
     <button type="submit" id="loginBtn">
@@ -259,6 +266,7 @@ function showMessage(text,type="error"){
 
   messageBox.className =
     "message " + type;
+
 }
 
 
@@ -267,6 +275,7 @@ function hideMessage(){
   messageBox.textContent = "";
 
   messageBox.className = "message";
+
 }
 
 
@@ -287,6 +296,7 @@ togglePassword.addEventListener("click",()=>{
     passwordInput.type = "password";
 
     togglePassword.textContent = "👁";
+
   }
 
 });
@@ -353,6 +363,7 @@ forgotPassword.addEventListener("click",async(event)=>{
       showMessage(
         "Unable to send password reset email."
       );
+
     }
 
   }
@@ -387,14 +398,15 @@ loginForm.addEventListener("submit",async(event)=>{
 
   loginBtn.disabled = true;
 
-  loginBtn.textContent = "Logging in...";
+  loginBtn.textContent =
+    "Logging in...";
+
 
   try{
 
-    /*
-      LOGIN ONLY
-      No Order / Resume Order logic
-    */
+    /* =========================
+       FIREBASE LOGIN
+    ========================= */
 
     const credential =
       await signInWithEmailAndPassword(
@@ -407,22 +419,23 @@ loginForm.addEventListener("submit",async(event)=>{
       credential.user;
 
 
-    /*
-      Check user's Firestore document
-    */
-
-    const userRef =
-      doc(
-        db,
-        "users",
-        user.uid
-      );
+    /* =========================
+       GET USER PROFILE
+    ========================= */
 
     const userSnap =
-      await getDoc(userRef);
+      await getDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        )
+      );
 
 
     if(!userSnap.exists()){
+
+      await auth.signOut();
 
       showMessage(
         "Your account was created, but your user profile was not found."
@@ -436,11 +449,13 @@ loginForm.addEventListener("submit",async(event)=>{
       userSnap.data();
 
 
-    /*
-      Check account status
-    */
+    /* =========================
+       ACCOUNT STATUS
+    ========================= */
 
     if(userData.active === false){
+
+      await auth.signOut();
 
       showMessage(
         "Your account has been deactivated. Please contact Arewa Market."
@@ -450,16 +465,51 @@ loginForm.addEventListener("submit",async(event)=>{
     }
 
 
-    /*
-      Approved seller
-      → Seller Dashboard
-    */
+    /* =================================================
+       CHECK MESSAGE SELLER REDIRECT
+    ================================================= */
+
+    const redirectAfterLogin =
+      sessionStorage.getItem(
+        "arewaMarketRedirect"
+      );
+
 
     if(
+      redirectAfterLogin &&
+      redirectAfterLogin.includes(
+        "messages.html?sellerId="
+      )
+    ){
+
+      sessionStorage.removeItem(
+        "arewaMarketRedirect"
+      );
+
+      window.location.replace(
+        redirectAfterLogin
+      );
+
+      return;
+    }
+
+
+    /* =================================================
+       NORMAL LOGIN
+       APPROVED SELLER → SELLER DASHBOARD
+    ================================================= */
+
+    const isApprovedSeller =
       userData.role === "seller" &&
       userData.isSeller === true &&
-      userData.sellerStatus === "approved"
-    ){
+      userData.sellerStatus === "approved";
+
+
+    if(isApprovedSeller){
+
+      sessionStorage.removeItem(
+        "arewaMarketRedirect"
+      );
 
       window.location.replace(
         "seller-dashboard.html"
@@ -469,10 +519,13 @@ loginForm.addEventListener("submit",async(event)=>{
     }
 
 
-    /*
-      Normal buyer
-      → Homepage
-    */
+    /* =================================================
+       NORMAL BUYER → INDEX
+    ================================================= */
+
+    sessionStorage.removeItem(
+      "arewaMarketRedirect"
+    );
 
     window.location.replace(
       "index.html"
@@ -492,7 +545,9 @@ loginForm.addEventListener("submit",async(event)=>{
     );
 
 
-    if(error.code === "auth/invalid-credential"){
+    if(
+      error.code === "auth/invalid-credential"
+    ){
 
       showMessage(
         "Incorrect email or password."
@@ -550,7 +605,8 @@ loginForm.addEventListener("submit",async(event)=>{
 
     loginBtn.disabled = false;
 
-    loginBtn.textContent = "Login";
+    loginBtn.textContent =
+      "Login";
 
   }
 

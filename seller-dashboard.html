@@ -89,6 +89,31 @@ button:hover,
   opacity:.9;
 }
 
+/* ================= MESSAGES BUTTON ================= */
+
+.messages-btn{
+  background:#198754;
+  color:white;
+  position:relative;
+}
+
+.unread-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  margin-left:5px;
+  background:#dc3545;
+  color:white;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+/* ================= CONTAINER ================= */
+
 .container{
   max-width:1200px;
   margin:auto;
@@ -413,7 +438,9 @@ footer{
 }
 
 /* MOBILE */
+
 @media(max-width:800px){
+
   .stats{
     grid-template-columns:1fr;
   }
@@ -421,9 +448,11 @@ footer{
   .products-grid{
     grid-template-columns:repeat(2,1fr);
   }
+
 }
 
 @media(max-width:600px){
+
   header{
     align-items:flex-start;
   }
@@ -461,6 +490,7 @@ footer{
   .profile-info{
     width:100%;
   }
+
 }
 </style>
 </head>
@@ -475,8 +505,29 @@ footer{
   </div>
 
   <div class="header-actions">
-    <a href="index.html" class="btn btn-light">
+
+    <a
+      href="index.html"
+      class="btn btn-light"
+    >
       Marketplace
+    </a>
+
+    <!-- ================= MESSAGES ================= -->
+
+    <a
+      href="messages.html"
+      id="messagesBtn"
+      class="btn messages-btn"
+    >
+      💬 Messages
+      <span
+        id="unreadBadge"
+        class="unread-badge"
+        style="display:none;"
+      >
+        0
+      </span>
     </a>
 
     <a
@@ -493,6 +544,7 @@ footer{
     >
       Logout
     </button>
+
   </div>
 
 </header>
@@ -503,8 +555,18 @@ footer{
   <div id="message" class="message"></div>
 
   <div class="welcome">
-    <h2>Welcome, <span id="welcomeName">Seller</span></h2>
-    <p>Manage your seller profile and products from here.</p>
+
+    <h2>
+      Welcome,
+      <span id="welcomeName">
+        Seller
+      </span>
+    </h2>
+
+    <p>
+      Manage your seller profile and products from here.
+    </p>
+
   </div>
 
 
@@ -513,18 +575,41 @@ footer{
   <div class="stats">
 
     <div class="stat">
-      <h3 id="totalProducts">0</h3>
-      <p>My Products</p>
+
+      <h3 id="totalProducts">
+        0
+      </h3>
+
+      <p>
+        My Products
+      </p>
+
     </div>
 
-    <div class="stat">
-      <h3 id="activeProducts">0</h3>
-      <p>Active Products</p>
-    </div>
 
     <div class="stat">
-      <h3 id="inactiveProducts">0</h3>
-      <p>Inactive Products</p>
+
+      <h3 id="activeProducts">
+        0
+      </h3>
+
+      <p>
+        Active Products
+      </p>
+
+    </div>
+
+
+    <div class="stat">
+
+      <h3 id="inactiveProducts">
+        0
+      </h3>
+
+      <p>
+        Inactive Products
+      </p>
+
     </div>
 
   </div>
@@ -535,7 +620,10 @@ footer{
   <div class="panel">
 
     <div class="panel-header">
-      <h2>Seller Profile</h2>
+
+      <h2>
+        Seller Profile
+      </h2>
 
       <button
         id="editProfileBtn"
@@ -543,7 +631,9 @@ footer{
       >
         Edit Profile
       </button>
+
     </div>
+
 
     <div class="profile-box">
 
@@ -554,41 +644,58 @@ footer{
         alt="Seller Profile"
       >
 
+
       <div class="profile-info">
 
         <h3 id="profileName">
           Seller
         </h3>
 
+
         <p>
           <strong>Business:</strong>
-          <span id="profileBusiness">-</span>
-        </p>
-
-        <p>
-          <strong>Phone:</strong>
-          <span id="profilePhone">-</span>
-        </p>
-
-        <p>
-          <strong>WhatsApp:</strong>
-          <span id="profileWhatsapp">-</span>
-        </p>
-
-        <p>
-          <strong>Location:</strong>
-          <span id="profileLocation">-</span>
-        </p>
-
-        <p>
-          <strong>Status:</strong>
-          <span class="status status-active">
-            Approved Seller
+          <span id="profileBusiness">
+            -
           </span>
         </p>
 
-        <p id="profileDescription">
+
+        <p>
+          <strong>Phone:</strong>
+          <span id="profilePhone">
+            -
+          </span>
         </p>
+
+
+        <p>
+          <strong>WhatsApp:</strong>
+          <span id="profileWhatsapp">
+            -
+          </span>
+        </p>
+
+
+        <p>
+          <strong>Location:</strong>
+          <span id="profileLocation">
+            -
+          </span>
+        </p>
+
+
+        <p>
+
+          <strong>Status:</strong>
+
+          <span class="status status-active">
+            Approved Seller
+          </span>
+
+        </p>
+
+
+        <p id="profileDescription"></p>
 
       </div>
 
@@ -603,7 +710,9 @@ footer{
 
     <div class="panel-header">
 
-      <h2>My Products</h2>
+      <h2>
+        My Products
+      </h2>
 
       <button
         id="addProductBtn"
@@ -613,6 +722,7 @@ footer{
       </button>
 
     </div>
+
 
     <div id="productsContainer">
 
@@ -628,7 +738,9 @@ footer{
 
 
 <footer>
+
   © 2026 Arewa Market - Kasuwar Arewa a Hannunka
+
 </footer>
 
 
@@ -657,12 +769,14 @@ footer{
 
     </div>
 
+
     <form id="productForm">
 
       <input
         type="hidden"
         id="productId"
       >
+
 
       <div class="form-grid">
 
@@ -771,11 +885,18 @@ footer{
             placeholder="https://example.com/image.jpg"
           >
 
+
           <div
             id="productImagePreview"
             class="image-preview"
           >
-            <img id="productPreviewImg" src="" alt="Preview">
+
+            <img
+              id="productPreviewImg"
+              src=""
+              alt="Preview"
+            >
+
           </div>
 
         </div>
@@ -806,6 +927,7 @@ footer{
         >
           Save Product
         </button>
+
 
         <button
           type="button"
@@ -988,6 +1110,7 @@ footer{
           Save Profile
         </button>
 
+
         <button
           type="button"
           id="cancelProfileBtn"
@@ -1028,7 +1151,10 @@ import {
   getDocs,
   addDoc,
   deleteDoc,
-  serverTimestamp
+  serverTimestamp,
+  query,
+  where,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -1038,8 +1164,12 @@ import {
 ========================================= */
 
 let currentUser = null;
+
 let sellerData = null;
+
 let allProducts = [];
+
+let conversationsUnsubscribe = null;
 
 
 
@@ -1050,26 +1180,37 @@ let allProducts = [];
 const messageBox =
   document.getElementById("message");
 
+
 const welcomeName =
   document.getElementById("welcomeName");
+
 
 const totalProducts =
   document.getElementById("totalProducts");
 
+
 const activeProducts =
   document.getElementById("activeProducts");
+
 
 const inactiveProducts =
   document.getElementById("inactiveProducts");
 
+
 const productsContainer =
   document.getElementById("productsContainer");
+
 
 const productModal =
   document.getElementById("productModal");
 
+
 const profileModal =
   document.getElementById("profileModal");
+
+
+const unreadBadge =
+  document.getElementById("unreadBadge");
 
 
 
@@ -1077,23 +1218,28 @@ const profileModal =
    MESSAGE
 ========================================= */
 
-function showMessage(text, type="success"){
+function showMessage(text,type="success"){
 
-  messageBox.textContent = text;
+  messageBox.textContent =
+    text;
 
   messageBox.className =
     "message " + type;
+
 
   window.scrollTo({
     top:0,
     behavior:"smooth"
   });
 
+
   setTimeout(() => {
 
-    messageBox.className = "message";
+    messageBox.className =
+      "message";
 
-  }, 4000);
+  },4000);
+
 }
 
 
@@ -1102,79 +1248,242 @@ function showMessage(text, type="success"){
    AUTH CHECK
 ========================================= */
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(
+  auth,
+  async (user) => {
 
-  if(!user){
+    if(!user){
 
-    window.location.replace("login.html");
+      window.location.replace(
+        "login.html"
+      );
+
+      return;
+    }
+
+
+    currentUser =
+      user;
+
+
+    try{
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+
+      const userSnap =
+        await getDoc(
+          userRef
+        );
+
+
+      if(!userSnap.exists()){
+
+        alert(
+          "Seller profile not found."
+        );
+
+
+        await signOut(auth);
+
+
+        window.location.replace(
+          "login.html"
+        );
+
+        return;
+      }
+
+
+      sellerData =
+        userSnap.data();
+
+
+      if(
+        sellerData.role !== "seller" ||
+        sellerData.isSeller !== true ||
+        sellerData.sellerStatus !== "approved"
+      ){
+
+        alert(
+          "Your seller account is not approved."
+        );
+
+
+        window.location.replace(
+          "index.html"
+        );
+
+        return;
+      }
+
+
+      renderSellerProfile();
+
+
+      await loadCategories();
+
+
+      await loadProducts();
+
+
+      /* START MESSAGE LISTENER */
+
+      startMessageListener();
+
+
+    }catch(error){
+
+      console.error(error);
+
+
+      showMessage(
+        "Failed to load seller dashboard: " +
+        error.message,
+        "error"
+      );
+
+    }
+
+  }
+);
+
+
+
+/* =========================================
+   MESSAGE / CONVERSATION LISTENER
+========================================= */
+
+function startMessageListener(){
+
+  if(!currentUser){
 
     return;
   }
 
 
-  currentUser = user;
+  if(conversationsUnsubscribe){
+
+    conversationsUnsubscribe();
+
+    conversationsUnsubscribe =
+      null;
+  }
 
 
-  try{
-
-    const userRef =
-      doc(db,"users",user.uid);
-
-    const userSnap =
-      await getDoc(userRef);
-
-
-    if(!userSnap.exists()){
-
-      alert("Seller profile not found.");
-
-      await signOut(auth);
-
-      window.location.replace("login.html");
-
-      return;
-    }
-
-
-    sellerData =
-      userSnap.data();
-
-
-    if(
-      sellerData.role !== "seller" ||
-      sellerData.isSeller !== true ||
-      sellerData.sellerStatus !== "approved"
-    ){
-
-      alert(
-        "Your seller account is not approved."
-      );
-
-      window.location.replace("index.html");
-
-      return;
-    }
-
-
-    renderSellerProfile();
-
-    await loadCategories();
-
-    await loadProducts();
-
-  }catch(error){
-
-    console.error(error);
-
-    showMessage(
-      "Failed to load seller dashboard: " +
-      error.message,
-      "error"
+  const conversationsRef =
+    collection(
+      db,
+      "conversations"
     );
+
+
+  const q =
+    query(
+      conversationsRef,
+      where(
+        "participantIds",
+        "array-contains",
+        currentUser.uid
+      )
+    );
+
+
+  conversationsUnsubscribe =
+    onSnapshot(
+      q,
+      (snapshot) => {
+
+        let unreadTotal = 0;
+
+
+        snapshot.forEach(
+          conversationDoc => {
+
+            const data =
+              conversationDoc.data();
+
+
+            const unreadCount =
+              data.unreadCount || {};
+
+
+            const count =
+              Number(
+                unreadCount[
+                  currentUser.uid
+                ] || 0
+              );
+
+
+            unreadTotal +=
+              count;
+
+          }
+        );
+
+
+        updateUnreadBadge(
+          unreadTotal
+        );
+
+      },
+      (error) => {
+
+        console.error(
+          "Messages listener error:",
+          error
+        );
+
+      }
+    );
+
+}
+
+
+
+/* =========================================
+   UPDATE UNREAD BADGE
+========================================= */
+
+function updateUnreadBadge(
+  unreadTotal
+){
+
+  if(!unreadBadge){
+
+    return;
+  }
+
+
+  if(unreadTotal > 0){
+
+    unreadBadge.textContent =
+      unreadTotal > 99
+        ? "99+"
+        : unreadTotal;
+
+
+    unreadBadge.style.display =
+      "inline-flex";
+
+  }else{
+
+    unreadBadge.textContent =
+      "0";
+
+
+    unreadBadge.style.display =
+      "none";
 
   }
 
-});
+}
 
 
 
@@ -1258,7 +1567,10 @@ function renderSellerProfile(){
     "publicProfileBtn"
   ).href =
     "seller-profile.html?id=" +
-    encodeURIComponent(currentUser.uid);
+    encodeURIComponent(
+      currentUser.uid
+    );
+
 }
 
 
@@ -1268,45 +1580,98 @@ function renderSellerProfile(){
 ========================================= */
 
 async function loadCategories(){
-  const categorySelect = document.getElementById("productCategory");
+
+  const categorySelect =
+    document.getElementById(
+      "productCategory"
+    );
+
 
   categorySelect.innerHTML = `
-    <option value="">Loading categories...</option>
+    <option value="">
+      Loading categories...
+    </option>
   `;
 
-  try {
-    const snapshot = await getDocs(collection(db, "categories"));
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "categories"
+        )
+      );
+
 
     categorySelect.innerHTML = `
-      <option value="">Select Category</option>
+      <option value="">
+        Select Category
+      </option>
     `;
 
-    if (snapshot.empty) {
+
+    if(snapshot.empty){
+
       categorySelect.innerHTML = `
-        <option value="">No categories available</option>
+        <option value="">
+          No categories available
+        </option>
       `;
+
       return;
     }
 
-    snapshot.forEach(categoryDoc => {
-      const data = categoryDoc.data();
 
-      if (data.name) {
-        const option = document.createElement("option");
-        option.value = data.name;
-        option.textContent = data.name;
+    snapshot.forEach(
+      categoryDoc => {
 
-        categorySelect.appendChild(option);
+        const data =
+          categoryDoc.data();
+
+
+        if(data.name){
+
+          const option =
+            document.createElement(
+              "option"
+            );
+
+
+          option.value =
+            data.name;
+
+
+          option.textContent =
+            data.name;
+
+
+          categorySelect.appendChild(
+            option
+          );
+
+        }
+
       }
-    });
+    );
 
-  } catch (error) {
-    console.error("Category loading error:", error);
+  }catch(error){
+
+    console.error(
+      "Category loading error:",
+      error
+    );
+
 
     categorySelect.innerHTML = `
-      <option value="">Unable to load categories</option>
+      <option value="">
+        Unable to load categories
+      </option>
     `;
+
   }
+
 }
 
 
@@ -1327,37 +1692,44 @@ async function loadProducts(){
 
     const snapshot =
       await getDocs(
-        collection(db,"products")
+        collection(
+          db,
+          "products"
+        )
       );
 
 
     allProducts = [];
 
 
-    snapshot.forEach(productDoc => {
+    snapshot.forEach(
+      productDoc => {
 
-      const data =
-        productDoc.data();
+        const data =
+          productDoc.data();
 
 
-      if(
-        data.sellerId === currentUser.uid
-      ){
+        if(
+          data.sellerId ===
+          currentUser.uid
+        ){
 
-        allProducts.push({
+          allProducts.push({
 
-          id:productDoc.id,
+            id:productDoc.id,
 
-          ...data
+            ...data
 
-        });
+          });
+
+        }
 
       }
-
-    });
+    );
 
 
     updateStats();
+
 
     renderProducts();
 
@@ -1365,10 +1737,12 @@ async function loadProducts(){
 
     console.error(error);
 
+
     productsContainer.innerHTML =
       `<div class="empty">
         Failed to load products.
       </div>`;
+
 
     showMessage(
       "Failed to load products: " +
@@ -1394,13 +1768,15 @@ function updateStats(){
 
   const active =
     allProducts.filter(
-      p => p.status === "active"
+      p =>
+        p.status === "active"
     ).length;
 
 
   const inactive =
     allProducts.filter(
-      p => p.status !== "active"
+      p =>
+        p.status !== "active"
     ).length;
 
 
@@ -1430,7 +1806,9 @@ function renderProducts(){
     productsContainer.innerHTML =
       `<div class="empty">
 
-        <h3>No products yet</h3>
+        <h3>
+          No products yet
+        </h3>
 
         <p>
           Add your first product to start selling.
@@ -1444,9 +1822,11 @@ function renderProducts(){
 
   productsContainer.innerHTML =
     `<div class="products-grid">
+
       ${allProducts.map(
         productCard
       ).join("")}
+
     </div>`;
 
 }
@@ -1493,8 +1873,9 @@ function productCard(product){
 
 
   const price =
-    Number(product.price || 0)
-      .toLocaleString();
+    Number(
+      product.price || 0
+    ).toLocaleString();
 
 
   return `
@@ -1504,41 +1885,77 @@ function productCard(product){
       <img
         class="product-image"
         src="${escapeHtml(image)}"
-        alt="${escapeHtml(product.name || "Product")}"
+        alt="${escapeHtml(
+          product.name ||
+          "Product"
+        )}"
         onerror="this.src='https://via.placeholder.com/500x300?text=No+Image'"
       >
+
 
       <div class="product-body">
 
         <h3>
-          ${escapeHtml(product.name || "Unnamed Product")}
+          ${escapeHtml(
+            product.name ||
+            "Unnamed Product"
+          )}
         </h3>
+
 
         <div class="price">
           ₦${price}
         </div>
 
+
         <div class="product-meta">
-          <strong>Category:</strong>
-          ${escapeHtml(product.category || "-")}
+
+          <strong>
+            Category:
+          </strong>
+
+          ${escapeHtml(
+            product.category ||
+            "-"
+          )}
+
         </div>
 
+
         <div class="product-meta">
-          <strong>Location:</strong>
-          ${escapeHtml(product.location || "-")}
+
+          <strong>
+            Location:
+          </strong>
+
+          ${escapeHtml(
+            product.location ||
+            "-"
+          )}
+
         </div>
 
+
         <div class="product-meta">
 
-          <span class="status ${statusClass}">
+          <span
+            class="status ${statusClass}"
+          >
             ${statusText}
           </span>
 
         </div>
 
+
         <div class="product-description">
-          ${escapeHtml(product.description || "No description.")}
+
+          ${escapeHtml(
+            product.description ||
+            "No description."
+          )}
+
         </div>
+
 
         <div class="product-actions">
 
@@ -1549,6 +1966,7 @@ function productCard(product){
             Edit
           </button>
 
+
           <button
             class="btn ${toggleClass}"
             onclick="toggleProductStatus(
@@ -1558,6 +1976,7 @@ function productCard(product){
           >
             ${toggleText}
           </button>
+
 
           <button
             class="btn btn-danger"
@@ -1585,11 +2004,26 @@ function productCard(product){
 function escapeHtml(value){
 
   return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
@@ -1600,34 +2034,42 @@ function escapeHtml(value){
 ========================================= */
 
 document
-  .getElementById("addProductBtn")
-  .addEventListener("click", () => {
+  .getElementById(
+    "addProductBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-    document.getElementById(
-      "productModalTitle"
-    ).textContent =
-      "Add Product";
-
-
-    document.getElementById(
-      "productForm"
-    ).reset();
-
-
-    document.getElementById(
-      "productId"
-    ).value = "";
+      document.getElementById(
+        "productModalTitle"
+      ).textContent =
+        "Add Product";
 
 
-    document.getElementById(
-      "productImagePreview"
-    ).style.display =
-      "none";
+      document.getElementById(
+        "productForm"
+      ).reset();
 
 
-    productModal.classList.add("show");
+      document.getElementById(
+        "productId"
+      ).value =
+        "";
 
-  });
+
+      document.getElementById(
+        "productImagePreview"
+      ).style.display =
+        "none";
+
+
+      productModal.classList.add(
+        "show"
+      );
+
+    }
+  );
 
 
 
@@ -1635,11 +2077,13 @@ document
    EDIT PRODUCT
 ========================================= */
 
-window.editProduct = function(productId){
+window.editProduct =
+function(productId){
 
   const product =
     allProducts.find(
-      p => p.id === productId
+      p =>
+        p.id === productId
     );
 
 
@@ -1705,7 +2149,9 @@ window.editProduct = function(productId){
   updateProductImagePreview();
 
 
-  productModal.classList.add("show");
+  productModal.classList.add(
+    "show"
+  );
 
 };
 
@@ -1716,270 +2162,282 @@ window.editProduct = function(productId){
 ========================================= */
 
 document
-  .getElementById("productForm")
-  .addEventListener("submit", async (event) => {
+  .getElementById(
+    "productForm"
+  )
+  .addEventListener(
+    "submit",
+    async (event) => {
 
-    event.preventDefault();
-
-
-    if(!currentUser){
-
-      showMessage(
-        "You are not logged in.",
-        "error"
-      );
-
-      return;
-    }
+      event.preventDefault();
 
 
-    const productId =
-      document.getElementById(
-        "productId"
-      ).value.trim();
-
-
-    const name =
-      document.getElementById(
-        "productName"
-      ).value.trim();
-
-
-    const price =
-      Number(
-        document.getElementById(
-          "productPrice"
-        ).value
-      );
-
-
-    const category =
-      document.getElementById(
-        "productCategory"
-      ).value;
-
-
-    const location =
-      document.getElementById(
-        "productLocation"
-      ).value;
-
-
-    const imageUrl =
-      document.getElementById(
-        "productImage"
-      ).value.trim();
-
-
-    const description =
-      document.getElementById(
-        "productDescription"
-      ).value.trim();
-
-
-    if(!name){
-
-      showMessage(
-        "Product name is required.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    if(price < 0 || Number.isNaN(price)){
-
-      showMessage(
-        "Enter a valid price.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    if(!category){
-
-      showMessage(
-        "Please select a category.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    if(!location){
-
-      showMessage(
-        "Please select a location.",
-        "error"
-      );
-
-      return;
-    }
-
-
-    const saveButton =
-      document.getElementById(
-        "saveProductBtn"
-      );
-
-
-    saveButton.disabled = true;
-
-    saveButton.textContent =
-      "Saving...";
-
-
-    try{
-
-      if(productId){
-
-        /*
-          EDIT PRODUCT
-        */
-
-        const existing =
-          allProducts.find(
-            p => p.id === productId
-          );
-
-
-        if(!existing){
-
-          throw new Error(
-            "Product not found."
-          );
-        }
-
-
-        if(
-          existing.sellerId !==
-          currentUser.uid
-        ){
-
-          throw new Error(
-            "You can only edit your own products."
-          );
-        }
-
-
-        await updateDoc(
-          doc(
-            db,
-            "products",
-            productId
-          ),
-          {
-
-            name:name,
-
-            price:price,
-
-            category:category,
-
-            location:location,
-
-            imageUrl:imageUrl,
-
-            description:description,
-
-            updatedAt:
-              serverTimestamp()
-
-          }
-        );
-
+      if(!currentUser){
 
         showMessage(
-          "Product updated successfully."
+          "You are not logged in.",
+          "error"
         );
 
-
-      }else{
-
-        /*
-          ADD PRODUCT
-        */
-
-        await addDoc(
-          collection(
-            db,
-            "products"
-          ),
-          {
-
-            name:name,
-
-            price:price,
-
-            category:category,
-
-            location:location,
-
-            imageUrl:imageUrl,
-
-            description:description,
-
-            featured:false,
-
-            sellerId:
-              currentUser.uid,
-
-            sellerName:
-              sellerData.name || "",
-
-            sellerPhone:
-              sellerData.phone || "",
-
-            whatsapp:
-              sellerData.whatsapp || "",
-
-            status:"active",
-
-            createdAt:
-              serverTimestamp(),
-
-            updatedAt:
-              serverTimestamp()
-
-          }
-        );
-
-
-        showMessage(
-          "Product added successfully."
-        );
-
+        return;
       }
 
 
-      closeProductModal();
+      const productId =
+        document.getElementById(
+          "productId"
+        ).value.trim();
 
-      await loadProducts();
 
-    }catch(error){
+      const name =
+        document.getElementById(
+          "productName"
+        ).value.trim();
 
-      console.error(error);
 
-      showMessage(
-        "Failed to save product: " +
-        error.message,
-        "error"
-      );
+      const price =
+        Number(
+          document.getElementById(
+            "productPrice"
+          ).value
+        );
 
-    }finally{
 
-      saveButton.disabled = false;
+      const category =
+        document.getElementById(
+          "productCategory"
+        ).value;
+
+
+      const location =
+        document.getElementById(
+          "productLocation"
+        ).value;
+
+
+      const imageUrl =
+        document.getElementById(
+          "productImage"
+        ).value.trim();
+
+
+      const description =
+        document.getElementById(
+          "productDescription"
+        ).value.trim();
+
+
+      if(!name){
+
+        showMessage(
+          "Product name is required.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if(
+        price < 0 ||
+        Number.isNaN(price)
+      ){
+
+        showMessage(
+          "Enter a valid price.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if(!category){
+
+        showMessage(
+          "Please select a category.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if(!location){
+
+        showMessage(
+          "Please select a location.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const saveButton =
+        document.getElementById(
+          "saveProductBtn"
+        );
+
+
+      saveButton.disabled =
+        true;
+
 
       saveButton.textContent =
-        "Save Product";
+        "Saving...";
+
+
+      try{
+
+        if(productId){
+
+          const existing =
+            allProducts.find(
+              p =>
+                p.id ===
+                productId
+            );
+
+
+          if(!existing){
+
+            throw new Error(
+              "Product not found."
+            );
+          }
+
+
+          if(
+            existing.sellerId !==
+            currentUser.uid
+          ){
+
+            throw new Error(
+              "You can only edit your own products."
+            );
+
+          }
+
+
+          await updateDoc(
+            doc(
+              db,
+              "products",
+              productId
+            ),
+            {
+
+              name:name,
+
+              price:price,
+
+              category:category,
+
+              location:location,
+
+              imageUrl:imageUrl,
+
+              description:description,
+
+              updatedAt:
+                serverTimestamp()
+
+            }
+          );
+
+
+          showMessage(
+            "Product updated successfully."
+          );
+
+
+        }else{
+
+          await addDoc(
+            collection(
+              db,
+              "products"
+            ),
+            {
+
+              name:name,
+
+              price:price,
+
+              category:category,
+
+              location:location,
+
+              imageUrl:imageUrl,
+
+              description:description,
+
+              featured:false,
+
+              sellerId:
+                currentUser.uid,
+
+              sellerName:
+                sellerData.name ||
+                "",
+
+              sellerPhone:
+                sellerData.phone ||
+                "",
+
+              whatsapp:
+                sellerData.whatsapp ||
+                "",
+
+              status:"active",
+
+              createdAt:
+                serverTimestamp(),
+
+              updatedAt:
+                serverTimestamp()
+
+            }
+          );
+
+
+          showMessage(
+            "Product added successfully."
+          );
+
+        }
+
+
+        closeProductModal();
+
+
+        await loadProducts();
+
+      }catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+          "Failed to save product: " +
+          error.message,
+          "error"
+        );
+
+      }finally{
+
+        saveButton.disabled =
+          false;
+
+
+        saveButton.textContent =
+          "Save Product";
+
+      }
 
     }
-
-  });
+  );
 
 
 
@@ -1988,13 +2446,17 @@ document
 ========================================= */
 
 window.toggleProductStatus =
-async function(productId,currentStatus){
+async function(
+  productId,
+  currentStatus
+){
 
   try{
 
     const product =
       allProducts.find(
-        p => p.id === productId
+        p =>
+          p.id === productId
       );
 
 
@@ -2056,6 +2518,7 @@ async function(productId,currentStatus){
 
     console.error(error);
 
+
     showMessage(
       "Failed to change product status: " +
       error.message,
@@ -2077,7 +2540,8 @@ async function(productId){
 
   const product =
     allProducts.find(
-      p => p.id === productId
+      p =>
+        p.id === productId
     );
 
 
@@ -2140,6 +2604,7 @@ async function(productId){
 
     console.error(error);
 
+
     showMessage(
       "Failed to delete product: " +
       error.message,
@@ -2178,7 +2643,9 @@ function updateProductImagePreview(){
 
   if(url){
 
-    image.src = url;
+    image.src =
+      url;
+
 
     preview.style.display =
       "block";
@@ -2194,7 +2661,9 @@ function updateProductImagePreview(){
 
 
 document
-  .getElementById("productImage")
+  .getElementById(
+    "productImage"
+  )
   .addEventListener(
     "input",
     updateProductImagePreview
@@ -2216,7 +2685,9 @@ function closeProductModal(){
 
 
 document
-  .getElementById("closeProductModal")
+  .getElementById(
+    "closeProductModal"
+  )
   .addEventListener(
     "click",
     closeProductModal
@@ -2224,7 +2695,9 @@ document
 
 
 document
-  .getElementById("cancelProductBtn")
+  .getElementById(
+    "cancelProductBtn"
+  )
   .addEventListener(
     "click",
     closeProductModal
@@ -2237,7 +2710,9 @@ document
 ========================================= */
 
 document
-  .getElementById("editProfileBtn")
+  .getElementById(
+    "editProfileBtn"
+  )
   .addEventListener(
     "click",
     openProfileModal
@@ -2249,43 +2724,50 @@ function openProfileModal(){
   document.getElementById(
     "sellerName"
   ).value =
-    sellerData.name || "";
+    sellerData.name ||
+    "";
 
 
   document.getElementById(
     "sellerBusiness"
   ).value =
-    sellerData.businessName || "";
+    sellerData.businessName ||
+    "";
 
 
   document.getElementById(
     "sellerPhone"
   ).value =
-    sellerData.phone || "";
+    sellerData.phone ||
+    "";
 
 
   document.getElementById(
     "sellerWhatsapp"
   ).value =
-    sellerData.whatsapp || "";
+    sellerData.whatsapp ||
+    "";
 
 
   document.getElementById(
     "sellerLocation"
   ).value =
-    sellerData.location || "";
+    sellerData.location ||
+    "";
 
 
   document.getElementById(
     "sellerProfileImage"
   ).value =
-    sellerData.profileImageUrl || "";
+    sellerData.profileImageUrl ||
+    "";
 
 
   document.getElementById(
     "sellerDescription"
   ).value =
-    sellerData.businessDescription || "";
+    sellerData.businessDescription ||
+    "";
 
 
   profileModal.classList.add(
@@ -2301,80 +2783,115 @@ function openProfileModal(){
 ========================================= */
 
 document
-  .getElementById("profileForm")
-  .addEventListener("submit", async (event) => {
+  .getElementById(
+    "profileForm"
+  )
+  .addEventListener(
+    "submit",
+    async (event) => {
 
-    event.preventDefault();
-
-
-    if(!currentUser){
-
-      return;
-    }
+      event.preventDefault();
 
 
-    const name =
-      document.getElementById(
-        "sellerName"
-      ).value.trim();
+      if(!currentUser){
+
+        return;
+      }
 
 
-    const businessName =
-      document.getElementById(
-        "sellerBusiness"
-      ).value.trim();
+      const name =
+        document.getElementById(
+          "sellerName"
+        ).value.trim();
 
 
-    const phone =
-      document.getElementById(
-        "sellerPhone"
-      ).value.trim();
+      const businessName =
+        document.getElementById(
+          "sellerBusiness"
+        ).value.trim();
 
 
-    const whatsapp =
-      document.getElementById(
-        "sellerWhatsapp"
-      ).value.trim();
+      const phone =
+        document.getElementById(
+          "sellerPhone"
+        ).value.trim();
 
 
-    const location =
-      document.getElementById(
-        "sellerLocation"
-      ).value;
+      const whatsapp =
+        document.getElementById(
+          "sellerWhatsapp"
+        ).value.trim();
 
 
-    const profileImageUrl =
-      document.getElementById(
-        "sellerProfileImage"
-      ).value.trim();
+      const location =
+        document.getElementById(
+          "sellerLocation"
+        ).value;
 
 
-    const businessDescription =
-      document.getElementById(
-        "sellerDescription"
-      ).value.trim();
+      const profileImageUrl =
+        document.getElementById(
+          "sellerProfileImage"
+        ).value.trim();
 
 
-    if(!name){
-
-      showMessage(
-        "Name is required.",
-        "error"
-      );
-
-      return;
-    }
+      const businessDescription =
+        document.getElementById(
+          "sellerDescription"
+        ).value.trim();
 
 
-    try{
+      if(!name){
 
-      await updateDoc(
-        doc(
-          db,
-          "users",
-          currentUser.uid
-        ),
-        {
+        showMessage(
+          "Name is required.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      try{
+
+        await updateDoc(
+          doc(
+            db,
+            "users",
+            currentUser.uid
+          ),
+          {
+
+            name:name,
+
+            businessName:
+              businessName,
+
+            phone:
+              phone,
+
+            whatsapp:
+              whatsapp,
+
+            location:
+              location,
+
+            profileImageUrl:
+              profileImageUrl,
+
+            businessDescription:
+              businessDescription,
+
+            updatedAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        sellerData = {
+
+          ...sellerData,
 
           name:name,
 
@@ -2394,66 +2911,37 @@ document
             profileImageUrl,
 
           businessDescription:
-            businessDescription,
+            businessDescription
 
-          updatedAt:
-            serverTimestamp()
-
-        }
-      );
+        };
 
 
-      sellerData = {
-
-        ...sellerData,
-
-        name:name,
-
-        businessName:
-          businessName,
-
-        phone:
-          phone,
-
-        whatsapp:
-          whatsapp,
-
-        location:
-          location,
-
-        profileImageUrl:
-          profileImageUrl,
-
-        businessDescription:
-          businessDescription
-
-      };
+        renderSellerProfile();
 
 
-      renderSellerProfile();
+        closeProfileModal();
 
 
-      closeProfileModal();
+        showMessage(
+          "Seller profile updated successfully."
+        );
 
 
-      showMessage(
-        "Seller profile updated successfully."
-      );
+      }catch(error){
+
+        console.error(error);
 
 
-    }catch(error){
+        showMessage(
+          "Failed to update profile: " +
+          error.message,
+          "error"
+        );
 
-      console.error(error);
-
-      showMessage(
-        "Failed to update profile: " +
-        error.message,
-        "error"
-      );
+      }
 
     }
-
-  });
+  );
 
 
 
@@ -2471,7 +2959,9 @@ function closeProfileModal(){
 
 
 document
-  .getElementById("closeProfileModal")
+  .getElementById(
+    "closeProfileModal"
+  )
   .addEventListener(
     "click",
     closeProfileModal
@@ -2479,7 +2969,9 @@ document
 
 
 document
-  .getElementById("cancelProfileBtn")
+  .getElementById(
+    "cancelProfileBtn"
+  )
   .addEventListener(
     "click",
     closeProfileModal
@@ -2492,14 +2984,28 @@ document
 ========================================= */
 
 document
-  .getElementById("logoutBtn")
+  .getElementById(
+    "logoutBtn"
+  )
   .addEventListener(
     "click",
     async () => {
 
       try{
 
+        if(
+          conversationsUnsubscribe
+        ){
+
+          conversationsUnsubscribe();
+
+          conversationsUnsubscribe =
+            null;
+        }
+
+
         await signOut(auth);
+
 
         window.location.replace(
           "login.html"
@@ -2508,6 +3014,7 @@ document
       }catch(error){
 
         console.error(error);
+
 
         showMessage(
           "Logout failed: " +
@@ -2523,14 +3030,17 @@ document
 
 
 /* =========================================
-   CLOSE MODALS WHEN CLICKING OUTSIDE
+   CLOSE MODALS OUTSIDE
 ========================================= */
 
 productModal.addEventListener(
   "click",
   (event) => {
 
-    if(event.target === productModal){
+    if(
+      event.target ===
+      productModal
+    ){
 
       closeProductModal();
 
@@ -2544,7 +3054,10 @@ profileModal.addEventListener(
   "click",
   (event) => {
 
-    if(event.target === profileModal){
+    if(
+      event.target ===
+      profileModal
+    ){
 
       closeProfileModal();
 
