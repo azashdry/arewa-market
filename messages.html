@@ -561,16 +561,13 @@ header{
   html,
   body{
     width:100%;
-    height:100%;
-    overflow:hidden;
+    min-height:100%;
+    overflow-x:hidden;
+    overflow-y:auto;
   }
 
   body{
-    position:fixed;
-    left:0;
-    top:0;
-    right:0;
-    bottom:0;
+    position:relative;
   }
 
   header{
@@ -601,20 +598,19 @@ header{
   .container{
     width:100%;
 
-    height:calc(
-      100dvh - 86px
-    );
+    min-height:calc(100dvh - 86px);
 
-    min-height:0;
+    height:auto;
 
     padding:8px;
   }
 
   .messaging{
     width:100%;
-    height:100%;
 
-    min-height:0;
+    min-height:calc(100dvh - 102px);
+
+    height:auto;
 
     border-radius:10px;
 
@@ -625,7 +621,7 @@ header{
 
   .inbox{
     width:100%;
-    height:100%;
+    height:calc(100dvh - 102px);
 
     min-height:0;
 
@@ -652,9 +648,10 @@ header{
 
   .chat{
     width:100%;
-    height:100%;
 
-    min-height:0;
+    min-height:calc(100dvh - 102px);
+
+    height:auto;
 
     display:none;
 
@@ -672,9 +669,9 @@ header{
   #chatContent{
     width:100%;
 
-    height:100% !important;
+    min-height:calc(100dvh - 102px);
 
-    min-height:0;
+    height:auto !important;
 
     display:flex;
 
@@ -785,11 +782,25 @@ header{
   }
 
   .container{
-    height:calc(
-      100dvh - 78px
-    );
+    min-height:calc(100dvh - 78px);
 
     padding:5px;
+  }
+
+  .messaging{
+    min-height:calc(100dvh - 88px);
+  }
+
+  .inbox{
+    height:calc(100dvh - 88px);
+  }
+
+  .chat{
+    min-height:calc(100dvh - 88px);
+  }
+
+  #chatContent{
+    min-height:calc(100dvh - 88px);
   }
 
   .bubble{
@@ -823,9 +834,7 @@ header{
 
 </head>
 
-
 <body>
-
 
 <!-- =========================
      HEADER
@@ -843,7 +852,6 @@ header{
 
   </div>
 
-
   <div class="header-actions">
 
     <a
@@ -853,7 +861,6 @@ header{
       Marketplace
     </a>
 
-
     <a
       href="./seller-dashboard.html"
       id="dashboardBtn"
@@ -862,7 +869,6 @@ header{
     >
       Seller Dashboard
     </a>
-
 
     <button
       id="logoutBtn"
@@ -876,26 +882,21 @@ header{
 
 </header>
 
-
-
 <!-- =========================
      MAIN
 ========================= -->
 
 <div class="container">
 
-
   <div
     id="notice"
     class="notice"
   ></div>
 
-
   <div
     id="messaging"
     class="messaging"
   >
-
 
     <!-- =========================
          INBOX
@@ -909,7 +910,6 @@ header{
           💬 Messages
         </h2>
 
-
         <input
           type="text"
           id="conversationSearch"
@@ -918,7 +918,6 @@ header{
         >
 
       </div>
-
 
       <div
         id="conversations"
@@ -933,14 +932,11 @@ header{
 
     </aside>
 
-
-
     <!-- =========================
          CHAT
     ========================= -->
 
     <section class="chat">
-
 
       <div
         id="chatEmpty"
@@ -962,13 +958,10 @@ header{
 
       </div>
 
-
-
       <div
         id="chatContent"
         style="display:none; height:100%; flex-direction:column;"
       >
-
 
         <!-- CHAT HEADER -->
 
@@ -982,14 +975,12 @@ header{
             ←
           </button>
 
-
           <div
             id="chatAvatar"
             class="avatar"
           >
             ?
           </div>
-
 
           <div class="chat-user">
 
@@ -1005,18 +996,13 @@ header{
 
         </div>
 
-
-
         <!-- MESSAGES -->
 
         <div
           id="messages"
           class="messages"
         >
-
         </div>
-
-
 
         <!-- INPUT -->
 
@@ -1031,7 +1017,6 @@ header{
             maxlength="2000"
           ></textarea>
 
-
           <button
             type="submit"
             id="sendBtn"
@@ -1042,7 +1027,6 @@ header{
 
         </form>
 
-
       </div>
 
     </section>
@@ -1051,10 +1035,7 @@ header{
 
 </div>
 
-
-
 <script type="module">
-
 
 /* =========================================
    FIREBASE
@@ -1065,12 +1046,10 @@ import {
   db
 } from "./firebase.js";
 
-
 import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
 
 import {
   collection,
@@ -1087,8 +1066,6 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-
-
 /* =========================================
    ELEMENTS
 ========================================= */
@@ -1098,97 +1075,80 @@ const messaging =
     "messaging"
   );
 
-
 const conversationsContainer =
   document.getElementById(
     "conversations"
   );
-
 
 const conversationSearch =
   document.getElementById(
     "conversationSearch"
   );
 
-
 const chatEmpty =
   document.getElementById(
     "chatEmpty"
   );
-
 
 const chatContent =
   document.getElementById(
     "chatContent"
   );
 
-
 const chatAvatar =
   document.getElementById(
     "chatAvatar"
   );
-
 
 const chatName =
   document.getElementById(
     "chatName"
   );
 
-
 const chatRole =
   document.getElementById(
     "chatRole"
   );
-
 
 const messagesContainer =
   document.getElementById(
     "messages"
   );
 
-
 const messageForm =
   document.getElementById(
     "messageForm"
   );
-
 
 const messageInput =
   document.getElementById(
     "messageInput"
   );
 
-
 const sendBtn =
   document.getElementById(
     "sendBtn"
   );
-
 
 const notice =
   document.getElementById(
     "notice"
   );
 
-
 const dashboardBtn =
   document.getElementById(
     "dashboardBtn"
   );
-
 
 const logoutBtn =
   document.getElementById(
     "logoutBtn"
   );
 
-
 const backBtn =
   document.getElementById(
     "backBtn"
   );
-
-
 
 /* =========================================
    STATE
@@ -1208,8 +1168,6 @@ let unsubscribeConversations = null;
 
 let unsubscribeMessages = null;
 
-
-
 /* =========================================
    URL
 ========================================= */
@@ -1219,11 +1177,8 @@ const params =
     window.location.search
   );
 
-
 const requestedSellerId =
   params.get("sellerId");
-
-
 
 /* =========================================
    NOTICE
@@ -1240,7 +1195,6 @@ function showNotice(
   notice.className =
     "notice " + type;
 
-
   setTimeout(() => {
 
     notice.className =
@@ -1249,8 +1203,6 @@ function showNotice(
   },4000);
 
 }
-
-
 
 /* =========================================
    AUTH
@@ -1261,7 +1213,6 @@ onAuthStateChanged(
   async (user) => {
 
     currentUser = user;
-
 
     if(!user){
 
@@ -1275,10 +1226,8 @@ onAuthStateChanged(
 
     }
 
-
     logoutBtn.style.display =
       "inline-block";
-
 
     try{
 
@@ -1291,12 +1240,10 @@ onAuthStateChanged(
           )
         );
 
-
       if(userSnap.exists()){
 
         currentUserData =
           userSnap.data();
-
 
         if(
           currentUserData.role === "seller" &&
@@ -1311,9 +1258,7 @@ onAuthStateChanged(
 
       }
 
-
       startConversations();
-
 
     }catch(error){
 
@@ -1331,8 +1276,6 @@ onAuthStateChanged(
   }
 );
 
-
-
 /* =========================================
    START CONVERSATIONS
 ========================================= */
@@ -1345,13 +1288,11 @@ function startConversations(){
 
   }
 
-
   const conversationsRef =
     collection(
       db,
       "conversations"
     );
-
 
   const q =
   query(
@@ -1367,14 +1308,12 @@ function startConversations(){
     )
   );
 
-
   unsubscribeConversations =
     onSnapshot(
       q,
       async (snapshot) => {
 
         conversations = [];
-
 
         for(
           const conversationDoc
@@ -1384,7 +1323,6 @@ function startConversations(){
           const data =
             conversationDoc.data();
 
-
           const otherUserId =
             data.participantIds &&
             data.participantIds.find(
@@ -1392,16 +1330,13 @@ function startConversations(){
                 id !== currentUser.uid
             );
 
-
           if(!otherUserId){
 
             continue;
 
           }
 
-
           let otherUser = null;
-
 
           try{
 
@@ -1413,7 +1348,6 @@ function startConversations(){
                   otherUserId
                 )
               );
-
 
             if(userSnap.exists()){
 
@@ -1437,7 +1371,6 @@ function startConversations(){
 
           }
 
-
           conversations.push({
 
             id:
@@ -1451,9 +1384,7 @@ function startConversations(){
 
         }
 
-
         renderConversations();
-
 
         /*
           If sellerId was passed from
@@ -1480,7 +1411,6 @@ function startConversations(){
           error
         );
 
-
         showNotice(
           "Unable to load messages: " +
           error.message
@@ -1490,8 +1420,6 @@ function startConversations(){
     );
 
 }
-
-
 
 /* =========================================
    RENDER CONVERSATIONS
@@ -1504,7 +1432,6 @@ function renderConversations(){
       .trim()
       .toLowerCase();
 
-
   let list =
     conversations.filter(
       conversation => {
@@ -1515,10 +1442,8 @@ function renderConversations(){
 
         }
 
-
         const user =
           conversation.otherUser || {};
-
 
         const name =
           String(
@@ -1527,13 +1452,11 @@ function renderConversations(){
             ""
           ).toLowerCase();
 
-
         const lastMessage =
           String(
             conversation.lastMessage ||
             ""
           ).toLowerCase();
-
 
         return (
           name.includes(search) ||
@@ -1542,7 +1465,6 @@ function renderConversations(){
 
       }
     );
-
 
   if(!list.length){
 
@@ -1566,12 +1488,10 @@ function renderConversations(){
 
   }
 
-
   conversationsContainer.innerHTML =
     list.map(
       conversationItem
     ).join("");
-
 
   document
     .querySelectorAll(
@@ -1594,8 +1514,6 @@ function renderConversations(){
 
 }
 
-
-
 /* =========================================
    CONVERSATION ITEM
 ========================================= */
@@ -1607,18 +1525,15 @@ function conversationItem(
   const user =
     conversation.otherUser || {};
 
-
   const name =
     user.businessName ||
     user.name ||
     "Arewa Market User";
 
-
   const initial =
     name
       .charAt(0)
       .toUpperCase();
-
 
   const unread =
     Number(
@@ -1628,13 +1543,11 @@ function conversationItem(
         : 0
     );
 
-
   const active =
     conversation.id ===
     currentConversationId
       ? "active"
       : "";
-
 
   return `
 
@@ -1665,7 +1578,6 @@ function conversationItem(
 
       </div>
 
-
       <div class="conversation-info">
 
         <div class="conversation-top">
@@ -1688,7 +1600,6 @@ function conversationItem(
 
           </div>
 
-
           <div class="conversation-time">
 
             ${formatTime(
@@ -1698,7 +1609,6 @@ function conversationItem(
           </div>
 
         </div>
-
 
         <div class="last-message">
 
@@ -1717,8 +1627,6 @@ function conversationItem(
 
 }
 
-
-
 /* =========================================
    OPEN OR CREATE CONVERSATION
 ========================================= */
@@ -1733,7 +1641,6 @@ async function openOrCreateConversation(
 
   }
 
-
   if(
     otherUserId === currentUser.uid
   ){
@@ -1745,7 +1652,6 @@ async function openOrCreateConversation(
     return;
 
   }
-
 
   try{
 
@@ -1768,7 +1674,6 @@ async function openOrCreateConversation(
         }
       );
 
-
     if(existing){
 
       openConversation(
@@ -1778,7 +1683,6 @@ async function openOrCreateConversation(
       return;
 
     }
-
 
     /*
       Load other user.
@@ -1793,7 +1697,6 @@ async function openOrCreateConversation(
         )
       );
 
-
     if(!userSnap.exists()){
 
       showNotice(
@@ -1804,10 +1707,8 @@ async function openOrCreateConversation(
 
     }
 
-
     const otherUser =
       userSnap.data();
-
 
     if(
       otherUser.role === "seller" &&
@@ -1824,7 +1725,6 @@ async function openOrCreateConversation(
       return;
 
     }
-
 
     /*
       Create conversation.
@@ -1866,24 +1766,19 @@ async function openOrCreateConversation(
         }
       );
 
-
     currentConversationId =
       conversationRef.id;
 
-
     currentOtherUserId =
       otherUserId;
-
 
     await displayChatUser(
       otherUserId
     );
 
-
     subscribeToMessages(
       conversationRef.id
     );
-
 
   }catch(error){
 
@@ -1891,7 +1786,6 @@ async function openOrCreateConversation(
       "Create conversation error:",
       error
     );
-
 
     showNotice(
       "Unable to start conversation: " +
@@ -1901,8 +1795,6 @@ async function openOrCreateConversation(
   }
 
 }
-
-
 
 /* =========================================
    OPEN CONVERSATION
@@ -1918,35 +1810,28 @@ async function openConversation(
         item.id === conversationId
     );
 
-
   if(!conversation){
 
     return;
 
   }
 
-
   currentConversationId =
     conversationId;
-
 
   currentOtherUserId =
     conversation.otherUser &&
     conversation.otherUser.id;
 
-
   renderConversations();
-
 
   await displayChatUser(
     currentOtherUserId
   );
 
-
   subscribeToMessages(
     conversationId
   );
-
 
   /*
     Reset unread count for current user.
@@ -1989,7 +1874,6 @@ async function openConversation(
 
   }
 
-
   if(
     window.innerWidth <= 700
   ){
@@ -2001,8 +1885,6 @@ async function openConversation(
   }
 
 }
-
-
 
 /* =========================================
    DISPLAY CHAT USER
@@ -2018,7 +1900,6 @@ async function displayChatUser(
 
   }
 
-
   try{
 
     const userSnap =
@@ -2030,39 +1911,32 @@ async function displayChatUser(
         )
       );
 
-
     if(!userSnap.exists()){
 
       return;
 
     }
 
-
     const user =
       userSnap.data();
-
 
     const name =
       user.businessName ||
       user.name ||
       "Arewa Market User";
 
-
     const initial =
       name
         .charAt(0)
         .toUpperCase();
 
-
     chatName.textContent =
       name;
-
 
     chatRole.textContent =
       user.role === "seller"
         ? "Seller"
         : "Buyer";
-
 
     if(user.profileImageUrl){
 
@@ -2087,10 +1961,8 @@ async function displayChatUser(
 
     }
 
-
     chatEmpty.style.display =
       "none";
-
 
     chatContent.style.display =
       "flex";
@@ -2106,8 +1978,6 @@ async function displayChatUser(
 
 }
 
-
-
 /* =========================================
    SUBSCRIBE MESSAGES
 ========================================= */
@@ -2122,7 +1992,6 @@ function subscribeToMessages(
 
   }
 
-
   messagesContainer.innerHTML = `
 
     <div class="loading">
@@ -2131,7 +2000,6 @@ function subscribeToMessages(
 
   `;
 
-
   const messagesRef =
     collection(
       db,
@@ -2139,7 +2007,6 @@ function subscribeToMessages(
       conversationId,
       "messages"
     );
-
 
   const q =
     query(
@@ -2150,7 +2017,6 @@ function subscribeToMessages(
       )
     );
 
-
   unsubscribeMessages =
     onSnapshot(
       q,
@@ -2158,7 +2024,6 @@ function subscribeToMessages(
 
         messagesContainer.innerHTML =
           "";
-
 
         if(snapshot.empty){
 
@@ -2182,7 +2047,6 @@ function subscribeToMessages(
 
         }
 
-
         snapshot.forEach(
           messageDoc => {
 
@@ -2192,7 +2056,6 @@ function subscribeToMessages(
 
           }
         );
-
 
         requestAnimationFrame(() => {
 
@@ -2209,7 +2072,6 @@ function subscribeToMessages(
           error
         );
 
-
         messagesContainer.innerHTML = `
 
           <div class="empty">
@@ -2225,8 +2087,6 @@ function subscribeToMessages(
 
 }
 
-
-
 /* =========================================
    RENDER MESSAGE
 ========================================= */
@@ -2239,12 +2099,10 @@ function renderMessage(
     message.senderId ===
     currentUser.uid;
 
-
   const row =
     document.createElement(
       "div"
     );
-
 
   row.className =
     "message-row " +
@@ -2254,65 +2112,52 @@ function renderMessage(
         : "theirs"
     );
 
-
   const bubble =
     document.createElement(
       "div"
     );
 
-
   bubble.className =
     "bubble";
-
 
   const text =
     document.createElement(
       "div"
     );
 
-
   text.textContent =
     message.text || "";
-
 
   const time =
     document.createElement(
       "span"
     );
 
-
   time.className =
     "message-time";
-
 
   time.textContent =
     formatTime(
       message.createdAt
     );
 
-
   bubble.appendChild(
     text
   );
-
 
   bubble.appendChild(
     time
   );
 
-
   row.appendChild(
     bubble
   );
-
 
   messagesContainer.appendChild(
     row
   );
 
 }
-
-
 
 /* =========================================
    SEND MESSAGE
@@ -2324,17 +2169,14 @@ messageForm.addEventListener(
 
     event.preventDefault();
 
-
     const text =
       messageInput.value.trim();
-
 
     if(!text){
 
       return;
 
     }
-
 
     if(
       !currentUser ||
@@ -2350,10 +2192,8 @@ messageForm.addEventListener(
 
     }
 
-
     sendBtn.disabled =
       true;
-
 
     try{
 
@@ -2364,7 +2204,6 @@ messageForm.addEventListener(
           currentConversationId,
           "messages"
         );
-
 
       await addDoc(
         messagesRef,
@@ -2387,7 +2226,6 @@ messageForm.addEventListener(
         }
       );
 
-
       const conversationRef =
         doc(
           db,
@@ -2395,21 +2233,17 @@ messageForm.addEventListener(
           currentConversationId
         );
 
-
       const conversationSnap =
         await getDoc(
           conversationRef
         );
 
-
       let currentUnread = 0;
-
 
       if(conversationSnap.exists()){
 
         const data =
           conversationSnap.data();
-
 
         currentUnread =
           Number(
@@ -2424,7 +2258,6 @@ messageForm.addEventListener(
           );
 
       }
-
 
       await updateDoc(
         conversationRef,
@@ -2448,10 +2281,8 @@ messageForm.addEventListener(
         }
       );
 
-
       messageInput.value =
         "";
-
 
     }catch(error){
 
@@ -2460,7 +2291,6 @@ messageForm.addEventListener(
         error
       );
 
-
       showNotice(
         "Message could not be sent: " +
         error.message
@@ -2468,17 +2298,13 @@ messageForm.addEventListener(
 
     }
 
-
     sendBtn.disabled =
       false;
-
 
     messageInput.focus();
 
   }
 );
-
-
 
 /* =========================================
    SEARCH
@@ -2492,8 +2318,6 @@ conversationSearch.addEventListener(
 
   }
 );
-
-
 
 /* =========================================
    MOBILE BACK
@@ -2509,8 +2333,6 @@ backBtn.addEventListener(
 
   }
 );
-
-
 
 /* =========================================
    LOGOUT
@@ -2528,16 +2350,13 @@ logoutBtn.addEventListener(
 
       }
 
-
       if(unsubscribeMessages){
 
         unsubscribeMessages();
 
       }
 
-
       await signOut(auth);
-
 
       window.location.href =
         "index.html";
@@ -2549,7 +2368,6 @@ logoutBtn.addEventListener(
         error
       );
 
-
       showNotice(
         "Logout failed."
       );
@@ -2558,8 +2376,6 @@ logoutBtn.addEventListener(
 
   }
 );
-
-
 
 /* =========================================
    FORMAT TIME
@@ -2578,19 +2394,15 @@ function formatTime(
 
   }
 
-
   const date =
     timestamp.toDate();
-
 
   const now =
     new Date();
 
-
   const sameDay =
     date.toDateString() ===
     now.toDateString();
-
 
   if(sameDay){
 
@@ -2604,7 +2416,6 @@ function formatTime(
 
   }
 
-
   return date.toLocaleDateString(
     "en-NG",
     {
@@ -2614,8 +2425,6 @@ function formatTime(
   );
 
 }
-
-
 
 /* =========================================
    ESCAPE HTML
