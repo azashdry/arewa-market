@@ -2388,29 +2388,78 @@ async function loadReferralData(){
 
   try{
 
-    const referralQuery =
+    /*
+      There is no separate "referrals" collection in this
+      app. Referral relationships live as fields on the
+      "users" documents themselves (referredByUserId,
+      referredBy, referralStatus, referralJoinedAt).
+
+      This mirrors exactly how admin.html builds its
+      referral list (buildReferralRecords), so seller and
+      admin numbers always match.
+    */
+
+    const referredUsersQuery =
       query(
-        collection(db,"referrals"),
+        collection(db,"users"),
         where(
-          "referrerId",
+          "referredByUserId",
           "==",
           currentUser.uid
         )
       );
 
 
-    const referralSnapshot =
-      await getDocs(referralQuery);
+    const referredUsersSnapshot =
+      await getDocs(referredUsersQuery);
 
 
     myReferrals = [];
 
 
-    referralSnapshot.forEach(item => {
+    referredUsersSnapshot.forEach(item => {
+
+      const user = item.data();
+
+      const isPremium =
+        user.subscriptionPlan === "premium" &&
+        user.subscriptionStatus === "active";
+
+      let status =
+        user.referralStatus || "registered";
+
+      if(user.active === false){
+
+        status = "inactive";
+
+      }
 
       myReferrals.push({
+
         id:item.id,
-        ...item.data()
+
+        referredUserId:item.id,
+
+        referredUserName:
+          user.name ||
+          user.fullName ||
+          "No name",
+
+        referredUserEmail:
+          user.email || "",
+
+        createdAt:
+          user.referralJoinedAt ||
+          user.createdAt ||
+          null,
+
+        premiumStatus:
+          isPremium
+            ? "premium"
+            : "none",
+
+        referralStatus:status
+
       });
 
     });
