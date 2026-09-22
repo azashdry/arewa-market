@@ -300,6 +300,14 @@ h1{
   background:#7041d8;
 }
 
+.orange{
+  background:#ea580c;
+}
+
+.blue{
+  background:#2563eb;
+}
+
 .badge{
   display:inline-block;
   padding:4px 8px;
@@ -327,6 +335,16 @@ h1{
 .rejected{
   background:#fff0f0;
   color:#a61b1b;
+}
+
+.approved{
+  background:#e8f1ff;
+  color:#1856a5;
+}
+
+.paid{
+  background:#e5f7ea;
+  color:#176b35;
 }
 
 .premium-badge{
@@ -442,6 +460,62 @@ h1{
   border-left:5px solid #d4a72c;
 }
 
+.referral-card{
+  border-left:5px solid #176b43;
+}
+
+.commission-card{
+  border-left:5px solid #8b5cf6;
+}
+
+.setting-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.setting-box{
+  background:#f5f9f6;
+  border:1px solid #dce8df;
+  padding:16px;
+  border-radius:13px;
+}
+
+.setting-box h3{
+  color:#123524;
+  margin-bottom:12px;
+  font-size:16px;
+}
+
+.switch-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:14px;
+  padding:12px;
+  background:white;
+  border-radius:10px;
+  border:1px solid #e1ebe4;
+}
+
+.switch-row label{
+  margin:0;
+}
+
+.switch{
+  width:48px;
+  height:25px;
+  margin:0;
+  accent-color:#0f5132;
+}
+
+.small-note{
+  color:#718078;
+  font-size:12px;
+  line-height:1.6;
+}
+
 .modal{
   display:none;
   position:fixed;
@@ -484,6 +558,10 @@ h1{
   }
 
   .analytics{
+    grid-template-columns:1fr;
+  }
+
+  .setting-grid{
     grid-template-columns:1fr;
   }
 }
@@ -633,7 +711,7 @@ h1{
   </div>
 
 
-  <!-- STATISTICS -->
+  <!-- MAIN STATISTICS -->
 
   <div class="stats">
 
@@ -660,7 +738,61 @@ h1{
   </div>
 
 
-  <!-- ANALYTICS -->
+  <!-- REFERRAL STATISTICS -->
+
+  <div class="stats">
+
+    <div class="stat">
+      <h3>🔗 Total Referrals</h3>
+      <strong id="totalReferralsCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>🟢 Active Referrals</h3>
+      <strong id="activeReferralsCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>💎 Premium Referrals</h3>
+      <strong id="premiumReferralsCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>⏳ Pending Commissions</h3>
+      <strong id="pendingCommissionsCount">0</strong>
+    </div>
+
+  </div>
+
+
+  <!-- COMMISSION STATISTICS -->
+
+  <div class="stats">
+
+    <div class="stat">
+      <h3>✅ Approved Commissions</h3>
+      <strong id="approvedCommissionsCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>💰 Paid Commissions</h3>
+      <strong id="paidCommissionsCount">0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>💵 Total Commission</h3>
+      <strong id="totalCommissionAmount">₦0</strong>
+    </div>
+
+    <div class="stat">
+      <h3>🔗 Referral System</h3>
+      <strong id="referralSystemStatus">OFF</strong>
+    </div>
+
+  </div>
+
+
+  <!-- MARKET ANALYTICS -->
 
   <div class="section">
 
@@ -715,6 +847,227 @@ h1{
         <strong id="premiumRevenueCount">₦0</strong>
       </div>
 
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       REFERRAL SETTINGS
+  =========================================== -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>🔗 Referral Settings</h2>
+
+      <button
+        id="refreshReferralSettingsBtn"
+      >
+        Refresh
+      </button>
+
+    </div>
+
+    <div class="setting-grid">
+
+      <div class="setting-box">
+
+        <h3>Referral System</h3>
+
+        <div class="switch-row">
+
+          <label for="referralSystemEnabled">
+            Referral System
+          </label>
+
+          <input
+            type="checkbox"
+            class="switch"
+            id="referralSystemEnabled"
+          >
+
+        </div>
+
+        <p class="small-note">
+          ON = referral tracking and eligible
+          commission processing are enabled.
+        </p>
+
+      </div>
+
+
+      <div class="setting-box">
+
+        <h3>Commission Type</h3>
+
+        <select id="commissionType">
+
+          <option value="fixed">
+            Fixed Amount
+          </option>
+
+          <option value="percentage">
+            Percentage
+          </option>
+
+        </select>
+
+        <label>
+          Commission Amount / %
+        </label>
+
+        <input
+          type="number"
+          id="commissionValue"
+          min="0"
+          step="0.01"
+          placeholder="Example: 500 or 10"
+        >
+
+        <p class="small-note">
+          Fixed = ₦ amount per eligible commission.
+          Percentage = percentage of Premium amount.
+        </p>
+
+      </div>
+
+
+      <div class="setting-box">
+
+        <h3>Premium Commission</h3>
+
+        <div class="switch-row">
+
+          <label for="firstPremiumCommission">
+            First Premium Commission
+          </label>
+
+          <input
+            type="checkbox"
+            class="switch"
+            id="firstPremiumCommission"
+          >
+
+        </div>
+
+        <p class="small-note">
+          Controls commission generated when a referred
+          user receives their first Premium approval.
+        </p>
+
+      </div>
+
+
+      <div class="setting-box">
+
+        <h3>Renewal Commission</h3>
+
+        <div class="switch-row">
+
+          <label for="renewalCommission">
+            Renewal Commission
+          </label>
+
+          <input
+            type="checkbox"
+            class="switch"
+            id="renewalCommission"
+          >
+
+        </div>
+
+        <p class="small-note">
+          Renewal commission is generated only when this
+          option is ON and the Premium request is identified
+          as a renewal.
+        </p>
+
+      </div>
+
+    </div>
+
+    <br>
+
+    <button
+      class="green"
+      id="saveReferralSettingsBtn"
+      style="width:100%;"
+    >
+      💾 Save Referral Settings
+    </button>
+
+  </div>
+
+
+  <!-- ==========================================
+       REFERRAL MANAGEMENT
+  =========================================== -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>🔗 Referral Management</h2>
+
+      <button
+        id="refreshReferralsBtn"
+      >
+        Refresh
+      </button>
+
+    </div>
+
+    <input
+      class="search"
+      id="referralsSearch"
+      placeholder="Search referrer, referred user, code or email..."
+    >
+
+    <div
+      class="list"
+      id="referralsList"
+    >
+      <div class="loading">
+        Loading referrals...
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       COMMISSION MANAGEMENT
+  =========================================== -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>💰 Commission Management</h2>
+
+      <button
+        id="refreshCommissionsBtn"
+      >
+        Refresh
+      </button>
+
+    </div>
+
+    <input
+      class="search"
+      id="commissionsSearch"
+      placeholder="Search referrer, referred user, type or status..."
+    >
+
+    <div
+      class="list"
+      id="commissionsList"
+    >
+      <div class="loading">
+        Loading commissions...
+      </div>
     </div>
 
   </div>
@@ -1186,6 +1539,7 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
+  setDoc,
   serverTimestamp
 }
 from
@@ -1324,6 +1678,26 @@ const premiumRequestsSearch =
     "premiumRequestsSearch"
   );
 
+const referralsList =
+  document.getElementById(
+    "referralsList"
+  );
+
+const referralsSearch =
+  document.getElementById(
+    "referralsSearch"
+  );
+
+const commissionsList =
+  document.getElementById(
+    "commissionsList"
+  );
+
+const commissionsSearch =
+  document.getElementById(
+    "commissionsSearch"
+  );
+
 
 /* ==========================================
    VARIABLES
@@ -1335,7 +1709,12 @@ let allCategories = [];
 let allSellerApplications = [];
 let allPremiumRequests = [];
 
+let allReferrals = [];
+let allCommissions = [];
+
 let premiumSettings = null;
+
+let referralSettings = null;
 
 let editingCategoryId = null;
 
@@ -1488,6 +1867,55 @@ function timestampToDate(value){
   }
 
   return null;
+}
+
+
+function getUserById(userId){
+
+  if(!userId){
+
+    return null;
+
+  }
+
+  return allUsers.find(
+    user =>
+      user.id === userId
+  ) || null;
+}
+
+
+function getUserName(userId){
+
+  const user =
+    getUserById(userId);
+
+  if(!user){
+
+    return "Unknown User";
+
+  }
+
+  return (
+    user.name ||
+    user.fullName ||
+    user.email ||
+    userId
+  );
+
+}
+
+
+function getUserEmail(userId){
+
+  const user =
+    getUserById(userId);
+
+  return (
+    user?.email ||
+    "N/A"
+  );
+
 }
 
 
@@ -1655,10 +2083,18 @@ async function refreshAll(){
     loadCategories(),
     loadProducts(),
     loadPremiumSettings(),
-    loadPremiumRequests()
+    loadPremiumRequests(),
+    loadReferralSettings(),
+    loadCommissions()
   ]);
 
+  buildReferralRecords();
+
   await loadSellerApplications();
+
+  renderReferrals(
+    allReferrals
+  );
 
   updateAnalytics();
 }
@@ -1802,6 +2238,32 @@ function renderUsers(users){
           Role:
           ${escapeHtml(role)}
         </small>
+
+        ${
+          user.referralCode
+            ? `
+              <small>
+                Referral Code:
+                ${escapeHtml(
+                  user.referralCode
+                )}
+              </small>
+            `
+            : ""
+        }
+
+        ${
+          user.referredBy
+            ? `
+              <small>
+                Referred By:
+                ${escapeHtml(
+                  user.referredBy
+                )}
+              </small>
+            `
+            : ""
+        }
 
         ${
           isPremium
@@ -2025,7 +2487,11 @@ usersSearch.addEventListener(
               " " +
               user.email +
               " " +
-              user.phone
+              user.phone +
+              " " +
+              user.referralCode +
+              " " +
+              user.referredBy
             )
             .toLowerCase();
 
@@ -2231,6 +2697,11 @@ window.approveSeller =
       alert(
         "Seller approved successfully."
       );
+
+      /*
+        IMPORTANT:
+        Seller approval creates NO commission.
+      */
 
       await refreshAll();
 
@@ -3780,8 +4251,8 @@ document
       }
 
       if(
-        !price ||
-        price < 0
+        price < 0 ||
+        isNaN(price)
       ){
 
         alert(
@@ -3853,36 +4324,21 @@ document
 
         };
 
-        await updateDoc(
+        await setDoc(
           doc(
             db,
             "premiumSettings",
             "main"
           ),
-          data
-        ).catch(
-          async error => {
-
-            if(
-              error.code ===
-              "not-found"
-            ){
-
-              await setPremiumSettings(
-                data
-              );
-
-              return;
-
-            }
-
-            throw error;
-
+          data,
+          {
+            merge:true
           }
         );
 
         premiumSettings =
           {
+            ...premiumSettings,
             ...data
           };
 
@@ -3894,68 +4350,12 @@ document
 
       }catch(error){
 
-        /*
-          If the document does not exist,
-          create it using add/update helper.
-        */
+        console.error(error);
 
-        try{
-
-          const data = {
-
-            planName,
-
-            price,
-
-            durationDays,
-
-            maxProducts,
-
-            bankName,
-
-            accountName,
-
-            accountNumber,
-
-            benefits,
-
-            active,
-
-            updatedAt:
-              serverTimestamp(),
-
-            createdAt:
-              serverTimestamp()
-
-          };
-
-          await setPremiumSettings(
-            data
-          );
-
-          premiumSettings =
-            {
-              ...data
-            };
-
-          renderPremiumSettingsSummary();
-
-          alert(
-            "Premium Settings created successfully."
-          );
-
-        }catch(secondError){
-
-          console.error(
-            secondError
-          );
-
-          alert(
-            "Failed to save Premium Settings: " +
-            secondError.message
-          );
-
-        }
+        alert(
+          "Failed to save Premium Settings: " +
+          error.message
+        );
 
       }finally{
 
@@ -3969,32 +4369,6 @@ document
 
     }
   );
-
-
-async function setPremiumSettings(data){
-
-  /*
-    setDoc is imported below through
-    the direct Firestore namespace helper.
-  */
-
-  const settingsRef =
-    doc(
-      db,
-      "premiumSettings",
-      "main"
-    );
-
-  const module =
-    await import(
-      "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
-    );
-
-  await module.setDoc(
-    settingsRef,
-    data
-  );
-}
 
 
 /* ==========================================
@@ -4250,6 +4624,321 @@ function renderPremiumRequests(
 
 
 /* ==========================================
+   COMMISSION CALCULATION
+========================================== */
+
+function calculateCommission(
+  premiumAmount
+){
+
+  const settings =
+    referralSettings || {};
+
+  const amount =
+    Number(
+      premiumAmount || 0
+    );
+
+  if(
+    !settings.referralSystemEnabled
+  ){
+
+    return 0;
+
+  }
+
+  const value =
+    Number(
+      settings.commissionValue || 0
+    );
+
+  if(
+    value <= 0
+  ){
+
+    return 0;
+
+  }
+
+  if(
+    settings.commissionType ===
+    "percentage"
+  ){
+
+    return (
+      amount *
+      value /
+      100
+    );
+
+  }
+
+  return value;
+}
+
+
+function isRenewalRequest(
+  request,
+  seller
+){
+
+  return (
+    request.isRenewal === true ||
+    request.type === "renewal" ||
+    request.requestType === "renewal" ||
+    seller?.premiumRenewal === true ||
+    seller?.subscriptionRenewal === true
+  );
+
+}
+
+
+async function findExistingCommissionForPremium(
+  sellerId,
+  type
+){
+
+  const snapshot =
+    await getDocs(
+      collection(
+        db,
+        "commissions"
+      )
+    );
+
+  let found = false;
+
+  snapshot.forEach(
+    commissionDoc => {
+
+      const data =
+        commissionDoc.data();
+
+      if(
+        data.referredUserId === sellerId &&
+        data.type === type &&
+        data.status !== "rejected"
+      ){
+
+        found = true;
+
+      }
+
+    }
+  );
+
+  return found;
+}
+
+
+/* ==========================================
+   CREATE PREMIUM COMMISSION
+========================================== */
+
+async function createPremiumCommissionIfEligible(
+  request,
+  seller
+){
+
+  /*
+    Registration = ₦0
+    Seller Application = ₦0
+    Seller Approval = ₦0
+
+    Commission starts only from Premium approval.
+  */
+
+  if(
+    !referralSettings?.referralSystemEnabled
+  ){
+
+    return {
+      created:false,
+      reason:"Referral system is OFF."
+    };
+
+  }
+
+  const referredByUserId =
+    seller?.referredByUserId ||
+    request?.referredByUserId ||
+    "";
+
+  if(!referredByUserId){
+
+    return {
+      created:false,
+      reason:"User has no referrer."
+    };
+
+  }
+
+  const renewal =
+    isRenewalRequest(
+      request,
+      seller
+    );
+
+  let commissionType = "";
+
+  if(renewal){
+
+    if(
+      !referralSettings.renewalCommission
+    ){
+
+      return {
+        created:false,
+        reason:"Renewal commission is OFF."
+      };
+
+    }
+
+    commissionType =
+      "renewal";
+
+  }else{
+
+    if(
+      !referralSettings.firstPremiumCommission
+    ){
+
+      return {
+        created:false,
+        reason:"First Premium commission is OFF."
+      };
+
+    }
+
+    const alreadyExists =
+      await findExistingCommissionForPremium(
+        seller.id,
+        "firstPremium"
+      );
+
+    if(alreadyExists){
+
+      return {
+        created:false,
+        reason:"First Premium commission already exists."
+      };
+
+    }
+
+    commissionType =
+      "firstPremium";
+
+  }
+
+  const commissionAmount =
+    calculateCommission(
+      request.amount
+    );
+
+  if(
+    commissionAmount <= 0
+  ){
+
+    return {
+      created:false,
+      reason:"Commission amount is zero."
+    };
+
+  }
+
+  const referrer =
+    getUserById(
+      referredByUserId
+    );
+
+  const commissionData = {
+
+    referrerId:
+      referredByUserId,
+
+    referrerName:
+      referrer?.name ||
+      referrer?.fullName ||
+      referrer?.email ||
+      "Unknown Referrer",
+
+    referrerEmail:
+      referrer?.email ||
+      "",
+
+    referredUserId:
+      seller.id,
+
+    referredUserName:
+      seller.name ||
+      seller.fullName ||
+      request.sellerName ||
+      "Unknown User",
+
+    referredUserEmail:
+      seller.email ||
+      request.sellerEmail ||
+      "",
+
+    referralCode:
+      referrer?.referralCode ||
+      seller.referredBy ||
+      "",
+
+    type:
+      commissionType,
+
+    premiumRequestId:
+      request.id,
+
+    premiumAmount:
+      Number(
+        request.amount || 0
+      ),
+
+    commissionType:
+      referralSettings.commissionType,
+
+    commissionRate:
+      Number(
+        referralSettings.commissionValue || 0
+      ),
+
+    commissionAmount:
+      Number(
+        commissionAmount
+      ),
+
+    status:
+      "pending",
+
+    createdAt:
+      serverTimestamp(),
+
+    createdBy:
+      auth.currentUser?.uid ||
+      ""
+
+  };
+
+  await addDoc(
+    collection(
+      db,
+      "commissions"
+    ),
+    commissionData
+  );
+
+  return {
+    created:true,
+    amount:commissionAmount,
+    type:commissionType
+  };
+
+}
+
+
+/* ==========================================
    APPROVE PREMIUM
 ========================================== */
 
@@ -4308,6 +4997,31 @@ window.approvePremiumRequest =
     }
 
     try{
+
+      const sellerSnap =
+        await getDoc(
+          doc(
+            db,
+            "users",
+            sellerId
+          )
+        );
+
+      if(!sellerSnap.exists()){
+
+        alert(
+          "Seller user profile not found."
+        );
+
+        return;
+
+      }
+
+      const seller =
+        {
+          id:sellerId,
+          ...sellerSnap.data()
+        };
 
       const durationDays =
         Number(
@@ -4384,9 +5098,67 @@ window.approvePremiumRequest =
         }
       );
 
-      alert(
-        "Premium approved successfully."
-      );
+
+      /*
+        Commission is created ONLY here,
+        after Premium approval.
+
+        Registration does NOT create commission.
+        Seller Application does NOT create commission.
+        Seller Approval does NOT create commission.
+      */
+
+      let commissionResult =
+        {
+          created:false,
+          reason:""
+        };
+
+      try{
+
+        commissionResult =
+          await createPremiumCommissionIfEligible(
+            request,
+            seller
+          );
+
+      }catch(commissionError){
+
+        console.error(
+          "Commission creation error:",
+          commissionError
+        );
+
+        commissionResult = {
+          created:false,
+          reason:
+            commissionError.message
+        };
+
+      }
+
+
+      if(
+        commissionResult.created
+      ){
+
+        alert(
+          "Premium approved successfully.\n\n" +
+          "Pending referral commission created: " +
+          money(
+            commissionResult.amount
+          )
+        );
+
+      }else{
+
+        alert(
+          "Premium approved successfully.\n\n" +
+          "No commission created: " +
+          commissionResult.reason
+        );
+
+      }
 
       await refreshAll();
 
@@ -4541,6 +5313,1199 @@ premiumRequestsSearch.addEventListener(
 
 
 /* ==========================================
+   REFERRAL SETTINGS
+========================================== */
+
+async function loadReferralSettings(){
+
+  try{
+
+    const snap =
+      await getDoc(
+        doc(
+          db,
+          "referralSettings",
+          "main"
+        )
+      );
+
+    if(snap.exists()){
+
+      referralSettings =
+        snap.data();
+
+    }else{
+
+      referralSettings = {
+
+        referralSystemEnabled:
+          false,
+
+        commissionType:
+          "fixed",
+
+        commissionValue:
+          500,
+
+        firstPremiumCommission:
+          true,
+
+        renewalCommission:
+          false
+
+      };
+
+    }
+
+    fillReferralSettingsForm();
+
+    updateReferralSystemStatus();
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    referralSettings = {
+
+      referralSystemEnabled:
+        false,
+
+      commissionType:
+        "fixed",
+
+      commissionValue:
+        500,
+
+      firstPremiumCommission:
+        true,
+
+      renewalCommission:
+        false
+
+    };
+
+    fillReferralSettingsForm();
+
+    updateReferralSystemStatus();
+
+  }
+
+}
+
+
+function fillReferralSettingsForm(){
+
+  const data =
+    referralSettings || {};
+
+  document.getElementById(
+    "referralSystemEnabled"
+  ).checked =
+    data.referralSystemEnabled === true;
+
+  document.getElementById(
+    "commissionType"
+  ).value =
+    data.commissionType ||
+    "fixed";
+
+  document.getElementById(
+    "commissionValue"
+  ).value =
+    data.commissionValue ??
+    500;
+
+  document.getElementById(
+    "firstPremiumCommission"
+  ).checked =
+    data.firstPremiumCommission !== false;
+
+  document.getElementById(
+    "renewalCommission"
+  ).checked =
+    data.renewalCommission === true;
+
+}
+
+
+function updateReferralSystemStatus(){
+
+  const enabled =
+    referralSettings?.referralSystemEnabled === true;
+
+  document.getElementById(
+    "referralSystemStatus"
+  ).textContent =
+    enabled
+      ? "ON"
+      : "OFF";
+}
+
+
+document
+  .getElementById(
+    "refreshReferralSettingsBtn"
+  )
+  .addEventListener(
+    "click",
+    loadReferralSettings
+  );
+
+
+document
+  .getElementById(
+    "saveReferralSettingsBtn"
+  )
+  .addEventListener(
+    "click",
+    async () => {
+
+      const referralSystemEnabled =
+        document.getElementById(
+          "referralSystemEnabled"
+        ).checked;
+
+      const commissionType =
+        document.getElementById(
+          "commissionType"
+        ).value;
+
+      const commissionValue =
+        Number(
+          document.getElementById(
+            "commissionValue"
+          ).value
+        );
+
+      const firstPremiumCommission =
+        document.getElementById(
+          "firstPremiumCommission"
+        ).checked;
+
+      const renewalCommission =
+        document.getElementById(
+          "renewalCommission"
+        ).checked;
+
+      if(
+        commissionValue < 0 ||
+        isNaN(commissionValue)
+      ){
+
+        alert(
+          "Please enter a valid commission amount or percentage."
+        );
+
+        return;
+
+      }
+
+      if(
+        commissionType ===
+          "percentage" &&
+        commissionValue > 100
+      ){
+
+        alert(
+          "Percentage commission cannot be more than 100%."
+        );
+
+        return;
+
+      }
+
+      const saveBtn =
+        document.getElementById(
+          "saveReferralSettingsBtn"
+        );
+
+      saveBtn.disabled =
+        true;
+
+      saveBtn.textContent =
+        "Saving...";
+
+      try{
+
+        const data = {
+
+          referralSystemEnabled,
+
+          commissionType,
+
+          commissionValue,
+
+          firstPremiumCommission,
+
+          renewalCommission,
+
+          updatedAt:
+            serverTimestamp(),
+
+          updatedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        };
+
+        await setDoc(
+          doc(
+            db,
+            "referralSettings",
+            "main"
+          ),
+          data,
+          {
+            merge:true
+          }
+        );
+
+        referralSettings =
+          {
+            ...referralSettings,
+            ...data
+          };
+
+        updateReferralSystemStatus();
+
+        alert(
+          "Referral Settings saved successfully."
+        );
+
+      }catch(error){
+
+        console.error(
+          error
+        );
+
+        alert(
+          "Failed to save Referral Settings: " +
+          error.message
+        );
+
+      }finally{
+
+        saveBtn.disabled =
+          false;
+
+        saveBtn.textContent =
+          "💾 Save Referral Settings";
+
+      }
+
+    }
+  );
+
+
+/* ==========================================
+   BUILD REFERRALS FROM USERS
+========================================== */
+
+function buildReferralRecords(){
+
+  allReferrals = [];
+
+  allUsers.forEach(
+    user => {
+
+      if(
+        !user.referredBy &&
+        !user.referredByUserId
+      ){
+
+        return;
+
+      }
+
+      const referrerId =
+        user.referredByUserId ||
+        "";
+
+      const referrer =
+        getUserById(
+          referrerId
+        );
+
+      const isPremium =
+        user.subscriptionPlan ===
+          "premium" &&
+        user.subscriptionStatus ===
+          "active";
+
+      let status =
+        user.referralStatus ||
+        "active";
+
+      if(
+        user.active === false
+      ){
+
+        status =
+          "inactive";
+
+      }
+
+      allReferrals.push({
+
+        id:
+          user.id,
+
+        referrerId,
+
+        referrerName:
+          referrer?.name ||
+          referrer?.fullName ||
+          referrer?.email ||
+          user.referredBy ||
+          "Unknown Referrer",
+
+        referrerEmail:
+          referrer?.email ||
+          "",
+
+        referrerCode:
+          referrer?.referralCode ||
+          user.referredBy ||
+          "",
+
+        referredUserId:
+          user.id,
+
+        referredUserName:
+          user.name ||
+          user.fullName ||
+          "No name",
+
+        referredUserEmail:
+          user.email ||
+          "",
+
+        status,
+
+        joinedAt:
+          user.referralJoinedAt ||
+          user.createdAt ||
+          null,
+
+        premium:
+          isPremium,
+
+        premiumStatus:
+          isPremium
+            ? "Premium Active"
+            : "Not Premium"
+
+      });
+
+    }
+  );
+
+  renderReferrals(
+    allReferrals
+  );
+
+  updateAnalytics();
+
+}
+
+
+function renderReferrals(
+  referrals
+){
+
+  if(!referrals.length){
+
+    referralsList.innerHTML =
+      `<div class="empty">
+        No referrals found.
+      </div>`;
+
+    return;
+
+  }
+
+  referralsList.innerHTML =
+    "";
+
+  referrals.forEach(
+    referral => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "item referral-card";
+
+      item.innerHTML = `
+
+        <div class="item-main">
+
+          <strong>
+            🔗 ${escapeHtml(
+              referral.referredUserName
+            )}
+          </strong>
+
+          <small>
+            Referrer:
+            <b>
+              ${escapeHtml(
+                referral.referrerName
+              )}
+            </b>
+          </small>
+
+          <small>
+            Referrer Email:
+            ${escapeHtml(
+              referral.referrerEmail ||
+              "N/A"
+            )}
+          </small>
+
+          <small>
+            Referral Code:
+            ${escapeHtml(
+              referral.referrerCode ||
+              "N/A"
+            )}
+          </small>
+
+          <small>
+            Referred User:
+            ${escapeHtml(
+              referral.referredUserEmail ||
+              "N/A"
+            )}
+          </small>
+
+          <small>
+            Joined:
+            ${escapeHtml(
+              formatDate(
+                referral.joinedAt
+              )
+            )}
+          </small>
+
+          <small>
+            Referral Status:
+            ${escapeHtml(
+              referral.status
+            )}
+          </small>
+
+          <span class="badge ${
+            referral.premium
+              ? "premium-badge"
+              : "inactive"
+          }">
+            ${
+              referral.premium
+                ? "💎 Premium Active"
+                : "Not Premium"
+            }
+          </span>
+
+        </div>
+
+      `;
+
+      referralsList.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+document
+  .getElementById(
+    "refreshReferralsBtn"
+  )
+  .addEventListener(
+    "click",
+    async () => {
+
+      await loadUsers();
+
+      buildReferralRecords();
+
+    }
+  );
+
+
+referralsSearch.addEventListener(
+  "input",
+  function(){
+
+    const q =
+      this.value
+        .toLowerCase()
+        .trim();
+
+    renderReferrals(
+      allReferrals.filter(
+        referral => {
+
+          const text =
+            (
+              referral.referrerName +
+              " " +
+              referral.referrerEmail +
+              " " +
+              referral.referrerCode +
+              " " +
+              referral.referredUserName +
+              " " +
+              referral.referredUserEmail +
+              " " +
+              referral.status
+            )
+            .toLowerCase();
+
+          return text.includes(q);
+
+        }
+      )
+    );
+
+  }
+);
+
+
+/* ==========================================
+   COMMISSIONS
+========================================== */
+
+async function loadCommissions(){
+
+  commissionsList.innerHTML =
+    `<div class="loading">
+      Loading commissions...
+    </div>`;
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "commissions"
+        )
+      );
+
+    allCommissions = [];
+
+    snapshot.forEach(
+      commissionDoc => {
+
+        allCommissions.push({
+
+          id:
+            commissionDoc.id,
+
+          ...commissionDoc.data()
+
+        });
+
+      }
+    );
+
+    allCommissions.sort(
+      (a,b) => {
+
+        const dateA =
+          timestampToDate(
+            a.createdAt
+          );
+
+        const dateB =
+          timestampToDate(
+            b.createdAt
+          );
+
+        return (
+          (dateB?.getTime() || 0) -
+          (dateA?.getTime() || 0)
+        );
+
+      }
+    );
+
+    renderCommissions(
+      allCommissions
+    );
+
+    updateAnalytics();
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    commissionsList.innerHTML =
+      `<div class="empty">
+        No commission records found.
+        <br>
+        ${escapeHtml(
+          error.code || ""
+        )}
+      </div>`;
+
+  }
+
+}
+
+
+function commissionStatusClass(
+  status
+){
+
+  switch(
+    String(
+      status || ""
+    ).toLowerCase()
+  ){
+
+    case "approved":
+      return "approved";
+
+    case "paid":
+      return "paid";
+
+    case "rejected":
+      return "rejected";
+
+    default:
+      return "pending";
+
+  }
+
+}
+
+
+function renderCommissions(
+  commissions
+){
+
+  if(!commissions.length){
+
+    commissionsList.innerHTML =
+      `<div class="empty">
+        No commissions found.
+      </div>`;
+
+    return;
+
+  }
+
+  commissionsList.innerHTML =
+    "";
+
+  commissions.forEach(
+    commission => {
+
+      const status =
+        String(
+          commission.status ||
+          "pending"
+        ).toLowerCase();
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "item commission-card";
+
+      item.innerHTML = `
+
+        <div class="item-main">
+
+          <strong>
+            💰 ${money(
+              commission.commissionAmount
+            )}
+          </strong>
+
+          <small>
+            Referrer:
+            <b>
+              ${escapeHtml(
+                commission.referrerName ||
+                getUserName(
+                  commission.referrerId
+                )
+              )}
+            </b>
+          </small>
+
+          <small>
+            Referred User:
+            ${escapeHtml(
+              commission.referredUserName ||
+              getUserName(
+                commission.referredUserId
+              )
+            )}
+          </small>
+
+          <small>
+            Type:
+            ${escapeHtml(
+              commission.type ||
+              "N/A"
+            )}
+          </small>
+
+          <small>
+            Premium Amount:
+            ${money(
+              commission.premiumAmount
+            )}
+          </small>
+
+          <small>
+            Commission Rule:
+            ${escapeHtml(
+              commission.commissionType ||
+              "fixed"
+            )}
+            —
+            ${escapeHtml(
+              commission.commissionRate ??
+              0
+            )}
+            ${
+              commission.commissionType ===
+              "percentage"
+                ? "%"
+                : "₦"
+            }
+          </small>
+
+          <small>
+            Created:
+            ${escapeHtml(
+              formatDate(
+                commission.createdAt
+              )
+            )}
+          </small>
+
+          <span class="badge ${
+            commissionStatusClass(
+              status
+            )
+          }">
+            ${escapeHtml(
+              status
+            )}
+          </span>
+
+        </div>
+
+        <div class="actions">
+
+          ${
+            status === "pending"
+              ? `
+                <button
+                  class="green"
+                  onclick="
+                    approveCommission(
+                      '${escapeHtml(
+                        commission.id
+                      )}'
+                    )
+                  "
+                >
+                  Approve
+                </button>
+
+                <button
+                  class="delete"
+                  onclick="
+                    rejectCommission(
+                      '${escapeHtml(
+                        commission.id
+                      )}'
+                    )
+                  "
+                >
+                  Reject
+                </button>
+              `
+              : ""
+          }
+
+          ${
+            status === "approved"
+              ? `
+                <button
+                  class="premium"
+                  onclick="
+                    markCommissionPaid(
+                      '${escapeHtml(
+                        commission.id
+                      )}'
+                    )
+                  "
+                >
+                  Mark Paid
+                </button>
+              `
+              : ""
+          }
+
+        </div>
+
+      `;
+
+      commissionsList.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+window.approveCommission =
+  async function(
+    commissionId
+  ){
+
+    const commission =
+      allCommissions.find(
+        item =>
+          item.id ===
+          commissionId
+      );
+
+    if(!commission){
+
+      alert(
+        "Commission not found."
+      );
+
+      return;
+
+    }
+
+    if(
+      String(
+        commission.status ||
+        "pending"
+      ).toLowerCase() !==
+      "pending"
+    ){
+
+      alert(
+        "Only Pending commissions can be approved."
+      );
+
+      return;
+
+    }
+
+    if(
+      !confirm(
+        "Approve this commission?"
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "commissions",
+          commissionId
+        ),
+        {
+
+          status:
+            "approved",
+
+          approvedAt:
+            serverTimestamp(),
+
+          approvedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      alert(
+        "Commission approved."
+      );
+
+      await loadCommissions();
+
+      updateAnalytics();
+
+    }catch(error){
+
+      alert(
+        "Failed to approve commission: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+window.markCommissionPaid =
+  async function(
+    commissionId
+  ){
+
+    const commission =
+      allCommissions.find(
+        item =>
+          item.id ===
+          commissionId
+      );
+
+    if(!commission){
+
+      alert(
+        "Commission not found."
+      );
+
+      return;
+
+    }
+
+    if(
+      String(
+        commission.status ||
+        ""
+      ).toLowerCase() !==
+      "approved"
+    ){
+
+      alert(
+        "Only Approved commissions can be marked as Paid."
+      );
+
+      return;
+
+    }
+
+    if(
+      !confirm(
+        "Mark this commission as Paid?"
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "commissions",
+          commissionId
+        ),
+        {
+
+          status:
+            "paid",
+
+          paidAt:
+            serverTimestamp(),
+
+          paidBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      alert(
+        "Commission marked as Paid."
+      );
+
+      await loadCommissions();
+
+      updateAnalytics();
+
+    }catch(error){
+
+      alert(
+        "Failed to mark commission as Paid: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+window.rejectCommission =
+  async function(
+    commissionId
+  ){
+
+    const commission =
+      allCommissions.find(
+        item =>
+          item.id ===
+          commissionId
+      );
+
+    if(!commission){
+
+      alert(
+        "Commission not found."
+      );
+
+      return;
+
+    }
+
+    const status =
+      String(
+        commission.status ||
+        "pending"
+      ).toLowerCase();
+
+    if(
+      status !== "pending"
+    ){
+
+      alert(
+        "Only Pending commissions can be rejected."
+      );
+
+      return;
+
+    }
+
+    if(
+      !confirm(
+        "Reject this commission?"
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "commissions",
+          commissionId
+        ),
+        {
+
+          status:
+            "rejected",
+
+          rejectedAt:
+            serverTimestamp(),
+
+          rejectedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      alert(
+        "Commission rejected."
+      );
+
+      await loadCommissions();
+
+      updateAnalytics();
+
+    }catch(error){
+
+      alert(
+        "Failed to reject commission: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+document
+  .getElementById(
+    "refreshCommissionsBtn"
+  )
+  .addEventListener(
+    "click",
+    loadCommissions
+  );
+
+
+commissionsSearch.addEventListener(
+  "input",
+  function(){
+
+    const q =
+      this.value
+        .toLowerCase()
+        .trim();
+
+    renderCommissions(
+      allCommissions.filter(
+        commission => {
+
+          const text =
+            (
+              commission.referrerName +
+              " " +
+              commission.referrerEmail +
+              " " +
+              commission.referredUserName +
+              " " +
+              commission.referredUserEmail +
+              " " +
+              commission.type +
+              " " +
+              commission.status
+            )
+            .toLowerCase();
+
+          return text.includes(q);
+
+        }
+      )
+    );
+
+  }
+);
+
+
+/* ==========================================
    ANALYTICS
 ========================================== */
 
@@ -4635,6 +6600,82 @@ function updateAnalytics(){
         0
       );
 
+
+  /* REFERRAL STATS */
+
+  const totalReferrals =
+    allReferrals.length;
+
+  const activeReferrals =
+    allReferrals.filter(
+      referral =>
+        String(
+          referral.status ||
+          "active"
+        ).toLowerCase() ===
+        "active"
+    ).length;
+
+  const premiumReferrals =
+    allReferrals.filter(
+      referral =>
+        referral.premium === true
+    ).length;
+
+
+  /* COMMISSION STATS */
+
+  const pendingCommissions =
+    allCommissions.filter(
+      commission =>
+        String(
+          commission.status ||
+          "pending"
+        ).toLowerCase() ===
+        "pending"
+    ).length;
+
+  const approvedCommissions =
+    allCommissions.filter(
+      commission =>
+        String(
+          commission.status ||
+          ""
+        ).toLowerCase() ===
+        "approved"
+    ).length;
+
+  const paidCommissions =
+    allCommissions.filter(
+      commission =>
+        String(
+          commission.status ||
+          ""
+        ).toLowerCase() ===
+        "paid"
+    ).length;
+
+  const totalCommissionAmount =
+    allCommissions
+      .filter(
+        commission =>
+          String(
+            commission.status ||
+            ""
+          ).toLowerCase() !==
+          "rejected"
+      )
+      .reduce(
+        (sum,commission) =>
+          sum +
+          Number(
+            commission.commissionAmount ||
+            0
+          ),
+        0
+      );
+
+
   document.getElementById(
     "usersCount"
   ).textContent =
@@ -4701,6 +6742,47 @@ function updateAnalytics(){
     money(
       premiumRevenue
     );
+
+
+  document.getElementById(
+    "totalReferralsCount"
+  ).textContent =
+    totalReferrals;
+
+  document.getElementById(
+    "activeReferralsCount"
+  ).textContent =
+    activeReferrals;
+
+  document.getElementById(
+    "premiumReferralsCount"
+  ).textContent =
+    premiumReferrals;
+
+  document.getElementById(
+    "pendingCommissionsCount"
+  ).textContent =
+    pendingCommissions;
+
+  document.getElementById(
+    "approvedCommissionsCount"
+  ).textContent =
+    approvedCommissions;
+
+  document.getElementById(
+    "paidCommissionsCount"
+  ).textContent =
+    paidCommissions;
+
+  document.getElementById(
+    "totalCommissionAmount"
+  ).textContent =
+    money(
+      totalCommissionAmount
+    );
+
+  updateReferralSystemStatus();
+
 }
 
 
@@ -5117,6 +7199,18 @@ function createUsersReport(){
           user.sellerStatus ||
           "N/A",
 
+        "Referral Code":
+          user.referralCode ||
+          "N/A",
+
+        "Referred By":
+          user.referredBy ||
+          "N/A",
+
+        "Referral Status":
+          user.referralStatus ||
+          "N/A",
+
         "Subscription":
           user.subscriptionPlan === "premium"
             ? "Premium"
@@ -5184,6 +7278,14 @@ function createSellersReport(){
 
         "Seller Status":
           user.sellerStatus ||
+          "N/A",
+
+        "Referral Code":
+          user.referralCode ||
+          "N/A",
+
+        "Referred By":
+          user.referredBy ||
           "N/A",
 
         "Subscription":
@@ -5367,6 +7469,133 @@ function createSellerApplicationsReport(){
 }
 
 
+function createReferralsReport(){
+
+  return allReferrals.map(
+    (referral,index) => {
+
+      return {
+
+        "#":
+          index + 1,
+
+        "Referrer":
+          referral.referrerName ||
+          "N/A",
+
+        "Referrer Email":
+          referral.referrerEmail ||
+          "N/A",
+
+        "Referral Code":
+          referral.referrerCode ||
+          "N/A",
+
+        "Referred User":
+          referral.referredUserName ||
+          "N/A",
+
+        "Referred Email":
+          referral.referredUserEmail ||
+          "N/A",
+
+        "Referral Status":
+          referral.status ||
+          "N/A",
+
+        "Joined Date":
+          formatExportDate(
+            referral.joinedAt
+          ),
+
+        "Premium Status":
+          referral.premium
+            ? "Premium Active"
+            : "Not Premium"
+
+      };
+
+    }
+  );
+
+}
+
+
+function createCommissionsReport(){
+
+  return allCommissions.map(
+    (commission,index) => {
+
+      return {
+
+        "#":
+          index + 1,
+
+        "Referrer":
+          commission.referrerName ||
+          "N/A",
+
+        "Referrer Email":
+          commission.referrerEmail ||
+          "N/A",
+
+        "Referred User":
+          commission.referredUserName ||
+          "N/A",
+
+        "Referred Email":
+          commission.referredUserEmail ||
+          "N/A",
+
+        "Type":
+          commission.type ||
+          "N/A",
+
+        "Premium Amount":
+          formatExportMoney(
+            commission.premiumAmount
+          ),
+
+        "Commission Rule":
+          commission.commissionType ||
+          "N/A",
+
+        "Commission Rate":
+          commission.commissionRate ??
+          0,
+
+        "Commission Amount":
+          formatExportMoney(
+            commission.commissionAmount
+          ),
+
+        "Status":
+          commission.status ||
+          "Pending",
+
+        "Created At":
+          formatExportDate(
+            commission.createdAt
+          ),
+
+        "Approved At":
+          formatExportDate(
+            commission.approvedAt
+          ),
+
+        "Paid At":
+          formatExportDate(
+            commission.paidAt
+          )
+
+      };
+
+    }
+  );
+
+}
+
+
 function getExportReport(
   reportType
 ){
@@ -5408,6 +7637,24 @@ function getExportReport(
           "Seller Applications Report",
         rows:
           createSellerApplicationsReport()
+      };
+
+    case "referrals":
+
+      return {
+        title:
+          "Referral Management Report",
+        rows:
+          createReferralsReport()
+      };
+
+    case "commissions":
+
+      return {
+        title:
+          "Commission Management Report",
+        rows:
+          createCommissionsReport()
       };
 
     default:
@@ -6265,116 +8512,85 @@ function addExtraExportButtons(){
 
   }
 
-  if(
-    !document.getElementById(
-      "exportSellersBtn"
-    )
-  ){
+  const buttons = [
 
-    const button =
-      document.createElement(
-        "button"
-      );
+    {
+      id:"exportSellersBtn",
+      text:"📥 Export Sellers",
+      type:"sellers"
+    },
 
-    button.id =
-      "exportSellersBtn";
+    {
+      id:"exportCategoriesBtn",
+      text:"📥 Export Categories",
+      type:"categories"
+    },
 
-    button.className =
-      "warning";
+    {
+      id:"exportApplicationsBtn",
+      text:"📥 Export Applications",
+      type:"sellerApplications"
+    },
 
-    button.innerHTML =
-      "📥 Export Sellers";
+    {
+      id:"exportReferralsBtn",
+      text:"📥 Export Referrals",
+      type:"referrals"
+    },
 
-    button.addEventListener(
-      "click",
-      () => {
+    {
+      id:"exportCommissionsBtn",
+      text:"📥 Export Commissions",
+      type:"commissions"
+    }
 
-        showExportMenu(
-          "sellers"
-        );
+  ];
 
-      }
-    );
 
-    tools.appendChild(
-      button
-    );
+  buttons.forEach(
+    config => {
 
-  }
+      if(
+        document.getElementById(
+          config.id
+        )
+      ){
 
-  if(
-    !document.getElementById(
-      "exportCategoriesBtn"
-    )
-  ){
-
-    const button =
-      document.createElement(
-        "button"
-      );
-
-    button.id =
-      "exportCategoriesBtn";
-
-    button.className =
-      "warning";
-
-    button.innerHTML =
-      "📥 Export Categories";
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        showExportMenu(
-          "categories"
-        );
+        return;
 
       }
-    );
 
-    tools.appendChild(
-      button
-    );
-
-  }
-
-  if(
-    !document.getElementById(
-      "exportApplicationsBtn"
-    )
-  ){
-
-    const button =
-      document.createElement(
-        "button"
-      );
-
-    button.id =
-      "exportApplicationsBtn";
-
-    button.className =
-      "warning";
-
-    button.innerHTML =
-      "📥 Export Applications";
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        showExportMenu(
-          "sellerApplications"
+      const button =
+        document.createElement(
+          "button"
         );
 
-      }
-    );
+      button.id =
+        config.id;
 
-    tools.appendChild(
-      button
-    );
+      button.className =
+        "warning";
 
-  }
+      button.innerHTML =
+        config.text;
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          showExportMenu(
+            config.type
+          );
+
+        }
+      );
+
+      tools.appendChild(
+        button
+      );
+
+    }
+  );
 
 }
 

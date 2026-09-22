@@ -97,6 +97,7 @@ button{
 <div class="box">
 
 <h1>Arewa Market</h1>
+
 <p>Create your account</p>
 
 <div id="message"></div>
@@ -227,15 +228,8 @@ function showMessage(text){
 
 
 /* =========================================
-   REFERRAL
+   GET REFERRAL CODE
 ========================================= */
-
-/*
-   Referral can come from:
-
-   1. register.html?ref=CODE
-   2. localStorage saved by index.html
-*/
 
 const urlParams =
 new URLSearchParams(
@@ -246,10 +240,19 @@ let referralCode =
 urlParams.get("ref");
 
 
+/*
+  Referral can come from:
+
+  1. register.html?ref=CODE
+  2. Previously saved referral code
+*/
+
 if(referralCode){
 
   referralCode =
-  referralCode.trim().toUpperCase();
+  referralCode
+    .trim()
+    .toUpperCase();
 
   localStorage.setItem(
     "arewaReferralCode",
@@ -418,223 +421,287 @@ async function findReferrer(code){
    REGISTER
 ========================================= */
 
-form.addEventListener("submit", async function(e){
+form.addEventListener(
+  "submit",
+  async function(e){
 
-  e.preventDefault();
-
-  const name =
-  document.getElementById("name").value.trim();
-
-  const email =
-  document.getElementById("email").value.trim();
-
-  const password =
-  document.getElementById("password").value;
+    e.preventDefault();
 
 
-  btn.disabled = true;
-
-  btn.textContent = "Creating Account...";
-
-
-  try{
-
-    console.log(
-      "Starting Firebase registration..."
-    );
+    const name =
+    document
+      .getElementById("name")
+      .value
+      .trim();
 
 
-    /* ================================
-       CREATE UNIQUE REFERRAL CODE
-    ================================= */
-
-    const ownReferralCode =
-    await generateUniqueReferralCode(
-      name
-    );
+    const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
 
 
-    /* ================================
-       FIND REFERRER
-    ================================= */
-
-    let referredBy = "";
-
-    let referredByUserId = "";
+    const password =
+    document
+      .getElementById("password")
+      .value;
 
 
-    if(
-      referralCode &&
-      referralCode.length > 0
-    ){
+    btn.disabled = true;
 
-      const referrer =
-      await findReferrer(
-        referralCode
+    btn.textContent =
+      "Creating Account...";
+
+
+    try{
+
+      console.log(
+        "Starting Firebase registration..."
       );
 
 
+      /* =================================
+         CREATE OWN REFERRAL CODE
+      ================================= */
+
+      const ownReferralCode =
+      await generateUniqueReferralCode(
+        name
+      );
+
+
+      /* =================================
+         FIND REFERRER
+      ================================= */
+
+      let referredBy = "";
+
+      let referredByUserId = "";
+
+
       if(
-        referrer &&
-        referrer.uid
+        referralCode &&
+        referralCode.length > 0
       ){
 
-        /*
-          Prevent self-referral.
-          New user's UID is not known yet,
-          so this is also checked after account creation.
-        */
+        const referrer =
+        await findReferrer(
+          referralCode
+        );
 
-        referredBy =
-        referralCode;
 
-        referredByUserId =
-        referrer.uid;
+        if(
+          referrer &&
+          referrer.uid
+        ){
+
+          referredBy =
+            referralCode;
+
+          referredByUserId =
+            referrer.uid;
+
+        }
 
       }
 
-    }
+
+      /* =================================
+         CREATE FIREBASE AUTH ACCOUNT
+      ================================= */
+
+      const credential =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
 
-    /* ================================
-       FIREBASE AUTH
-    ================================= */
-
-    const credential =
-    await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+      const user =
+      credential.user;
 
 
-    const user =
-    credential.user;
+      console.log(
+        "AUTH SUCCESS:",
+        user.uid
+      );
 
 
-    console.log(
-      "AUTH SUCCESS:",
-      user.uid
-    );
+      /* =================================
+         UPDATE AUTH PROFILE
+      ================================= */
+
+      await updateProfile(
+        user,
+        {
+          displayName:name
+        }
+      );
 
 
-    /* ================================
-       UPDATE AUTH PROFILE
-    ================================= */
+      /* =================================
+         SELF REFERRAL PROTECTION
+      ================================= */
 
-    await updateProfile(user,{
-      displayName:name
-    });
+      if(
+        referredByUserId === user.uid
+      ){
 
+        referredBy = "";
 
-    /* ================================
-       SELF REFERRAL PROTECTION
-    ================================= */
+        referredByUserId = "";
 
-    if(
-      referredByUserId === user.uid
-    ){
-
-      referredBy = "";
-
-      referredByUserId = "";
-
-    }
-
-
-    /* ================================
-       CREATE USER
-    ================================= */
-
-    await setDoc(
-      doc(db,"users",user.uid),
-      {
-        name:name,
-        email:email,
-        role:"buyer",
-        isSeller:false,
-        sellerStatus:"none",
-        active:true,
-
-        referralCode:
-          ownReferralCode,
-
-        referredBy:
-          referredBy,
-
-        referredByUserId:
-          referredByUserId,
-
-        createdAt:
-          serverTimestamp(),
-
-        updatedAt:
-          serverTimestamp()
       }
-    );
 
 
-    console.log(
-      "FIRESTORE USER CREATED"
-    );
+      /* =================================
+         REFERRAL STATUS
+      ================================= */
+
+      const hasReferrer =
+        Boolean(
+          referredByUserId
+        );
 
 
-    /*
-      Referral code has now been used
-      successfully.
-    */
-
-    localStorage.removeItem(
-      "arewaReferralCode"
-    );
+      const referralStatus =
+        hasReferrer
+          ? "registered"
+          : "";
 
 
-    alert(
-      "Account created successfully!"
-    );
+      /* =================================
+         CREATE USER DOCUMENT
+      ================================= */
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+
+          name:name,
+
+          email:email,
+
+          role:"buyer",
+
+          isSeller:false,
+
+          sellerStatus:"none",
+
+          active:true,
 
 
-    window.location.replace(
-      "index.html"
-    );
+          /* ============================
+             OWN REFERRAL INFORMATION
+          ============================ */
+
+          referralCode:
+            ownReferralCode,
 
 
-  }catch(error){
+          /* ============================
+             REFERRER INFORMATION
+          ============================ */
 
-    console.error(
-      "REGISTER ERROR CODE:",
-      error.code
-    );
-
-    console.error(
-      "REGISTER ERROR MESSAGE:",
-      error.message
-    );
+          referredBy:
+            referredBy,
 
 
-    alert(
-      "Firebase Error:\n\n" +
-      error.code +
-      "\n\n" +
-      error.message
-    );
+          referredByUserId:
+            referredByUserId,
 
 
-    showMessage(
-      error.code +
-      ": " +
-      error.message
-    );
+          referralStatus:
+            referralStatus,
 
 
-  }finally{
+          referralJoinedAt:
+            hasReferrer
+              ? serverTimestamp()
+              : null,
 
-    btn.disabled = false;
 
-    btn.textContent =
-      "Create Account";
+          /* ============================
+             NORMAL USER DATES
+          ============================ */
 
-  }
+          createdAt:
+            serverTimestamp(),
+
+          updatedAt:
+            serverTimestamp()
+
+        }
+      );
+
+
+      console.log(
+        "FIRESTORE USER CREATED"
+      );
+
+
+      /* =================================
+         REMOVE USED REFERRAL CODE
+      ================================= */
+
+      localStorage.removeItem(
+        "arewaReferralCode"
+      );
+
+
+      alert(
+        "Account created successfully!"
+      );
+
+
+      window.location.replace(
+        "index.html"
+      );
+
+
+    }catch(error){
+
+      console.error(
+        "REGISTER ERROR CODE:",
+        error.code
+      );
+
+
+      console.error(
+        "REGISTER ERROR MESSAGE:",
+        error.message
+      );
+
+
+      alert(
+        "Firebase Error:\n\n" +
+        error.code +
+        "\n\n" +
+        error.message
+      );
+
+
+      showMessage(
+        error.code +
+        ": " +
+        error.message
+      );
+
+
+    }finally{
+
+      btn.disabled = false;
+
+      btn.textContent =
+        "Create Account";
+
+    }
 
 });
 
