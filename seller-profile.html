@@ -166,6 +166,24 @@ header{
   margin-bottom:12px;
 }
 
+/* =========================
+   PREMIUM BADGE
+========================= */
+
+.premium-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:#d6a21d;
+  color:white;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,.12);
+}
+
 .profile-detail{
   margin:7px 0;
   color:#555;
@@ -941,6 +959,31 @@ function renderSeller(seller){
     "This seller has not added a business description yet.";
 
 
+  /*
+    PREMIUM SELLER CHECK
+    ====================
+
+    Only show the badge when the seller
+    currently has an active Premium plan.
+  */
+
+  const isPremium =
+    seller.subscriptionPlan === "premium" &&
+    seller.subscriptionStatus === "active";
+
+
+  const premiumBadge =
+    isPremium
+      ?
+        `
+        <div class="premium-badge">
+          ★ PREMIUM SELLER
+        </div>
+        `
+      :
+        "";
+
+
   let contactButtons = "";
 
 
@@ -1043,6 +1086,8 @@ function renderSeller(seller){
 
 
       <div class="profile-info">
+
+        ${premiumBadge}
 
         <h1>
           ${escapeHtml(name)}

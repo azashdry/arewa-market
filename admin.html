@@ -42,7 +42,9 @@ button:disabled{
   transform:none;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
   width:100%;
   padding:12px;
   border:1px solid #d5e1d8;
@@ -290,6 +292,14 @@ h1{
   background:#176b43;
 }
 
+.premium{
+  background:#8b5cf6;
+}
+
+.premium:hover{
+  background:#7041d8;
+}
+
 .badge{
   display:inline-block;
   padding:4px 8px;
@@ -312,6 +322,16 @@ h1{
 .pending{
   background:#fff8df;
   color:#806500;
+}
+
+.rejected{
+  background:#fff0f0;
+  color:#a61b1b;
+}
+
+.premium-badge{
+  background:#f0e9ff;
+  color:#6d28d9;
 }
 
 .form-box{
@@ -392,6 +412,36 @@ h1{
   font-size:22px;
 }
 
+.premium-card{
+  background:linear-gradient(135deg,#f7f2ff,#fff);
+  border:1px solid #ddd0ff;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:15px;
+}
+
+.premium-card h3{
+  color:#6d28d9;
+  margin-bottom:10px;
+}
+
+.premium-price{
+  font-size:30px;
+  font-weight:bold;
+  color:#0f5132;
+  margin:8px 0;
+}
+
+.benefits-preview{
+  white-space:pre-line;
+  color:#58655d;
+  line-height:1.7;
+}
+
+.request-card{
+  border-left:5px solid #d4a72c;
+}
+
 .modal{
   display:none;
   position:fixed;
@@ -420,7 +470,15 @@ h1{
   background:#68746d;
 }
 
+.help-text{
+  color:#718078;
+  font-size:13px;
+  line-height:1.6;
+  margin:-7px 0 14px;
+}
+
 @media(max-width:800px){
+
   .stats{
     grid-template-columns:repeat(2,1fr);
   }
@@ -431,6 +489,7 @@ h1{
 }
 
 @media(max-width:600px){
+
   body{
     padding:10px;
   }
@@ -571,13 +630,6 @@ h1{
       📥 Export Products
     </button>
 
-    <button
-      class="warning"
-      id="exportOrdersBtn"
-    >
-      📥 Export Orders
-    </button>
-
   </div>
 
 
@@ -649,18 +701,18 @@ h1{
       </div>
 
       <div class="analytics-box">
-        <span>Total Orders</span>
-        <strong id="ordersCount">0</strong>
+        <span>Premium Sellers</span>
+        <strong id="premiumSellersCount">0</strong>
       </div>
 
       <div class="analytics-box">
-        <span>Pending Orders</span>
-        <strong id="pendingOrdersCount">0</strong>
+        <span>Pending Premium Requests</span>
+        <strong id="pendingPremiumRequestsCount">0</strong>
       </div>
 
       <div class="analytics-box">
-        <span>Total Order Revenue</span>
-        <strong id="orderRevenue">₦0</strong>
+        <span>Premium Revenue Requests</span>
+        <strong id="premiumRevenueCount">₦0</strong>
       </div>
 
     </div>
@@ -947,15 +999,142 @@ h1{
   </div>
 
 
-  <!-- ORDERS -->
+  <!-- PREMIUM SETTINGS -->
 
   <div class="section">
 
     <div class="section-header">
 
-      <h2>🛒 Orders Management</h2>
+      <h2>💎 Premium Seller Settings</h2>
 
-      <button id="refreshOrdersBtn">
+      <button
+        class="premium"
+        id="refreshPremiumSettingsBtn"
+      >
+        Refresh
+      </button>
+
+    </div>
+
+    <div
+      class="premium-card"
+      id="premiumSettingsSummary"
+    >
+      <div class="loading">
+        Loading Premium settings...
+      </div>
+    </div>
+
+    <div
+      class="form-box"
+      id="premiumSettingsFormBox"
+      style="display:block;"
+    >
+
+      <label>Plan Name</label>
+
+      <input
+        id="premiumPlanName"
+        placeholder="Example: Premium Seller"
+      >
+
+      <label>Price (₦)</label>
+
+      <input
+        type="number"
+        id="premiumPrice"
+        min="0"
+        placeholder="2000"
+      >
+
+      <label>Duration (Days)</label>
+
+      <input
+        type="number"
+        id="premiumDuration"
+        min="1"
+        placeholder="30"
+      >
+
+      <label>Maximum Products</label>
+
+      <input
+        type="number"
+        id="premiumMaxProducts"
+        min="1"
+        placeholder="50"
+      >
+
+      <label>Bank Name</label>
+
+      <input
+        id="premiumBankName"
+        placeholder="Example: First Bank"
+      >
+
+      <label>Account Name</label>
+
+      <input
+        id="premiumAccountName"
+        placeholder="Example: Arewa Market"
+      >
+
+      <label>Account Number</label>
+
+      <input
+        id="premiumAccountNumber"
+        inputmode="numeric"
+        placeholder="Enter account number"
+      >
+
+      <label>Premium Benefits</label>
+
+      <textarea
+        id="premiumBenefits"
+        placeholder="Example:
+Premium badge
+Up to 50 products
+Better seller visibility
+Full seller profile
+Messaging"
+      ></textarea>
+
+      <label>
+        <input
+          type="checkbox"
+          id="premiumActive"
+          style="width:auto;margin-right:6px;"
+        >
+        Premium Plan Active
+      </label>
+
+      <p class="help-text">
+        Duk lokacin da ka canza wannan information,
+        seller zai ga sabon bayani daga Premium page.
+      </p>
+
+      <button
+        class="premium"
+        id="savePremiumSettingsBtn"
+        style="width:100%;"
+      >
+        💾 Save Premium Settings
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- PREMIUM REQUESTS -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>💳 Premium Requests</h2>
+
+      <button id="refreshPremiumRequestsBtn">
         Refresh
       </button>
 
@@ -963,16 +1142,16 @@ h1{
 
     <input
       class="search"
-      id="ordersSearch"
-      placeholder="Search orders by ID, buyer, seller or status..."
+      id="premiumRequestsSearch"
+      placeholder="Search by seller, email or payment reference..."
     >
 
     <div
       class="list"
-      id="ordersList"
+      id="premiumRequestsList"
     >
       <div class="loading">
-        Loading orders...
+        Loading Premium requests...
       </div>
     </div>
 
@@ -1115,14 +1294,6 @@ const productsSearch =
     "productsSearch"
   );
 
-const ordersList =
-  document.getElementById("ordersList");
-
-const ordersSearch =
-  document.getElementById(
-    "ordersSearch"
-  );
-
 const imagePreviewBox =
   document.getElementById(
     "imagePreviewBox"
@@ -1138,6 +1309,21 @@ const productImageUrl =
     "productImageUrl"
   );
 
+const premiumSettingsSummary =
+  document.getElementById(
+    "premiumSettingsSummary"
+  );
+
+const premiumRequestsList =
+  document.getElementById(
+    "premiumRequestsList"
+  );
+
+const premiumRequestsSearch =
+  document.getElementById(
+    "premiumRequestsSearch"
+  );
+
 
 /* ==========================================
    VARIABLES
@@ -1146,8 +1332,10 @@ const productImageUrl =
 let allUsers = [];
 let allProducts = [];
 let allCategories = [];
-let allOrders = [];
 let allSellerApplications = [];
+let allPremiumRequests = [];
+
+let premiumSettings = null;
 
 let editingCategoryId = null;
 
@@ -1191,14 +1379,115 @@ function showMessage(
 }
 
 
-function getOrderTotal(order){
+function formatDate(value){
 
-  return Number(
-    order.total ||
-    order.amount ||
-    order.price ||
-    0
-  );
+  if(!value){
+
+    return "N/A";
+
+  }
+
+  try{
+
+    if(
+      value &&
+      typeof value.toDate ===
+      "function"
+    ){
+
+      return value
+        .toDate()
+        .toLocaleString("en-NG");
+
+    }
+
+    if(
+      value &&
+      typeof value.seconds ===
+      "number"
+    ){
+
+      return new Date(
+        value.seconds * 1000
+      ).toLocaleString("en-NG");
+
+    }
+
+    if(
+      typeof value ===
+      "string"
+    ){
+
+      const date =
+        new Date(value);
+
+      if(!isNaN(date.getTime())){
+
+        return date.toLocaleString(
+          "en-NG"
+        );
+
+      }
+
+    }
+
+    return "N/A";
+
+  }catch(error){
+
+    return "N/A";
+
+  }
+}
+
+
+function timestampToDate(value){
+
+  if(!value){
+
+    return null;
+
+  }
+
+  if(
+    value &&
+    typeof value.toDate ===
+    "function"
+  ){
+
+    return value.toDate();
+
+  }
+
+  if(
+    value &&
+    typeof value.seconds ===
+    "number"
+  ){
+
+    return new Date(
+      value.seconds * 1000
+    );
+
+  }
+
+  if(
+    typeof value ===
+    "string"
+  ){
+
+    const date =
+      new Date(value);
+
+    if(!isNaN(date.getTime())){
+
+      return date;
+
+    }
+
+  }
+
+  return null;
 }
 
 
@@ -1365,7 +1654,8 @@ async function refreshAll(){
     loadUsers(),
     loadCategories(),
     loadProducts(),
-    loadOrders()
+    loadPremiumSettings(),
+    loadPremiumRequests()
   ]);
 
   await loadSellerApplications();
@@ -1467,6 +1757,12 @@ function renderUsers(users){
     const active =
       user.active !== false;
 
+    const isPremium =
+      user.subscriptionPlan ===
+        "premium" &&
+      user.subscriptionStatus ===
+        "active";
+
     const item =
       document.createElement(
         "div"
@@ -1506,6 +1802,16 @@ function renderUsers(users){
           Role:
           ${escapeHtml(role)}
         </small>
+
+        ${
+          isPremium
+            ? `
+              <span class="badge premium-badge">
+                💎 Premium
+              </span>
+            `
+            : ""
+        }
 
         <span class="badge ${
           active
@@ -3128,14 +3434,578 @@ productsSearch.addEventListener(
 
 
 /* ==========================================
-   ORDERS
+   PREMIUM SETTINGS
 ========================================== */
 
-async function loadOrders(){
+async function loadPremiumSettings(){
 
-  ordersList.innerHTML =
+  premiumSettingsSummary.innerHTML =
     `<div class="loading">
-      Loading orders...
+      Loading Premium settings...
+    </div>`;
+
+  try{
+
+    const snap =
+      await getDoc(
+        doc(
+          db,
+          "premiumSettings",
+          "main"
+        )
+      );
+
+    if(snap.exists()){
+
+      premiumSettings =
+        snap.data();
+
+    }else{
+
+      premiumSettings = {
+
+        planName:
+          "Premium Seller",
+
+        price:
+          2000,
+
+        durationDays:
+          30,
+
+        maxProducts:
+          50,
+
+        bankName:
+          "",
+
+        accountName:
+          "",
+
+        accountNumber:
+          "",
+
+        benefits:
+          "Premium badge\nUp to 50 products\nBetter seller visibility\nFull seller profile\nMessaging",
+
+        active:
+          true
+      };
+
+    }
+
+    fillPremiumSettingsForm();
+
+    renderPremiumSettingsSummary();
+
+  }catch(error){
+
+    console.error(error);
+
+    premiumSettingsSummary.innerHTML =
+      `<div class="empty">
+        Failed to load Premium settings.
+        <br>
+        ${escapeHtml(
+          error.message
+        )}
+      </div>`;
+  }
+}
+
+
+function fillPremiumSettingsForm(){
+
+  const data =
+    premiumSettings || {};
+
+  document.getElementById(
+    "premiumPlanName"
+  ).value =
+    data.planName ||
+    "Premium Seller";
+
+  document.getElementById(
+    "premiumPrice"
+  ).value =
+    data.price ??
+    2000;
+
+  document.getElementById(
+    "premiumDuration"
+  ).value =
+    data.durationDays ??
+    30;
+
+  document.getElementById(
+    "premiumMaxProducts"
+  ).value =
+    data.maxProducts ??
+    50;
+
+  document.getElementById(
+    "premiumBankName"
+  ).value =
+    data.bankName ||
+    "";
+
+  document.getElementById(
+    "premiumAccountName"
+  ).value =
+    data.accountName ||
+    "";
+
+  document.getElementById(
+    "premiumAccountNumber"
+  ).value =
+    data.accountNumber ||
+    "";
+
+  document.getElementById(
+    "premiumBenefits"
+  ).value =
+    data.benefits ||
+    "";
+
+  document.getElementById(
+    "premiumActive"
+  ).checked =
+    data.active !== false;
+}
+
+
+function renderPremiumSettingsSummary(){
+
+  const data =
+    premiumSettings || {};
+
+  const active =
+    data.active !== false;
+
+  premiumSettingsSummary.innerHTML = `
+
+    <h3>
+      💎 ${escapeHtml(
+        data.planName ||
+        "Premium Seller"
+      )}
+    </h3>
+
+    <div class="premium-price">
+      ${money(data.price)}
+    </div>
+
+    <p>
+      Duration:
+      <b>
+        ${escapeHtml(
+          data.durationDays ||
+          0
+        )}
+        days
+      </b>
+    </p>
+
+    <p>
+      Maximum Products:
+      <b>
+        ${escapeHtml(
+          data.maxProducts ||
+          0
+        )}
+      </b>
+    </p>
+
+    <p>
+      Bank:
+      <b>
+        ${escapeHtml(
+          data.bankName ||
+          "Not set"
+        )}
+      </b>
+    </p>
+
+    <p>
+      Account Name:
+      <b>
+        ${escapeHtml(
+          data.accountName ||
+          "Not set"
+        )}
+      </b>
+    </p>
+
+    <p>
+      Account Number:
+      <b>
+        ${escapeHtml(
+          data.accountNumber ||
+          "Not set"
+        )}
+      </b>
+    </p>
+
+    <p>
+      Status:
+      <span class="badge ${
+        active
+          ? "active"
+          : "inactive"
+      }">
+        ${
+          active
+            ? "Active"
+            : "Inactive"
+        }
+      </span>
+    </p>
+
+    <br>
+
+    <strong>
+      Benefits
+    </strong>
+
+    <div class="benefits-preview">
+      ${escapeHtml(
+        data.benefits ||
+        "No benefits configured."
+      )}
+    </div>
+
+  `;
+}
+
+
+document
+  .getElementById(
+    "refreshPremiumSettingsBtn"
+  )
+  .addEventListener(
+    "click",
+    loadPremiumSettings
+  );
+
+
+document
+  .getElementById(
+    "savePremiumSettingsBtn"
+  )
+  .addEventListener(
+    "click",
+    async () => {
+
+      const planName =
+        document
+          .getElementById(
+            "premiumPlanName"
+          )
+          .value
+          .trim();
+
+      const price =
+        Number(
+          document
+            .getElementById(
+              "premiumPrice"
+            )
+            .value
+        );
+
+      const durationDays =
+        Number(
+          document
+            .getElementById(
+              "premiumDuration"
+            )
+            .value
+        );
+
+      const maxProducts =
+        Number(
+          document
+            .getElementById(
+              "premiumMaxProducts"
+            )
+            .value
+        );
+
+      const bankName =
+        document
+          .getElementById(
+            "premiumBankName"
+          )
+          .value
+          .trim();
+
+      const accountName =
+        document
+          .getElementById(
+            "premiumAccountName"
+          )
+          .value
+          .trim();
+
+      const accountNumber =
+        document
+          .getElementById(
+            "premiumAccountNumber"
+          )
+          .value
+          .trim();
+
+      const benefits =
+        document
+          .getElementById(
+            "premiumBenefits"
+          )
+          .value
+          .trim();
+
+      const active =
+        document
+          .getElementById(
+            "premiumActive"
+          )
+          .checked;
+
+      if(!planName){
+
+        alert(
+          "Please enter Premium Plan Name."
+        );
+
+        return;
+      }
+
+      if(
+        !price ||
+        price < 0
+      ){
+
+        alert(
+          "Please enter a valid Premium price."
+        );
+
+        return;
+      }
+
+      if(
+        !durationDays ||
+        durationDays < 1
+      ){
+
+        alert(
+          "Duration must be at least 1 day."
+        );
+
+        return;
+      }
+
+      if(
+        !maxProducts ||
+        maxProducts < 1
+      ){
+
+        alert(
+          "Maximum products must be at least 1."
+        );
+
+        return;
+      }
+
+      const saveBtn =
+        document.getElementById(
+          "savePremiumSettingsBtn"
+        );
+
+      saveBtn.disabled =
+        true;
+
+      saveBtn.textContent =
+        "Saving...";
+
+      try{
+
+        const data = {
+
+          planName,
+
+          price,
+
+          durationDays,
+
+          maxProducts,
+
+          bankName,
+
+          accountName,
+
+          accountNumber,
+
+          benefits,
+
+          active,
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+        await updateDoc(
+          doc(
+            db,
+            "premiumSettings",
+            "main"
+          ),
+          data
+        ).catch(
+          async error => {
+
+            if(
+              error.code ===
+              "not-found"
+            ){
+
+              await setPremiumSettings(
+                data
+              );
+
+              return;
+
+            }
+
+            throw error;
+
+          }
+        );
+
+        premiumSettings =
+          {
+            ...data
+          };
+
+        renderPremiumSettingsSummary();
+
+        alert(
+          "Premium Settings saved successfully."
+        );
+
+      }catch(error){
+
+        /*
+          If the document does not exist,
+          create it using add/update helper.
+        */
+
+        try{
+
+          const data = {
+
+            planName,
+
+            price,
+
+            durationDays,
+
+            maxProducts,
+
+            bankName,
+
+            accountName,
+
+            accountNumber,
+
+            benefits,
+
+            active,
+
+            updatedAt:
+              serverTimestamp(),
+
+            createdAt:
+              serverTimestamp()
+
+          };
+
+          await setPremiumSettings(
+            data
+          );
+
+          premiumSettings =
+            {
+              ...data
+            };
+
+          renderPremiumSettingsSummary();
+
+          alert(
+            "Premium Settings created successfully."
+          );
+
+        }catch(secondError){
+
+          console.error(
+            secondError
+          );
+
+          alert(
+            "Failed to save Premium Settings: " +
+            secondError.message
+          );
+
+        }
+
+      }finally{
+
+        saveBtn.disabled =
+          false;
+
+        saveBtn.textContent =
+          "💾 Save Premium Settings";
+
+      }
+
+    }
+  );
+
+
+async function setPremiumSettings(data){
+
+  /*
+    setDoc is imported below through
+    the direct Firestore namespace helper.
+  */
+
+  const settingsRef =
+    doc(
+      db,
+      "premiumSettings",
+      "main"
+    );
+
+  const module =
+    await import(
+      "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"
+    );
+
+  await module.setDoc(
+    settingsRef,
+    data
+  );
+}
+
+
+/* ==========================================
+   PREMIUM REQUESTS
+========================================== */
+
+async function loadPremiumRequests(){
+
+  premiumRequestsList.innerHTML =
+    `<div class="loading">
+      Loading Premium requests...
     </div>`;
 
   try{
@@ -3144,73 +4014,94 @@ async function loadOrders(){
       await getDocs(
         collection(
           db,
-          "orders"
+          "premiumRequests"
         )
       );
 
-    allOrders = [];
+    allPremiumRequests = [];
 
     snapshot.forEach(
-      orderDoc => {
+      requestDoc => {
 
-        allOrders.push({
-          id:orderDoc.id,
-          ...orderDoc.data()
+        allPremiumRequests.push({
+
+          id:
+            requestDoc.id,
+
+          ...requestDoc.data()
+
         });
 
       }
     );
 
-    renderOrders(
-      allOrders
+    allPremiumRequests.sort(
+      (a,b) => {
+
+        const dateA =
+          timestampToDate(
+            a.createdAt
+          );
+
+        const dateB =
+          timestampToDate(
+            b.createdAt
+          );
+
+        return (
+          (dateB?.getTime() || 0) -
+          (dateA?.getTime() || 0)
+        );
+
+      }
+    );
+
+    renderPremiumRequests(
+      allPremiumRequests
     );
 
     updateAnalytics();
 
   }catch(error){
 
-    console.warn(
-      "Orders collection unavailable:",
-      error
-    );
+    console.error(error);
 
-    allOrders = [];
-
-    ordersList.innerHTML =
+    premiumRequestsList.innerHTML =
       `<div class="empty">
-        No orders found yet.
+        Failed to load Premium requests.
         <br>
-        <small>
-          Orders will appear here when the
-          <b>orders</b> collection is created.
-        </small>
+        ${escapeHtml(
+          error.code || ""
+        )}
       </div>`;
-
-    updateAnalytics();
   }
 }
 
 
-function renderOrders(orders){
+function renderPremiumRequests(
+  requests
+){
 
-  if(!orders.length){
+  if(!requests.length){
 
-    ordersList.innerHTML =
+    premiumRequestsList.innerHTML =
       `<div class="empty">
-        No orders found.
+        No Premium requests yet.
       </div>`;
 
     return;
   }
 
-  ordersList.innerHTML =
+  premiumRequestsList.innerHTML =
     "";
 
-  orders.forEach(order => {
+  requests.forEach(request => {
 
     const status =
-      order.status ||
-      "pending";
+      String(
+        request.status ||
+        "pending"
+      ).toLowerCase();
 
     const item =
       document.createElement(
@@ -3218,143 +4109,403 @@ function renderOrders(orders){
       );
 
     item.className =
-      "item";
+      "item request-card";
+
+    let statusClass =
+      "pending";
+
+    if(status === "approved"){
+
+      statusClass =
+        "active";
+
+    }
+
+    if(status === "rejected"){
+
+      statusClass =
+        "rejected";
+
+    }
 
     item.innerHTML = `
 
       <div class="item-main">
 
         <strong>
-          Order #${escapeHtml(
-            order.id
+          💎 ${escapeHtml(
+            request.sellerName ||
+            "Premium Seller"
           )}
         </strong>
 
         <small>
-          Buyer:
+          Seller ID:
           ${escapeHtml(
-            order.buyerName ||
-            order.customerName ||
-            "Unknown"
+            request.sellerId ||
+            "N/A"
           )}
         </small>
 
         <small>
-          Phone:
+          Email:
           ${escapeHtml(
-            order.buyerPhone ||
-            order.customerPhone ||
-            "Not provided"
+            request.sellerEmail ||
+            "N/A"
           )}
         </small>
 
         <small>
-          Seller:
+          Plan:
           ${escapeHtml(
-            order.sellerName ||
-            "Unknown"
+            request.plan ||
+            "premium"
           )}
         </small>
 
         <small>
           Amount:
-          ${money(
-            getOrderTotal(order)
+          <b>
+            ${money(
+              request.amount
+            )}
+          </b>
+        </small>
+
+        <small>
+          Payment Reference:
+          <b>
+            ${escapeHtml(
+              request.paymentReference ||
+              "Not provided"
+            )}
+          </b>
+        </small>
+
+        <small>
+          Payment Date:
+          ${escapeHtml(
+            request.paymentDate ||
+            "Not provided"
           )}
         </small>
 
-        <span class="badge ${
-          status === "completed"
-            ? "active"
-            : status === "cancelled"
-              ? "inactive"
-              : "pending"
-        }">
-          ${escapeHtml(status)}
+        <small>
+          Submitted:
+          ${escapeHtml(
+            formatDate(
+              request.createdAt
+            )
+          )}
+        </small>
+
+        <span class="badge ${statusClass}">
+          ${escapeHtml(
+            status
+          )}
         </span>
 
       </div>
 
-      <div class="actions">
+      ${
+        status === "pending"
+          ? `
+            <div class="actions">
 
-        <button
-          onclick="
-            updateOrderStatus(
-              '${escapeHtml(order.id)}',
-              'pending'
-            )
-          "
-        >
-          Pending
-        </button>
+              <button
+                class="green"
+                onclick="
+                  approvePremiumRequest(
+                    '${escapeHtml(request.id)}'
+                  )
+                "
+              >
+                Approve
+              </button>
 
-        <button
-          class="green"
-          onclick="
-            updateOrderStatus(
-              '${escapeHtml(order.id)}',
-              'completed'
-            )
-          "
-        >
-          Complete
-        </button>
+              <button
+                class="delete"
+                onclick="
+                  rejectPremiumRequest(
+                    '${escapeHtml(request.id)}'
+                  )
+                "
+              >
+                Reject
+              </button>
 
-        <button
-          class="delete"
-          onclick="
-            updateOrderStatus(
-              '${escapeHtml(order.id)}',
-              'cancelled'
-            )
-          "
-        >
-          Cancel
-        </button>
+            </div>
+          `
+          : ""
+      }
 
-      </div>
     `;
 
-    ordersList.appendChild(item);
+    premiumRequestsList.appendChild(
+      item
+    );
 
   });
 }
 
 
-window.updateOrderStatus =
-  async function(
-    orderId,
-    status
-  ){
+/* ==========================================
+   APPROVE PREMIUM
+========================================== */
+
+window.approvePremiumRequest =
+  async function(requestId){
+
+    const request =
+      allPremiumRequests.find(
+        item =>
+          item.id ===
+          requestId
+      );
+
+    if(!request){
+
+      alert(
+        "Premium request not found."
+      );
+
+      return;
+    }
+
+    if(
+      request.status &&
+      request.status !==
+        "pending"
+    ){
+
+      alert(
+        "This request has already been processed."
+      );
+
+      return;
+    }
+
+    const sellerId =
+      request.sellerId;
+
+    if(!sellerId){
+
+      alert(
+        "This request has no seller ID."
+      );
+
+      return;
+    }
+
+    if(
+      !confirm(
+        "Approve this Premium payment and activate Premium for this seller?"
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      const durationDays =
+        Number(
+          premiumSettings?.durationDays ||
+          request.durationDays ||
+          30
+        );
+
+      const now =
+        new Date();
+
+      const endDate =
+        new Date(
+          now.getTime() +
+          (
+            durationDays *
+            24 *
+            60 *
+            60 *
+            1000
+          )
+        );
+
+      await updateDoc(
+        doc(
+          db,
+          "users",
+          sellerId
+        ),
+        {
+
+          subscriptionPlan:
+            "premium",
+
+          subscriptionStatus:
+            "active",
+
+          subscriptionStart:
+            serverTimestamp(),
+
+          subscriptionEnd:
+            endDate.toISOString(),
+
+          premiumMaxProducts:
+            Number(
+              premiumSettings?.maxProducts ||
+              50
+            ),
+
+          premiumApprovedAt:
+            serverTimestamp()
+
+        }
+      );
+
+      await updateDoc(
+        doc(
+          db,
+          "premiumRequests",
+          requestId
+        ),
+        {
+
+          status:
+            "approved",
+
+          approvedAt:
+            serverTimestamp(),
+
+          approvedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      alert(
+        "Premium approved successfully."
+      );
+
+      await refreshAll();
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        "Failed to approve Premium: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+/* ==========================================
+   REJECT PREMIUM
+========================================== */
+
+window.rejectPremiumRequest =
+  async function(requestId){
+
+    const request =
+      allPremiumRequests.find(
+        item =>
+          item.id ===
+          requestId
+      );
+
+    if(!request){
+
+      alert(
+        "Premium request not found."
+      );
+
+      return;
+    }
+
+    if(
+      request.status &&
+      request.status !==
+        "pending"
+    ){
+
+      alert(
+        "This request has already been processed."
+      );
+
+      return;
+    }
+
+    if(
+      !confirm(
+        "Reject this Premium payment request?"
+      )
+    ){
+
+      return;
+
+    }
 
     try{
 
       await updateDoc(
         doc(
           db,
-          "orders",
-          orderId
+          "premiumRequests",
+          requestId
         ),
         {
-          status,
-          updatedAt:
-            serverTimestamp()
+
+          status:
+            "rejected",
+
+          rejectedAt:
+            serverTimestamp(),
+
+          rejectedBy:
+            auth.currentUser?.uid ||
+            ""
+
         }
       );
 
-      await loadOrders();
+      alert(
+        "Premium request rejected."
+      );
+
+      await loadPremiumRequests();
+
+      updateAnalytics();
 
     }catch(error){
 
+      console.error(error);
+
       alert(
-        "Failed to update order: " +
+        "Failed to reject Premium request: " +
         error.message
       );
+
     }
+
   };
 
 
-ordersSearch.addEventListener(
+document
+  .getElementById(
+    "refreshPremiumRequestsBtn"
+  )
+  .addEventListener(
+    "click",
+    loadPremiumRequests
+  );
+
+
+premiumRequestsSearch.addEventListener(
   "input",
   function(){
 
@@ -3363,40 +4514,30 @@ ordersSearch.addEventListener(
         .toLowerCase()
         .trim();
 
-    renderOrders(
-      allOrders.filter(
-        order => {
+    renderPremiumRequests(
+      allPremiumRequests.filter(
+        request => {
 
           const text =
             (
-              order.id +
+              request.sellerName +
               " " +
-              order.buyerName +
+              request.sellerEmail +
               " " +
-              order.customerName +
+              request.paymentReference +
               " " +
-              order.sellerName +
-              " " +
-              order.status
+              request.status
             )
             .toLowerCase();
 
           return text.includes(q);
+
         }
       )
     );
+
   }
 );
-
-
-document
-  .getElementById(
-    "refreshOrdersBtn"
-  )
-  .addEventListener(
-    "click",
-    loadOrders
-  );
 
 
 /* ==========================================
@@ -3456,25 +4597,41 @@ function updateAnalytics(){
       0
     );
 
-  const pendingOrders =
-    allOrders.filter(
-      order =>
-        !order.status ||
-        order.status ===
-          "pending"
+  const premiumSellers =
+    allUsers.filter(
+      user =>
+        user.subscriptionPlan ===
+          "premium" &&
+        user.subscriptionStatus ===
+          "active"
     ).length;
 
-  const orderRevenue =
-    allOrders
+  const pendingPremiumRequests =
+    allPremiumRequests.filter(
+      request =>
+        String(
+          request.status ||
+          "pending"
+        ).toLowerCase() ===
+        "pending"
+    ).length;
+
+  const premiumRevenue =
+    allPremiumRequests
       .filter(
-        order =>
-          order.status ===
-          "completed"
+        request =>
+          String(
+            request.status ||
+            ""
+          ).toLowerCase() ===
+          "approved"
       )
       .reduce(
-        (sum,order) =>
+        (sum,request) =>
           sum +
-          getOrderTotal(order),
+          Number(
+            request.amount || 0
+          ),
         0
       );
 
@@ -3529,40 +4686,33 @@ function updateAnalytics(){
     money(productValue);
 
   document.getElementById(
-    "ordersCount"
+    "premiumSellersCount"
   ).textContent =
-    allOrders.length;
+    premiumSellers;
 
   document.getElementById(
-    "pendingOrdersCount"
+    "pendingPremiumRequestsCount"
   ).textContent =
-    pendingOrders;
+    pendingPremiumRequests;
 
   document.getElementById(
-    "orderRevenue"
+    "premiumRevenueCount"
   ).textContent =
-    money(orderRevenue);
-};
+    money(
+      premiumRevenue
+    );
+}
 
 
 /* =========================================================
    PROFESSIONAL EXPORT SYSTEM
    ========================================================= */
 
-
-/* ------------------------------------------
-   EXPORT LIBRARIES
------------------------------------------- */
-
 let exportLibraries = {
   pdf:null,
   excel:null
 };
 
-
-/* ------------------------------------------
-   LOAD EXTERNAL SCRIPT
------------------------------------------- */
 
 function loadExternalScript(src){
 
@@ -3605,7 +4755,6 @@ function loadExternalScript(src){
         return;
       }
 
-
       const script =
         document.createElement(
           "script"
@@ -3647,10 +4796,6 @@ function loadExternalScript(src){
 
 }
 
-
-/* ------------------------------------------
-   LOAD PDF LIBRARIES
------------------------------------------- */
 
 async function loadPDFLibraries(){
 
@@ -3696,10 +4841,6 @@ async function loadPDFLibraries(){
 }
 
 
-/* ------------------------------------------
-   LOAD EXCEL LIBRARY
------------------------------------------- */
-
 async function loadExcelLibrary(){
 
   if(exportLibraries.excel){
@@ -3734,10 +4875,6 @@ async function loadExcelLibrary(){
 }
 
 
-/* ------------------------------------------
-   FORMAT FIREBASE DATE
------------------------------------------- */
-
 function formatExportDate(value){
 
   if(!value){
@@ -3749,7 +4886,6 @@ function formatExportDate(value){
   try{
 
     let date = null;
-
 
     if(
       value &&
@@ -3771,20 +4907,6 @@ function formatExportDate(value){
       date =
         new Date(
           value.seconds *
-          1000
-        );
-
-    }
-
-    else if(
-      value &&
-      typeof value._seconds ===
-      "number"
-    ){
-
-      date =
-        new Date(
-          value._seconds *
           1000
         );
 
@@ -3819,7 +4941,6 @@ function formatExportDate(value){
 
     }
 
-
     if(
       !date ||
       isNaN(
@@ -3830,7 +4951,6 @@ function formatExportDate(value){
       return "N/A";
 
     }
-
 
     return new Intl.DateTimeFormat(
       "en-NG",
@@ -3852,10 +4972,6 @@ function formatExportDate(value){
 }
 
 
-/* ------------------------------------------
-   CLEAN EXPORT VALUE
------------------------------------------- */
-
 function cleanExportValue(value){
 
   if(
@@ -3866,7 +4982,6 @@ function cleanExportValue(value){
     return "";
 
   }
-
 
   if(
     value &&
@@ -3880,7 +4995,6 @@ function cleanExportValue(value){
 
   }
 
-
   if(
     value &&
     typeof value.seconds ===
@@ -3892,7 +5006,6 @@ function cleanExportValue(value){
     );
 
   }
-
 
   if(
     typeof value ===
@@ -3913,15 +5026,10 @@ function cleanExportValue(value){
 
   }
 
-
   return String(value);
 
 }
 
-
-/* ------------------------------------------
-   SELLER NAME
------------------------------------------- */
 
 function getSellerName(product){
 
@@ -3935,36 +5043,6 @@ function getSellerName(product){
 
 }
 
-
-/* ------------------------------------------
-   ORDER TOTAL
------------------------------------------- */
-
-function getExportOrderTotal(
-  order
-){
-
-  const value =
-    order.total ??
-    order.totalAmount ??
-    order.amount ??
-    order.price ??
-    order.orderTotal ??
-    0;
-
-  const number =
-    Number(value);
-
-  return isNaN(number)
-    ? 0
-    : number;
-
-}
-
-
-/* ------------------------------------------
-   MONEY
------------------------------------------- */
 
 function formatExportMoney(
   value
@@ -3992,10 +5070,6 @@ function formatExportMoney(
 
 }
 
-
-/* ------------------------------------------
-   USERS REPORT
------------------------------------------- */
 
 function createUsersReport(){
 
@@ -4043,6 +5117,11 @@ function createUsersReport(){
           user.sellerStatus ||
           "N/A",
 
+        "Subscription":
+          user.subscriptionPlan === "premium"
+            ? "Premium"
+            : "Free",
+
         "Status":
           user.active === false
             ? "Inactive"
@@ -4055,10 +5134,6 @@ function createUsersReport(){
 
 }
 
-
-/* ------------------------------------------
-   SELLERS REPORT
------------------------------------------- */
 
 function createSellersReport(){
 
@@ -4111,6 +5186,12 @@ function createSellersReport(){
           user.sellerStatus ||
           "N/A",
 
+        "Subscription":
+          user.subscriptionPlan ===
+            "premium"
+            ? "Premium"
+            : "Free",
+
         "Account Status":
           user.active === false
             ? "Inactive"
@@ -4123,10 +5204,6 @@ function createSellersReport(){
 
 }
 
-
-/* ------------------------------------------
-   PRODUCTS REPORT
------------------------------------------- */
 
 function createProductsReport(){
 
@@ -4194,10 +5271,6 @@ function createProductsReport(){
 }
 
 
-/* ------------------------------------------
-   CATEGORIES REPORT
------------------------------------------- */
-
 function createCategoriesReport(){
 
   return allCategories.map(
@@ -4229,10 +5302,6 @@ function createCategoriesReport(){
 
 }
 
-
-/* ------------------------------------------
-   SELLER APPLICATIONS REPORT
------------------------------------------- */
 
 function createSellerApplicationsReport(){
 
@@ -4298,76 +5367,6 @@ function createSellerApplicationsReport(){
 }
 
 
-/* ------------------------------------------
-   ORDERS REPORT
------------------------------------------- */
-
-function createOrdersReport(){
-
-  return allOrders.map(
-    (order,index) => {
-
-      return {
-
-        "#":
-          index + 1,
-
-        "Order ID":
-          order.id ||
-          order.orderId ||
-          "N/A",
-
-        "Buyer":
-          order.buyerName ||
-          order.customerName ||
-          order.userName ||
-          order.buyer ||
-          "N/A",
-
-        "Buyer Phone":
-          order.buyerPhone ||
-          order.customerPhone ||
-          order.phone ||
-          "N/A",
-
-        "Seller":
-          order.sellerName ||
-          order.seller ||
-          "N/A",
-
-        "Amount":
-          formatExportMoney(
-            getExportOrderTotal(
-              order
-            )
-          ),
-
-        "Status":
-          order.status ||
-          "Pending",
-
-        "Created At":
-          formatExportDate(
-            order.createdAt
-          ),
-
-        "Updated At":
-          formatExportDate(
-            order.updatedAt
-          )
-
-      };
-
-    }
-  );
-
-}
-
-
-/* ------------------------------------------
-   GET REPORT
------------------------------------------- */
-
 function getExportReport(
   reportType
 ){
@@ -4381,14 +5380,12 @@ function getExportReport(
         rows:createUsersReport()
       };
 
-
     case "sellers":
 
       return {
         title:"Sellers Report",
         rows:createSellersReport()
       };
-
 
     case "products":
 
@@ -4397,14 +5394,12 @@ function getExportReport(
         rows:createProductsReport()
       };
 
-
     case "categories":
 
       return {
         title:"Categories Report",
         rows:createCategoriesReport()
       };
-
 
     case "sellerApplications":
 
@@ -4414,15 +5409,6 @@ function getExportReport(
         rows:
           createSellerApplicationsReport()
       };
-
-
-    case "orders":
-
-      return {
-        title:"Orders Report",
-        rows:createOrdersReport()
-      };
-
 
     default:
 
@@ -4436,9 +5422,9 @@ function getExportReport(
 }
 
 
-/* ------------------------------------------
+/* ==========================================
    CSV EXPORT
------------------------------------------- */
+========================================== */
 
 function exportCSV(
   reportType
@@ -4459,15 +5445,12 @@ function exportCSV(
 
   }
 
-
   const headers =
     Object.keys(
       report.rows[0]
     );
 
-
   const csvRows = [];
-
 
   csvRows.push(
     headers.map(
@@ -4479,7 +5462,6 @@ function exportCSV(
           )}"`
     ).join(",")
   );
-
 
   report.rows.forEach(
     row => {
@@ -4512,13 +5494,11 @@ function exportCSV(
     }
   );
 
-
   const csv =
     "\uFEFF" +
     csvRows.join(
       "\r\n"
     );
-
 
   const blob =
     new Blob(
@@ -4529,12 +5509,10 @@ function exportCSV(
       }
     );
 
-
   const url =
     URL.createObjectURL(
       blob
     );
-
 
   const link =
     document.createElement(
@@ -4562,9 +5540,9 @@ function exportCSV(
 }
 
 
-/* ------------------------------------------
+/* ==========================================
    EXCEL EXPORT
------------------------------------------- */
+========================================== */
 
 async function exportExcel(
   reportType
@@ -4585,11 +5563,9 @@ async function exportExcel(
 
   }
 
-
   try{
 
     await loadExcelLibrary();
-
 
     if(!window.XLSX){
 
@@ -4599,18 +5575,15 @@ async function exportExcel(
 
     }
 
-
     const worksheet =
       XLSX.utils.json_to_sheet(
         report.rows
       );
 
-
     const headers =
       Object.keys(
         report.rows[0]
       );
-
 
     worksheet["!cols"] =
       headers.map(
@@ -4620,7 +5593,6 @@ async function exportExcel(
             String(header)
               .length + 4;
 
-
           report.rows.forEach(
             row => {
 
@@ -4629,7 +5601,6 @@ async function exportExcel(
                   row[header] ??
                   ""
                 ).length;
-
 
               if(
                 length + 2 >
@@ -4643,7 +5614,6 @@ async function exportExcel(
 
             }
           );
-
 
           return {
 
@@ -4661,10 +5631,8 @@ async function exportExcel(
         }
       );
 
-
     const workbook =
       XLSX.utils.book_new();
-
 
     XLSX.utils.book_append_sheet(
       workbook,
@@ -4675,12 +5643,10 @@ async function exportExcel(
       )
     );
 
-
     XLSX.writeFile(
       workbook,
       `arewa-market-${reportType}-${getFileDate()}.xlsx`
     );
-
 
   }catch(error){
 
@@ -4697,9 +5663,9 @@ async function exportExcel(
 }
 
 
-/* ------------------------------------------
+/* ==========================================
    PDF EXPORT
------------------------------------------- */
+========================================== */
 
 async function exportPDF(
   reportType
@@ -4709,7 +5675,6 @@ async function exportPDF(
     getExportReport(
       reportType
     );
-
 
   if(!report.rows.length){
 
@@ -4721,11 +5686,9 @@ async function exportPDF(
 
   }
 
-
   try{
 
     await loadPDFLibraries();
-
 
     if(
       !window.jspdf ||
@@ -4738,12 +5701,10 @@ async function exportPDF(
 
     }
 
-
     const {
       jsPDF
     } =
       window.jspdf;
-
 
     const pdfDoc =
       new jsPDF({
@@ -4759,7 +5720,6 @@ async function exportPDF(
 
       });
 
-
     if(
       typeof pdfDoc.autoTable !==
       "function"
@@ -4771,12 +5731,10 @@ async function exportPDF(
 
     }
 
-
     const headers =
       Object.keys(
         report.rows[0]
       );
-
 
     const body =
       report.rows.map(
@@ -4788,7 +5746,6 @@ async function exportPDF(
               )
           )
       );
-
 
     const generatedDate =
       new Intl.DateTimeFormat(
@@ -4804,210 +5761,8 @@ async function exportPDF(
         new Date()
       );
 
-
-    /* --------------------------------------
-       SUMMARY
-    -------------------------------------- */
-
-    let summaryText =
+    const summaryText =
       `Total Records: ${report.rows.length}`;
-
-
-    if(
-      reportType ===
-      "users"
-    ){
-
-      const sellers =
-        allUsers.filter(
-          user =>
-            user.role === "seller" ||
-            user.role === "Seller" ||
-            user.isSeller === true ||
-            user.sellerStatus === "approved"
-        ).length;
-
-
-      const buyers =
-        allUsers.length -
-        sellers;
-
-
-      summaryText +=
-        `   |   Sellers: ${sellers}` +
-        `   |   Buyers: ${buyers}`;
-
-    }
-
-
-    if(
-      reportType ===
-      "sellers"
-    ){
-
-      const active =
-        allUsers.filter(
-          user =>
-            (
-              user.role === "seller" ||
-              user.role === "Seller" ||
-              user.isSeller === true ||
-              user.sellerStatus === "approved"
-            ) &&
-            user.active !== false
-        ).length;
-
-
-      const inactive =
-        allUsers.filter(
-          user =>
-            (
-              user.role === "seller" ||
-              user.role === "Seller" ||
-              user.isSeller === true ||
-              user.sellerStatus === "approved"
-            ) &&
-            user.active === false
-        ).length;
-
-
-      summaryText +=
-        `   |   Active: ${active}` +
-        `   |   Inactive: ${inactive}`;
-
-    }
-
-
-    if(
-      reportType ===
-      "products"
-    ){
-
-      const active =
-        allProducts.filter(
-          product =>
-            product.active !== false &&
-            product.status !== "inactive"
-        ).length;
-
-
-      const featured =
-        allProducts.filter(
-          product =>
-            product.featured === true
-        ).length;
-
-
-      summaryText +=
-        `   |   Active: ${active}` +
-        `   |   Featured: ${featured}`;
-
-    }
-
-
-    if(
-      reportType ===
-      "categories"
-    ){
-
-      summaryText +=
-        `   |   Categories: ${allCategories.length}`;
-
-    }
-
-
-    if(
-      reportType ===
-      "sellerApplications"
-    ){
-
-      const pending =
-        allSellerApplications.filter(
-          user =>
-            user.sellerStatus ===
-            "pending"
-        ).length;
-
-
-      summaryText +=
-        `   |   Pending: ${pending}`;
-
-    }
-
-
-    if(
-      reportType ===
-      "orders"
-    ){
-
-      const pending =
-        allOrders.filter(
-          order =>
-            String(
-              order.status ||
-              ""
-            ).toLowerCase() ===
-            "pending"
-        ).length;
-
-
-      const completed =
-        allOrders.filter(
-          order =>
-            String(
-              order.status ||
-              ""
-            ).toLowerCase() ===
-            "completed"
-        ).length;
-
-
-      const cancelled =
-        allOrders.filter(
-          order =>
-            String(
-              order.status ||
-              ""
-            ).toLowerCase() ===
-            "cancelled"
-        ).length;
-
-
-      const revenue =
-        allOrders
-          .filter(
-            order =>
-              String(
-                order.status ||
-                ""
-              ).toLowerCase() ===
-              "completed"
-          )
-          .reduce(
-            (
-              total,
-              order
-            ) =>
-              total +
-              getExportOrderTotal(
-                order
-              ),
-            0
-          );
-
-
-      summaryText +=
-        `   |   Pending: ${pending}` +
-        `   |   Completed: ${completed}` +
-        `   |   Cancelled: ${cancelled}` +
-        `   |   Revenue: ${formatExportMoney(revenue)}`;
-
-    }
-
-
-    /* --------------------------------------
-       TABLE
-    -------------------------------------- */
 
     pdfDoc.autoTable({
 
@@ -5060,15 +5815,8 @@ async function exportPDF(
 
       },
 
-      alternateRowStyles:{
-        overflow:
-          "linebreak"
-      },
-
       didDrawPage:
         function(){
-
-          /* HEADER */
 
           pdfDoc.setFontSize(
             18
@@ -5085,7 +5833,6 @@ async function exportPDF(
             14
           );
 
-
           pdfDoc.setFontSize(
             12
           );
@@ -5101,7 +5848,6 @@ async function exportPDF(
             22
           );
 
-
           pdfDoc.setFontSize(
             8
           );
@@ -5111,7 +5857,6 @@ async function exportPDF(
             14,
             28
           );
-
 
           pdfDoc.setFontSize(
             8
@@ -5132,15 +5877,9 @@ async function exportPDF(
 
     });
 
-
-    /* --------------------------------------
-       PAGE NUMBERS
-    -------------------------------------- */
-
     const pageCount =
       pdfDoc.internal
         .getNumberOfPages();
-
 
     for(
       let page = 1;
@@ -5152,7 +5891,6 @@ async function exportPDF(
         page
       );
 
-
       pdfDoc.setFontSize(
         8
       );
@@ -5162,13 +5900,11 @@ async function exportPDF(
         "normal"
       );
 
-
       pdfDoc.text(
         `Arewa Market • Page ${page} of ${pageCount}`,
         14,
         202
       );
-
 
       pdfDoc.text(
         "Kasuwar Arewa a Hannunka",
@@ -5182,15 +5918,9 @@ async function exportPDF(
 
     }
 
-
-    /* --------------------------------------
-       SAVE
-    -------------------------------------- */
-
     pdfDoc.save(
       `arewa-market-${reportType}-${getFileDate()}.pdf`
     );
-
 
   }catch(error){
 
@@ -5208,9 +5938,9 @@ async function exportPDF(
 }
 
 
-/* ------------------------------------------
+/* ==========================================
    FILE DATE
------------------------------------------- */
+========================================== */
 
 function getFileDate(){
 
@@ -5243,9 +5973,9 @@ function getFileDate(){
 }
 
 
-/* ------------------------------------------
+/* ==========================================
    EXPORT MENU
------------------------------------------- */
+========================================== */
 
 function showExportMenu(
   reportType
@@ -5256,12 +5986,10 @@ function showExportMenu(
       reportType
     );
 
-
   const overlay =
     document.createElement(
       "div"
     );
-
 
   overlay.style.cssText = `
 
@@ -5276,12 +6004,10 @@ function showExportMenu(
 
   `;
 
-
   const box =
     document.createElement(
       "div"
     );
-
 
   box.style.cssText = `
 
@@ -5294,7 +6020,6 @@ function showExportMenu(
     text-align:center;
 
   `;
-
 
   box.innerHTML = `
 
@@ -5396,18 +6121,13 @@ function showExportMenu(
 
   `;
 
-
   overlay.appendChild(
     box
   );
 
-
   document.body.appendChild(
     overlay
   );
-
-
-  /* PDF */
 
   box
     .querySelector(
@@ -5426,9 +6146,6 @@ function showExportMenu(
       }
     );
 
-
-  /* EXCEL */
-
   box
     .querySelector(
       "#exportExcelChoice"
@@ -5445,9 +6162,6 @@ function showExportMenu(
 
       }
     );
-
-
-  /* CSV */
 
   box
     .querySelector(
@@ -5466,9 +6180,6 @@ function showExportMenu(
       }
     );
 
-
-  /* CANCEL */
-
   box
     .querySelector(
       "#closeExportChoice"
@@ -5481,9 +6192,6 @@ function showExportMenu(
 
       }
     );
-
-
-  /* OUTSIDE CLICK */
 
   overlay.addEventListener(
     "click",
@@ -5540,22 +6248,6 @@ document
   );
 
 
-document
-  .getElementById(
-    "exportOrdersBtn"
-  )
-  .addEventListener(
-    "click",
-    () => {
-
-      showExportMenu(
-        "orders"
-      );
-
-    }
-  );
-
-
 /* ==========================================
    EXTRA EXPORT BUTTONS
 ========================================== */
@@ -5567,15 +6259,11 @@ function addExtraExportButtons(){
       ".dashboard-tools"
     );
 
-
   if(!tools){
 
     return;
 
   }
-
-
-  /* SELLERS */
 
   if(
     !document.getElementById(
@@ -5588,7 +6276,6 @@ function addExtraExportButtons(){
         "button"
       );
 
-
     button.id =
       "exportSellersBtn";
 
@@ -5597,7 +6284,6 @@ function addExtraExportButtons(){
 
     button.innerHTML =
       "📥 Export Sellers";
-
 
     button.addEventListener(
       "click",
@@ -5610,15 +6296,11 @@ function addExtraExportButtons(){
       }
     );
 
-
     tools.appendChild(
       button
     );
 
   }
-
-
-  /* CATEGORIES */
 
   if(
     !document.getElementById(
@@ -5631,7 +6313,6 @@ function addExtraExportButtons(){
         "button"
       );
 
-
     button.id =
       "exportCategoriesBtn";
 
@@ -5640,7 +6321,6 @@ function addExtraExportButtons(){
 
     button.innerHTML =
       "📥 Export Categories";
-
 
     button.addEventListener(
       "click",
@@ -5653,15 +6333,11 @@ function addExtraExportButtons(){
       }
     );
 
-
     tools.appendChild(
       button
     );
 
   }
-
-
-  /* SELLER APPLICATIONS */
 
   if(
     !document.getElementById(
@@ -5674,7 +6350,6 @@ function addExtraExportButtons(){
         "button"
       );
 
-
     button.id =
       "exportApplicationsBtn";
 
@@ -5683,7 +6358,6 @@ function addExtraExportButtons(){
 
     button.innerHTML =
       "📥 Export Applications";
-
 
     button.addEventListener(
       "click",
@@ -5695,7 +6369,6 @@ function addExtraExportButtons(){
 
       }
     );
-
 
     tools.appendChild(
       button

@@ -19,8 +19,6 @@
       color:#222;
     }
 
-    /* ================= HEADER ================= */
-
     header{
       background:#0b6b3a;
       color:white;
@@ -107,8 +105,6 @@
       color:white;
     }
 
-    /* ================= HERO ================= */
-
     .hero{
       background:linear-gradient(
         rgba(11,107,58,.93),
@@ -156,8 +152,6 @@
       cursor:pointer;
     }
 
-    /* ================= MAIN ================= */
-
     main{
       max-width:1200px;
       margin:auto;
@@ -168,8 +162,6 @@
       margin-bottom:15px;
       color:#0b6b3a;
     }
-
-    /* ================= CATEGORIES ================= */
 
     .categories{
       display:flex;
@@ -196,8 +188,6 @@
       color:white;
     }
 
-    /* ================= FILTERS ================= */
-
     .filters{
       background:white;
       padding:15px;
@@ -217,8 +207,6 @@
       background:white;
       outline:none;
     }
-
-    /* ================= PRODUCTS ================= */
 
     .products-header{
       display:flex;
@@ -293,6 +281,19 @@
       margin-bottom:8px;
     }
 
+    .premium-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      background:#d6a21d;
+      color:white;
+      padding:5px 8px;
+      border-radius:5px;
+      font-size:11px;
+      font-weight:bold;
+      margin-bottom:8px;
+    }
+
     .seller-link{
       display:inline-block;
       margin-top:10px;
@@ -305,8 +306,6 @@
     .seller-link:hover{
       text-decoration:underline;
     }
-
-    /* ================= VIEW PRODUCT ================= */
 
     .view-product{
       display:block;
@@ -325,8 +324,6 @@
       background:#07502b;
     }
 
-    /* ================= EMPTY ================= */
-
     .empty{
       background:white;
       padding:40px 20px;
@@ -341,16 +338,12 @@
       margin-bottom:8px;
     }
 
-    /* ================= LOADING ================= */
-
     .loading{
       text-align:center;
       padding:40px;
       color:#0b6b3a;
       grid-column:1/-1;
     }
-
-    /* ================= MESSAGE ================= */
 
     #message{
       display:none;
@@ -366,8 +359,6 @@
       box-shadow:0 3px 12px rgba(0,0,0,.2);
     }
 
-    /* ================= FOOTER ================= */
-
     footer{
       background:#073d24;
       color:white;
@@ -380,8 +371,6 @@
       font-size:13px;
       opacity:.9;
     }
-
-    /* ================= MOBILE ================= */
 
     @media(max-width:700px){
 
@@ -462,72 +451,830 @@
 
 <body>
 
-  <!-- ================= HEADER ================= -->
+<header>
 
-  <header>
+  <div class="header-inner">
 
-    <div class="header-inner">
+    <a href="index.html" class="brand">
+      <h1>Arewa Market</h1>
+      <p>Kasuwar Arewa a Hannunka</p>
+    </a>
 
-      <a href="index.html" class="brand">
-        <h1>Arewa Market</h1>
-        <p>Kasuwar Arewa a Hannunka</p>
-      </a>
+    <nav id="navArea">
 
-      <nav id="navArea">
+      <a href="login.html">Login</a>
 
-        <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
 
-        <a href="register.html">Register</a>
+    </nav>
 
-      </nav>
+  </div>
 
-    </div>
-
-  </header>
+</header>
 
 
-  <!-- ================= HERO ================= -->
+<section class="hero">
 
-  <section class="hero">
+  <h2>Buy & Sell Across Northern Nigeria</h2>
 
-    <h2>Buy & Sell Across Northern Nigeria</h2>
+  <p>
+    Discover products from sellers across Northern Nigeria.
+    Search products, browse categories and find sellers easily.
+  </p>
 
-    <p>
-      Discover products from sellers across Northern Nigeria.
-      Search products, browse categories and find sellers easily.
-    </p>
+  <div class="search-box">
 
-    <div class="search-box">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search for products..."
+    >
 
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search for products..."
-      >
+    <button id="searchBtn">
+      Search
+    </button>
 
-      <button id="searchBtn">
-        Search
-      </button>
+  </div>
 
-    </div>
-
-  </section>
+</section>
 
 
-  <!-- ================= MAIN ================= -->
+<main>
 
-  <main>
+  <h2 class="section-title">
+    Categories
+  </h2>
 
-    <!-- Categories -->
+  <div
+    class="categories"
+    id="categories"
+  >
+
+    <button
+      class="category-btn active"
+      data-category="all"
+    >
+      All
+    </button>
+
+  </div>
+
+
+  <div class="filters">
+
+    <select id="stateFilter">
+
+      <option value="all">
+        All States
+      </option>
+
+      <option value="Adamawa">
+        Adamawa
+      </option>
+
+      <option value="Bauchi">
+        Bauchi
+      </option>
+
+      <option value="Borno">
+        Borno
+      </option>
+
+      <option value="Gombe">
+        Gombe
+      </option>
+
+      <option value="Jigawa">
+        Jigawa
+      </option>
+
+      <option value="Kaduna">
+        Kaduna
+      </option>
+
+      <option value="Kano">
+        Kano
+      </option>
+
+      <option value="Katsina">
+        Katsina
+      </option>
+
+      <option value="Kebbi">
+        Kebbi
+      </option>
+
+      <option value="Kogi">
+        Kogi
+      </option>
+
+      <option value="Kwara">
+        Kwara
+      </option>
+
+      <option value="Nasarawa">
+        Nasarawa
+      </option>
+
+      <option value="Niger">
+        Niger
+      </option>
+
+      <option value="Plateau">
+        Plateau
+      </option>
+
+      <option value="Sokoto">
+        Sokoto
+      </option>
+
+      <option value="Taraba">
+        Taraba
+      </option>
+
+      <option value="Yobe">
+        Yobe
+      </option>
+
+      <option value="Zamfara">
+        Zamfara
+      </option>
+
+      <option value="FCT">
+        FCT
+      </option>
+
+    </select>
+
+
+    <select id="sortFilter">
+
+      <option value="featured">
+        Featured First
+      </option>
+
+      <option value="newest">
+        Newest First
+      </option>
+
+      <option value="priceLow">
+        Price: Low to High
+      </option>
+
+      <option value="priceHigh">
+        Price: High to Low
+      </option>
+
+      <option value="name">
+        Name A-Z
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <div class="products-header">
 
     <h2 class="section-title">
-      Categories
+      Products
     </h2>
 
-    <div
-      class="categories"
-      id="categories"
+    <span id="productCount">
+      Loading...
+    </span>
+
+  </div>
+
+
+  <div
+    class="products-grid"
+    id="productsGrid"
+  >
+
+    <div class="loading">
+      Loading products...
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <p>
+    © 2026 Arewa Market
+  </p>
+
+  <p style="margin-top:6px;">
+    Buy and sell products across Northern Nigeria.
+  </p>
+
+</footer>
+
+
+<div id="message"></div>
+
+
+<script type="module">
+
+import {
+  auth,
+  db
+} from "./firebase.js";
+
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* =================================================
+   REFERRAL TRACKING
+================================================= */
+
+function captureReferral(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const ref =
+    params.get("ref");
+
+
+  if(ref){
+
+    const cleanRef =
+      String(ref)
+        .trim()
+        .toUpperCase();
+
+
+    if(cleanRef){
+
+      localStorage.setItem(
+        "arewaReferralCode",
+        cleanRef
+      );
+
+    }
+
+  }
+
+}
+
+
+function getStoredReferral(){
+
+  return localStorage.getItem(
+    "arewaReferralCode"
+  ) || "";
+
+}
+
+
+/* =================================================
+   REGISTER LINK WITH REFERRAL
+================================================= */
+
+function updateRegisterLinks(){
+
+  const referralCode =
+    getStoredReferral();
+
+
+  const registerLinks =
+    document.querySelectorAll(
+      'a[href="register.html"]'
+    );
+
+
+  registerLinks.forEach(link => {
+
+    if(referralCode){
+
+      link.href =
+        "register.html?ref=" +
+        encodeURIComponent(
+          referralCode
+        );
+
+    }else{
+
+      link.href =
+        "register.html";
+
+    }
+
+  });
+
+}
+
+
+/* Capture referral as soon as page loads */
+
+captureReferral();
+
+
+/* =================================================
+   GLOBAL DATA
+================================================= */
+
+let allProducts = [];
+let allCategories = [];
+
+let currentCategory = "all";
+let currentState = "all";
+let currentSearch = "";
+let currentSort = "featured";
+
+let currentUser = null;
+let currentUserData = null;
+
+let messagesUnsubscribe = null;
+
+let premiumSellers = new Set();
+
+
+/* =================================================
+   ELEMENTS
+================================================= */
+
+const productsGrid =
+  document.getElementById(
+    "productsGrid"
+  );
+
+const productCount =
+  document.getElementById(
+    "productCount"
+  );
+
+const categoriesContainer =
+  document.getElementById(
+    "categories"
+  );
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+const stateFilter =
+  document.getElementById(
+    "stateFilter"
+  );
+
+const sortFilter =
+  document.getElementById(
+    "sortFilter"
+  );
+
+const navArea =
+  document.getElementById(
+    "navArea"
+  );
+
+const messageBox =
+  document.getElementById(
+    "message"
+  );
+
+
+/* =================================================
+   MESSAGE
+================================================= */
+
+function showMessage(text){
+
+  messageBox.textContent = text;
+
+  messageBox.style.display = "block";
+
+  setTimeout(() => {
+
+    messageBox.style.display = "none";
+
+  },3000);
+
+}
+
+
+/* =================================================
+   AUTH STATE
+================================================= */
+
+onAuthStateChanged(auth, async (user) => {
+
+  currentUser = user;
+
+  currentUserData = null;
+
+  if(!user){
+
+    if(messagesUnsubscribe){
+
+      messagesUnsubscribe();
+
+      messagesUnsubscribe = null;
+
+    }
+
+    renderLoggedOutNav();
+
+    return;
+
+  }
+
+  try{
+
+    const userSnap =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        )
+      );
+
+    if(userSnap.exists()){
+
+      currentUserData =
+        userSnap.data();
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "User profile error:",
+      error
+    );
+
+  }
+
+  renderLoggedInNav();
+
+  startBuyerMessageListener();
+
+});
+
+
+/* =================================================
+   LOGGED OUT NAV
+================================================= */
+
+function renderLoggedOutNav(){
+
+  navArea.innerHTML = `
+
+    <a href="login.html">
+      Login
+    </a>
+
+    <a href="register.html">
+      Register
+    </a>
+
+  `;
+
+  updateRegisterLinks();
+
+}
+
+
+/* =================================================
+   LOGGED IN NAV
+================================================= */
+
+function renderLoggedInNav(){
+
+  let html = "";
+
+  const isApprovedSeller =
+    currentUserData &&
+    currentUserData.role === "seller" &&
+    currentUserData.isSeller === true &&
+    currentUserData.sellerStatus === "approved";
+
+
+  if(isApprovedSeller){
+
+    html += `
+
+      <a
+        href="seller-dashboard.html"
+        class="seller-btn"
+      >
+        Seller Dashboard
+      </a>
+
+    `;
+
+  }else{
+
+    const isBuyer =
+      !currentUserData ||
+      currentUserData.role === "buyer";
+
+    if(isBuyer){
+
+      html += `
+
+        <a
+          href="seller-apply.html"
+          class="seller-btn"
+        >
+          Become a Seller
+        </a>
+
+      `;
+
+    }
+
+  }
+
+
+  html += `
+
+    <a
+      href="messages.html"
+      class="messages-btn"
     >
+      💬 Messages
+
+      <span
+        id="messageBadge"
+        class="message-badge"
+        style="display:none;"
+      >
+        0
+      </span>
+
+    </a>
+
+  `;
+
+
+  html += `
+
+    <button
+      class="logout"
+      id="logoutBtn"
+    >
+      Logout
+    </button>
+
+  `;
+
+
+  navArea.innerHTML = html;
+
+
+  const logoutBtn =
+    document.getElementById(
+      "logoutBtn"
+    );
+
+
+  if(logoutBtn){
+
+    logoutBtn.addEventListener(
+      "click",
+      async () => {
+
+        try{
+
+          if(messagesUnsubscribe){
+
+            messagesUnsubscribe();
+
+            messagesUnsubscribe = null;
+
+          }
+
+          await signOut(auth);
+
+          showMessage(
+            "You have been logged out."
+          );
+
+          setTimeout(() => {
+
+            window.location.reload();
+
+          },700);
+
+        }catch(error){
+
+          console.error(error);
+
+          showMessage(
+            "Logout failed."
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =================================================
+   BUYER MESSAGE LISTENER
+================================================= */
+
+function startBuyerMessageListener(){
+
+  if(!currentUser){
+
+    return;
+
+  }
+
+
+  if(messagesUnsubscribe){
+
+    messagesUnsubscribe();
+
+    messagesUnsubscribe = null;
+
+  }
+
+
+  const conversationsRef =
+    collection(
+      db,
+      "conversations"
+    );
+
+
+  const conversationsQuery =
+    query(
+      conversationsRef,
+      where(
+        "participantIds",
+        "array-contains",
+        currentUser.uid
+      )
+    );
+
+
+  messagesUnsubscribe =
+    onSnapshot(
+      conversationsQuery,
+      (snapshot) => {
+
+        let unreadTotal = 0;
+
+
+        snapshot.forEach(
+          conversationDoc => {
+
+            const data =
+              conversationDoc.data();
+
+
+            const unreadCount =
+              data.unreadCount || {};
+
+
+            const count =
+              Number(
+                unreadCount[
+                  currentUser.uid
+                ] || 0
+              );
+
+
+            unreadTotal += count;
+
+          }
+        );
+
+
+        updateMessageBadge(
+          unreadTotal
+        );
+
+      },
+      (error) => {
+
+        console.error(
+          "Message listener error:",
+          error
+        );
+
+      }
+    );
+
+}
+
+
+/* =================================================
+   UPDATE MESSAGE BADGE
+================================================= */
+
+function updateMessageBadge(
+  unreadTotal
+){
+
+  const badge =
+    document.getElementById(
+      "messageBadge"
+    );
+
+
+  if(!badge){
+
+    return;
+
+  }
+
+
+  if(unreadTotal > 0){
+
+    badge.textContent =
+      unreadTotal > 99
+        ? "99+"
+        : unreadTotal;
+
+
+    badge.style.display =
+      "inline-flex";
+
+  }else{
+
+    badge.textContent =
+      "0";
+
+    badge.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =================================================
+   LOAD CATEGORIES
+================================================= */
+
+async function loadCategories(){
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "categories"
+        )
+      );
+
+    allCategories = [];
+
+    snapshot.forEach(item => {
+
+      allCategories.push({
+
+        id:item.id,
+
+        ...item.data()
+
+      });
+
+    });
+
+
+    renderCategories();
+
+  }catch(error){
+
+    console.error(
+      "Categories error:",
+      error
+    );
+
+    categoriesContainer.innerHTML = `
 
       <button
         class="category-btn active"
@@ -536,1369 +1283,808 @@
         All
       </button>
 
-    </div>
+    `;
+
+  }
+
+}
 
 
-    <!-- Filters -->
+/* =================================================
+   RENDER CATEGORIES
+================================================= */
 
-    <div class="filters">
+function renderCategories(){
 
-      <select id="stateFilter">
+  let html = `
 
-        <option value="all">
-          All States
-        </option>
-
-        <option value="Adamawa">
-          Adamawa
-        </option>
-
-        <option value="Bauchi">
-          Bauchi
-        </option>
-
-        <option value="Borno">
-          Borno
-        </option>
-
-        <option value="Gombe">
-          Gombe
-        </option>
-
-        <option value="Jigawa">
-          Jigawa
-        </option>
-
-        <option value="Kaduna">
-          Kaduna
-        </option>
-
-        <option value="Kano">
-          Kano
-        </option>
-
-        <option value="Katsina">
-          Katsina
-        </option>
-
-        <option value="Kebbi">
-          Kebbi
-        </option>
-
-        <option value="Kogi">
-          Kogi
-        </option>
-
-        <option value="Kwara">
-          Kwara
-        </option>
-
-        <option value="Nasarawa">
-          Nasarawa
-        </option>
-
-        <option value="Niger">
-          Niger
-        </option>
-
-        <option value="Plateau">
-          Plateau
-        </option>
-
-        <option value="Sokoto">
-          Sokoto
-        </option>
-
-        <option value="Taraba">
-          Taraba
-        </option>
-
-        <option value="Yobe">
-          Yobe
-        </option>
-
-        <option value="Zamfara">
-          Zamfara
-        </option>
-
-        <option value="FCT">
-          FCT
-        </option>
-
-      </select>
-
-
-      <select id="sortFilter">
-
-        <option value="featured">
-          Featured First
-        </option>
-
-        <option value="newest">
-          Newest First
-        </option>
-
-        <option value="priceLow">
-          Price: Low to High
-        </option>
-
-        <option value="priceHigh">
-          Price: High to Low
-        </option>
-
-        <option value="name">
-          Name A-Z
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <!-- Products -->
-
-    <div class="products-header">
-
-      <h2 class="section-title">
-        Products
-      </h2>
-
-      <span id="productCount">
-        Loading...
-      </span>
-
-    </div>
-
-
-    <div
-      class="products-grid"
-      id="productsGrid"
+    <button
+      class="category-btn active"
+      data-category="all"
     >
+      All
+    </button>
 
-      <div class="loading">
-        Loading products...
-      </div>
-
-    </div>
-
-  </main>
+  `;
 
 
-  <!-- ================= FOOTER ================= -->
+  allCategories.forEach(category => {
 
-  <footer>
+    if(!category.name){
 
-    <p>
-      © 2026 Arewa Market
-    </p>
-
-    <p style="margin-top:6px;">
-      Buy and sell products across Northern Nigeria.
-    </p>
-
-  </footer>
-
-
-  <!-- ================= MESSAGE ================= -->
-
-  <div id="message"></div>
-
-
-  <!-- ================= JAVASCRIPT ================= -->
-
-  <script type="module">
-
-    import {
-      auth,
-      db
-    } from "./firebase.js";
-
-
-    import {
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-
-    import {
-      collection,
-      getDocs,
-      doc,
-      getDoc,
-      query,
-      where,
-      onSnapshot
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-
-    // =================================================
-    // GLOBAL DATA
-    // =================================================
-
-    let allProducts = [];
-    let allCategories = [];
-
-    let currentCategory = "all";
-    let currentState = "all";
-    let currentSearch = "";
-    let currentSort = "featured";
-
-    let currentUser = null;
-    let currentUserData = null;
-
-    let messagesUnsubscribe = null;
-
-
-    // =================================================
-    // ELEMENTS
-    // =================================================
-
-    const productsGrid =
-      document.getElementById("productsGrid");
-
-    const productCount =
-      document.getElementById("productCount");
-
-    const categoriesContainer =
-      document.getElementById("categories");
-
-    const searchInput =
-      document.getElementById("searchInput");
-
-    const stateFilter =
-      document.getElementById("stateFilter");
-
-    const sortFilter =
-      document.getElementById("sortFilter");
-
-    const navArea =
-      document.getElementById("navArea");
-
-    const messageBox =
-      document.getElementById("message");
-
-
-    // =================================================
-    // MESSAGE
-    // =================================================
-
-    function showMessage(text){
-
-      messageBox.textContent = text;
-
-      messageBox.style.display = "block";
-
-      setTimeout(() => {
-
-        messageBox.style.display = "none";
-
-      },3000);
+      return;
 
     }
 
 
-    // =================================================
-    // AUTH STATE
-    // =================================================
+    html += `
 
-    onAuthStateChanged(auth, async (user) => {
+      <button
+        class="category-btn"
+        data-category="${escapeHtml(
+          category.name
+        )}"
+      >
+        ${escapeHtml(
+          category.name
+        )}
+      </button>
 
-      currentUser = user;
+    `;
 
-      currentUserData = null;
+  });
 
-      if(!user){
 
-        if(messagesUnsubscribe){
+  categoriesContainer.innerHTML = html;
 
-          messagesUnsubscribe();
 
-          messagesUnsubscribe = null;
+  document
+    .querySelectorAll(".category-btn")
+    .forEach(button => {
 
-        }
-
-        renderLoggedOutNav();
-
-        return;
-
-      }
-
-      try{
-
-        const userSnap =
-          await getDoc(
-            doc(db,"users",user.uid)
-          );
-
-        if(userSnap.exists()){
-
-          currentUserData =
-            userSnap.data();
-
-        }
-
-      }catch(error){
-
-        console.error(
-          "User profile error:",
-          error
-        );
-
-      }
-
-      renderLoggedInNav();
-
-      startBuyerMessageListener();
-
-    });
-
-
-    // =================================================
-    // LOGGED OUT NAV
-    // =================================================
-
-    function renderLoggedOutNav(){
-
-      navArea.innerHTML = `
-
-        <a href="login.html">
-          Login
-        </a>
-
-        <a href="register.html">
-          Register
-        </a>
-
-      `;
-
-    }
-
-
-    // =================================================
-    // LOGGED IN NAV
-    // =================================================
-
-    function renderLoggedInNav(){
-
-      let html = "";
-
-      const isApprovedSeller =
-        currentUserData &&
-        currentUserData.role === "seller" &&
-        currentUserData.isSeller === true &&
-        currentUserData.sellerStatus === "approved";
-
-
-      if(isApprovedSeller){
-
-        html += `
-
-          <a
-            href="seller-dashboard.html"
-            class="seller-btn"
-          >
-            Seller Dashboard
-          </a>
-
-        `;
-
-      }else{
-
-        const isBuyer =
-          !currentUserData ||
-          currentUserData.role === "buyer";
-
-        if(isBuyer){
-
-          html += `
-
-            <a
-              href="seller-apply.html"
-              class="seller-btn"
-            >
-              Become a Seller
-            </a>
-
-          `;
-
-        }
-
-      }
-
-
-      /* ================= MESSAGES ================= */
-
-      html += `
-
-        <a
-          href="messages.html"
-          class="messages-btn"
-        >
-          💬 Messages
-
-          <span
-            id="messageBadge"
-            class="message-badge"
-            style="display:none;"
-          >
-            0
-          </span>
-
-        </a>
-
-      `;
-
-
-      /* ================= LOGOUT ================= */
-
-      html += `
-
-        <button
-          class="logout"
-          id="logoutBtn"
-        >
-          Logout
-        </button>
-
-      `;
-
-
-      navArea.innerHTML = html;
-
-
-      const logoutBtn =
-        document.getElementById("logoutBtn");
-
-
-      if(logoutBtn){
-
-        logoutBtn.addEventListener(
-          "click",
-          async () => {
-
-            try{
-
-              if(messagesUnsubscribe){
-
-                messagesUnsubscribe();
-
-                messagesUnsubscribe = null;
-
-              }
-
-              await signOut(auth);
-
-              showMessage(
-                "You have been logged out."
-              );
-
-              setTimeout(() => {
-
-                window.location.reload();
-
-              },700);
-
-            }catch(error){
-
-              console.error(error);
-
-              showMessage(
-                "Logout failed."
-              );
-
-            }
-
-          }
-        );
-
-      }
-
-    }
-
-
-    // =================================================
-    // BUYER MESSAGE LISTENER
-    // =================================================
-
-    function startBuyerMessageListener(){
-
-      if(!currentUser){
-
-        return;
-
-      }
-
-
-      if(messagesUnsubscribe){
-
-        messagesUnsubscribe();
-
-        messagesUnsubscribe = null;
-
-      }
-
-
-      const conversationsRef =
-        collection(
-          db,
-          "conversations"
-        );
-
-
-      const conversationsQuery =
-        query(
-          conversationsRef,
-          where(
-            "participantIds",
-            "array-contains",
-            currentUser.uid
-          )
-        );
-
-
-      messagesUnsubscribe =
-        onSnapshot(
-          conversationsQuery,
-          (snapshot) => {
-
-            let unreadTotal = 0;
-
-
-            snapshot.forEach(
-              conversationDoc => {
-
-                const data =
-                  conversationDoc.data();
-
-
-                const unreadCount =
-                  data.unreadCount || {};
-
-
-                const count =
-                  Number(
-                    unreadCount[
-                      currentUser.uid
-                    ] || 0
-                  );
-
-
-                unreadTotal += count;
-
-              }
-            );
-
-
-            updateMessageBadge(
-              unreadTotal
-            );
-
-          },
-          (error) => {
-
-            console.error(
-              "Message listener error:",
-              error
-            );
-
-          }
-        );
-
-    }
-
-
-    // =================================================
-    // UPDATE MESSAGE BADGE
-    // =================================================
-
-    function updateMessageBadge(
-      unreadTotal
-    ){
-
-      const badge =
-        document.getElementById(
-          "messageBadge"
-        );
-
-
-      if(!badge){
-
-        return;
-
-      }
-
-
-      if(unreadTotal > 0){
-
-        badge.textContent =
-          unreadTotal > 99
-            ? "99+"
-            : unreadTotal;
-
-
-        badge.style.display =
-          "inline-flex";
-
-      }else{
-
-        badge.textContent =
-          "0";
-
-        badge.style.display =
-          "none";
-
-      }
-
-    }
-
-
-    // =================================================
-    // LOAD CATEGORIES
-    // =================================================
-
-    async function loadCategories(){
-
-      try{
-
-        const snapshot =
-          await getDocs(
-            collection(db,"categories")
-          );
-
-        allCategories = [];
-
-        snapshot.forEach(item => {
-
-          allCategories.push({
-
-            id:item.id,
-
-            ...item.data()
-
-          });
-
-        });
-
-
-        renderCategories();
-
-      }catch(error){
-
-        console.error(
-          "Categories error:",
-          error
-        );
-
-        categoriesContainer.innerHTML = `
-
-          <button
-            class="category-btn active"
-            data-category="all"
-          >
-            All
-          </button>
-
-        `;
-
-      }
-
-    }
-
-
-    // =================================================
-    // RENDER CATEGORIES
-    // =================================================
-
-    function renderCategories(){
-
-      let html = `
-
-        <button
-          class="category-btn active"
-          data-category="all"
-        >
-          All
-        </button>
-
-      `;
-
-
-      allCategories.forEach(category => {
-
-        if(!category.name){
-
-          return;
-
-        }
-
-
-        html += `
-
-          <button
-            class="category-btn"
-            data-category="${escapeHtml(
-              category.name
-            )}"
-          >
-            ${escapeHtml(
-              category.name
-            )}
-          </button>
-
-        `;
-
-      });
-
-
-      categoriesContainer.innerHTML = html;
-
-
-      document
-        .querySelectorAll(".category-btn")
-        .forEach(button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              document
-                .querySelectorAll(
-                  ".category-btn"
-                )
-                .forEach(btn =>
-                  btn.classList.remove(
-                    "active"
-                  )
-                );
-
-
-              button.classList.add(
-                "active"
-              );
-
-
-              currentCategory =
-                button.dataset.category;
-
-
-              renderProducts();
-
-            }
-          );
-
-        });
-
-    }
-
-
-    // =================================================
-    // LOAD PRODUCTS
-    // =================================================
-
-    async function loadProducts(){
-
-      productsGrid.innerHTML = `
-
-        <div class="loading">
-          Loading products...
-        </div>
-
-      `;
-
-
-      try{
-
-        const snapshot =
-          await getDocs(
-            collection(db,"products")
-          );
-
-
-        allProducts = [];
-
-
-        snapshot.forEach(item => {
-
-          const data = item.data();
-
-
-          if(data.status === "active"){
-
-            allProducts.push({
-
-              id:item.id,
-
-              ...data
-
-            });
-
-          }
-
-        });
-
-
-        renderProducts();
-
-      }catch(error){
-
-        console.error(
-          "Products error:",
-          error
-        );
-
-
-        productsGrid.innerHTML = `
-
-          <div class="empty">
-
-            <h3>
-              Unable to load products
-            </h3>
-
-            <p>
-              Please refresh the page and try again.
-            </p>
-
-          </div>
-
-        `;
-
-
-        productCount.textContent =
-          "0 products";
-
-      }
-
-    }
-
-
-    // =================================================
-    // FILTER + SORT PRODUCTS
-    // =================================================
-
-    function getFilteredProducts(){
-
-      let products =
-        [...allProducts];
-
-
-      // SEARCH
-
-      if(currentSearch){
-
-        const search =
-          currentSearch.toLowerCase();
-
-
-        products =
-          products.filter(product => {
-
-            const name =
-              String(
-                product.name || ""
-              ).toLowerCase();
-
-
-            const category =
-              String(
-                product.category || ""
-              ).toLowerCase();
-
-
-            const location =
-              String(
-                product.location || ""
-              ).toLowerCase();
-
-
-            const seller =
-              String(
-                product.sellerName || ""
-              ).toLowerCase();
-
-
-            const description =
-              String(
-                product.description || ""
-              ).toLowerCase();
-
-
-            return (
-
-              name.includes(search) ||
-
-              category.includes(search) ||
-
-              location.includes(search) ||
-
-              seller.includes(search) ||
-
-              description.includes(search)
-
-            );
-
-          });
-
-      }
-
-
-      // CATEGORY
-
-      if(
-        currentCategory &&
-        currentCategory !== "all"
-      ){
-
-        products =
-          products.filter(product =>
-
-            String(
-              product.category || ""
-            ).toLowerCase() ===
-            String(
-              currentCategory
-            ).toLowerCase()
-
-          );
-
-      }
-
-
-      // STATE
-
-      if(
-        currentState &&
-        currentState !== "all"
-      ){
-
-        products =
-          products.filter(product =>
-
-            String(
-              product.location || ""
-            ).toLowerCase() ===
-            String(
-              currentState
-            ).toLowerCase()
-
-          );
-
-      }
-
-
-      // SORT
-
-      if(currentSort === "featured"){
-
-        products.sort((a,b) => {
-
-          return Number(
-            !!b.featured
-          ) - Number(
-            !!a.featured
-          );
-
-        });
-
-      }
-
-
-      else if(currentSort === "newest"){
-
-        products.sort((a,b) => {
-
-          const aTime =
-            a.createdAt &&
-            a.createdAt.toMillis
-              ? a.createdAt.toMillis()
-              : 0;
-
-
-          const bTime =
-            b.createdAt &&
-            b.createdAt.toMillis
-              ? b.createdAt.toMillis()
-              : 0;
-
-
-          return bTime - aTime;
-
-        });
-
-      }
-
-
-      else if(currentSort === "priceLow"){
-
-        products.sort(
-          (a,b) =>
-            Number(a.price || 0) -
-            Number(b.price || 0)
-        );
-
-      }
-
-
-      else if(currentSort === "priceHigh"){
-
-        products.sort(
-          (a,b) =>
-            Number(b.price || 0) -
-            Number(a.price || 0)
-        );
-
-      }
-
-
-      else if(currentSort === "name"){
-
-        products.sort((a,b) =>
-
-          String(a.name || "")
-            .localeCompare(
-              String(b.name || "")
-            )
-
-        );
-
-      }
-
-
-      return products;
-
-    }
-
-
-    // =================================================
-    // RENDER PRODUCTS
-    // =================================================
-
-    function renderProducts(){
-
-      const products =
-        getFilteredProducts();
-
-
-      productCount.textContent =
-        `${products.length} product${
-          products.length === 1
-            ? ""
-            : "s"
-        }`;
-
-
-      if(!products.length){
-
-        productsGrid.innerHTML = `
-
-          <div class="empty">
-
-            <h3>
-              No products found
-            </h3>
-
-            <p>
-              Try another search, category or state.
-            </p>
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      productsGrid.innerHTML =
-        products.map(
-          productCard
-        ).join("");
-
-    }
-
-
-    // =================================================
-    // PRODUCT CARD
-    // =================================================
-
-    function productCard(product){
-
-      const image =
-        product.imageUrl ||
-        "https://via.placeholder.com/500x350?text=Arewa+Market";
-
-
-      const price =
-        Number(
-          product.price || 0
-        ).toLocaleString(
-          "en-NG"
-        );
-
-
-      const category =
-        product.category ||
-        "Uncategorized";
-
-
-      const location =
-        product.location ||
-        "Northern Nigeria";
-
-
-      const sellerName =
-        product.sellerName ||
-        "Arewa Market";
-
-
-      const featured =
-        product.featured === true
-          ? `
-            <span class="featured">
-              Featured
-            </span>
-          `
-          : "";
-
-
-      let sellerLink = "";
-
-
-      if(
-        product.sellerId &&
-        product.sellerId !== "admin"
-      ){
-
-        sellerLink = `
-
-          <a
-            class="seller-link"
-            href="seller-profile.html?id=${encodeURIComponent(
-              product.sellerId
-            )}"
-          >
-            View Seller Profile →
-          </a>
-
-        `;
-
-      }else{
-
-        sellerLink = `
-
-          <span
-            class="seller-link"
-            style="cursor:default;"
-          >
-            Seller: Arewa Market
-          </span>
-
-        `;
-
-      }
-
-
-      return `
-
-        <article class="product-card">
-
-          <img
-            class="product-image"
-            src="${escapeHtml(image)}"
-            alt="${escapeHtml(
-              product.name || "Product"
-            )}"
-            onerror="
-              this.src='https://via.placeholder.com/500x350?text=Arewa+Market'
-            "
-          >
-
-
-          <div class="product-body">
-
-            ${featured}
-
-
-            <h3>
-              ${escapeHtml(
-                product.name ||
-                "Unnamed Product"
-              )}
-            </h3>
-
-
-            <div class="price">
-              ₦${price}
-            </div>
-
-
-            <div class="product-meta">
-
-              <div>
-                📂 ${escapeHtml(category)}
-              </div>
-
-              <div>
-                📍 ${escapeHtml(location)}
-              </div>
-
-              <div>
-                👤 ${escapeHtml(sellerName)}
-              </div>
-
-            </div>
-
-
-            ${
-              product.description
-                ? `
-                  <p
-                    style="
-                      margin-top:8px;
-                      color:#666;
-                      font-size:12px;
-                      line-height:1.5;
-                    "
-                  >
-                    ${escapeHtml(
-                      product.description
-                    )}
-                  </p>
-                `
-                : ""
-            }
-
-
-            ${sellerLink}
-
-
-            <!-- VIEW PRODUCT -->
-
-            <a
-              class="view-product"
-              href="product.html?id=${encodeURIComponent(
-                product.id
-              )}"
-            >
-              View Product →
-            </a>
-
-          </div>
-
-        </article>
-
-      `;
-
-    }
-
-
-    // =================================================
-    // SEARCH
-    // =================================================
-
-    searchInput.addEventListener(
-      "input",
-      () => {
-
-        currentSearch =
-          searchInput.value.trim();
-
-        renderProducts();
-
-      }
-    );
-
-
-    document
-      .getElementById("searchBtn")
-      .addEventListener(
+      button.addEventListener(
         "click",
         () => {
 
-          currentSearch =
-            searchInput.value.trim();
+          document
+            .querySelectorAll(
+              ".category-btn"
+            )
+            .forEach(btn =>
+              btn.classList.remove(
+                "active"
+              )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          currentCategory =
+            button.dataset.category;
+
 
           renderProducts();
 
         }
       );
 
+    });
 
-    // =================================================
-    // STATE FILTER
-    // =================================================
+}
 
-    stateFilter.addEventListener(
-      "change",
-      () => {
 
-        currentState =
-          stateFilter.value;
+/* =================================================
+   LOAD PREMIUM SELLERS
+================================================= */
 
-        renderProducts();
+async function loadPremiumSellers(){
+
+  premiumSellers = new Set();
+
+  const sellerIds = [
+    ...new Set(
+      allProducts
+        .map(product => product.sellerId)
+        .filter(
+          sellerId =>
+            sellerId &&
+            sellerId !== "admin"
+        )
+    )
+  ];
+
+
+  if(!sellerIds.length){
+
+    return;
+
+  }
+
+
+  await Promise.all(
+
+    sellerIds.map(
+      async sellerId => {
+
+        try{
+
+          const sellerSnap =
+            await getDoc(
+              doc(
+                db,
+                "users",
+                sellerId
+              )
+            );
+
+
+          if(!sellerSnap.exists()){
+
+            return;
+
+          }
+
+
+          const seller =
+            sellerSnap.data();
+
+
+          const isPremium =
+            seller.subscriptionPlan === "premium" &&
+            seller.subscriptionStatus === "active";
+
+
+          if(isPremium){
+
+            premiumSellers.add(
+              sellerId
+            );
+
+          }
+
+        }catch(error){
+
+          console.error(
+            "Premium seller check error:",
+            sellerId,
+            error
+          );
+
+        }
 
       }
+    )
+
+  );
+
+}
+
+
+/* =================================================
+   LOAD PRODUCTS
+================================================= */
+
+async function loadProducts(){
+
+  productsGrid.innerHTML = `
+
+    <div class="loading">
+      Loading products...
+    </div>
+
+  `;
+
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "products"
+        )
+      );
+
+
+    allProducts = [];
+
+
+    snapshot.forEach(item => {
+
+      const data =
+        item.data();
+
+
+      if(data.status === "active"){
+
+        allProducts.push({
+
+          id:item.id,
+
+          ...data
+
+        });
+
+      }
+
+    });
+
+
+    await loadPremiumSellers();
+
+
+    renderProducts();
+
+  }catch(error){
+
+    console.error(
+      "Products error:",
+      error
     );
 
 
-    // =================================================
-    // SORT
-    // =================================================
+    productsGrid.innerHTML = `
 
-    sortFilter.addEventListener(
-      "change",
-      () => {
+      <div class="empty">
 
-        currentSort =
-          sortFilter.value;
+        <h3>
+          Unable to load products
+        </h3>
 
-        renderProducts();
+        <p>
+          Please refresh the page and try again.
+        </p>
 
-      }
-    );
+      </div>
+
+    `;
 
 
-    // =================================================
-    // ESCAPE HTML
-    // =================================================
+    productCount.textContent =
+      "0 products";
 
-    function escapeHtml(value){
+  }
 
-      return String(value ?? "")
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
+}
+
+
+/* =================================================
+   FILTER + SORT PRODUCTS
+================================================= */
+
+function getFilteredProducts(){
+
+  let products =
+    [...allProducts];
+
+
+  if(currentSearch){
+
+    const search =
+      currentSearch.toLowerCase();
+
+
+    products =
+      products.filter(product => {
+
+        const name =
+          String(
+            product.name || ""
+          ).toLowerCase();
+
+
+        const category =
+          String(
+            product.category || ""
+          ).toLowerCase();
+
+
+        const location =
+          String(
+            product.location || ""
+          ).toLowerCase();
+
+
+        const seller =
+          String(
+            product.sellerName || ""
+          ).toLowerCase();
+
+
+        const description =
+          String(
+            product.description || ""
+          ).toLowerCase();
+
+
+        return (
+
+          name.includes(search) ||
+
+          category.includes(search) ||
+
+          location.includes(search) ||
+
+          seller.includes(search) ||
+
+          description.includes(search)
+
         );
 
+      });
+
+  }
+
+
+  if(
+    currentCategory &&
+    currentCategory !== "all"
+  ){
+
+    products =
+      products.filter(product =>
+
+        String(
+          product.category || ""
+        ).toLowerCase() ===
+        String(
+          currentCategory
+        ).toLowerCase()
+
+      );
+
+  }
+
+
+  if(
+    currentState &&
+    currentState !== "all"
+  ){
+
+    products =
+      products.filter(product =>
+
+        String(
+          product.location || ""
+        ).toLowerCase() ===
+        String(
+          currentState
+        ).toLowerCase()
+
+      );
+
+  }
+
+
+  if(currentSort === "featured"){
+
+    products.sort((a,b) => {
+
+      return Number(
+        !!b.featured
+      ) - Number(
+        !!a.featured
+      );
+
+    });
+
+  }
+
+
+  else if(currentSort === "newest"){
+
+    products.sort((a,b) => {
+
+      const aTime =
+        a.createdAt &&
+        a.createdAt.toMillis
+          ? a.createdAt.toMillis()
+          : 0;
+
+
+      const bTime =
+        b.createdAt &&
+        b.createdAt.toMillis
+          ? b.createdAt.toMillis()
+          : 0;
+
+
+      return bTime - aTime;
+
+    });
+
+  }
+
+
+  else if(currentSort === "priceLow"){
+
+    products.sort(
+      (a,b) =>
+        Number(a.price || 0) -
+        Number(b.price || 0)
+    );
+
+  }
+
+
+  else if(currentSort === "priceHigh"){
+
+    products.sort(
+      (a,b) =>
+        Number(b.price || 0) -
+        Number(a.price || 0)
+    );
+
+  }
+
+
+  else if(currentSort === "name"){
+
+    products.sort((a,b) =>
+
+      String(a.name || "")
+        .localeCompare(
+          String(b.name || "")
+        )
+
+    );
+
+  }
+
+
+  return products;
+
+}
+
+
+/* =================================================
+   RENDER PRODUCTS
+================================================= */
+
+function renderProducts(){
+
+  const products =
+    getFilteredProducts();
+
+
+  productCount.textContent =
+    `${products.length} product${
+      products.length === 1
+        ? ""
+        : "s"
+    }`;
+
+
+  if(!products.length){
+
+    productsGrid.innerHTML = `
+
+      <div class="empty">
+
+        <h3>
+          No products found
+        </h3>
+
+        <p>
+          Try another search, category or state.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  productsGrid.innerHTML =
+    products.map(
+      productCard
+    ).join("");
+
+}
+
+
+/* =================================================
+   PRODUCT CARD
+================================================= */
+
+function productCard(product){
+
+  const image =
+    product.imageUrl ||
+    "https://via.placeholder.com/500x350?text=Arewa+Market";
+
+
+  const price =
+    Number(
+      product.price || 0
+    ).toLocaleString(
+      "en-NG"
+    );
+
+
+  const category =
+    product.category ||
+    "Uncategorized";
+
+
+  const location =
+    product.location ||
+    "Northern Nigeria";
+
+
+  const sellerName =
+    product.sellerName ||
+    "Arewa Market";
+
+
+  const featured =
+    product.featured === true
+      ? `
+        <span class="featured">
+          Featured
+        </span>
+      `
+      : "";
+
+
+  const premiumBadge =
+    product.sellerId &&
+    premiumSellers.has(
+      product.sellerId
+    )
+      ? `
+        <div class="premium-badge">
+          ★ PREMIUM SELLER
+        </div>
+      `
+      : "";
+
+
+  let sellerLink = "";
+
+
+  if(
+    product.sellerId &&
+    product.sellerId !== "admin"
+  ){
+
+    sellerLink = `
+
+      <a
+        class="seller-link"
+        href="seller-profile.html?id=${encodeURIComponent(
+          product.sellerId
+        )}"
+      >
+        View Seller Profile →
+      </a>
+
+    `;
+
+  }else{
+
+    sellerLink = `
+
+      <span
+        class="seller-link"
+        style="cursor:default;"
+      >
+        Seller: Arewa Market
+      </span>
+
+    `;
+
+  }
+
+
+  return `
+
+    <article class="product-card">
+
+      <img
+        class="product-image"
+        src="${escapeHtml(image)}"
+        alt="${escapeHtml(
+          product.name || "Product"
+        )}"
+        onerror="
+          this.src='https://via.placeholder.com/500x350?text=Arewa+Market'
+        "
+      >
+
+
+      <div class="product-body">
+
+        ${featured}
+
+        ${premiumBadge}
+
+
+        <h3>
+          ${escapeHtml(
+            product.name ||
+            "Unnamed Product"
+          )}
+        </h3>
+
+
+        <div class="price">
+          ₦${price}
+        </div>
+
+
+        <div class="product-meta">
+
+          <div>
+            📂 ${escapeHtml(category)}
+          </div>
+
+          <div>
+            📍 ${escapeHtml(location)}
+          </div>
+
+          <div>
+            👤 ${escapeHtml(sellerName)}
+          </div>
+
+        </div>
+
+
+        ${
+          product.description
+            ? `
+              <p
+                style="
+                  margin-top:8px;
+                  color:#666;
+                  font-size:12px;
+                  line-height:1.5;
+                "
+              >
+                ${escapeHtml(
+                  product.description
+                )}
+              </p>
+            `
+            : ""
+        }
+
+
+        ${sellerLink}
+
+
+        <a
+          class="view-product"
+          href="product.html?id=${encodeURIComponent(
+            product.id
+          )}"
+        >
+          View Product →
+        </a>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =================================================
+   SEARCH
+================================================= */
+
+searchInput.addEventListener(
+  "input",
+  () => {
+
+    currentSearch =
+      searchInput.value.trim();
+
+    renderProducts();
+
+  }
+);
+
+
+document
+  .getElementById("searchBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      currentSearch =
+        searchInput.value.trim();
+
+      renderProducts();
+
     }
+  );
 
 
-    // =================================================
-    // START
-    // =================================================
+/* =================================================
+   STATE FILTER
+================================================= */
 
-    await loadCategories();
+stateFilter.addEventListener(
+  "change",
+  () => {
 
-    await loadProducts();
+    currentState =
+      stateFilter.value;
 
-  </script>
+    renderProducts();
+
+  }
+);
+
+
+/* =================================================
+   SORT
+================================================= */
+
+sortFilter.addEventListener(
+  "change",
+  () => {
+
+    currentSort =
+      sortFilter.value;
+
+    renderProducts();
+
+  }
+);
+
+
+/* =================================================
+   ESCAPE HTML
+================================================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =================================================
+   START
+================================================= */
+
+updateRegisterLinks();
+
+await loadCategories();
+
+await loadProducts();
+
+</script>
 
 </body>
 </html>

@@ -149,6 +149,22 @@
       font-weight:bold;
     }
 
+    /* ================= PREMIUM BADGE ================= */
+
+    .premium-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      background:#d6a21d;
+      color:white;
+      padding:6px 10px;
+      border-radius:6px;
+      font-size:12px;
+      font-weight:bold;
+      margin-bottom:12px;
+      box-shadow:0 2px 5px rgba(0,0,0,.12);
+    }
+
     .product-info h2{
       font-size:30px;
       color:#222;
@@ -208,7 +224,7 @@
 
     .seller-name{
       font-weight:bold;
-      margin-bottom:12px;
+      margin-bottom:8px;
     }
 
     .seller-link{
@@ -220,6 +236,7 @@
       border-radius:6px;
       font-size:13px;
       font-weight:bold;
+      margin-top:5px;
     }
 
     .seller-link:hover{
@@ -749,7 +766,7 @@
     // RENDER PRODUCT
     // =================================================
 
-    function renderProduct(product){
+    async function renderProduct(product){
 
       const image =
         product.imageUrl ||
@@ -799,6 +816,79 @@
           : "";
 
 
+      /*
+        ================================================
+        PREMIUM SELLER CHECK
+        ================================================
+
+        Product data may not contain the seller's
+        current subscription information.
+
+        Therefore we read users/{sellerId} and check:
+
+        subscriptionPlan === "premium"
+        subscriptionStatus === "active"
+
+        The badge only appears while Premium is active.
+      */
+
+      let premiumBadge = "";
+
+
+      if(
+        product.sellerId &&
+        product.sellerId !== "admin"
+      ){
+
+        try{
+
+          const sellerSnap =
+            await getDoc(
+              doc(
+                db,
+                "users",
+                product.sellerId
+              )
+            );
+
+
+          if(sellerSnap.exists()){
+
+            const seller =
+              sellerSnap.data();
+
+
+            const isPremium =
+              seller.subscriptionPlan === "premium" &&
+              seller.subscriptionStatus === "active";
+
+
+            if(isPremium){
+
+              premiumBadge = `
+
+                <div class="premium-badge">
+                  ★ PREMIUM SELLER
+                </div>
+
+              `;
+
+            }
+
+          }
+
+        }catch(error){
+
+          console.error(
+            "Premium seller check error:",
+            error
+          );
+
+        }
+
+      }
+
+
       let sellerBox = "";
 
 
@@ -814,6 +904,8 @@
             <h3>
               Seller
             </h3>
+
+            ${premiumBadge}
 
             <div class="seller-name">
               ${escapeHtml(sellerName)}

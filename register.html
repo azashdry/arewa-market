@@ -162,7 +162,11 @@ import {
 import {
   doc,
   setDoc,
-  serverTimestamp
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -223,6 +227,194 @@ function showMessage(text){
 
 
 /* =========================================
+   REFERRAL
+========================================= */
+
+/*
+   Referral can come from:
+
+   1. register.html?ref=CODE
+   2. localStorage saved by index.html
+*/
+
+const urlParams =
+new URLSearchParams(
+  window.location.search
+);
+
+let referralCode =
+urlParams.get("ref");
+
+
+if(referralCode){
+
+  referralCode =
+  referralCode.trim().toUpperCase();
+
+  localStorage.setItem(
+    "arewaReferralCode",
+    referralCode
+  );
+
+}else{
+
+  referralCode =
+  localStorage.getItem(
+    "arewaReferralCode"
+  );
+
+}
+
+
+if(referralCode){
+
+  referralCode =
+  String(referralCode)
+    .trim()
+    .toUpperCase();
+
+}
+
+
+/* =========================================
+   GENERATE REFERRAL CODE
+========================================= */
+
+function createReferralCode(name){
+
+  const cleanName =
+  String(name || "USER")
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9]/g,
+      ""
+    )
+    .substring(0,8);
+
+
+  const randomPart =
+  Math.random()
+    .toString(36)
+    .substring(2,7)
+    .toUpperCase();
+
+
+  return `AREWA-${cleanName}-${randomPart}`;
+
+}
+
+
+/* =========================================
+   CREATE UNIQUE REFERRAL CODE
+========================================= */
+
+async function generateUniqueReferralCode(name){
+
+  let attempts = 0;
+
+  while(attempts < 5){
+
+    const code =
+    createReferralCode(name);
+
+
+    const codeQuery =
+    query(
+      collection(db,"users"),
+      where(
+        "referralCode",
+        "==",
+        code
+      )
+    );
+
+
+    const snapshot =
+    await getDocs(codeQuery);
+
+
+    if(snapshot.empty){
+
+      return code;
+
+    }
+
+
+    attempts++;
+
+  }
+
+
+  throw new Error(
+    "Unable to generate a unique referral code. Please try again."
+  );
+
+}
+
+
+/* =========================================
+   FIND REFERRER
+========================================= */
+
+async function findReferrer(code){
+
+  if(!code){
+
+    return null;
+
+  }
+
+
+  try{
+
+    const referrerQuery =
+    query(
+      collection(db,"users"),
+      where(
+        "referralCode",
+        "==",
+        code
+      )
+    );
+
+
+    const snapshot =
+    await getDocs(
+      referrerQuery
+    );
+
+
+    if(snapshot.empty){
+
+      return null;
+
+    }
+
+
+    const referrerDoc =
+    snapshot.docs[0];
+
+
+    return {
+      uid:referrerDoc.id,
+      ...referrerDoc.data()
+    };
+
+  }catch(error){
+
+    console.error(
+      "REFERRER LOOKUP ERROR:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================================
    REGISTER
 ========================================= */
 
@@ -247,8 +439,66 @@ form.addEventListener("submit", async function(e){
 
   try{
 
-    console.log("Starting Firebase registration...");
+    console.log(
+      "Starting Firebase registration..."
+    );
 
+
+    /* ================================
+       CREATE UNIQUE REFERRAL CODE
+    ================================= */
+
+    const ownReferralCode =
+    await generateUniqueReferralCode(
+      name
+    );
+
+
+    /* ================================
+       FIND REFERRER
+    ================================= */
+
+    let referredBy = "";
+
+    let referredByUserId = "";
+
+
+    if(
+      referralCode &&
+      referralCode.length > 0
+    ){
+
+      const referrer =
+      await findReferrer(
+        referralCode
+      );
+
+
+      if(
+        referrer &&
+        referrer.uid
+      ){
+
+        /*
+          Prevent self-referral.
+          New user's UID is not known yet,
+          so this is also checked after account creation.
+        */
+
+        referredBy =
+        referralCode;
+
+        referredByUserId =
+        referrer.uid;
+
+      }
+
+    }
+
+
+    /* ================================
+       FIREBASE AUTH
+    ================================= */
 
     const credential =
     await createUserWithEmailAndPassword(
@@ -262,13 +512,39 @@ form.addEventListener("submit", async function(e){
     credential.user;
 
 
-    console.log("AUTH SUCCESS:", user.uid);
+    console.log(
+      "AUTH SUCCESS:",
+      user.uid
+    );
 
+
+    /* ================================
+       UPDATE AUTH PROFILE
+    ================================= */
 
     await updateProfile(user,{
       displayName:name
     });
 
+
+    /* ================================
+       SELF REFERRAL PROTECTION
+    ================================= */
+
+    if(
+      referredByUserId === user.uid
+    ){
+
+      referredBy = "";
+
+      referredByUserId = "";
+
+    }
+
+
+    /* ================================
+       CREATE USER
+    ================================= */
 
     await setDoc(
       doc(db,"users",user.uid),
@@ -279,18 +555,48 @@ form.addEventListener("submit", async function(e){
         isSeller:false,
         sellerStatus:"none",
         active:true,
-        createdAt:serverTimestamp(),
-        updatedAt:serverTimestamp()
+
+        referralCode:
+          ownReferralCode,
+
+        referredBy:
+          referredBy,
+
+        referredByUserId:
+          referredByUserId,
+
+        createdAt:
+          serverTimestamp(),
+
+        updatedAt:
+          serverTimestamp()
       }
     );
 
 
-    console.log("FIRESTORE USER CREATED");
+    console.log(
+      "FIRESTORE USER CREATED"
+    );
 
 
-    alert("Account created successfully!");
+    /*
+      Referral code has now been used
+      successfully.
+    */
 
-    window.location.replace("index.html");
+    localStorage.removeItem(
+      "arewaReferralCode"
+    );
+
+
+    alert(
+      "Account created successfully!"
+    );
+
+
+    window.location.replace(
+      "index.html"
+    );
 
 
   }catch(error){
@@ -315,7 +621,9 @@ form.addEventListener("submit", async function(e){
 
 
     showMessage(
-      error.code + ": " + error.message
+      error.code +
+      ": " +
+      error.message
     );
 
 
@@ -323,7 +631,8 @@ form.addEventListener("submit", async function(e){
 
     btn.disabled = false;
 
-    btn.textContent = "Create Account";
+    btn.textContent =
+      "Create Account";
 
   }
 
