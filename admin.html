@@ -468,6 +468,10 @@ h1{
   border-left:5px solid #8b5cf6;
 }
 
+.withdrawal-card{
+  border-left:5px solid #0891b2;
+}
+
 .setting-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -1017,6 +1021,13 @@ h1{
         Refresh
       </button>
 
+      <button
+        class="warning"
+        id="fixReferralCodesBtn"
+      >
+        🔧 Fix Missing Codes
+      </button>
+
     </div>
 
     <input
@@ -1067,6 +1078,42 @@ h1{
     >
       <div class="loading">
         Loading commissions...
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================
+       WITHDRAWAL REQUESTS
+  =========================================== -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>🏦 Withdrawal Requests</h2>
+
+      <button
+        id="refreshWithdrawalRequestsBtn"
+      >
+        Refresh
+      </button>
+
+    </div>
+
+    <input
+      class="search"
+      id="withdrawalRequestsSearch"
+      placeholder="Search seller, bank, account or status..."
+    >
+
+    <div
+      class="list"
+      id="withdrawalRequestsList"
+    >
+      <div class="loading">
+        Loading withdrawal requests...
       </div>
     </div>
 
@@ -1698,6 +1745,16 @@ const commissionsSearch =
     "commissionsSearch"
   );
 
+const withdrawalRequestsList =
+  document.getElementById(
+    "withdrawalRequestsList"
+  );
+
+const withdrawalRequestsSearch =
+  document.getElementById(
+    "withdrawalRequestsSearch"
+  );
+
 
 /* ==========================================
    VARIABLES
@@ -1711,6 +1768,7 @@ let allPremiumRequests = [];
 
 let allReferrals = [];
 let allCommissions = [];
+let allWithdrawalRequests = [];
 
 let premiumSettings = null;
 
@@ -2085,7 +2143,8 @@ async function refreshAll(){
     loadPremiumSettings(),
     loadPremiumRequests(),
     loadReferralSettings(),
-    loadCommissions()
+    loadCommissions(),
+    loadWithdrawalRequests()
   ]);
 
   buildReferralRecords();
@@ -4495,7 +4554,10 @@ function renderPremiumRequests(
 
     }
 
-    if(status === "rejected"){
+    if(
+      status === "rejected" ||
+      status === "revoked"
+    ){
 
       statusClass =
         "rejected";
@@ -4606,6 +4668,27 @@ function renderPremiumRequests(
                 "
               >
                 Reject
+              </button>
+
+            </div>
+          `
+          : ""
+      }
+
+      ${
+        status === "approved"
+          ? `
+            <div class="actions">
+
+              <button
+                class="warning"
+                onclick="
+                  revokePremiumApproval(
+                    '${escapeHtml(request.id)}'
+                  )
+                "
+              >
+                Revoke Premium
               </button>
 
             </div>
@@ -5267,6 +5350,216 @@ window.rejectPremiumRequest =
   };
 
 
+/* ==========================================
+   REVOKE PREMIUM (after it was Approved)
+
+   Used when an Approved Premium payment turns
+   out to be invalid (e.g. fake transaction ID)
+   after the fact.
+
+   This:
+   1. Turns off the seller's Premium status.
+   2. Cancels the referral commission that was
+      created for that approval, so it stops
+      counting toward the referrer's Total
+      Commission.
+
+   Note: if the referrer already withdrew that
+   money, this does NOT claw the cash back. It
+   simply stops counting it going forward, so
+   the referrer's Available Balance will stay
+   at ₦0 until their genuine future commissions
+   cover the amount already paid out — this
+   happens automatically through the normal
+   Total Commission vs Total Withdrawn math on
+   the seller dashboard, no extra step needed.
+========================================== */
+
+window.revokePremiumApproval =
+  async function(requestId){
+
+    const request =
+      allPremiumRequests.find(
+        item =>
+          item.id ===
+          requestId
+      );
+
+    if(!request){
+
+      alert(
+        "Premium request not found."
+      );
+
+      return;
+
+    }
+
+    if(
+      String(
+        request.status ||
+        ""
+      ).toLowerCase() !==
+      "approved"
+    ){
+
+      alert(
+        "Only an already Approved request can be revoked."
+      );
+
+      return;
+
+    }
+
+    const sellerId =
+      request.sellerId;
+
+    if(!sellerId){
+
+      alert(
+        "This request has no seller ID."
+      );
+
+      return;
+
+    }
+
+    if(
+      !confirm(
+        "Revoke this seller's Premium approval?\n\n" +
+        "This will:\n" +
+        "- Turn OFF their Premium status\n" +
+        "- Cancel the referral commission tied to this approval\n\n" +
+        "If the referrer already withdrew that commission, the cash itself is " +
+        "NOT clawed back automatically — it will simply be deducted from " +
+        "their future commissions before they can withdraw again.\n\n" +
+        "This cannot be undone."
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "users",
+          sellerId
+        ),
+        {
+
+          subscriptionStatus:
+            "revoked",
+
+          premiumRevokedAt:
+            serverTimestamp(),
+
+          premiumRevokedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      await updateDoc(
+        doc(
+          db,
+          "premiumRequests",
+          requestId
+        ),
+        {
+
+          status:
+            "revoked",
+
+          revokedAt:
+            serverTimestamp(),
+
+          revokedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+
+      /*
+        Find and cancel the commission that
+        was created for this specific approval.
+      */
+
+      const relatedCommissions =
+        allCommissions.filter(
+          commission =>
+            commission.premiumRequestId ===
+              requestId &&
+            String(
+              commission.status ||
+              ""
+            ).toLowerCase() !==
+              "cancelled"
+        );
+
+      for(
+        const commission of
+          relatedCommissions
+      ){
+
+        await updateDoc(
+          doc(
+            db,
+            "commissions",
+            commission.id
+          ),
+          {
+
+            status:
+              "cancelled",
+
+            cancelledAt:
+              serverTimestamp(),
+
+            cancelledBy:
+              auth.currentUser?.uid ||
+              "",
+
+            cancelReason:
+              "Premium approval revoked"
+
+          }
+        );
+
+      }
+
+      alert(
+        "Premium approval revoked.\n\n" +
+        (
+          relatedCommissions.length > 0
+            ? relatedCommissions.length +
+              " related commission(s) cancelled."
+            : "No related commission was found to cancel."
+        )
+      );
+
+      await refreshAll();
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        "Failed to revoke Premium approval: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
 document
   .getElementById(
     "refreshPremiumRequestsBtn"
@@ -5841,6 +6134,190 @@ document
   );
 
 
+/* ==========================================
+   FIX MISSING REFERRAL CODES
+
+   Users created before referralCode generation
+   existed at registration have no referralCode
+   field, so their referral link falls back to
+   showing their raw Firebase UID instead of a
+   proper code like AREWA-NAME-XXXXX.
+
+   This scans all users, generates a proper code
+   (same format register.html uses) for anyone
+   missing one, and saves it.
+========================================== */
+
+function createReferralCodeForUser(
+  name
+){
+
+  const cleanName =
+    String(
+      name || "USER"
+    )
+      .toUpperCase()
+      .replace(
+        /[^A-Z0-9]/g,
+        ""
+      )
+      .substring(0,8);
+
+  const randomPart =
+    Math.random()
+      .toString(36)
+      .substring(2,7)
+      .toUpperCase();
+
+  return `AREWA-${cleanName}-${randomPart}`;
+
+}
+
+
+async function fixMissingReferralCodes(){
+
+  const usersMissingCode =
+    allUsers.filter(
+      user =>
+        !user.referralCode
+    );
+
+  if(
+    usersMissingCode.length === 0
+  ){
+
+    alert(
+      "Every user already has a referral code. Nothing to fix."
+    );
+
+    return;
+
+  }
+
+  if(
+    !confirm(
+      `${usersMissingCode.length} user(s) have no referral code.\n\n` +
+      "Generate one for each of them now?"
+    )
+  ){
+
+    return;
+
+  }
+
+  const existingCodes =
+    new Set(
+      allUsers
+        .map(
+          user =>
+            user.referralCode
+        )
+        .filter(Boolean)
+    );
+
+  let fixedCount = 0;
+
+  let failedCount = 0;
+
+  for(
+    const user of
+      usersMissingCode
+  ){
+
+    let newCode = "";
+
+    let attempts = 0;
+
+    while(attempts < 5){
+
+      const candidate =
+        createReferralCodeForUser(
+          user.name ||
+          user.fullName ||
+          user.email
+        );
+
+      if(
+        !existingCodes.has(
+          candidate
+        )
+      ){
+
+        newCode = candidate;
+
+        break;
+
+      }
+
+      attempts++;
+
+    }
+
+    if(!newCode){
+
+      failedCount++;
+
+      continue;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "users",
+          user.id
+        ),
+        {
+          referralCode:
+            newCode
+        }
+      );
+
+      existingCodes.add(
+        newCode
+      );
+
+      fixedCount++;
+
+    }catch(error){
+
+      console.error(
+        "Failed to set referral code for",
+        user.id,
+        error
+      );
+
+      failedCount++;
+
+    }
+
+  }
+
+  alert(
+    `Done.\n\n` +
+    `Fixed: ${fixedCount}\n` +
+    `Failed: ${failedCount}`
+  );
+
+  await loadUsers();
+
+  buildReferralRecords();
+
+}
+
+
+document
+  .getElementById(
+    "fixReferralCodesBtn"
+  )
+  .addEventListener(
+    "click",
+    fixMissingReferralCodes
+  );
+
+
 referralsSearch.addEventListener(
   "input",
   function(){
@@ -5982,6 +6459,9 @@ function commissionStatusClass(
       return "paid";
 
     case "rejected":
+      return "rejected";
+
+    case "cancelled":
       return "rejected";
 
     default:
@@ -6492,6 +6972,515 @@ commissionsSearch.addEventListener(
               commission.type +
               " " +
               commission.status
+            )
+            .toLowerCase();
+
+          return text.includes(q);
+
+        }
+      )
+    );
+
+  }
+);
+
+
+/* ==========================================
+   WITHDRAWAL REQUESTS
+
+   This is the ONLY place a seller's referral
+   commission should actually be marked as
+   Paid. It carries the seller's real bank
+   details, unlike Commission Management above
+   (which only tracks whether a commission is
+   valid, not whether money was sent).
+========================================== */
+
+async function loadWithdrawalRequests(){
+
+  withdrawalRequestsList.innerHTML =
+    `<div class="loading">
+      Loading withdrawal requests...
+    </div>`;
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "withdrawalRequests"
+        )
+      );
+
+    allWithdrawalRequests = [];
+
+    snapshot.forEach(
+      requestDoc => {
+
+        allWithdrawalRequests.push({
+
+          id:
+            requestDoc.id,
+
+          ...requestDoc.data()
+
+        });
+
+      }
+    );
+
+    allWithdrawalRequests.sort(
+      (a,b) => {
+
+        const dateA =
+          timestampToDate(
+            a.createdAt
+          );
+
+        const dateB =
+          timestampToDate(
+            b.createdAt
+          );
+
+        return (
+          (dateB?.getTime() || 0) -
+          (dateA?.getTime() || 0)
+        );
+
+      }
+    );
+
+    renderWithdrawalRequests(
+      allWithdrawalRequests
+    );
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    withdrawalRequestsList.innerHTML =
+      `<div class="empty">
+        No withdrawal requests found.
+        <br>
+        ${escapeHtml(
+          error.code || ""
+        )}
+      </div>`;
+
+  }
+
+}
+
+
+function withdrawalStatusClass(
+  status
+){
+
+  switch(
+    String(
+      status || ""
+    ).toLowerCase()
+  ){
+
+    case "paid":
+      return "paid";
+
+    case "rejected":
+      return "rejected";
+
+    default:
+      return "pending";
+
+  }
+
+}
+
+
+function renderWithdrawalRequests(
+  requests
+){
+
+  if(!requests.length){
+
+    withdrawalRequestsList.innerHTML =
+      `<div class="empty">
+        No withdrawal requests found.
+      </div>`;
+
+    return;
+
+  }
+
+  withdrawalRequestsList.innerHTML =
+    "";
+
+  requests.forEach(
+    request => {
+
+      const status =
+        String(
+          request.status ||
+          "pending"
+        ).toLowerCase();
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "item withdrawal-card";
+
+      item.innerHTML = `
+
+        <div class="item-main">
+
+          <strong>
+            🏦 ${money(
+              request.amount
+            )}
+          </strong>
+
+          <small>
+            Seller:
+            <b>
+              ${escapeHtml(
+                request.sellerName ||
+                getUserName(
+                  request.sellerId
+                )
+              )}
+            </b>
+          </small>
+
+          <small>
+            Email:
+            ${escapeHtml(
+              request.sellerEmail ||
+              getUserEmail(
+                request.sellerId
+              )
+            )}
+          </small>
+
+          <small>
+            Bank:
+            <b>
+              ${escapeHtml(
+                request.bankName ||
+                "N/A"
+              )}
+            </b>
+          </small>
+
+          <small>
+            Account Name:
+            ${escapeHtml(
+              request.accountName ||
+              "N/A"
+            )}
+          </small>
+
+          <small>
+            Account Number:
+            <b>
+              ${escapeHtml(
+                request.accountNumber ||
+                "N/A"
+              )}
+            </b>
+          </small>
+
+          <small>
+            Requested:
+            ${escapeHtml(
+              formatDate(
+                request.createdAt
+              )
+            )}
+          </small>
+
+          <span class="badge ${
+            withdrawalStatusClass(
+              status
+            )
+          }">
+            ${escapeHtml(
+              status
+            )}
+          </span>
+
+        </div>
+
+        <div class="actions">
+
+          ${
+            status === "pending"
+              ? `
+                <button
+                  class="green"
+                  onclick="
+                    markWithdrawalPaid(
+                      '${escapeHtml(
+                        request.id
+                      )}'
+                    )
+                  "
+                >
+                  Mark as Paid
+                </button>
+
+                <button
+                  class="delete"
+                  onclick="
+                    rejectWithdrawalRequest(
+                      '${escapeHtml(
+                        request.id
+                      )}'
+                    )
+                  "
+                >
+                  Reject
+                </button>
+              `
+              : ""
+          }
+
+        </div>
+
+      `;
+
+      withdrawalRequestsList.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+window.markWithdrawalPaid =
+  async function(
+    requestId
+  ){
+
+    const request =
+      allWithdrawalRequests.find(
+        item =>
+          item.id ===
+          requestId
+      );
+
+    if(!request){
+
+      alert(
+        "Withdrawal request not found."
+      );
+
+      return;
+
+    }
+
+    if(
+      String(
+        request.status ||
+        "pending"
+      ).toLowerCase() !==
+      "pending"
+    ){
+
+      alert(
+        "This request has already been processed."
+      );
+
+      return;
+
+    }
+
+    if(
+      !confirm(
+        `Only click OK if you have ALREADY sent ${money(request.amount)} to:\n\n` +
+        `Bank: ${request.bankName || "N/A"}\n` +
+        `Account Name: ${request.accountName || "N/A"}\n` +
+        `Account Number: ${request.accountNumber || "N/A"}\n\n` +
+        `This cannot be undone.`
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "withdrawalRequests",
+          requestId
+        ),
+        {
+
+          status:
+            "paid",
+
+          paidAt:
+            serverTimestamp(),
+
+          paidBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      alert(
+        "Withdrawal marked as Paid."
+      );
+
+      await loadWithdrawalRequests();
+
+    }catch(error){
+
+      alert(
+        "Failed to mark withdrawal as Paid: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+window.rejectWithdrawalRequest =
+  async function(
+    requestId
+  ){
+
+    const request =
+      allWithdrawalRequests.find(
+        item =>
+          item.id ===
+          requestId
+      );
+
+    if(!request){
+
+      alert(
+        "Withdrawal request not found."
+      );
+
+      return;
+
+    }
+
+    if(
+      String(
+        request.status ||
+        "pending"
+      ).toLowerCase() !==
+      "pending"
+    ){
+
+      alert(
+        "This request has already been processed."
+      );
+
+      return;
+
+    }
+
+    if(
+      !confirm(
+        "Reject this withdrawal request? The seller's balance will remain available for a future request."
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "withdrawalRequests",
+          requestId
+        ),
+        {
+
+          status:
+            "rejected",
+
+          rejectedAt:
+            serverTimestamp(),
+
+          rejectedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      alert(
+        "Withdrawal request rejected."
+      );
+
+      await loadWithdrawalRequests();
+
+    }catch(error){
+
+      alert(
+        "Failed to reject withdrawal request: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+document
+  .getElementById(
+    "refreshWithdrawalRequestsBtn"
+  )
+  .addEventListener(
+    "click",
+    loadWithdrawalRequests
+  );
+
+
+withdrawalRequestsSearch.addEventListener(
+  "input",
+  function(){
+
+    const q =
+      this.value
+        .toLowerCase()
+        .trim();
+
+    renderWithdrawalRequests(
+      allWithdrawalRequests.filter(
+        request => {
+
+          const text =
+            (
+              request.sellerName +
+              " " +
+              request.sellerEmail +
+              " " +
+              request.bankName +
+              " " +
+              request.accountName +
+              " " +
+              request.accountNumber +
+              " " +
+              request.status
             )
             .toLowerCase();
 
