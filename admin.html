@@ -5443,26 +5443,57 @@ window.revokePremiumApproval =
 
     try{
 
-      await updateDoc(
-        doc(
-          db,
-          "users",
-          sellerId
-        ),
-        {
+      let sellerDocMissing = false;
 
-          subscriptionStatus:
-            "revoked",
+      try{
 
-          premiumRevokedAt:
-            serverTimestamp(),
+        await updateDoc(
+          doc(
+            db,
+            "users",
+            sellerId
+          ),
+          {
 
-          premiumRevokedBy:
-            auth.currentUser?.uid ||
-            ""
+            subscriptionStatus:
+              "revoked",
+
+            premiumRevokedAt:
+              serverTimestamp(),
+
+            premiumRevokedBy:
+              auth.currentUser?.uid ||
+              ""
+
+          }
+        );
+
+      }catch(userError){
+
+        /*
+          The seller account may have been
+          deleted already (e.g. via Users
+          Management). There is then nothing
+          to turn off there, but the request
+          and any commission should still be
+          revoked/cancelled below.
+        */
+
+        if(
+          userError.code ===
+          "not-found"
+        ){
+
+          sellerDocMissing = true;
 
         }
-      );
+        else{
+
+          throw userError;
+
+        }
+
+      }
 
       await updateDoc(
         doc(
@@ -5536,6 +5567,11 @@ window.revokePremiumApproval =
 
       alert(
         "Premium approval revoked.\n\n" +
+        (
+          sellerDocMissing
+            ? "Note: the seller account no longer exists (already deleted), so there was nothing to turn Premium off for there.\n\n"
+            : ""
+        ) +
         (
           relatedCommissions.length > 0
             ? relatedCommissions.length +
@@ -7652,7 +7688,12 @@ function updateAnalytics(){
             commission.status ||
             ""
           ).toLowerCase() !==
-          "rejected"
+          "rejected" &&
+          String(
+            commission.status ||
+            ""
+          ).toLowerCase() !==
+          "cancelled"
       )
       .reduce(
         (sum,commission) =>
