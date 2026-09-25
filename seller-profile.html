@@ -11,6 +11,11 @@
 
 <title>Arewa Market - Seller Profile</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
 <style>
 
 *{
@@ -19,9 +24,14 @@
   padding:0;
 }
 
+
+h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
+  font-family:'Playfair Display',Georgia,serif;
+  letter-spacing:.2px;
+}
 body{
-  font-family:Arial,sans-serif;
-  background:#f4f7f5;
+  font-family:'Inter',Arial,sans-serif;
+  background:#f8f6f3;
   color:#222;
 }
 
@@ -30,7 +40,7 @@ body{
 ========================= */
 
 header{
-  background:#087f5b;
+  background:linear-gradient(135deg,#0d3b2c,#175e3f);
   color:white;
   padding:15px 20px;
 
@@ -40,6 +50,7 @@ header{
 
   gap:15px;
   flex-wrap:wrap;
+  border-bottom:3px solid #c9a227;
 }
 
 .logo{
@@ -72,11 +83,11 @@ header{
 
 .btn-light{
   background:white;
-  color:#087f5b;
+  color:#165d3c;
 }
 
 .btn-gold{
-  background:#d4a017;
+  background:#d19a1a;
   color:white;
 }
 
@@ -86,7 +97,7 @@ header{
 }
 
 .btn-green{
-  background:#087f5b;
+  background:#165d3c;
   color:white;
 }
 
@@ -145,8 +156,8 @@ header{
   height:150px;
   border-radius:50%;
   object-fit:cover;
-  background:#ddd;
-  border:4px solid #087f5b;
+  background:#e3dfd7;
+  border:4px solid #165d3c;
 }
 
 .profile-info{
@@ -155,7 +166,7 @@ header{
 }
 
 .profile-info h1{
-  color:#087f5b;
+  color:#165d3c;
   margin-bottom:6px;
   font-size:30px;
 }
@@ -174,7 +185,7 @@ header{
   display:inline-flex;
   align-items:center;
   gap:5px;
-  background:#d6a21d;
+  background:#d69e1d;
   color:white;
   padding:6px 10px;
   border-radius:6px;
@@ -202,8 +213,8 @@ header{
 }
 
 .status-approved{
-  background:#d4edda;
-  color:#155724;
+  background:#d4ede1;
+  color:#124a30;
 }
 
 .description{
@@ -248,7 +259,7 @@ header{
 }
 
 .products-header h2{
-  color:#087f5b;
+  color:#165d3c;
 }
 
 .products-count{
@@ -263,7 +274,7 @@ header{
 }
 
 .product-card{
-  border:1px solid #ddd;
+  border:1px solid #e3dfd7;
   border-radius:10px;
   overflow:hidden;
   background:white;
@@ -273,7 +284,7 @@ header{
   width:100%;
   height:190px;
   object-fit:cover;
-  background:#eee;
+  background:#f3f0e9;
 }
 
 .product-body{
@@ -281,12 +292,12 @@ header{
 }
 
 .product-body h3{
-  color:#087f5b;
+  color:#165d3c;
   margin-bottom:8px;
 }
 
 .price{
-  color:#d4a017;
+  color:#d19a1a;
   font-size:18px;
   font-weight:bold;
   margin-bottom:8px;
@@ -308,7 +319,7 @@ header{
 .view-product{
   display:block;
   margin-top:14px;
-  background:#087f5b;
+  background:#165d3c;
   color:white;
   text-align:center;
   padding:10px;
@@ -329,7 +340,7 @@ header{
 .loading{
   text-align:center;
   padding:35px;
-  color:#087f5b;
+  color:#165d3c;
   font-weight:bold;
 }
 
@@ -412,7 +423,7 @@ footer{
 
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#075e36">
+<meta name="theme-color" content="#10462d">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">

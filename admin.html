@@ -5,18 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arewa Market - Super Admin</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
 <style>
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:Arial,sans-serif;
+  font-family:'Inter',Arial,sans-serif;
 }
 
+
+h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
+  font-family:'Playfair Display',Georgia,serif;
+  letter-spacing:.2px;
+}
 body{
   min-height:100vh;
-  background:#f3f7f4;
-  color:#17231b;
+  background:#f8f6f2;
+  color:#0f2319;
   padding:15px;
 }
 
@@ -24,7 +34,7 @@ button{
   border:none;
   padding:11px 15px;
   border-radius:9px;
-  background:#0f5132;
+  background:#10422a;
   color:white;
   font-weight:600;
   cursor:pointer;
@@ -32,7 +42,7 @@ button{
 }
 
 button:hover{
-  background:#0b3d26;
+  background:#0c3220;
   transform:translateY(-1px);
 }
 
@@ -47,19 +57,25 @@ select,
 textarea{
   width:100%;
   padding:12px;
-  border:1px solid #d5e1d8;
+  border:1px solid #cde9dc;
   border-radius:9px;
   outline:none;
   background:white;
-  color:#17231b;
+  color:#0f2319;
   margin-bottom:14px;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
-  border-color:#0f5132;
-  box-shadow:0 0 0 3px rgba(15,81,50,.08);
+  border-color:#10422a;
+  box-shadow:0 0 0 3px rgba(16,66,42,.08);
+}
+
+select:disabled{
+  background:#f6f3ee;
+  color:#999;
+  cursor:not-allowed;
 }
 
 textarea{
@@ -80,8 +96,8 @@ label{
   background:white;
   padding:30px;
   border-radius:18px;
-  border:1px solid #e1ebe4;
-  box-shadow:0 12px 35px rgba(20,83,45,.1);
+  border:1px solid #ede8df;
+  box-shadow:0 12px 35px rgba(16,66,42,.1);
 }
 
 .logo{
@@ -89,7 +105,7 @@ label{
   height:68px;
   margin:auto auto 15px;
   border-radius:18px;
-  background:linear-gradient(135deg,#0f5132,#d4a72c);
+  background:linear-gradient(135deg,#10422a,#d4a22c);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -100,7 +116,7 @@ label{
 
 h1{
   text-align:center;
-  color:#123524;
+  color:#0f2d1f;
   margin-bottom:6px;
 }
 
@@ -130,9 +146,9 @@ h1{
 }
 
 .success{
-  background:#edf9f0;
-  color:#176b35;
-  border:1px solid #ccebd4;
+  background:#f7f4ef;
+  color:#155a3a;
+  border:1px solid #ccebdd;
 }
 
 .dashboard{
@@ -142,12 +158,13 @@ h1{
 }
 
 .header{
-  background:linear-gradient(135deg,#0f5132,#176b43);
+  background:linear-gradient(135deg,#0d3b2c,#175e3f);
   color:white;
   padding:25px;
   border-radius:18px;
   margin-bottom:18px;
-  box-shadow:0 10px 28px rgba(15,81,50,.18);
+  box-shadow:0 10px 28px rgba(16,66,42,.18);
+  border-bottom:3px solid #c9a227;
 }
 
 .header h2{
@@ -155,7 +172,7 @@ h1{
 }
 
 .header p{
-  color:#dceee3;
+  color:#dbefe6;
 }
 
 .logout{
@@ -178,9 +195,9 @@ h1{
   background:white;
   padding:20px;
   border-radius:15px;
-  border:1px solid #e1ebe4;
-  border-top:4px solid #d4a72c;
-  box-shadow:0 5px 20px rgba(20,83,45,.06);
+  border:1px solid #ede8df;
+  border-top:4px solid #d4a22c;
+  box-shadow:0 5px 20px rgba(16,66,42,.06);
 }
 
 .stat h3{
@@ -191,16 +208,16 @@ h1{
 
 .stat strong{
   font-size:29px;
-  color:#0f5132;
+  color:#10422a;
 }
 
 .section{
   background:white;
   padding:22px;
   border-radius:17px;
-  border:1px solid #e1ebe4;
+  border:1px solid #ede8df;
   margin-bottom:18px;
-  box-shadow:0 5px 20px rgba(20,83,45,.05);
+  box-shadow:0 5px 20px rgba(16,66,42,.05);
 }
 
 .section-header{
@@ -213,7 +230,7 @@ h1{
 }
 
 .section-header h2{
-  color:#123524;
+  color:#0f2d1f;
   font-size:20px;
 }
 
@@ -227,7 +244,7 @@ h1{
 }
 
 .item{
-  border:1px solid #dfe9e2;
+  border:1px solid #d9efe5;
   border-radius:13px;
   padding:15px;
   display:flex;
@@ -238,7 +255,7 @@ h1{
 }
 
 .item:hover{
-  border-color:#b9d2c0;
+  border-color:#aedcc7;
 }
 
 .item-main{
@@ -247,7 +264,7 @@ h1{
 }
 
 .item-main strong{
-  color:#123524;
+  color:#0f2d1f;
   font-size:16px;
 }
 
@@ -280,8 +297,8 @@ h1{
 }
 
 .warning{
-  background:#d4a72c;
-  color:#17231b;
+  background:#d4a22c;
+  color:#0f2319;
 }
 
 .gray{
@@ -289,7 +306,7 @@ h1{
 }
 
 .green{
-  background:#176b43;
+  background:#155a3a;
 }
 
 .premium{
@@ -301,7 +318,7 @@ h1{
 }
 
 .orange{
-  background:#ea580c;
+  background:#dba11b;
 }
 
 .blue{
@@ -318,8 +335,8 @@ h1{
 }
 
 .active{
-  background:#e5f7ea;
-  color:#176b35;
+  background:#f4f0e8;
+  color:#155a3a;
 }
 
 .inactive{
@@ -328,8 +345,8 @@ h1{
 }
 
 .pending{
-  background:#fff8df;
-  color:#806500;
+  background:#f5f1e9;
+  color:#72540e;
 }
 
 .rejected{
@@ -343,8 +360,8 @@ h1{
 }
 
 .paid{
-  background:#e5f7ea;
-  color:#176b35;
+  background:#f4f0e8;
+  color:#155a3a;
 }
 
 .premium-badge{
@@ -354,8 +371,8 @@ h1{
 
 .form-box{
   display:none;
-  background:#f5f9f6;
-  border:1px solid #dce8df;
+  background:#f9f8f5;
+  border:1px solid #d6eee3;
   border-radius:13px;
   padding:18px;
   margin-bottom:18px;
@@ -380,7 +397,7 @@ h1{
   height:80px;
   object-fit:cover;
   border-radius:10px;
-  background:#eef3ef;
+  background:#f4f2ed;
   flex-shrink:0;
 }
 
@@ -413,9 +430,9 @@ h1{
 
 .analytics-box{
   padding:18px;
-  background:#f5f9f6;
+  background:#f9f8f5;
   border-radius:12px;
-  border:1px solid #dce8df;
+  border:1px solid #d6eee3;
 }
 
 .analytics-box span{
@@ -426,7 +443,7 @@ h1{
 }
 
 .analytics-box strong{
-  color:#0f5132;
+  color:#10422a;
   font-size:22px;
 }
 
@@ -446,7 +463,7 @@ h1{
 .premium-price{
   font-size:30px;
   font-weight:bold;
-  color:#0f5132;
+  color:#10422a;
   margin:8px 0;
 }
 
@@ -457,11 +474,11 @@ h1{
 }
 
 .request-card{
-  border-left:5px solid #d4a72c;
+  border-left:5px solid #d4a22c;
 }
 
 .referral-card{
-  border-left:5px solid #176b43;
+  border-left:5px solid #155a3a;
 }
 
 .commission-card{
@@ -479,14 +496,14 @@ h1{
 }
 
 .setting-box{
-  background:#f5f9f6;
-  border:1px solid #dce8df;
+  background:#f9f8f5;
+  border:1px solid #d6eee3;
   padding:16px;
   border-radius:13px;
 }
 
 .setting-box h3{
-  color:#123524;
+  color:#0f2d1f;
   margin-bottom:12px;
   font-size:16px;
 }
@@ -500,7 +517,7 @@ h1{
   padding:12px;
   background:white;
   border-radius:10px;
-  border:1px solid #e1ebe4;
+  border:1px solid #ede8df;
 }
 
 .switch-row label{
@@ -511,7 +528,7 @@ h1{
   width:48px;
   height:25px;
   margin:0;
-  accent-color:#0f5132;
+  accent-color:#10422a;
 }
 
 .small-note{
@@ -540,7 +557,7 @@ h1{
 
 .modal-content h2{
   margin-bottom:18px;
-  color:#123524;
+  color:#0f2d1f;
 }
 
 .close{
@@ -623,7 +640,7 @@ h1{
 </style>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#075e36">
+<meta name="theme-color" content="#10462d">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1013,6 +1030,38 @@ h1{
 
 
   <!-- ==========================================
+       LOCATION DATA TOOLS
+  =========================================== -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>🗺️ Location Data Tools</h2>
+
+      <button
+        class="warning"
+        id="fixMissingStateLgaBtn"
+      >
+        🔧 Fix Missing State/LGA
+      </button>
+
+    </div>
+
+    <p class="small-note">
+      Scans every user and product created before the
+      State + LGA system, tries to match their old
+      free-text "location" to one of the 37 states, and
+      sets it as their new "state" field. LGA is set to
+      "Not specified" since it cannot be determined from
+      old data — sellers/admins should update it by hand
+      afterwards.
+    </p>
+
+  </div>
+
+
+  <!-- ==========================================
        REFERRAL MANAGEMENT
   =========================================== -->
 
@@ -1287,51 +1336,23 @@ h1{
         placeholder="Example: Phones"
       >
 
-      <label>Location</label>
+      <label>State</label>
 
-      <select id="productLocation">
+      <select id="productState">
 
         <option value="">
           -- Zabi Jiha --
         </option>
 
-        <option>Abia</option>
-        <option>Adamawa</option>
-        <option>Akwa Ibom</option>
-        <option>Anambra</option>
-        <option>Bauchi</option>
-        <option>Bayelsa</option>
-        <option>Benue</option>
-        <option>Borno</option>
-        <option>Cross River</option>
-        <option>Delta</option>
-        <option>Ebonyi</option>
-        <option>Edo</option>
-        <option>Ekiti</option>
-        <option>Enugu</option>
-        <option>FCT Abuja</option>
-        <option>Gombe</option>
-        <option>Imo</option>
-        <option>Jigawa</option>
-        <option>Kaduna</option>
-        <option>Kano</option>
-        <option>Katsina</option>
-        <option>Kebbi</option>
-        <option>Kogi</option>
-        <option>Kwara</option>
-        <option>Lagos</option>
-        <option>Nasarawa</option>
-        <option>Niger</option>
-        <option>Ogun</option>
-        <option>Ondo</option>
-        <option>Osun</option>
-        <option>Oyo</option>
-        <option>Plateau</option>
-        <option>Rivers</option>
-        <option>Sokoto</option>
-        <option>Taraba</option>
-        <option>Yobe</option>
-        <option>Zamfara</option>
+      </select>
+
+      <label>Local Government Area</label>
+
+      <select id="productLga" disabled>
+
+        <option value="">
+          -- Zabi Jiha da farko --
+        </option>
 
       </select>
 
@@ -1576,6 +1597,11 @@ from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import {
+  NIGERIA_STATES,
+  populateLgaSelect
+} from "./states-lga.js";
+
+import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
@@ -1638,6 +1664,35 @@ const auth =
 
 const db =
   getFirestore(app);
+
+
+/* ==========================================
+   STATE / LGA DROPDOWN (Product form)
+========================================== */
+
+NIGERIA_STATES.forEach(state => {
+
+  const option =
+    document.createElement("option");
+
+  option.value = state;
+  option.textContent = state;
+
+  document.getElementById(
+    "productState"
+  ).appendChild(option);
+
+});
+
+document.getElementById(
+  "productState"
+).addEventListener(
+  "change",
+  () => populateLgaSelect(
+    document.getElementById("productState"),
+    document.getElementById("productLga")
+  )
+);
 
 
 /* ==========================================
@@ -3434,8 +3489,13 @@ function resetProductForm(){
   ).value = "";
 
   document.getElementById(
-    "productLocation"
+    "productState"
   ).value = "";
+
+  populateLgaSelect(
+    document.getElementById("productState"),
+    document.getElementById("productLga")
+  );
 
   document.getElementById(
     "productImageUrl"
@@ -3570,13 +3630,19 @@ document
           .value
           .trim();
 
-      const location =
+      const state =
         document
           .getElementById(
-            "productLocation"
+            "productState"
           )
-          .value
-          .trim();
+          .value;
+
+      const lga =
+        document
+          .getElementById(
+            "productLga"
+          )
+          .value;
 
       const imageUrl =
         document
@@ -3605,11 +3671,12 @@ document
         !name ||
         !price ||
         !category ||
-        !location
+        !state ||
+        !lga
       ){
 
         alert(
-          "Please fill Product Name, Price, Category and Location."
+          "Please fill Product Name, Price, Category, State and LGA."
         );
 
         return;
@@ -3640,7 +3707,12 @@ document
 
           category,
 
-          location,
+          state,
+
+          lga,
+
+          location:
+            lga + ", " + state,
 
           imageUrl,
 
@@ -3767,9 +3839,15 @@ window.editProduct =
         product.category || "";
 
       document.getElementById(
-        "productLocation"
+        "productState"
       ).value =
-        product.location || "";
+        product.state || "";
+
+      populateLgaSelect(
+        document.getElementById("productState"),
+        document.getElementById("productLga"),
+        product.lga || ""
+      );
 
       document.getElementById(
         "productImageUrl"
@@ -6358,6 +6436,246 @@ document
   .addEventListener(
     "click",
     fixMissingReferralCodes
+  );
+
+
+/* ==========================================
+   FIX MISSING STATE / LGA
+
+   Users and products created before the
+   State + LGA system have only an old
+   free-text "location" field (e.g. "Kano",
+   "Abuja", "Lagos State") and no "state" /
+   "lga" fields at all.
+
+   This scans all users and products, tries
+   to match their old "location" text to one
+   of the 37 official state names, and saves
+   it as the new "state" field. The "lga"
+   field is set to "Not specified" because it
+   cannot be reliably determined from old
+   free-text data — it must be corrected by
+   hand afterwards (by the seller, or an
+   admin editing the record).
+========================================== */
+
+function matchOldLocationToState(
+  rawLocation
+){
+
+  if(!rawLocation){
+    return "";
+  }
+
+  const text =
+    String(rawLocation)
+      .toLowerCase()
+      .trim();
+
+  if(!text){
+    return "";
+  }
+
+  // Exact match against a state name
+  for(const state of NIGERIA_STATES){
+
+    if(text === state.toLowerCase()){
+      return state;
+    }
+
+  }
+
+  // FCT / Abuja is stored under a longer
+  // official name, so old data referring to
+  // it needs special-casing
+  if(
+    text.includes("abuja") ||
+    text.includes("fct")
+  ){
+    return "Federal Capital Territory";
+  }
+
+  // Loose match, e.g. "Kano State",
+  // "Lagos, Nigeria", "Living in Kaduna"
+  for(const state of NIGERIA_STATES){
+
+    if(
+      text.includes(
+        state.toLowerCase()
+      )
+    ){
+      return state;
+    }
+
+  }
+
+  return "";
+
+}
+
+
+async function fixMissingStateLga(){
+
+  const usersMissingState =
+    allUsers.filter(
+      user => !user.state
+    );
+
+  const productsMissingState =
+    allProducts.filter(
+      product => !product.state
+    );
+
+  const totalMissing =
+    usersMissingState.length +
+    productsMissingState.length;
+
+  if(totalMissing === 0){
+
+    alert(
+      "Every user and product already has a state. Nothing to fix."
+    );
+
+    return;
+
+  }
+
+  if(
+    !confirm(
+      `${usersMissingState.length} user(s) and ${productsMissingState.length} product(s) have no state set.\n\n` +
+      "Try to match each one's old location text to a state now?\n" +
+      "LGA will be set to \"Not specified\" and should be corrected by hand afterwards."
+    )
+  ){
+
+    return;
+
+  }
+
+  let fixedCount = 0;
+  let unmatchedCount = 0;
+  let failedCount = 0;
+
+  for(
+    const user of
+      usersMissingState
+  ){
+
+    const matchedState =
+      matchOldLocationToState(
+        user.location ||
+        user.sellerLocation ||
+        ""
+      );
+
+    if(!matchedState){
+
+      unmatchedCount++;
+
+      continue;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "users",
+          user.id
+        ),
+        {
+          state: matchedState,
+          lga: "Not specified"
+        }
+      );
+
+      fixedCount++;
+
+    }catch(error){
+
+      console.error(
+        "Failed to fix state for user",
+        user.id,
+        error
+      );
+
+      failedCount++;
+
+    }
+
+  }
+
+  for(
+    const product of
+      productsMissingState
+  ){
+
+    const matchedState =
+      matchOldLocationToState(
+        product.location || ""
+      );
+
+    if(!matchedState){
+
+      unmatchedCount++;
+
+      continue;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "products",
+          product.id
+        ),
+        {
+          state: matchedState,
+          lga: "Not specified"
+        }
+      );
+
+      fixedCount++;
+
+    }catch(error){
+
+      console.error(
+        "Failed to fix state for product",
+        product.id,
+        error
+      );
+
+      failedCount++;
+
+    }
+
+  }
+
+  alert(
+    `Done.\n\n` +
+    `Fixed: ${fixedCount}\n` +
+    `Could not match a state (left unchanged): ${unmatchedCount}\n` +
+    `Failed: ${failedCount}\n\n` +
+    "Records fixed here have LGA set to \"Not specified\" — please review and correct the LGA by hand where it matters."
+  );
+
+  await loadUsers();
+
+  await loadProducts();
+
+}
+
+
+document
+  .getElementById(
+    "fixMissingStateLgaBtn"
+  )
+  .addEventListener(
+    "click",
+    fixMissingStateLga
   );
 
 
@@ -9316,7 +9634,7 @@ function showExportMenu(
 
     <h2 style="
       margin:0 0 8px;
-      color:#166534;
+      color:#145536;
     ">
       Export ${escapeHtml(
         report.title
@@ -9360,7 +9678,7 @@ function showExportMenu(
           border:0;
           border-radius:10px;
           cursor:pointer;
-          background:#15803d;
+          background:#186742;
           color:white;
           font-weight:bold;
         "
@@ -9376,7 +9694,7 @@ function showExportMenu(
           border:0;
           border-radius:10px;
           cursor:pointer;
-          background:#ca8a04;
+          background:#b78717;
           color:white;
           font-weight:bold;
         "
@@ -9393,9 +9711,9 @@ function showExportMenu(
         margin-top:15px;
         width:100%;
         padding:11px;
-        border:1px solid #ddd;
+        border:1px solid #e3dfd7;
         border-radius:9px;
-        background:#f5f5f5;
+        background:#f8f6f2;
         color:#333;
         cursor:pointer;
       "

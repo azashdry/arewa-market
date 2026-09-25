@@ -6,22 +6,32 @@
 
 <title>Arewa Market - Seller Dashboard</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
 <style>
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:Arial,sans-serif;
+  font-family:'Inter',Arial,sans-serif;
 }
 
+
+h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
+  font-family:'Playfair Display',Georgia,serif;
+  letter-spacing:.2px;
+}
 body{
-  background:#f3f7f4;
-  color:#17251d;
+  background:#f8f6f2;
+  color:#0f241a;
   min-height:100vh;
 }
 
 header{
-  background:#075e36;
+  background:linear-gradient(135deg,#0d3b2c,#175e3f);
   color:white;
   padding:15px 20px;
   display:flex;
@@ -29,6 +39,7 @@ header{
   justify-content:space-between;
   gap:15px;
   flex-wrap:wrap;
+  border-bottom:3px solid #c9a227;
 }
 
 .logo{
@@ -57,7 +68,7 @@ header{
 
 .nav a:hover,
 .nav button:hover{
-  background:#d8a900;
+  background:#c08e18;
   color:#111;
 }
 
@@ -96,7 +107,7 @@ header{
 }
 
 .welcome h1{
-  color:#075e36;
+  color:#10462d;
   margin-bottom:7px;
 }
 
@@ -116,7 +127,7 @@ header{
   padding:20px;
   border-radius:14px;
   box-shadow:0 2px 10px rgba(0,0,0,.06);
-  border-left:5px solid #075e36;
+  border-left:5px solid #10462d;
 }
 
 .stat h3{
@@ -127,14 +138,14 @@ header{
 
 .stat strong{
   font-size:28px;
-  color:#075e36;
+  color:#10462d;
 }
 
 /* PREMIUM */
 
 .premium-card{
-  background:linear-gradient(135deg,#fffdf2,#ffffff);
-  border:2px solid #d8a900;
+  background:linear-gradient(135deg,#fbf9f6,#ffffff);
+  border:2px solid #c08e18;
   border-radius:16px;
   padding:22px;
   margin-bottom:20px;
@@ -156,14 +167,14 @@ header{
 }
 
 .premium-title h2{
-  color:#075e36;
+  color:#10462d;
 }
 
 .premium-icon{
   width:42px;
   height:42px;
   border-radius:50%;
-  background:#d8a900;
+  background:#c08e18;
   color:#111;
   display:flex;
   align-items:center;
@@ -185,7 +196,7 @@ header{
 }
 
 .plan-premium{
-  background:#d8a900;
+  background:#c08e18;
   color:#111;
 }
 
@@ -215,7 +226,7 @@ header{
 }
 
 .premium-info strong{
-  color:#075e36;
+  color:#10462d;
 }
 
 .premium-progress{
@@ -231,14 +242,14 @@ header{
 
 .progress-bar{
   height:10px;
-  background:#e4e9e6;
+  background:#ece8e1;
   border-radius:20px;
   overflow:hidden;
 }
 
 .progress-fill{
   height:100%;
-  background:#075e36;
+  background:#10462d;
   border-radius:20px;
   width:0%;
 }
@@ -248,11 +259,11 @@ header{
   background:#fff;
   padding:15px;
   border-radius:10px;
-  border:1px solid #eee;
+  border:1px solid #f3f0e9;
 }
 
 .premium-benefits h4{
-  color:#075e36;
+  color:#10462d;
   margin-bottom:8px;
 }
 
@@ -281,21 +292,21 @@ header{
 }
 
 .btn-primary{
-  background:#075e36;
+  background:#10462d;
   color:white;
 }
 
 .btn-primary:hover{
-  background:#064a2b;
+  background:#0d3723;
 }
 
 .btn-gold{
-  background:#d8a900;
+  background:#c08e18;
   color:#111;
 }
 
 .btn-gold:hover{
-  background:#bd9200;
+  background:#a87c15;
 }
 
 .btn-danger{
@@ -305,7 +316,7 @@ header{
 
 .btn-secondary{
   background:#e9eeee;
-  color:#17251d;
+  color:#0f241a;
 }
 
 .btn:disabled{
@@ -333,14 +344,14 @@ header{
 }
 
 .panel-header h2{
-  color:#075e36;
+  color:#10462d;
   font-size:20px;
 }
 
 /* REFERRAL */
 
 .referral-card{
-  background:linear-gradient(135deg,#075e36,#0b7546);
+  background:linear-gradient(135deg,#10462d,#155839);
   color:white;
   border-radius:16px;
   padding:22px;
@@ -353,7 +364,7 @@ header{
 }
 
 .referral-card p{
-  color:#e6f4ec;
+  color:#f3efe7;
   line-height:1.5;
 }
 
@@ -375,7 +386,7 @@ header{
 
 .referral-link-box button{
   border:none;
-  background:#d8a900;
+  background:#c08e18;
   color:#111;
   padding:0 16px;
   border-radius:8px;
@@ -399,7 +410,7 @@ header{
 
 .referral-stat small{
   display:block;
-  color:#dbeee4;
+  color:#daefe5;
   margin-bottom:5px;
 }
 
@@ -410,7 +421,7 @@ header{
 .referral-note{
   margin-top:14px;
   font-size:12px;
-  color:#dbeee4;
+  color:#daefe5;
 }
 
 /* =========================
@@ -425,8 +436,8 @@ header{
 }
 
 .withdrawal-stat{
-  border:1px solid #e1e7e3;
-  background:#f9fbfa;
+  border:1px solid #d9efe5;
+  background:#fbfaf9;
   border-radius:12px;
   padding:16px;
 }
@@ -441,40 +452,40 @@ header{
 .withdrawal-stat strong{
   display:block;
   font-size:21px;
-  color:#075e36;
+  color:#10462d;
   word-break:break-word;
 }
 
 .withdrawal-stat.available{
-  background:#eff9f2;
-  border-color:#b9dfc5;
+  background:#f8f5f0;
+  border-color:#b8e0cd;
 }
 
 .withdrawal-stat.available strong{
-  color:#126638;
+  color:#135335;
 }
 
 .withdrawal-stat.pending{
-  background:#fff9e8;
-  border-color:#efd88c;
+  background:#f8f5ef;
+  border-color:#efd18c;
 }
 
 .withdrawal-stat.pending strong{
-  color:#8a6500;
+  color:#7b5b0f;
 }
 
 .withdrawal-stat.paid{
-  background:#f0f8f3;
-  border-color:#c9e5d2;
+  background:#f8f5f0;
+  border-color:#c7e7d8;
 }
 
 .withdrawal-stat.paid strong{
-  color:#126638;
+  color:#135335;
 }
 
 .withdrawal-action-box{
-  background:#f7faf8;
-  border:1px solid #dfe8e2;
+  background:#faf9f7;
+  border:1px solid #d9eee4;
   border-radius:12px;
   padding:16px;
   display:flex;
@@ -486,7 +497,7 @@ header{
 }
 
 .withdrawal-action-box h3{
-  color:#075e36;
+  color:#10462d;
   margin-bottom:5px;
 }
 
@@ -499,12 +510,12 @@ header{
 .withdrawal-minimum{
   margin-top:5px;
   font-size:12px;
-  color:#8a6500;
+  color:#7b5b0f;
 }
 
 .withdrawal-status-pending{
-  background:#fff0c8;
-  color:#8a6500;
+  background:#f9ecce;
+  color:#7b5b0f;
 }
 
 .withdrawal-status-approved{
@@ -513,8 +524,8 @@ header{
 }
 
 .withdrawal-status-paid{
-  background:#dff4e7;
-  color:#126638;
+  background:#f1ece2;
+  color:#135335;
 }
 
 .withdrawal-status-rejected{
@@ -523,15 +534,15 @@ header{
 }
 
 .bank-preview{
-  background:#f7faf8;
-  border:1px solid #dfe8e2;
+  background:#faf9f7;
+  border:1px solid #d9eee4;
   border-radius:10px;
   padding:14px;
   margin-top:10px;
 }
 
 .bank-preview h4{
-  color:#075e36;
+  color:#10462d;
   margin-bottom:8px;
 }
 
@@ -556,14 +567,14 @@ header{
 .data-table th,
 .data-table td{
   padding:11px;
-  border-bottom:1px solid #e5ebe7;
+  border-bottom:1px solid #edeae3;
   text-align:left;
   font-size:13px;
 }
 
 .data-table th{
-  background:#f5f8f6;
-  color:#075e36;
+  background:#f9f7f4;
+  color:#10462d;
 }
 
 .badge{
@@ -575,13 +586,13 @@ header{
 }
 
 .badge-approved{
-  background:#dff4e7;
-  color:#126638;
+  background:#f1ece2;
+  color:#135335;
 }
 
 .badge-pending{
-  background:#fff0c8;
-  color:#8a6500;
+  background:#f9ecce;
+  color:#7b5b0f;
 }
 
 .badge-rejected{
@@ -590,13 +601,13 @@ header{
 }
 
 .badge-paid{
-  background:#dff4e7;
-  color:#126638;
+  background:#f1ece2;
+  color:#135335;
 }
 
 .badge-unpaid{
-  background:#fff0c8;
-  color:#8a6500;
+  background:#f9ecce;
+  color:#7b5b0f;
 }
 
 .badge-first{
@@ -623,12 +634,12 @@ header{
   height:100px;
   border-radius:50%;
   object-fit:cover;
-  background:#e7ece9;
-  border:3px solid #d8a900;
+  background:#eeebe5;
+  border:3px solid #c08e18;
 }
 
 .profile-details h3{
-  color:#075e36;
+  color:#10462d;
   margin-bottom:5px;
 }
 
@@ -647,13 +658,13 @@ header{
 }
 
 .status-approved{
-  background:#dff4e7;
-  color:#126638;
+  background:#f1ece2;
+  color:#135335;
 }
 
 .status-pending{
-  background:#fff0c8;
-  color:#8a6500;
+  background:#f9ecce;
+  color:#7b5b0f;
 }
 
 .status-inactive{
@@ -670,7 +681,7 @@ header{
 }
 
 .product-card{
-  border:1px solid #e1e7e3;
+  border:1px solid #d9efe5;
   border-radius:12px;
   overflow:hidden;
   background:#fff;
@@ -680,7 +691,7 @@ header{
   width:100%;
   height:190px;
   object-fit:cover;
-  background:#edf1ee;
+  background:#f3f0eb;
 }
 
 .product-body{
@@ -688,7 +699,7 @@ header{
 }
 
 .product-body h3{
-  color:#075e36;
+  color:#10462d;
   margin-bottom:7px;
   font-size:17px;
 }
@@ -696,7 +707,7 @@ header{
 .product-price{
   font-size:18px;
   font-weight:bold;
-  color:#bd8d00;
+  color:#a87c15;
   margin-bottom:7px;
 }
 
@@ -722,13 +733,13 @@ header{
 }
 
 .edit-btn{
-  background:#e6f1eb;
-  color:#075e36;
+  background:#f2eee5;
+  color:#10462d;
 }
 
 .toggle-btn{
-  background:#fff0c8;
-  color:#795d00;
+  background:#f9ecce;
+  color:#6c4f0d;
 }
 
 .delete-btn{
@@ -764,7 +775,7 @@ header{
 }
 
 .modal-box h2{
-  color:#075e36;
+  color:#10462d;
   margin-bottom:18px;
 }
 
@@ -785,7 +796,7 @@ header{
 .form-group textarea{
   width:100%;
   padding:11px;
-  border:1px solid #ccd6d0;
+  border:1px solid #bfe3d2;
   border-radius:8px;
   outline:none;
   font-size:14px;
@@ -794,7 +805,13 @@ header{
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus{
-  border-color:#075e36;
+  border-color:#10462d;
+}
+
+.form-group select:disabled{
+  background:#f6f3ee;
+  color:#999;
+  cursor:not-allowed;
 }
 
 .form-group textarea{
@@ -822,15 +839,15 @@ header{
 /* PAYMENT */
 
 .payment-box{
-  background:#f7faf8;
-  border:1px solid #dfe8e2;
+  background:#faf9f7;
+  border:1px solid #d9eee4;
   padding:15px;
   border-radius:10px;
   margin-bottom:18px;
 }
 
 .payment-box h3{
-  color:#075e36;
+  color:#10462d;
   margin-bottom:10px;
 }
 
@@ -839,7 +856,7 @@ header{
   justify-content:space-between;
   gap:10px;
   padding:6px 0;
-  border-bottom:1px solid #e7ece9;
+  border-bottom:1px solid #eeebe5;
 }
 
 .payment-row:last-child{
@@ -856,9 +873,9 @@ header{
 }
 
 .pending-box{
-  background:#fff7dc;
-  border:1px solid #efd88c;
-  color:#725700;
+  background:#f4f0e7;
+  border:1px solid #efd18c;
+  color:#654b0d;
   padding:12px;
   border-radius:9px;
   margin-top:15px;
@@ -873,8 +890,8 @@ header{
 }
 
 .info-success{
-  background:#dff4e7;
-  color:#126638;
+  background:#f1ece2;
+  color:#135335;
 }
 
 .info-error{
@@ -883,8 +900,8 @@ header{
 }
 
 .info-warning{
-  background:#fff4d0;
-  color:#735800;
+  background:#f0eadf;
+  color:#664b0d;
 }
 
 .empty{
@@ -900,7 +917,7 @@ header{
 }
 
 footer{
-  background:#075e36;
+  background:#10462d;
   color:white;
   text-align:center;
   padding:20px;
@@ -1012,7 +1029,7 @@ footer{
 </style>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#075e36">
+<meta name="theme-color" content="#10462d">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1556,12 +1573,21 @@ footer{
 
     <div class="form-group">
 
-      <label>Location / State</label>
+      <label>State</label>
 
-      <input
-        type="text"
-        id="productLocation"
-        placeholder="e.g. Kano">
+      <select id="productState">
+        <option value="">Select State</option>
+      </select>
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Local Government Area</label>
+
+      <select id="productLga" disabled>
+        <option value="">Select state first</option>
+      </select>
 
     </div>
 
@@ -1645,8 +1671,17 @@ footer{
     </div>
 
     <div class="form-group">
-      <label>Location / State</label>
-      <input type="text" id="sellerLocation" placeholder="e.g. Kano">
+      <label>State</label>
+      <select id="sellerState">
+        <option value="">Select State</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Local Government Area</label>
+      <select id="sellerLga" disabled>
+        <option value="">Select state first</option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -1961,6 +1996,11 @@ footer{
 import { auth, db } from "./firebase.js";
 
 import {
+  NIGERIA_STATES,
+  populateLgaSelect
+} from "./states-lga.js";
+
+import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
@@ -2022,9 +2062,43 @@ const FREE_MAX_PRODUCTS = 5;
 const $ = id => document.getElementById(id);
 
 
+/* =========================================================
+   STATE / LGA DROPDOWNS (Product form + Seller Profile form)
+========================================================= */
+
+function populateStateSelect(selectEl){
+
+  NIGERIA_STATES.forEach(state => {
+
+    const option = document.createElement("option");
+
+    option.value = state;
+
+    option.textContent = state;
+
+    selectEl.appendChild(option);
+
+  });
+
+}
+
+populateStateSelect($("productState"));
+populateStateSelect($("sellerState"));
+
+$("productState").addEventListener(
+  "change",
+  () => populateLgaSelect($("productState"), $("productLga"))
+);
+
+$("sellerState").addEventListener(
+  "change",
+  () => populateLgaSelect($("sellerState"), $("sellerLga"))
+);
+
+
 console.log(
   "%cAREWA MARKET SELLER DASHBOARD — build 2026-09-23-FIX2",
-  "background:#075e36;color:#fff;padding:6px 10px;border-radius:6px;font-weight:bold;"
+  "background:#10462d;color:#fff;padding:6px 10px;border-radius:6px;font-weight:bold;"
 );
 
 
@@ -2281,7 +2355,7 @@ function renderSellerProfile(){
             display:flex;
             align-items:center;
             justify-content:center;
-            color:#075e36;
+            color:#10462d;
             font-weight:bold;
           ">
           AM
@@ -4097,7 +4171,7 @@ function renderProducts(){
           const statusStyle =
             product.status === "inactive"
             ? "background:#fde2e2;color:#a51d1d;"
-            : "background:#dff4e7;color:#126638;";
+            : "background:#f1ece2;color:#135335;";
 
 
           return `
@@ -4764,7 +4838,16 @@ function openProductModal(product=null){
     $("productName").value = "";
     $("productPrice").value = "";
     $("productCategory").value = "";
-    $("productLocation").value = "";
+
+    $("productState").value =
+      (sellerData && sellerData.state) || "";
+
+    populateLgaSelect(
+      $("productState"),
+      $("productLga"),
+      (sellerData && sellerData.lga) || ""
+    );
+
     $("productImage").value = "";
     $("productDescription").value = "";
 
@@ -4792,8 +4875,14 @@ function openProductModal(product=null){
     $("productCategory").value =
       product.category || "";
 
-    $("productLocation").value =
-      product.location || "";
+    $("productState").value =
+      product.state || "";
+
+    populateLgaSelect(
+      $("productState"),
+      $("productLga"),
+      product.lga || ""
+    );
 
     $("productImage").value =
       product.imageUrl || "";
@@ -4864,8 +4953,11 @@ async function saveProduct(){
     $("productCategory").value.trim();
 
 
-  const location =
-    $("productLocation").value.trim();
+  const state =
+    $("productState").value;
+
+  const lga =
+    $("productLga").value;
 
 
   const imageUrl =
@@ -4915,11 +5007,11 @@ async function saveProduct(){
   }
 
 
-  if(!location){
+  if(!state || !lga){
 
     showMessage(
       $("productMessage"),
-      "Please enter product location/state.",
+      "Please select the product's state and LGA.",
       "error"
     );
 
@@ -4982,7 +5074,10 @@ async function saveProduct(){
           name,
           price,
           category,
-          location,
+          state,
+          lga,
+          location:
+            lga + ", " + state,
           imageUrl,
           description,
 
@@ -5021,7 +5116,10 @@ async function saveProduct(){
           name,
           price,
           category,
-          location,
+          state,
+          lga,
+          location:
+            lga + ", " + state,
           imageUrl,
           description,
 
@@ -5344,10 +5442,14 @@ function openProfileModal(){
     "";
 
 
-  $("sellerLocation").value =
-    sellerData.location ||
-    sellerData.sellerLocation ||
-    "";
+  $("sellerState").value =
+    sellerData.state || "";
+
+  populateLgaSelect(
+    $("sellerState"),
+    $("sellerLga"),
+    sellerData.lga || ""
+  );
 
 
   $("sellerProfileImage").value =
@@ -5401,8 +5503,11 @@ async function saveProfile(){
     $("sellerWhatsapp").value.trim();
 
 
-  const location =
-    $("sellerLocation").value.trim();
+  const state =
+    $("sellerState").value;
+
+  const lga =
+    $("sellerLga").value;
 
 
   const profileImage =
@@ -5418,6 +5523,19 @@ async function saveProfile(){
     showMessage(
       $("profileMessage"),
       "Please enter your name.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!state || !lga){
+
+    showMessage(
+      $("profileMessage"),
+      "Please select your state and LGA.",
       "error"
     );
 
@@ -5459,8 +5577,12 @@ async function saveProfile(){
         whatsapp,
         sellerWhatsapp:whatsapp,
 
-        location,
-        sellerLocation:location,
+        state,
+        lga,
+        location:
+          lga + ", " + state,
+        sellerLocation:
+          lga + ", " + state,
 
         profileImage,
         sellerProfileImage:profileImage,
@@ -5489,8 +5611,12 @@ async function saveProfile(){
       whatsapp,
       sellerWhatsapp:whatsapp,
 
-      location,
-      sellerLocation:location,
+      state,
+      lga,
+      location:
+        lga + ", " + state,
+      sellerLocation:
+        lga + ", " + state,
 
       profileImage,
       sellerProfileImage:profileImage,

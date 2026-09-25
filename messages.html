@@ -11,6 +11,11 @@
 
 <title>Arewa Market - Messages</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
 <style>
 
 *{
@@ -19,14 +24,19 @@
   padding:0;
 }
 
+
+h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
+  font-family:'Playfair Display',Georgia,serif;
+  letter-spacing:.2px;
+}
 html{
   width:100%;
   min-height:100%;
 }
 
 body{
-  font-family:Arial,sans-serif;
-  background:#f4f7f5;
+  font-family:'Inter',Arial,sans-serif;
+  background:#f8f6f3;
   color:#222;
 }
 
@@ -35,7 +45,7 @@ body{
 ========================= */
 
 header{
-  background:#087f5b;
+  background:linear-gradient(135deg,#0d3b2c,#175e3f);
   color:white;
   padding:15px 20px;
 
@@ -47,6 +57,7 @@ header{
   flex-wrap:wrap;
 
   box-shadow:0 2px 8px rgba(0,0,0,.15);
+  border-bottom:3px solid #c9a227;
 }
 
 .logo{
@@ -79,11 +90,11 @@ header{
 
 .btn-light{
   background:white;
-  color:#087f5b;
+  color:#165d3c;
 }
 
 .btn-gold{
-  background:#d4a017;
+  background:#d19a1a;
   color:white;
 }
 
@@ -126,8 +137,8 @@ header{
 
 .notice.success{
   display:block;
-  background:#d4edda;
-  color:#155724;
+  background:#d4ede1;
+  color:#124a30;
 }
 
 /* =========================
@@ -153,7 +164,7 @@ header{
 ========================= */
 
 .inbox{
-  border-right:1px solid #ddd;
+  border-right:1px solid #e3dfd7;
 
   display:flex;
   flex-direction:column;
@@ -166,11 +177,11 @@ header{
   flex:0 0 auto;
 
   padding:18px;
-  border-bottom:1px solid #ddd;
+  border-bottom:1px solid #e3dfd7;
 }
 
 .inbox-header h2{
-  color:#087f5b;
+  color:#165d3c;
   font-size:20px;
   margin-bottom:12px;
 }
@@ -178,13 +189,13 @@ header{
 .search{
   width:100%;
   padding:11px;
-  border:1px solid #ddd;
+  border:1px solid #e3dfd7;
   border-radius:7px;
   outline:none;
 }
 
 .search:focus{
-  border-color:#087f5b;
+  border-color:#165d3c;
 }
 
 .conversations{
@@ -200,7 +211,7 @@ header{
 
 .conversation{
   padding:14px;
-  border-bottom:1px solid #eee;
+  border-bottom:1px solid #f3f0e9;
 
   cursor:pointer;
 
@@ -212,11 +223,11 @@ header{
 }
 
 .conversation:hover{
-  background:#f5f9f7;
+  background:#f9f8f5;
 }
 
 .conversation.active{
-  background:#e8f5ef;
+  background:#f4f0e9;
 }
 
 .avatar{
@@ -226,7 +237,7 @@ header{
 
   border-radius:50%;
 
-  background:#087f5b;
+  background:#165d3c;
   color:white;
 
   display:flex;
@@ -293,7 +304,7 @@ header{
 
   border-radius:20px;
 
-  background:#d4a017;
+  background:#d19a1a;
   color:white;
 
   font-size:11px;
@@ -333,7 +344,7 @@ header{
 }
 
 .chat-empty h3{
-  color:#087f5b;
+  color:#165d3c;
   margin-bottom:8px;
 }
 
@@ -342,7 +353,7 @@ header{
 
   padding:14px 18px;
 
-  border-bottom:1px solid #ddd;
+  border-bottom:1px solid #e3dfd7;
 
   display:flex;
   align-items:center;
@@ -361,7 +372,7 @@ header{
 }
 
 .chat-user h3{
-  color:#087f5b;
+  color:#165d3c;
 
   white-space:nowrap;
   overflow:hidden;
@@ -388,7 +399,7 @@ header{
   overflow-y:auto;
   overflow-x:hidden;
 
-  background:#f7faf8;
+  background:#faf9f7;
 
   -webkit-overflow-scrolling:touch;
 
@@ -428,7 +439,7 @@ header{
 }
 
 .mine .bubble{
-  background:#087f5b;
+  background:#165d3c;
   color:white;
 
   border-bottom-right-radius:3px;
@@ -438,7 +449,7 @@ header{
   background:white;
   color:#222;
 
-  border:1px solid #e3e3e3;
+  border:1px solid #e8e5de;
 
   border-bottom-left-radius:3px;
 }
@@ -462,7 +473,7 @@ header{
 .chat-input{
   flex:0 0 auto;
 
-  border-top:1px solid #ddd;
+  border-top:1px solid #e3dfd7;
 
   padding:12px;
 
@@ -488,19 +499,19 @@ header{
 
   padding:12px;
 
-  border:1px solid #ddd;
+  border:1px solid #e3dfd7;
 
   border-radius:8px;
 
   outline:none;
 
-  font-family:Arial,sans-serif;
+  font-family:'Inter',Arial,sans-serif;
 
   font-size:14px;
 }
 
 .chat-input textarea:focus{
-  border-color:#087f5b;
+  border-color:#165d3c;
 }
 
 .send-btn{
@@ -508,7 +519,7 @@ header{
 
   border:none;
 
-  background:#087f5b;
+  background:#165d3c;
 
   color:white;
 
@@ -522,7 +533,7 @@ header{
 }
 
 .send-btn:hover{
-  background:#075f43;
+  background:#10462d;
 }
 
 .send-btn:disabled{
@@ -537,7 +548,7 @@ header{
 .loading{
   text-align:center;
   padding:30px;
-  color:#087f5b;
+  color:#165d3c;
   font-weight:bold;
 }
 
@@ -548,7 +559,7 @@ header{
 }
 
 .empty h3{
-  color:#087f5b;
+  color:#165d3c;
   margin-bottom:7px;
 }
 
@@ -834,7 +845,7 @@ header{
 
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#075e36">
+<meta name="theme-color" content="#10462d">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
