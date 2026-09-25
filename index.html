@@ -1838,9 +1838,9 @@ function getFilteredProducts(){
     products.sort((a,b) => {
 
       return Number(
-        !!b.featured
+        isActivelyFeatured(b)
       ) - Number(
-        !!a.featured
+        isActivelyFeatured(a)
       );
 
     });
@@ -1998,7 +1998,7 @@ function productCard(product){
 
 
   const featured =
-    product.featured === true
+    isActivelyFeatured(product)
       ? `
         <span class="featured">
           Featured
@@ -2213,6 +2213,33 @@ sortFilter.addEventListener(
 
   }
 );
+
+
+/* =================================================
+   FEATURED HELPER
+   A product only counts as Featured while its paid
+   period (featuredUntil) has not passed yet. This is
+   a client-side safety net in case the admin panel
+   hasn't run its auto-expire check recently.
+================================================= */
+
+function isActivelyFeatured(product){
+
+  if(product.featured !== true){
+    return false;
+  }
+
+  if(
+    product.featuredUntil &&
+    product.featuredUntil.toMillis
+  ){
+    return product.featuredUntil.toMillis() > Date.now();
+  }
+
+  // No expiry set: treat as still featured
+  return true;
+
+}
 
 
 /* =================================================

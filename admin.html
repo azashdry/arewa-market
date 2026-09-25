@@ -1620,7 +1620,8 @@ import {
   updateDoc,
   deleteDoc,
   setDoc,
-  serverTimestamp
+  serverTimestamp,
+  Timestamp
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -3260,6 +3261,10 @@ async function loadProducts(){
       }
     );
 
+    await autoExpireFeaturedProducts(
+      allProducts
+    );
+
     renderProducts(
       allProducts
     );
@@ -3395,7 +3400,18 @@ function renderProducts(products){
             product.featured
               ? `
                 <span class="badge pending">
-                  ⭐ Featured
+                  ⭐ Featured${
+                    product.featuredUntil &&
+                    product.featuredUntil.toMillis
+                      ? ` · ${Math.max(
+                          0,
+                          Math.ceil(
+                            (product.featuredUntil.toMillis() - Date.now()) /
+                            (24*60*60*1000)
+                          )
+                        )}d left`
+                      : ""
+                  }
                 </span>
               `
               : ""
@@ -3989,19 +4005,68 @@ window.toggleFeatured =
 
     try{
 
-      await updateDoc(
-        doc(
-          db,
-          "products",
-          productId
-        ),
-        {
-          featured:
-            !current,
-          updatedAt:
-            serverTimestamp()
+      // Turning Featured ON: ask the admin how many
+      // days the seller paid for, and store an
+      // expiry timestamp so it un-features itself.
+      if(!current){
+
+        const daysInput = prompt(
+          "How many days should this product stay Featured?\n(e.g. 7)",
+          "7"
+        );
+
+        if(daysInput === null){
+          // Admin cancelled the prompt
+          return;
         }
-      );
+
+        const days =
+          parseInt(daysInput, 10);
+
+        if(!days || days <= 0){
+          alert("Please enter a valid number of days.");
+          return;
+        }
+
+        const featuredUntil =
+          Timestamp.fromDate(
+            new Date(
+              Date.now() + days * 24 * 60 * 60 * 1000
+            )
+          );
+
+        await updateDoc(
+          doc(
+            db,
+            "products",
+            productId
+          ),
+          {
+            featured: true,
+            featuredUntil,
+            updatedAt:
+              serverTimestamp()
+          }
+        );
+
+      }else{
+
+        // Turning Featured OFF: clear the expiry too
+        await updateDoc(
+          doc(
+            db,
+            "products",
+            productId
+          ),
+          {
+            featured: false,
+            featuredUntil: null,
+            updatedAt:
+              serverTimestamp()
+          }
+        );
+
+      }
 
       await loadProducts();
 
@@ -4013,6 +4078,57 @@ window.toggleFeatured =
       );
     }
   };
+
+
+// =====================================================
+// Auto-expire Featured products whose paid period
+// has passed. Runs every time the admin loads the
+// products list, since there is no backend cron job.
+// =====================================================
+
+async function autoExpireFeaturedProducts(products){
+
+  const now = Date.now();
+
+  const expired =
+    products.filter(product =>
+
+      product.featured === true &&
+      product.featuredUntil &&
+      product.featuredUntil.toMillis &&
+      product.featuredUntil.toMillis() <= now
+
+    );
+
+  for(const product of expired){
+
+    try{
+
+      await updateDoc(
+        doc(db, "products", product.id),
+        {
+          featured: false,
+          featuredUntil: null,
+          updatedAt: serverTimestamp()
+        }
+      );
+
+      product.featured = false;
+      product.featuredUntil = null;
+
+    }catch(error){
+
+      console.error(
+        "Failed to auto-expire product:",
+        product.id,
+        error
+      );
+
+    }
+
+  }
+
+}
 
 
 productsSearch.addEventListener(
