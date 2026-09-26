@@ -856,6 +856,11 @@ h1{
       </div>
 
       <div class="analytics-box">
+        <span>Pending Featured Requests</span>
+        <strong id="pendingFeaturedRequestsCount">0</strong>
+      </div>
+
+      <div class="analytics-box">
         <span>Total Product Value</span>
         <strong id="productValue">₦0</strong>
       </div>
@@ -1364,6 +1369,17 @@ h1{
         placeholder="https://..."
       >
 
+      <div style="margin:8px 0;">
+        <input
+          type="file"
+          id="productImageUrlFile"
+          accept="image/*">
+        <div
+          id="productImageUrlStatus"
+          style="font-size:13px;margin-top:4px;">
+        </div>
+      </div>
+
       <div
         id="imagePreviewBox"
         style="display:none;margin-bottom:15px;"
@@ -1554,7 +1570,105 @@ Messaging"
   </div>
 
 
-  <!-- PREMIUM REQUESTS -->
+  <!-- FEATURED LISTING SETTINGS -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>⭐ Featured Listing Settings</h2>
+
+      <button
+        class="premium"
+        id="refreshFeaturedSettingsBtn"
+      >
+        Refresh
+      </button>
+
+    </div>
+
+    <div
+      class="premium-card"
+      id="featuredSettingsSummary"
+    >
+      <div class="loading">
+        Loading Featured settings...
+      </div>
+    </div>
+
+    <div
+      class="form-box"
+      id="featuredSettingsFormBox"
+      style="display:block;"
+    >
+
+      <label>Price per boost (₦)</label>
+
+      <input
+        type="number"
+        id="featuredPrice"
+        min="0"
+        placeholder="2000"
+      >
+
+      <label>Duration (Days)</label>
+
+      <input
+        type="number"
+        id="featuredDuration"
+        min="1"
+        placeholder="7"
+      >
+
+      <label>Bank Name</label>
+
+      <input
+        id="featuredBankName"
+        placeholder="Example: First Bank"
+      >
+
+      <label>Account Name</label>
+
+      <input
+        id="featuredAccountName"
+        placeholder="Example: Arewa Market"
+      >
+
+      <label>Account Number</label>
+
+      <input
+        id="featuredAccountNumber"
+        inputmode="numeric"
+        placeholder="Enter account number"
+      >
+
+      <label>
+        <input
+          type="checkbox"
+          id="featuredActive"
+          style="width:auto;margin-right:6px;"
+        >
+        Featured Listings Active
+      </label>
+
+      <p class="help-text">
+        Wannan farashi da bayanin banki shine abin da seller zai gani
+        idan ya danna "Request Featured" a Seller Dashboard.
+      </p>
+
+      <button
+        class="premium"
+        id="saveFeaturedSettingsBtn"
+        style="width:100%;"
+      >
+        💾 Save Featured Settings
+      </button>
+
+    </div>
+
+  </div>
+
+
 
   <div class="section">
 
@@ -1602,6 +1716,10 @@ import {
 } from "./states-lga.js";
 
 import {
+  attachImgbbUploader
+} from "./imgbb-upload.js";
+
+import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
@@ -1625,6 +1743,13 @@ import {
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+attachImgbbUploader({
+  fileInputId: "productImageUrlFile",
+  urlInputId: "productImageUrl",
+  statusId: "productImageUrlStatus"
+});
 
 
 /* ==========================================
@@ -1778,6 +1903,11 @@ const premiumSettingsSummary =
     "premiumSettingsSummary"
   );
 
+const featuredSettingsSummary =
+  document.getElementById(
+    "featuredSettingsSummary"
+  );
+
 const premiumRequestsList =
   document.getElementById(
     "premiumRequestsList"
@@ -1834,6 +1964,7 @@ let allCommissions = [];
 let allWithdrawalRequests = [];
 
 let premiumSettings = null;
+let featuredSettings = null;
 
 let referralSettings = null;
 
@@ -2204,6 +2335,7 @@ async function refreshAll(){
     loadCategories(),
     loadProducts(),
     loadPremiumSettings(),
+    loadFeaturedSettings(),
     loadPremiumRequests(),
     loadReferralSettings(),
     loadCommissions(),
@@ -3265,6 +3397,22 @@ async function loadProducts(){
       allProducts
     );
 
+    // Surface pending Featured requests at the top
+    // so the admin doesn't have to hunt for them.
+    allProducts.sort((a,b) => {
+
+      const aPending =
+        a.featuredRequested === true &&
+        a.featured !== true;
+
+      const bPending =
+        b.featuredRequested === true &&
+        b.featured !== true;
+
+      return Number(bPending) - Number(aPending);
+
+    });
+
     renderProducts(
       allProducts
     );
@@ -3395,6 +3543,17 @@ function renderProducts(products){
               "active"
             }
           </span>
+
+          ${
+            !product.featured &&
+            product.featuredRequested === true
+              ? `
+                <span class="badge pending">
+                  🙋 Featured Requested
+                </span>
+              `
+              : ""
+          }
 
           ${
             product.featured
@@ -4044,6 +4203,7 @@ window.toggleFeatured =
           {
             featured: true,
             featuredUntil,
+            featuredRequested: false,
             updatedAt:
               serverTimestamp()
           }
@@ -4061,6 +4221,7 @@ window.toggleFeatured =
           {
             featured: false,
             featuredUntil: null,
+            featuredRequested: false,
             updatedAt:
               serverTimestamp()
           }
@@ -4624,6 +4785,368 @@ document
 
         saveBtn.textContent =
           "💾 Save Premium Settings";
+
+      }
+
+    }
+  );
+
+
+/* ==========================================
+   FEATURED LISTING SETTINGS
+========================================== */
+
+async function loadFeaturedSettings(){
+
+  featuredSettingsSummary.innerHTML =
+    `<div class="loading">
+      Loading Featured settings...
+    </div>`;
+
+  try{
+
+    const snap =
+      await getDoc(
+        doc(
+          db,
+          "featuredSettings",
+          "main"
+        )
+      );
+
+    if(snap.exists()){
+
+      featuredSettings =
+        snap.data();
+
+    }else{
+
+      featuredSettings = {
+
+        price:
+          2000,
+
+        durationDays:
+          7,
+
+        bankName:
+          "",
+
+        accountName:
+          "",
+
+        accountNumber:
+          "",
+
+        active:
+          true
+      };
+
+    }
+
+    fillFeaturedSettingsForm();
+
+    renderFeaturedSettingsSummary();
+
+  }catch(error){
+
+    console.error(error);
+
+    featuredSettingsSummary.innerHTML =
+      `<div class="empty">
+        Failed to load Featured settings.
+        <br>
+        ${escapeHtml(
+          error.message
+        )}
+      </div>`;
+  }
+}
+
+
+function fillFeaturedSettingsForm(){
+
+  const data =
+    featuredSettings || {};
+
+  document.getElementById(
+    "featuredPrice"
+  ).value =
+    data.price ??
+    2000;
+
+  document.getElementById(
+    "featuredDuration"
+  ).value =
+    data.durationDays ??
+    7;
+
+  document.getElementById(
+    "featuredBankName"
+  ).value =
+    data.bankName ||
+    "";
+
+  document.getElementById(
+    "featuredAccountName"
+  ).value =
+    data.accountName ||
+    "";
+
+  document.getElementById(
+    "featuredAccountNumber"
+  ).value =
+    data.accountNumber ||
+    "";
+
+  document.getElementById(
+    "featuredActive"
+  ).checked =
+    data.active !== false;
+}
+
+
+function renderFeaturedSettingsSummary(){
+
+  const data =
+    featuredSettings || {};
+
+  const active =
+    data.active !== false;
+
+  featuredSettingsSummary.innerHTML = `
+
+    <h3>
+      ⭐ Featured Listing Boost
+    </h3>
+
+    <div class="premium-price">
+      ${money(data.price)}
+    </div>
+
+    <p>
+      Duration:
+      <b>
+        ${escapeHtml(
+          data.durationDays ||
+          0
+        )}
+        days
+      </b>
+    </p>
+
+    <p>
+      Bank:
+      <b>
+        ${escapeHtml(
+          data.bankName ||
+          "Not set"
+        )}
+      </b>
+    </p>
+
+    <p>
+      Account Name:
+      <b>
+        ${escapeHtml(
+          data.accountName ||
+          "Not set"
+        )}
+      </b>
+    </p>
+
+    <p>
+      Account Number:
+      <b>
+        ${escapeHtml(
+          data.accountNumber ||
+          "Not set"
+        )}
+      </b>
+    </p>
+
+    <p>
+      Status:
+      <span class="badge ${
+        active
+          ? "active"
+          : "inactive"
+      }">
+        ${
+          active
+            ? "Active"
+            : "Inactive"
+        }
+      </span>
+    </p>
+
+  `;
+}
+
+
+document
+  .getElementById(
+    "refreshFeaturedSettingsBtn"
+  )
+  .addEventListener(
+    "click",
+    loadFeaturedSettings
+  );
+
+
+document
+  .getElementById(
+    "saveFeaturedSettingsBtn"
+  )
+  .addEventListener(
+    "click",
+    async () => {
+
+      const price =
+        Number(
+          document
+            .getElementById(
+              "featuredPrice"
+            )
+            .value
+        );
+
+      const durationDays =
+        Number(
+          document
+            .getElementById(
+              "featuredDuration"
+            )
+            .value
+        );
+
+      const bankName =
+        document
+          .getElementById(
+            "featuredBankName"
+          )
+          .value
+          .trim();
+
+      const accountName =
+        document
+          .getElementById(
+            "featuredAccountName"
+          )
+          .value
+          .trim();
+
+      const accountNumber =
+        document
+          .getElementById(
+            "featuredAccountNumber"
+          )
+          .value
+          .trim();
+
+      const active =
+        document
+          .getElementById(
+            "featuredActive"
+          )
+          .checked;
+
+      if(
+        price < 0 ||
+        isNaN(price)
+      ){
+
+        alert(
+          "Please enter a valid Featured price."
+        );
+
+        return;
+      }
+
+      if(
+        !durationDays ||
+        durationDays < 1
+      ){
+
+        alert(
+          "Duration must be at least 1 day."
+        );
+
+        return;
+      }
+
+      const saveBtn =
+        document.getElementById(
+          "saveFeaturedSettingsBtn"
+        );
+
+      saveBtn.disabled =
+        true;
+
+      saveBtn.textContent =
+        "Saving...";
+
+      try{
+
+        const data = {
+
+          price,
+
+          durationDays,
+
+          bankName,
+
+          accountName,
+
+          accountNumber,
+
+          active,
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+        await setDoc(
+          doc(
+            db,
+            "featuredSettings",
+            "main"
+          ),
+          data,
+          {
+            merge:true
+          }
+        );
+
+        featuredSettings =
+          {
+            ...featuredSettings,
+            ...data
+          };
+
+        renderFeaturedSettingsSummary();
+
+        alert(
+          "Featured Settings saved successfully."
+        );
+
+      }catch(error){
+
+        console.error(error);
+
+        alert(
+          "Failed to save Featured Settings: " +
+          error.message
+        );
+
+      }finally{
+
+        saveBtn.disabled =
+          false;
+
+        saveBtn.textContent =
+          "💾 Save Featured Settings";
 
       }
 
@@ -8018,6 +8541,13 @@ function updateAnalytics(){
         product.featured === true
     ).length;
 
+  const pendingFeaturedRequests =
+    allProducts.filter(
+      product =>
+        product.featuredRequested === true &&
+        product.featured !== true
+    ).length;
+
   const productValue =
     allProducts.reduce(
       (sum,product) =>
@@ -8191,6 +8721,11 @@ function updateAnalytics(){
     "featuredProductsCount"
   ).textContent =
     featuredProducts;
+
+  document.getElementById(
+    "pendingFeaturedRequestsCount"
+  ).textContent =
+    pendingFeaturedRequests;
 
   document.getElementById(
     "productValue"

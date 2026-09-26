@@ -1600,6 +1600,17 @@ footer{
         id="productImage"
         placeholder="https://...">
 
+      <div style="margin:8px 0;">
+        <input
+          type="file"
+          id="productImageFile"
+          accept="image/*">
+        <div
+          id="productImageStatus"
+          style="font-size:13px;margin-top:4px;">
+        </div>
+      </div>
+
       <img
         id="productImagePreview"
         class="preview"
@@ -1687,6 +1698,17 @@ footer{
     <div class="form-group">
       <label>Profile Image URL</label>
       <input type="url" id="sellerProfileImage" placeholder="https://...">
+
+      <div style="margin:8px 0;">
+        <input
+          type="file"
+          id="sellerProfileImageFile"
+          accept="image/*">
+        <div
+          id="sellerProfileImageStatus"
+          style="font-size:13px;margin-top:4px;">
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
@@ -2001,6 +2023,10 @@ import {
 } from "./states-lga.js";
 
 import {
+  attachImgbbUploader
+} from "./imgbb-upload.js";
+
+import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
@@ -2021,6 +2047,23 @@ import {
 
 
 /* =========================================================
+   IMGBB IMAGE UPLOAD (file -> imgbb -> fills URL input)
+========================================================= */
+
+attachImgbbUploader({
+  fileInputId: "productImageFile",
+  urlInputId: "productImage",
+  statusId: "productImageStatus"
+});
+
+attachImgbbUploader({
+  fileInputId: "sellerProfileImageFile",
+  urlInputId: "sellerProfileImage",
+  statusId: "sellerProfileImageStatus"
+});
+
+
+/* =========================================================
    GLOBAL VARIABLES
 ========================================================= */
 
@@ -2033,6 +2076,7 @@ let categories = [];
 let editingProductId = null;
 
 let premiumSettings = null;
+let featuredSettings = null;
 let premiumRequest = null;
 
 let myReferrals = [];
@@ -2276,6 +2320,8 @@ onAuthStateChanged(auth, async user => {
     loadProducts();
 
     loadPremiumData();
+
+    loadFeaturedSettingsData();
 
     loadReferralData();
 
@@ -4287,6 +4333,32 @@ function renderProducts(){
 
                   </button>
 
+                  ${
+                    product.featured === true
+                    ? `<button class="toggle-btn" style="background:#c9a227;color:#0d3b2c;cursor:default;" disabled>
+                        ⭐ Featured
+                      </button>`
+                    : product.featuredRequested === true
+                    ? `<button class="toggle-btn" style="background:#f7ecc9;color:#a9791a;cursor:default;" disabled>
+                        Request sent ⏳
+                      </button>`
+                    : `<span style="display:inline-flex;flex-direction:column;gap:2px;">
+                        <button
+                          class="toggle-btn"
+                          style="background:#c9a227;color:#0d3b2c;"
+                          onclick="requestFeatured('${product.id}')">
+                          ⭐ Request Featured
+                        </button>
+                        <small style="color:#a9791a;font-size:11px;">
+                          ${
+                            featuredSettings && featuredSettings.active !== false
+                            ? `${formatMoney(featuredSettings?.price || 0)} / ${featuredSettings?.durationDays || 7} days`
+                            : "Ask admin for price"
+                          }
+                        </small>
+                      </span>`
+                  }
+
                   <button
                     class="delete-btn"
                     onclick="deleteProduct('${product.id}')">
@@ -4411,6 +4483,64 @@ async function loadPremiumData(){
     renderPremiumCard();
 
   }
+
+}
+
+
+/* =========================================================
+   FEATURED LISTING SETTINGS (buyer-facing price for sellers)
+========================================================= */
+
+async function loadFeaturedSettingsData(){
+
+  try{
+
+    const snap =
+      await getDoc(
+        doc(
+          db,
+          "featuredSettings",
+          "main"
+        )
+      );
+
+    if(snap.exists()){
+
+      featuredSettings =
+        snap.data();
+
+    }else{
+
+      featuredSettings = {
+
+        price:2000,
+
+        durationDays:7,
+
+        bankName:"",
+
+        accountName:"",
+
+        accountNumber:"",
+
+        active:true
+
+      };
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Featured settings loading error:",
+      error
+    );
+
+  }
+
+  // Re-render so the price/bank hint next to
+  // "Request Featured" reflects the real settings.
+  renderProducts();
 
 }
 
@@ -5321,6 +5451,139 @@ window.toggleProduct = async function(productId){
     alert(
       error.message ||
       "Unable to update product."
+    );
+
+  }
+
+};
+
+
+window.requestFeatured = async function(productId){
+
+  const product =
+    allProducts.find(
+      item => item.id === productId
+    );
+
+
+  if(!product){
+
+    alert("Product not found.");
+
+    return;
+
+  }
+
+
+  if(
+    product.sellerId !==
+    currentUser.uid
+  ){
+
+    alert(
+      "You are not allowed to change this product."
+    );
+
+    return;
+
+  }
+
+
+  if(product.featured === true){
+
+    alert(
+      "This product is already Featured."
+    );
+
+    return;
+
+  }
+
+
+  if(product.featuredRequested === true){
+
+    alert(
+      "You've already requested Featured for this product. The admin will review it soon."
+    );
+
+    return;
+
+  }
+
+
+  const price =
+    featuredSettings?.price || 0;
+
+  const duration =
+    featuredSettings?.durationDays || 7;
+
+  const bankName =
+    featuredSettings?.bankName || "Not set";
+
+  const accountName =
+    featuredSettings?.accountName || "Not set";
+
+  const accountNumber =
+    featuredSettings?.accountNumber || "Not set";
+
+  const confirmed = confirm(
+    `Featured Listing Boost\n\n` +
+    `Price: ${formatMoney(price)}\n` +
+    `Duration: ${duration} days\n\n` +
+    `Pay to:\n` +
+    `Bank: ${bankName}\n` +
+    `Account Name: ${accountName}\n` +
+    `Account Number: ${accountNumber}\n\n` +
+    "This will notify the admin that you want this product marked as Featured.\n\n" +
+    "After they confirm your payment, they will activate it.\n\nSend request?"
+  );
+
+  if(!confirmed){
+    return;
+  }
+
+
+  try{
+
+    await updateDoc(
+      doc(
+        db,
+        "products",
+        productId
+      ),
+      {
+
+        featuredRequested:true,
+
+        featuredRequestedAt:
+          serverTimestamp(),
+
+        updatedAt:
+          serverTimestamp()
+
+      }
+    );
+
+
+    alert(
+      "Request sent! The admin will review it shortly."
+    );
+
+
+    await loadProducts();
+
+  }
+  catch(error){
+
+    console.error(
+      "Request featured error:",
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Unable to send request."
     );
 
   }

@@ -495,8 +495,19 @@
             placeholder="https://example.com/image.jpg"
           >
 
+          <div style="margin:8px 0;">
+            <input
+              type="file"
+              id="profileImageFile"
+              accept="image/*">
+            <div
+              id="profileImageStatus"
+              style="font-size:13px;margin-top:4px;">
+            </div>
+          </div>
+
           <div class="hint">
-            Optional. You can add your profile image URL later.
+            Optional. You can add your profile image URL later, or upload one directly above.
           </div>
 
         </div>
@@ -550,6 +561,11 @@
 
 
     import {
+      attachImgbbUploader
+    } from "./imgbb-upload.js";
+
+
+    import {
       onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
@@ -560,6 +576,13 @@
       updateDoc,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    attachImgbbUploader({
+      fileInputId: "profileImageFile",
+      urlInputId: "profileImageUrl",
+      statusId: "profileImageStatus"
+    });
 
 
     // =================================================
