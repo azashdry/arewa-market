@@ -542,6 +542,97 @@ header{
 }
 
 /* =========================
+   MESSAGE OPTIONS (delete)
+========================= */
+
+.msg-options-btn{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+
+  width:22px;
+  height:22px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:none;
+  border-radius:50%;
+
+  background:rgba(0,0,0,.15);
+  color:inherit;
+
+  font-size:14px;
+  line-height:1;
+
+  cursor:pointer;
+}
+
+.mine .msg-options-btn{
+  background:rgba(255,255,255,.35);
+}
+
+.msg-options-menu{
+  display:none;
+
+  position:absolute;
+  top:16px;
+  right:0;
+
+  z-index:5;
+
+  background:white;
+  color:#222;
+
+  border-radius:8px;
+
+  box-shadow:0 4px 14px rgba(0,0,0,.18);
+
+  overflow:hidden;
+
+  min-width:150px;
+}
+
+.msg-options-menu.show{
+  display:flex;
+  flex-direction:column;
+}
+
+.msg-options-menu button{
+  border:none;
+  background:none;
+
+  padding:10px 14px;
+
+  text-align:left;
+
+  font-size:13px;
+
+  color:#165d3c;
+
+  cursor:pointer;
+}
+
+.msg-options-menu button:hover{
+  background:#eaf3ee;
+}
+
+.msg-options-menu button.danger{
+  color:#dc3545;
+}
+
+.msg-options-menu button.danger:hover{
+  background:#fdeeee;
+}
+
+.deleted-message{
+  font-style:italic;
+  opacity:.7;
+  font-size:13px;
+}
+
+/* =========================
    MEDIA ATTACH BUTTONS
    (photo / video / voice)
 ========================= */
@@ -1016,47 +1107,6 @@ header{
 
 }
 
-
-/* ================= BOTTOM NAV (mobile) ================= */
-.bottom-nav{
-  display:none;
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:999;
-  justify-content:space-around;
-  align-items:center;
-  background:linear-gradient(135deg,#0d3b2c,#175e3f);
-  border-top:3px solid #c9a227;
-  padding:8px 4px calc(6px + env(safe-area-inset-bottom,0px));
-  box-shadow:0 -2px 10px rgba(0,0,0,.25);
-}
-.bottom-nav .bn-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:2px;
-  text-decoration:none;
-  color:rgba(255,255,255,.75);
-  font-size:11px;
-  flex:1;
-  padding:4px 0;
-}
-.bottom-nav .bn-item.active{
-  color:#c9a227;
-  font-weight:bold;
-}
-.bottom-nav .bn-icon{
-  font-size:20px;
-  line-height:1;
-}
-body.has-bottom-nav{
-  padding-bottom:66px;
-}
-@media(max-width:900px){
-  .bottom-nav{display:flex;}
-}
 </style>
 
 
@@ -1068,7 +1118,7 @@ body.has-bottom-nav{
 <meta name="apple-mobile-web-app-title" content="Arewa Market">
 </head>
 
-<body class="has-bottom-nav">
+<body>
 
 <!-- =========================
      HEADER
@@ -1443,7 +1493,8 @@ import {
   where,
   orderBy,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  arrayUnion
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 /* =========================================
@@ -2089,12 +2140,12 @@ function conversationItem(
       <div class="avatar">
 
         ${
-          (user.profileImage || user.sellerProfileImage || user.profileImageUrl)
+          user.profileImageUrl
           ?
           `
           <img
             src="${escapeHtml(
-              user.profileImage || user.sellerProfileImage || user.profileImageUrl
+              user.profileImageUrl
             )}"
             alt="${escapeHtml(name)}"
             onerror="
@@ -2468,13 +2519,13 @@ async function displayChatUser(
         ? "Seller"
         : "Buyer";
 
-    if(user.profileImage || user.sellerProfileImage || user.profileImageUrl){
+    if(user.profileImageUrl){
 
       chatAvatar.innerHTML = `
 
         <img
           src="${escapeHtml(
-            user.profileImage || user.sellerProfileImage || user.profileImageUrl
+            user.profileImageUrl
           )}"
           alt="${escapeHtml(name)}"
           onerror="
@@ -2581,7 +2632,8 @@ function subscribeToMessages(
           messageDoc => {
 
             renderMessage(
-              messageDoc.data()
+              messageDoc.data(),
+              messageDoc.id
             );
 
           }
@@ -2618,12 +2670,141 @@ function subscribeToMessages(
 }
 
 /* =========================================
+   DELETE MESSAGE
+========================================= */
+
+function closeAllMessageMenus(){
+
+  document
+    .querySelectorAll(
+      ".msg-options-menu.show"
+    )
+    .forEach(
+      (menu) => {
+        menu.classList.remove(
+          "show"
+        );
+      }
+    );
+
+}
+
+document.addEventListener(
+  "click",
+  closeAllMessageMenus
+);
+
+async function deleteMessageForMe(
+  messageId
+){
+
+  if(
+    !currentConversationId ||
+    !messageId
+  ){
+    return;
+  }
+
+  try{
+
+    const messageRef =
+      doc(
+        db,
+        "conversations",
+        currentConversationId,
+        "messages",
+        messageId
+      );
+
+    await updateDoc(
+      messageRef,
+      {
+        deletedFor:
+          arrayUnion(
+            currentUser.uid
+          )
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Delete for me error:",
+      error
+    );
+
+    alert(
+      "Unable to delete message. Please try again."
+    );
+
+  }
+
+}
+
+async function deleteMessageForEveryone(
+  messageId
+){
+
+  if(
+    !currentConversationId ||
+    !messageId
+  ){
+    return;
+  }
+
+  try{
+
+    const messageRef =
+      doc(
+        db,
+        "conversations",
+        currentConversationId,
+        "messages",
+        messageId
+      );
+
+    await updateDoc(
+      messageRef,
+      {
+        deleted:true,
+        text:"",
+        imageUrl:null,
+        videoUrl:null,
+        audioUrl:null
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Delete for everyone error:",
+      error
+    );
+
+    alert(
+      "Unable to delete message. Please try again."
+    );
+
+  }
+
+}
+
+/* =========================================
    RENDER MESSAGE
 ========================================= */
 
 function renderMessage(
-  message
+  message,
+  messageId
 ){
+
+  // "Delete for me": kada a nuna wa wanda ya boye shi
+  if(
+    Array.isArray(message.deletedFor) &&
+    message.deletedFor.includes(currentUser.uid)
+  ){
+    return;
+  }
 
   const mine =
     message.senderId ===
@@ -2649,6 +2830,200 @@ function renderMessage(
 
   bubble.className =
     "bubble";
+
+  bubble.style.position =
+    "relative";
+
+  // "Delete for everyone": nuna sako a matsayin da aka goge
+  if(message.deleted === true){
+
+    const deletedText =
+      document.createElement(
+        "div"
+      );
+
+    deletedText.className =
+      "deleted-message";
+
+    deletedText.textContent =
+      "🚫 This message was deleted";
+
+    bubble.appendChild(
+      deletedText
+    );
+
+    const time =
+      document.createElement(
+        "span"
+      );
+
+    time.className =
+      "message-time";
+
+    time.textContent =
+      formatTime(
+        message.createdAt
+      );
+
+    bubble.appendChild(
+      time
+    );
+
+    row.appendChild(
+      bubble
+    );
+
+    messagesContainer.appendChild(
+      row
+    );
+
+    return;
+
+  }
+
+  const optionsBtn =
+    document.createElement(
+      "button"
+    );
+
+  optionsBtn.type =
+    "button";
+
+  optionsBtn.className =
+    "msg-options-btn";
+
+  optionsBtn.textContent =
+    "⋮";
+
+  optionsBtn.title =
+    "Message options";
+
+  const optionsMenu =
+    document.createElement(
+      "div"
+    );
+
+  optionsMenu.className =
+    "msg-options-menu";
+
+  const deleteForMeBtn =
+    document.createElement(
+      "button"
+    );
+
+  deleteForMeBtn.type =
+    "button";
+
+  deleteForMeBtn.textContent =
+    "Delete for me";
+
+  deleteForMeBtn.addEventListener(
+    "click",
+    async (e) => {
+
+      e.stopPropagation();
+
+      optionsMenu.classList.remove(
+        "show"
+      );
+
+      if(
+        !confirm(
+          "Delete this message for you only?"
+        )
+      ){
+        return;
+      }
+
+      await deleteMessageForMe(
+        messageId
+      );
+
+    }
+  );
+
+  optionsMenu.appendChild(
+    deleteForMeBtn
+  );
+
+  if(mine){
+
+    const deleteForEveryoneBtn =
+      document.createElement(
+        "button"
+      );
+
+    deleteForEveryoneBtn.type =
+      "button";
+
+    deleteForEveryoneBtn.className =
+      "danger";
+
+    deleteForEveryoneBtn.textContent =
+      "Delete for everyone";
+
+    deleteForEveryoneBtn.addEventListener(
+      "click",
+      async (e) => {
+
+        e.stopPropagation();
+
+        optionsMenu.classList.remove(
+          "show"
+        );
+
+        if(
+          !confirm(
+            "Delete this message for everyone in this chat?"
+          )
+        ){
+          return;
+        }
+
+        await deleteMessageForEveryone(
+          messageId
+        );
+
+      }
+    );
+
+    optionsMenu.appendChild(
+      deleteForEveryoneBtn
+    );
+
+  }
+
+  optionsBtn.addEventListener(
+    "click",
+    (e) => {
+
+      e.stopPropagation();
+
+      const isOpen =
+        optionsMenu.classList.contains(
+          "show"
+        );
+
+      closeAllMessageMenus();
+
+      if(!isOpen){
+
+        optionsMenu.classList.add(
+          "show"
+        );
+
+      }
+
+    }
+  );
+
+  bubble.appendChild(
+    optionsBtn
+  );
+
+  bubble.appendChild(
+    optionsMenu
+  );
 
   if(message.imageUrl){
 
@@ -3569,47 +3944,6 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-
-  <a href="index.html" class="bn-item">
-    <span class="bn-icon">🏠</span>
-    <span class="bn-label">Home</span>
-  </a>
-
-  <a href="messages.html" class="bn-item active">
-    <span class="bn-icon">💬</span>
-    <span class="bn-label">Messages</span>
-  </a>
-
-  <a href="seller-dashboard.html" class="bn-item">
-    <span class="bn-icon">🏪</span>
-    <span class="bn-label">Dashboard</span>
-  </a>
-
-  <a href="login.html" id="navProfileLink" class="bn-item">
-    <span class="bn-icon">👤</span>
-    <span class="bn-label">Profile</span>
-  </a>
-
-</nav>
-
-
-<script type="module">
-  import { auth } from "./firebase.js";
-  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-  onAuthStateChanged(auth, (user) => {
-    const link = document.getElementById("navProfileLink");
-    if(link){
-      link.href = user
-        ? "seller-profile.html?id=" + user.uid
-        : "login.html";
-    }
-  });
-</script>
-
 </body>
 
 </html>

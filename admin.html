@@ -1699,6 +1699,38 @@ Messaging"
 
   </div>
 
+
+  <!-- FEATURED REQUESTS -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>⭐ Featured Requests</h2>
+
+      <button id="refreshFeaturedRequestsBtn">
+        Refresh
+      </button>
+
+    </div>
+
+    <input
+      class="search"
+      id="featuredRequestsSearch"
+      placeholder="Search by product, seller, email or payment reference..."
+    >
+
+    <div
+      class="list"
+      id="featuredRequestsList"
+    >
+      <div class="loading">
+        Loading Featured requests...
+      </div>
+    </div>
+
+  </div>
+
 </div>
 
 
@@ -1918,6 +1950,16 @@ const premiumRequestsSearch =
     "premiumRequestsSearch"
   );
 
+const featuredRequestsList =
+  document.getElementById(
+    "featuredRequestsList"
+  );
+
+const featuredRequestsSearch =
+  document.getElementById(
+    "featuredRequestsSearch"
+  );
+
 const referralsList =
   document.getElementById(
     "referralsList"
@@ -1958,6 +2000,7 @@ let allProducts = [];
 let allCategories = [];
 let allSellerApplications = [];
 let allPremiumRequests = [];
+let allFeaturedRequests = [];
 
 let allReferrals = [];
 let allCommissions = [];
@@ -2337,6 +2380,7 @@ async function refreshAll(){
     loadPremiumSettings(),
     loadFeaturedSettings(),
     loadPremiumRequests(),
+    loadFeaturedRequests(),
     loadReferralSettings(),
     loadCommissions(),
     loadWithdrawalRequests()
@@ -6352,6 +6396,578 @@ premiumRequestsSearch.addEventListener(
               request.paymentReference +
               " " +
               request.status
+            )
+            .toLowerCase();
+
+          return text.includes(q);
+
+        }
+      )
+    );
+
+  }
+);
+
+
+/* ==========================================
+   FEATURED REQUESTS
+========================================== */
+
+async function loadFeaturedRequests(){
+
+  featuredRequestsList.innerHTML =
+    `<div class="loading">
+      Loading Featured requests...
+    </div>`;
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "featuredRequests"
+        )
+      );
+
+    allFeaturedRequests = [];
+
+    snapshot.forEach(
+      requestDoc => {
+
+        allFeaturedRequests.push({
+
+          id:
+            requestDoc.id,
+
+          ...requestDoc.data()
+
+        });
+
+      }
+    );
+
+    allFeaturedRequests.sort(
+      (a,b) => {
+
+        const dateA =
+          timestampToDate(
+            a.createdAt
+          );
+
+        const dateB =
+          timestampToDate(
+            b.createdAt
+          );
+
+        return (
+          (dateB?.getTime() || 0) -
+          (dateA?.getTime() || 0)
+        );
+
+      }
+    );
+
+    renderFeaturedRequests(
+      allFeaturedRequests
+    );
+
+    updateAnalytics();
+
+  }catch(error){
+
+    console.error(error);
+
+    featuredRequestsList.innerHTML =
+      `<div class="empty">
+        Failed to load Featured requests.
+        <br>
+        ${escapeHtml(
+          error.code || ""
+        )}
+      </div>`;
+  }
+}
+
+
+function renderFeaturedRequests(
+  requests
+){
+
+  if(!requests.length){
+
+    featuredRequestsList.innerHTML =
+      `<div class="empty">
+        No Featured requests yet.
+      </div>`;
+
+    return;
+  }
+
+  featuredRequestsList.innerHTML =
+    "";
+
+  requests.forEach(request => {
+
+    const status =
+      String(
+        request.status ||
+        "pending"
+      ).toLowerCase();
+
+    const item =
+      document.createElement(
+        "div"
+      );
+
+    item.className =
+      "item request-card";
+
+    let statusClass =
+      "pending";
+
+    if(status === "approved"){
+
+      statusClass =
+        "active";
+
+    }
+
+    if(status === "rejected"){
+
+      statusClass =
+        "rejected";
+
+    }
+
+    item.innerHTML = `
+
+      <div class="item-main">
+
+        <strong>
+          ⭐ ${escapeHtml(
+            request.productName ||
+            "Product"
+          )}
+        </strong>
+
+        <small>
+          Product Price:
+          <b>
+            ${money(
+              request.productPrice
+            )}
+          </b>
+        </small>
+
+        <small>
+          Seller:
+          ${escapeHtml(
+            request.sellerName ||
+            "Unknown"
+          )}
+        </small>
+
+        <small>
+          Email:
+          ${escapeHtml(
+            request.sellerEmail ||
+            "N/A"
+          )}
+        </small>
+
+        <small>
+          Amount Paid:
+          <b>
+            ${money(
+              request.amount
+            )}
+          </b>
+        </small>
+
+        <small>
+          Payment Reference:
+          <b>
+            ${escapeHtml(
+              request.paymentReference ||
+              "Not provided"
+            )}
+          </b>
+        </small>
+
+        ${
+          request.paymentProofUrl
+            ? `
+              <small>
+                Payment Proof:
+                <br>
+                <a
+                  href="${escapeHtml(request.paymentProofUrl)}"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <img
+                    src="${escapeHtml(request.paymentProofUrl)}"
+                    alt="Payment proof"
+                    style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-top:4px;"
+                  >
+                </a>
+              </small>
+            `
+            : ""
+        }
+
+        <small>
+          Payment Date:
+          ${escapeHtml(
+            request.paymentDate ||
+            "Not provided"
+          )}
+        </small>
+
+        <small>
+          Requested Duration:
+          ${escapeHtml(
+            request.durationDays ||
+            "N/A"
+          )}
+          days
+        </small>
+
+        <small>
+          Submitted:
+          ${escapeHtml(
+            formatDate(
+              request.createdAt
+            )
+          )}
+        </small>
+
+        <span class="badge ${statusClass}">
+          ${escapeHtml(
+            status
+          )}
+        </span>
+
+      </div>
+
+      ${
+        status === "pending"
+          ? `
+            <div class="actions">
+
+              <button
+                class="green"
+                onclick="
+                  approveFeaturedRequest(
+                    '${escapeHtml(request.id)}'
+                  )
+                "
+              >
+                Approve
+              </button>
+
+              <button
+                class="delete"
+                onclick="
+                  rejectFeaturedRequest(
+                    '${escapeHtml(request.id)}'
+                  )
+                "
+              >
+                Reject
+              </button>
+
+            </div>
+          `
+          : ""
+      }
+
+    `;
+
+    featuredRequestsList.appendChild(
+      item
+    );
+
+  });
+}
+
+
+window.approveFeaturedRequest =
+  async function(requestId){
+
+    const request =
+      allFeaturedRequests.find(
+        item =>
+          item.id ===
+          requestId
+      );
+
+    if(!request){
+
+      alert(
+        "Featured request not found."
+      );
+
+      return;
+    }
+
+    if(
+      request.status &&
+      request.status !==
+        "pending"
+    ){
+
+      alert(
+        "This request has already been processed."
+      );
+
+      return;
+    }
+
+    if(!request.productId){
+
+      alert(
+        "This request has no product ID."
+      );
+
+      return;
+    }
+
+    if(
+      !confirm(
+        "Approve this payment and mark the product as Featured?"
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      const durationDays =
+        Number(
+          request.durationDays ||
+          featuredSettings?.durationDays ||
+          7
+        );
+
+      const featuredUntil =
+        Timestamp.fromDate(
+          new Date(
+            Date.now() +
+            durationDays * 24 * 60 * 60 * 1000
+          )
+        );
+
+      await updateDoc(
+        doc(
+          db,
+          "products",
+          request.productId
+        ),
+        {
+
+          featured:
+            true,
+
+          featuredUntil,
+
+          featuredRequested:
+            false,
+
+          updatedAt:
+            serverTimestamp()
+
+        }
+      );
+
+      await updateDoc(
+        doc(
+          db,
+          "featuredRequests",
+          requestId
+        ),
+        {
+
+          status:
+            "approved",
+
+          approvedAt:
+            serverTimestamp(),
+
+          approvedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      alert(
+        "Featured request approved."
+      );
+
+      await loadFeaturedRequests();
+
+      await loadProducts();
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        "Failed to approve Featured request: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+window.rejectFeaturedRequest =
+  async function(requestId){
+
+    const request =
+      allFeaturedRequests.find(
+        item =>
+          item.id ===
+          requestId
+      );
+
+    if(!request){
+
+      alert(
+        "Featured request not found."
+      );
+
+      return;
+    }
+
+    if(
+      request.status &&
+      request.status !==
+        "pending"
+    ){
+
+      alert(
+        "This request has already been processed."
+      );
+
+      return;
+    }
+
+    if(
+      !confirm(
+        "Reject this Featured request?"
+      )
+    ){
+
+      return;
+
+    }
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "featuredRequests",
+          requestId
+        ),
+        {
+
+          status:
+            "rejected",
+
+          rejectedAt:
+            serverTimestamp(),
+
+          rejectedBy:
+            auth.currentUser?.uid ||
+            ""
+
+        }
+      );
+
+      if(request.productId){
+
+        await updateDoc(
+          doc(
+            db,
+            "products",
+            request.productId
+          ),
+          {
+
+            featuredRequested:
+              false,
+
+            updatedAt:
+              serverTimestamp()
+
+          }
+        );
+
+      }
+
+      alert(
+        "Featured request rejected."
+      );
+
+      await loadFeaturedRequests();
+
+      await loadProducts();
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        "Failed to reject Featured request: " +
+        error.message
+      );
+
+    }
+
+  };
+
+
+document
+  .getElementById(
+    "refreshFeaturedRequestsBtn"
+  )
+  .addEventListener(
+    "click",
+    loadFeaturedRequests
+  );
+
+
+featuredRequestsSearch.addEventListener(
+  "input",
+  function(){
+
+    const q =
+      this.value
+        .toLowerCase()
+        .trim();
+
+    renderFeaturedRequests(
+      allFeaturedRequests.filter(
+        request => {
+
+          const text =
+            (
+              (request.productName || "") +
+              " " +
+              (request.sellerName || "") +
+              " " +
+              (request.sellerEmail || "") +
+              " " +
+              (request.paymentReference || "") +
+              " " +
+              (request.status || "")
             )
             .toLowerCase();
 
