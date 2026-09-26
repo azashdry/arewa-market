@@ -1024,10 +1024,54 @@ header{
 
         <!-- INPUT -->
 
+        <!-- IMAGE PREVIEW (before sending) -->
+
+        <div
+          id="chatImagePreviewBox"
+          style="display:none;align-items:center;gap:8px;padding:8px 4px;"
+        >
+
+          <img
+            id="chatImagePreview"
+            style="width:70px;height:70px;object-fit:cover;border-radius:8px;"
+            alt="Selected photo"
+          >
+
+          <span
+            id="chatImageStatus"
+            style="font-size:13px;"
+          ></span>
+
+          <button
+            type="button"
+            id="chatImageRemoveBtn"
+            style="margin-left:auto;background:none;border:none;color:crimson;cursor:pointer;font-size:18px;"
+          >
+            ✕
+          </button>
+
+        </div>
+
         <form
           id="messageForm"
           class="chat-input"
         >
+
+          <button
+            type="button"
+            id="chatAttachBtn"
+            title="Attach photo"
+            style="background:none;border:none;font-size:20px;cursor:pointer;"
+          >
+            📷
+          </button>
+
+          <input
+            type="file"
+            id="chatImageFile"
+            accept="image/*"
+            style="display:none;"
+          >
 
           <textarea
             id="messageInput"
@@ -1063,6 +1107,10 @@ import {
   auth,
   db
 } from "./firebase.js";
+
+import {
+  uploadToImgbb
+} from "./imgbb-upload.js";
 
 import {
   onAuthStateChanged,
@@ -1142,6 +1190,42 @@ const messageInput =
   document.getElementById(
     "messageInput"
   );
+
+const chatAttachBtn =
+  document.getElementById(
+    "chatAttachBtn"
+  );
+
+const chatImageFile =
+  document.getElementById(
+    "chatImageFile"
+  );
+
+const chatImagePreviewBox =
+  document.getElementById(
+    "chatImagePreviewBox"
+  );
+
+const chatImagePreview =
+  document.getElementById(
+    "chatImagePreview"
+  );
+
+const chatImageStatus =
+  document.getElementById(
+    "chatImageStatus"
+  );
+
+const chatImageRemoveBtn =
+  document.getElementById(
+    "chatImageRemoveBtn"
+  );
+
+/*
+  Holds the imgbb URL of a photo the user
+  has picked but not yet sent.
+*/
+let pendingImageUrl = null;
 
 const sendBtn =
   document.getElementById(
@@ -2138,6 +2222,52 @@ function renderMessage(
   bubble.className =
     "bubble";
 
+  if(message.imageUrl){
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+    image.src =
+      message.imageUrl;
+
+    image.alt =
+      "Photo";
+
+    image.style.maxWidth =
+      "220px";
+
+    image.style.borderRadius =
+      "10px";
+
+    image.style.display =
+      "block";
+
+    image.style.marginBottom =
+      message.text
+        ? "6px"
+        : "0";
+
+    image.style.cursor =
+      "pointer";
+
+    image.addEventListener(
+      "click",
+      () => {
+        window.open(
+          message.imageUrl,
+          "_blank"
+        );
+      }
+    );
+
+    bubble.appendChild(
+      image
+    );
+
+  }
+
   const text =
     document.createElement(
       "div"
@@ -2159,9 +2289,13 @@ function renderMessage(
       message.createdAt
     );
 
-  bubble.appendChild(
-    text
-  );
+  if(message.text){
+
+    bubble.appendChild(
+      text
+    );
+
+  }
 
   bubble.appendChild(
     time
@@ -2178,6 +2312,92 @@ function renderMessage(
 }
 
 /* =========================================
+   PHOTO ATTACHMENT (imgbb)
+========================================= */
+
+chatAttachBtn.addEventListener(
+  "click",
+  () => {
+    chatImageFile.click();
+  }
+);
+
+chatImageFile.addEventListener(
+  "change",
+  async () => {
+
+    const file =
+      chatImageFile.files &&
+      chatImageFile.files[0];
+
+    if(!file){
+      return;
+    }
+
+    chatImagePreviewBox.style.display =
+      "flex";
+
+    chatImagePreview.src =
+      URL.createObjectURL(file);
+
+    chatImageStatus.textContent =
+      "⏳ Uploading...";
+
+    chatAttachBtn.disabled =
+      true;
+
+    try{
+
+      const url =
+        await uploadToImgbb(file);
+
+      pendingImageUrl =
+        url;
+
+      chatImageStatus.textContent =
+        "✅ Ready to send";
+
+    }catch(error){
+
+      console.error(
+        "Chat image upload error:",
+        error
+      );
+
+      chatImageStatus.textContent =
+        "❌ " + error.message;
+
+      pendingImageUrl =
+        null;
+
+    }
+
+    chatAttachBtn.disabled =
+      false;
+
+    chatImageFile.value =
+      "";
+
+  }
+);
+
+chatImageRemoveBtn.addEventListener(
+  "click",
+  () => {
+
+    pendingImageUrl =
+      null;
+
+    chatImagePreviewBox.style.display =
+      "none";
+
+    chatImagePreview.src =
+      "";
+
+  }
+);
+
+/* =========================================
    SEND MESSAGE
 ========================================= */
 
@@ -2190,7 +2410,10 @@ messageForm.addEventListener(
     const text =
       messageInput.value.trim();
 
-    if(!text){
+    const imageUrl =
+      pendingImageUrl;
+
+    if(!text && !imageUrl){
 
       return;
 
@@ -2236,6 +2459,9 @@ messageForm.addEventListener(
           text:
             text,
 
+          imageUrl:
+            imageUrl || null,
+
           createdAt:
             serverTimestamp(),
 
@@ -2243,6 +2469,14 @@ messageForm.addEventListener(
 
         }
       );
+
+      const lastMessagePreview =
+        text ||
+        (
+          imageUrl
+            ? "📷 Photo"
+            : ""
+        );
 
       const conversationRef =
         doc(
@@ -2282,7 +2516,7 @@ messageForm.addEventListener(
         {
 
           lastMessage:
-            text,
+            lastMessagePreview,
 
           lastMessageAt:
             serverTimestamp(),
@@ -2300,6 +2534,15 @@ messageForm.addEventListener(
       );
 
       messageInput.value =
+        "";
+
+      pendingImageUrl =
+        null;
+
+      chatImagePreviewBox.style.display =
+        "none";
+
+      chatImagePreview.src =
         "";
 
     }catch(error){
