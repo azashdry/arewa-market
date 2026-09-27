@@ -805,6 +805,11 @@ import {
   populateLgaSelect
 } from "./states-lga.js";
 
+import {
+  isPremiumActive,
+  getVisibleProductIds
+} from "./premium-utils.js";
+
 
 /* =================================================
    REFERRAL TRACKING
@@ -1619,8 +1624,7 @@ async function loadPremiumSellers(){
 
 
           const isPremium =
-            seller.subscriptionPlan === "premium" &&
-            seller.subscriptionStatus === "active";
+            isPremiumActive(seller);
 
 
           if(isPremium){
@@ -1645,6 +1649,74 @@ async function loadPremiumSellers(){
     )
 
   );
+
+}
+
+
+/* =================================================
+   HIDE PRODUCTS OVER THE FREE PLAN LIMIT
+   ---------------------------------------------------
+   Runs after loadPremiumSellers(). For every seller who
+   is NOT currently Premium, only their oldest
+   FREE_MAX_PRODUCTS products stay visible on the public
+   marketplace. Nothing is deleted - the rest just won't
+   show here until the seller renews Premium or removes
+   some products to get back under the limit.
+================================================= */
+
+function hideProductsOverFreeLimit(){
+
+  const bySeller = {};
+
+  allProducts.forEach(product => {
+
+    const sellerId = product.sellerId;
+
+    if(!sellerId || sellerId === "admin"){
+      return;
+    }
+
+    if(!bySeller[sellerId]){
+      bySeller[sellerId] = [];
+    }
+
+    bySeller[sellerId].push(product);
+
+  });
+
+
+  const hiddenProductIds = new Set();
+
+  Object.keys(bySeller).forEach(sellerId => {
+
+    const sellerIsPremium =
+      premiumSellers.has(sellerId);
+
+    const visibleIds =
+      getVisibleProductIds(
+        bySeller[sellerId],
+        sellerIsPremium
+      );
+
+    bySeller[sellerId].forEach(product => {
+
+      if(!visibleIds.has(product.id)){
+        hiddenProductIds.add(product.id);
+      }
+
+    });
+
+  });
+
+
+  if(hiddenProductIds.size){
+
+    allProducts =
+      allProducts.filter(
+        product => !hiddenProductIds.has(product.id)
+      );
+
+  }
 
 }
 
@@ -1700,6 +1772,8 @@ async function loadProducts(){
 
 
     await loadPremiumSellers();
+
+    hideProductsOverFreeLimit();
 
 
     renderProducts();

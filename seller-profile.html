@@ -621,6 +621,11 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+import {
+  isPremiumActive,
+  getVisibleProductIds
+} from "./premium-utils.js";
+
 
 
 /* =========================================
@@ -690,6 +695,7 @@ const sellerId =
 ========================================= */
 
 let currentUser = null;
+let currentSellerData = null;
 
 
 
@@ -957,6 +963,8 @@ async function loadSeller(){
     }
 
 
+    currentSellerData = seller;
+
     renderSeller(seller);
 
 
@@ -1029,8 +1037,7 @@ function renderSeller(seller){
   */
 
   const isPremium =
-    seller.subscriptionPlan === "premium" &&
-    seller.subscriptionStatus === "active";
+    isPremiumActive(seller);
 
 
   const premiumBadge =
@@ -1312,16 +1319,40 @@ async function loadSellerProducts(){
     );
 
 
+    /*
+      FREE PLAN LIMIT
+      =================================================
+      If this seller is not currently Premium, only their
+      oldest FREE_MAX_PRODUCTS products stay visible here.
+      Nothing is deleted - the rest reappear automatically
+      once they renew Premium or remove older products.
+    */
+
+    const sellerIsPremium =
+      isPremiumActive(currentSellerData);
+
+    const visibleIds =
+      getVisibleProductIds(
+        products,
+        sellerIsPremium
+      );
+
+    const visibleProducts =
+      products.filter(
+        product => visibleIds.has(product.id)
+      );
+
+
     productsCount.textContent =
-      products.length +
+      visibleProducts.length +
       (
-        products.length === 1
+        visibleProducts.length === 1
           ? " product"
           : " products"
       );
 
 
-    if(products.length === 0){
+    if(visibleProducts.length === 0){
 
       productsContainer.innerHTML =
         `
@@ -1348,7 +1379,7 @@ async function loadSellerProducts(){
       `
       <div class="products-grid">
 
-        ${products
+        ${visibleProducts
           .map(productCard)
           .join("")
         }

@@ -670,6 +670,11 @@ body.has-bottom-nav{
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+    import {
+      isPremiumActive,
+      getVisibleProductIds
+    } from "./premium-utils.js";
+
 
     // =================================================
     // ELEMENTS
@@ -956,6 +961,89 @@ body.has-bottom-nav{
         }
 
 
+        /*
+          FREE PLAN LIMIT CHECK
+          ================================================
+          If this product's seller is not currently Premium,
+          only their oldest FREE_MAX_PRODUCTS products remain
+          visible. If this product fell outside that limit
+          (e.g. Premium expired after it was added), treat it
+          as unavailable here too - it isn't deleted, it will
+          reappear automatically once the seller is Premium
+          again or removes older products.
+        */
+
+        if(
+          product.sellerId &&
+          product.sellerId !== "admin"
+        ){
+
+          try{
+
+            const sellerSnap =
+              await getDoc(
+                doc(db, "users", product.sellerId)
+              );
+
+            const seller =
+              sellerSnap.exists() ? sellerSnap.data() : null;
+
+            const sellerIsPremium =
+              isPremiumActive(seller);
+
+            if(!sellerIsPremium){
+
+              const siblingSnap =
+                await getDocs(
+                  query(
+                    collection(db, "products"),
+                    where("sellerId", "==", product.sellerId),
+                    where("status", "==", "active")
+                  )
+                );
+
+              const siblingProducts = [];
+
+              siblingSnap.forEach(item => {
+                siblingProducts.push({
+                  id: item.id,
+                  ...item.data()
+                });
+              });
+
+              const visibleIds =
+                getVisibleProductIds(
+                  siblingProducts,
+                  false
+                );
+
+              if(!visibleIds.has(productId)){
+
+                showError(
+                  "Product unavailable.",
+                  "This product is currently not available."
+                );
+
+                return;
+
+              }
+
+            }
+
+          }catch(error){
+
+            console.error(
+              "Free plan limit check error:",
+              error
+            );
+            // If the check itself fails, fail open (still show
+            // the product) rather than hiding it by mistake.
+
+          }
+
+        }
+
+
         renderProduct(product);
 
       }catch(error){
@@ -1074,8 +1162,7 @@ body.has-bottom-nav{
 
 
             const isPremium =
-              seller.subscriptionPlan === "premium" &&
-              seller.subscriptionStatus === "active";
+              isPremiumActive(seller);
 
 
             if(isPremium){

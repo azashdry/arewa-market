@@ -2231,6 +2231,12 @@ import {
 } from "./states-lga.js";
 
 import {
+  FREE_MAX_PRODUCTS,
+  isPremiumActive,
+  getVisibleProductIds
+} from "./premium-utils.js";
+
+import {
   attachImgbbUploader,
   uploadToImgbb
 } from "./imgbb-upload.js";
@@ -2320,8 +2326,6 @@ let withdrawalStats = {
   availableBalance:0
 
 };
-
-const FREE_MAX_PRODUCTS = 5;
 
 
 /* =========================================================
@@ -4885,13 +4889,10 @@ function getPremiumState(){
   }
 
 
+  // Uses the SAME rule as premium-utils.js (isPremiumActive) so
+  // every page in the app agrees on whether Premium is active.
   const active =
-    plan.toLowerCase() === "premium" &&
-    status.toLowerCase() === "active" &&
-    (
-      !endDate ||
-      endDate.getTime() > Date.now()
-    );
+    isPremiumActive(sellerData);
 
 
   const expired =
@@ -4961,6 +4962,45 @@ function renderPremiumCard(){
 
   $("premiumProductsText").textContent =
     `${currentProducts} / ${maxProducts}`;
+
+
+  /*
+    HIDDEN PRODUCTS NOTICE
+    =================================================
+    If Premium has expired/is inactive and the seller has
+    more products than the free limit allows, tell them
+    clearly how many are currently hidden from buyers and
+    why - and that nothing was deleted.
+  */
+
+  const visibleIds =
+    getVisibleProductIds(
+      allProducts,
+      premium.active
+    );
+
+  const hiddenCount =
+    allProducts.length - visibleIds.size;
+
+
+  if(hiddenCount > 0){
+
+    showMessage(
+      $("premiumMessage"),
+      `⚠️ ${hiddenCount} of your products are currently ` +
+      `HIDDEN from buyers because you're over the Free plan ` +
+      `limit (${FREE_MAX_PRODUCTS}). Nothing was deleted - ` +
+      `renew Premium or remove older products to make them ` +
+      `visible again.`,
+      "warning"
+    );
+
+  }else{
+
+    $("premiumMessage").textContent = "";
+    $("premiumMessage").style.display = "none";
+
+  }
 
 
   $("premiumUsageText").textContent =
