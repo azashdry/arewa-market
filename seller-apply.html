@@ -581,7 +581,15 @@
     attachImgbbUploader({
       fileInputId: "profileImageFile",
       urlInputId: "profileImageUrl",
-      statusId: "profileImageStatus"
+      statusId: "profileImageStatus",
+      // Muhimmi: toshe "Submit" har sai hoto ya
+      // gama turawa, don kada a ajiye tsohon URL.
+      onStart: () => {
+        submitBtn.disabled = true;
+      },
+      onDone: () => {
+        submitBtn.disabled = false;
+      }
     });
 
 

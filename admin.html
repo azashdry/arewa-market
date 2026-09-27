@@ -1780,7 +1780,15 @@ from
 attachImgbbUploader({
   fileInputId: "productImageUrlFile",
   urlInputId: "productImageUrl",
-  statusId: "productImageUrlStatus"
+  statusId: "productImageUrlStatus",
+  // Muhimmi: toshe "Save Product" har sai hoto ya
+  // gama turawa, don kada a ajiye tsohon URL a Firestore.
+  onStart: () => {
+    document.getElementById("saveProductBtn").disabled = true;
+  },
+  onDone: () => {
+    document.getElementById("saveProductBtn").disabled = false;
+  }
 });
 
 
@@ -2597,9 +2605,48 @@ function renderUsers(users){
             : ""
         }
 
+        ${
+          user.verified === true
+            ? `
+              <span
+                class="badge active"
+                style="background:#0B6E4F;"
+              >
+                ✔ Verified
+              </span>
+            `
+            : ""
+        }
+
       </div>
 
       <div class="actions">
+
+        ${
+          seller
+            ? `
+              <button
+                style="${
+                  user.verified === true
+                    ? "background:#999;"
+                    : "background:#0B6E4F;color:white;"
+                }"
+                onclick="
+                  toggleVerifiedSeller(
+                    '${escapeHtml(user.id)}',
+                    ${user.verified === true}
+                  )
+                "
+              >
+                ${
+                  user.verified === true
+                    ? "Cire Verified"
+                    : "✔ Verify Seller"
+                }
+              </button>
+            `
+            : ""
+        }
 
         <button
           onclick="
@@ -2678,6 +2725,57 @@ window.toggleUserStatus =
 
       alert(
         "Failed to update user: " +
+        error.message
+      );
+    }
+  };
+
+
+window.toggleVerifiedSeller =
+  async function(
+    userId,
+    currentlyVerified
+  ){
+
+    const confirmText =
+      currentlyVerified
+        ? "Cire Verified badge daga wannan seller?"
+        : "Amince cewa wannan seller Verified ne (an duba lambar waya/NIN)?";
+
+    if(!confirm(confirmText)) return;
+
+    try{
+
+      await updateDoc(
+        doc(
+          db,
+          "users",
+          userId
+        ),
+        {
+          verified:
+            !currentlyVerified,
+
+          verifiedAt:
+            !currentlyVerified
+              ? serverTimestamp()
+              : null,
+
+          verifiedBy:
+            !currentlyVerified
+              ? (auth.currentUser
+                  ? auth.currentUser.uid
+                  : "admin")
+              : null
+        }
+      );
+
+      await loadUsers();
+
+    }catch(error){
+
+      alert(
+        "Failed to update verification: " +
         error.message
       );
     }

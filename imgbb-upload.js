@@ -65,8 +65,10 @@ export async function uploadToImgbb(file) {
  * @param {string} opts.fileInputId  - id na <input type="file">
  * @param {string} opts.urlInputId   - id na <input type="url"> da yake akwai a form
  * @param {string} [opts.statusId]   - id na wani element (span/small) na nuna sakon "ana turawa..."
+ * @param {Function} [opts.onStart]  - ana kira lokacin da upload ya FARA (misali domin toshe "Save" button)
+ * @param {Function} [opts.onDone]   - ana kira lokacin da upload ya GAMA (ko yayi nasara ko a'a) domin buɗe "Save" button
  */
-export function attachImgbbUploader({ fileInputId, urlInputId, statusId }) {
+export function attachImgbbUploader({ fileInputId, urlInputId, statusId, onStart, onDone }) {
 
   const fileInput = document.getElementById(fileInputId);
   const urlInput = document.getElementById(urlInputId);
@@ -87,6 +89,13 @@ export function attachImgbbUploader({ fileInputId, urlInputId, statusId }) {
     if (!file) return;
 
     fileInput.disabled = true;
+
+    // Muhimmi: mun toshe "Save" button (idan an bayar)
+    // domin kada user ya danna Save kafin upload ya gama,
+    // wanda zai sa a ajiye TSOHON URL a Firestore.
+    if (typeof onStart === "function") {
+      onStart();
+    }
 
     if (statusEl) {
       statusEl.textContent = "⏳ Ana turo hoto...";
@@ -123,6 +132,10 @@ export function attachImgbbUploader({ fileInputId, urlInputId, statusId }) {
     } finally {
       fileInput.disabled = false;
       fileInput.value = "";
+
+      if (typeof onDone === "function") {
+        onDone();
+      }
     }
 
   });

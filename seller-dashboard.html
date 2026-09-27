@@ -1669,6 +1669,30 @@ body.has-bottom-nav{
 
     </div>
 
+    <div class="form-group">
+
+      <label>Yadda za a kai Kaya (Delivery Option)</label>
+
+      <select id="productDeliveryOption">
+        <option value="seller_delivers">Seller Zai Kai (Delivery)</option>
+        <option value="buyer_pickup">Buyer Zai Zo Ɗauka (Pickup)</option>
+        <option value="meetup">Mu Hadu a Wuri (Meet-up)</option>
+      </select>
+
+    </div>
+
+    <div class="form-group" id="productDeliveryFeeGroup">
+
+      <label>Delivery Fee (₦)</label>
+
+      <input
+        type="number"
+        id="productDeliveryFee"
+        min="0"
+        placeholder="Enter delivery fee (0 idan babu)">
+
+    </div>
+
     <div class="modal-actions">
 
       <button
@@ -1908,6 +1932,149 @@ body.has-bottom-nav{
 </div>
 
 
+<!-- ================= FEATURED REQUEST MODAL ================= -->
+
+<div id="featuredRequestModal" class="modal">
+
+  <div class="modal-box">
+
+    <h2>
+      Request Featured Listing
+    </h2>
+
+    <div id="featuredRequestMessage" class="info-message"></div>
+
+    <div class="payment-box">
+
+      <h3>
+        Payment Details
+      </h3>
+
+      <div class="payment-row">
+        <span>Product</span>
+        <strong id="featuredRequestProductName">Product</strong>
+      </div>
+
+      <div class="payment-row">
+        <span>Price</span>
+        <strong id="featuredRequestPrice">₦0</strong>
+      </div>
+
+      <div class="payment-row">
+
+        <span>Duration</span>
+
+        <strong>
+          <span id="featuredRequestDuration">7</span>
+          days
+        </strong>
+
+      </div>
+
+      <div class="payment-row">
+        <span>Bank</span>
+        <strong id="featuredRequestBankName">Not set</strong>
+      </div>
+
+      <div class="payment-row">
+        <span>Account Name</span>
+        <strong id="featuredRequestAccountName">Not set</strong>
+      </div>
+
+      <div class="payment-row">
+        <span>Account Number</span>
+        <strong id="featuredRequestAccountNumber">Not set</strong>
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Amount Paid (₦)
+      </label>
+
+      <input
+        type="number"
+        id="featuredAmount"
+        min="1"
+        placeholder="Enter amount paid">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Payment Reference
+      </label>
+
+      <input
+        type="text"
+        id="featuredPaymentReference"
+        placeholder="Enter transaction/payment reference">
+
+      <div class="hint" style="margin-top:6px;">
+        Ko turo hoto na screenshot/receipt na transaction — zai zama reference ɗinka kai tsaye.
+      </div>
+
+      <div style="margin:8px 0;display:flex;align-items:center;gap:10px;">
+
+        <input
+          type="file"
+          id="featuredPaymentProofFile"
+          accept="image/*">
+
+        <img
+          id="featuredPaymentProofPreview"
+          style="display:none;width:60px;height:60px;object-fit:cover;border-radius:8px;"
+          alt="Payment proof">
+
+      </div>
+
+      <div
+        id="featuredPaymentProofStatus"
+        style="font-size:13px;">
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Payment Date
+      </label>
+
+      <input
+        type="date"
+        id="featuredPaymentDate">
+
+    </div>
+
+
+    <div class="modal-actions">
+
+      <button
+        id="cancelFeaturedBtn"
+        class="btn btn-secondary">
+        Cancel
+      </button>
+
+      <button
+        id="submitFeaturedBtn"
+        class="btn btn-gold">
+        Submit Featured Request
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <!-- ================= WITHDRAWAL MODAL ================= -->
 
 <div id="withdrawalModal" class="modal">
@@ -2064,7 +2231,8 @@ import {
 } from "./states-lga.js";
 
 import {
-  attachImgbbUploader
+  attachImgbbUploader,
+  uploadToImgbb
 } from "./imgbb-upload.js";
 
 import {
@@ -2094,13 +2262,29 @@ import {
 attachImgbbUploader({
   fileInputId: "productImageFile",
   urlInputId: "productImage",
-  statusId: "productImageStatus"
+  statusId: "productImageStatus",
+  // Muhimmi: toshe "Save Product" har sai hoto ya
+  // gama turawa, don kada a ajiye tsohon URL a Firestore.
+  onStart: () => {
+    $("saveProductBtn").disabled = true;
+  },
+  onDone: () => {
+    $("saveProductBtn").disabled = false;
+  }
 });
 
 attachImgbbUploader({
   fileInputId: "sellerProfileImageFile",
   urlInputId: "sellerProfileImage",
-  statusId: "sellerProfileImageStatus"
+  statusId: "sellerProfileImageStatus",
+  // Muhimmi: toshe "Save Profile" har sai hoto ya
+  // gama turawa, don kada a ajiye tsohon URL a Firestore.
+  onStart: () => {
+    $("saveProfileBtn").disabled = true;
+  },
+  onDone: () => {
+    $("saveProfileBtn").disabled = false;
+  }
 });
 
 
@@ -4990,6 +5174,37 @@ function canAddProduct(){
 
 
 /* =========================================================
+   DELIVERY OPTION FIELD TOGGLE
+========================================================= */
+
+function toggleDeliveryFeeField(){
+
+  const isDelivery =
+    $("productDeliveryOption").value ===
+    "seller_delivers";
+
+  $("productDeliveryFeeGroup").style.display =
+    isDelivery ? "block" : "none";
+
+  if(!isDelivery){
+
+    $("productDeliveryFee").value = "";
+
+  }
+
+}
+
+if($("productDeliveryOption")){
+
+  $("productDeliveryOption").addEventListener(
+    "change",
+    toggleDeliveryFeeField
+  );
+
+}
+
+
+/* =========================================================
    PRODUCT MODAL
 ========================================================= */
 
@@ -5022,6 +5237,13 @@ function openProductModal(product=null){
 
     $("productImage").value = "";
     $("productDescription").value = "";
+
+    $("productDeliveryOption").value =
+      "seller_delivers";
+
+    $("productDeliveryFee").value = "";
+
+    toggleDeliveryFeeField();
 
     $("productImagePreview").style.display =
       "none";
@@ -5061,6 +5283,14 @@ function openProductModal(product=null){
 
     $("productDescription").value =
       product.description || "";
+
+    $("productDeliveryOption").value =
+      product.deliveryOption || "seller_delivers";
+
+    $("productDeliveryFee").value =
+      product.deliveryFee || "";
+
+    toggleDeliveryFeeField();
 
 
     if(product.imageUrl){
@@ -5138,6 +5368,14 @@ async function saveProduct(){
 
   const description =
     $("productDescription").value.trim();
+
+  const deliveryOption =
+    $("productDeliveryOption").value;
+
+  const deliveryFee =
+    deliveryOption === "seller_delivers"
+      ? (Number($("productDeliveryFee").value) || 0)
+      : 0;
 
 
   if(!name){
@@ -5252,6 +5490,8 @@ async function saveProduct(){
             lga + ", " + state,
           imageUrl,
           description,
+          deliveryOption,
+          deliveryFee,
 
           updatedAt:
             serverTimestamp()
@@ -5294,6 +5534,11 @@ async function saveProduct(){
             lga + ", " + state,
           imageUrl,
           description,
+          deliveryOption,
+          deliveryFee,
+
+          avgRating:0,
+          reviewCount:0,
 
           featured:false,
 
@@ -5500,6 +5745,106 @@ window.toggleProduct = async function(productId){
 };
 
 
+let pendingFeaturedProductId = null;
+
+let featuredPaymentProofUrl = null;
+
+const featuredPaymentProofFile =
+  document.getElementById(
+    "featuredPaymentProofFile"
+  );
+
+const featuredPaymentProofPreview =
+  document.getElementById(
+    "featuredPaymentProofPreview"
+  );
+
+const featuredPaymentProofStatus =
+  document.getElementById(
+    "featuredPaymentProofStatus"
+  );
+
+function resetFeaturedPaymentProof(){
+
+  featuredPaymentProofUrl =
+    null;
+
+  featuredPaymentProofFile.value =
+    "";
+
+  featuredPaymentProofPreview.style.display =
+    "none";
+
+  featuredPaymentProofPreview.src =
+    "";
+
+  featuredPaymentProofStatus.textContent =
+    "";
+
+}
+
+featuredPaymentProofFile.addEventListener(
+  "change",
+  async () => {
+
+    const file =
+      featuredPaymentProofFile.files &&
+      featuredPaymentProofFile.files[0];
+
+    if(!file){
+      return;
+    }
+
+    featuredPaymentProofPreview.src =
+      URL.createObjectURL(file);
+
+    featuredPaymentProofPreview.style.display =
+      "block";
+
+    featuredPaymentProofStatus.textContent =
+      "⏳ Uploading...";
+
+    featuredPaymentProofFile.disabled =
+      true;
+
+    try{
+
+      const url =
+        await uploadToImgbb(file);
+
+      featuredPaymentProofUrl =
+        url;
+
+      // Turawar hoto ita ce ta zama "reference" ɗin
+      // idan mai amfani bai rubuta wani text ba da hannu.
+      $("featuredPaymentReference").value =
+        url;
+
+      featuredPaymentProofStatus.textContent =
+        "✅ Payment proof attached";
+
+    }catch(error){
+
+      console.error(
+        "Payment proof upload error:",
+        error
+      );
+
+      featuredPaymentProofStatus.textContent =
+        "❌ " + error.message;
+
+      featuredPaymentProofUrl =
+        null;
+
+    }
+
+    featuredPaymentProofFile.disabled =
+      false;
+
+  }
+);
+
+
 window.requestFeatured = async function(productId){
 
   const product =
@@ -5553,45 +5898,299 @@ window.requestFeatured = async function(productId){
   }
 
 
+  pendingFeaturedProductId =
+    productId;
+
+
   const price =
-    featuredSettings?.price || 0;
+    Number(featuredSettings?.price || 0);
 
   const duration =
-    featuredSettings?.durationDays || 7;
+    Number(featuredSettings?.durationDays || 7);
 
-  const bankName =
+
+  $("featuredRequestProductName").textContent =
+    product.name || "Product";
+
+  $("featuredRequestPrice").textContent =
+    formatMoney(price);
+
+  $("featuredRequestDuration").textContent =
+    duration;
+
+  $("featuredRequestBankName").textContent =
     featuredSettings?.bankName || "Not set";
 
-  const accountName =
+  $("featuredRequestAccountName").textContent =
     featuredSettings?.accountName || "Not set";
 
-  const accountNumber =
+  $("featuredRequestAccountNumber").textContent =
     featuredSettings?.accountNumber || "Not set";
 
-  const confirmed = confirm(
-    `Featured Listing Boost\n\n` +
-    `Price: ${formatMoney(price)}\n` +
-    `Duration: ${duration} days\n\n` +
-    `Pay to:\n` +
-    `Bank: ${bankName}\n` +
-    `Account Name: ${accountName}\n` +
-    `Account Number: ${accountNumber}\n\n` +
-    "This will notify the admin that you want this product marked as Featured.\n\n" +
-    "After they confirm your payment, they will activate it.\n\nSend request?"
+  $("featuredAmount").value =
+    price || "";
+
+  $("featuredPaymentReference").value =
+    "";
+
+  resetFeaturedPaymentProof();
+
+
+  const today =
+    new Date();
+
+  const year =
+    today.getFullYear();
+
+  const month =
+    String(today.getMonth()+1).padStart(2,"0");
+
+  const day =
+    String(today.getDate()).padStart(2,"0");
+
+  $("featuredPaymentDate").value =
+    `${year}-${month}-${day}`;
+
+
+  hideMessage(
+    $("featuredRequestMessage")
   );
 
-  if(!confirmed){
+
+  $("featuredRequestModal").classList.add("show");
+
+};
+
+
+function closeFeaturedRequestModal(){
+
+  $("featuredRequestModal").classList.remove("show");
+
+  pendingFeaturedProductId = null;
+
+  resetFeaturedPaymentProof();
+
+}
+
+
+async function submitFeaturedRequest(){
+
+  hideMessage(
+    $("featuredRequestMessage")
+  );
+
+
+  if(!pendingFeaturedProductId){
+
+    showMessage(
+      $("featuredRequestMessage"),
+      "No product selected.",
+      "error"
+    );
+
     return;
+
   }
 
 
+  const product =
+    allProducts.find(
+      item => item.id === pendingFeaturedProductId
+    );
+
+
+  if(!product){
+
+    showMessage(
+      $("featuredRequestMessage"),
+      "Product not found.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const amount =
+    Number(
+      $("featuredAmount").value
+    );
+
+  const paymentReference =
+    $("featuredPaymentReference").value.trim();
+
+  const paymentDate =
+    $("featuredPaymentDate").value;
+
+
+  if(!amount || amount <= 0){
+
+    showMessage(
+      $("featuredRequestMessage"),
+      "Please enter the amount you paid.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!paymentReference){
+
+    showMessage(
+      $("featuredRequestMessage"),
+      "Please enter your payment reference.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(!paymentDate){
+
+    showMessage(
+      $("featuredRequestMessage"),
+      "Please select the payment date.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const expectedAmount =
+    Number(featuredSettings?.price || 0);
+
+  if(
+    expectedAmount > 0 &&
+    amount !== expectedAmount
+  ){
+
+    const proceed =
+      confirm(
+        `The current Featured price is ${formatMoney(expectedAmount)}, but you entered ${formatMoney(amount)}.\n\nDo you want to submit the request anyway?`
+      );
+
+    if(!proceed){
+      return;
+    }
+
+  }
+
+
+  const button =
+    $("submitFeaturedBtn");
+
+  button.disabled = true;
+
+  button.textContent =
+    "Submitting...";
+
+
   try{
+
+    const duplicateQuery =
+      query(
+        collection(
+          db,
+          "featuredRequests"
+        ),
+        where(
+          "sellerId",
+          "==",
+          currentUser.uid
+        ),
+        where(
+          "productId",
+          "==",
+          pendingFeaturedProductId
+        ),
+        where(
+          "status",
+          "==",
+          "pending"
+        )
+      );
+
+    const duplicateSnapshot =
+      await getDocs(duplicateQuery);
+
+    if(!duplicateSnapshot.empty){
+
+      showMessage(
+        $("featuredRequestMessage"),
+        "You already have a pending Featured request for this product.",
+        "warning"
+      );
+
+      return;
+
+    }
+
+
+    const durationDays =
+      Number(featuredSettings?.durationDays || 7);
+
+
+    await addDoc(
+      collection(
+        db,
+        "featuredRequests"
+      ),
+      {
+
+        productId:
+          pendingFeaturedProductId,
+
+        productName:
+          product.name || "Product",
+
+        productPrice:
+          product.price || 0,
+
+        sellerId:
+          currentUser.uid,
+
+        sellerName:
+          sellerData.name ||
+          sellerData.fullName ||
+          sellerData.sellerName ||
+          "",
+
+        sellerEmail:
+          currentUser.email ||
+          "",
+
+        amount,
+
+        paymentReference,
+
+        paymentProofUrl:
+          featuredPaymentProofUrl || null,
+
+        paymentDate,
+
+        durationDays,
+
+        status:"pending",
+
+        createdAt:
+          serverTimestamp()
+
+      }
+    );
+
 
     await updateDoc(
       doc(
         db,
         "products",
-        productId
+        pendingFeaturedProductId
       ),
       {
 
@@ -5607,30 +6206,48 @@ window.requestFeatured = async function(productId){
     );
 
 
-    alert(
-      "Request sent! The admin will review it shortly."
+    showMessage(
+      $("featuredRequestMessage"),
+      "Featured request submitted successfully. Please wait for Super Admin approval.",
+      "success"
     );
 
 
     await loadProducts();
 
+
+    setTimeout(() => {
+
+      closeFeaturedRequestModal();
+
+    },1200);
+
   }
   catch(error){
 
     console.error(
-      "Request featured error:",
+      "Featured request error:",
       error
     );
 
-
-    alert(
+    showMessage(
+      $("featuredRequestMessage"),
       error.message ||
-      "Unable to send request."
+      "Unable to send request.",
+      "error"
     );
 
   }
+  finally{
 
-};
+    button.disabled = false;
+
+    button.textContent =
+      "Submit Featured Request";
+
+  }
+
+}
 
 
 /* =========================================================
@@ -6630,6 +7247,32 @@ $("cancelPremiumBtn").addEventListener(
 $("submitPremiumBtn").addEventListener(
   "click",
   submitPremiumRequest
+);
+
+
+$("cancelFeaturedBtn").addEventListener(
+  "click",
+  closeFeaturedRequestModal
+);
+
+
+$("submitFeaturedBtn").addEventListener(
+  "click",
+  submitFeaturedRequest
+);
+
+
+$("featuredRequestModal").addEventListener(
+  "click",
+  function(event){
+
+    if(event.target === $("featuredRequestModal")){
+
+      closeFeaturedRequestModal();
+
+    }
+
+  }
 );
 
 

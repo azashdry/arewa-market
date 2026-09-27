@@ -254,6 +254,152 @@ body{
       background:#0e3c27;
     }
 
+    /* ================= VERIFIED BADGE ================= */
+
+    .verified-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      background:#e1f5ee;
+      color:#085041;
+      font-size:12px;
+      font-weight:bold;
+      padding:3px 9px;
+      border-radius:10px;
+      margin-left:6px;
+    }
+
+    /* ================= RATING ================= */
+
+    .rating-line{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:14px;
+      font-size:14px;
+      color:#666;
+    }
+
+    .rating-line .stars{
+      color:#d69e1d;
+      letter-spacing:1px;
+      font-size:16px;
+    }
+
+    /* ================= DELIVERY INFO ================= */
+
+    .delivery-box{
+      background:#f3f0e9;
+      border-radius:8px;
+      padding:10px 14px;
+      font-size:13.5px;
+      color:#333;
+      margin-bottom:18px;
+    }
+
+    /* ================= INTERESTED BUTTON ================= */
+
+    .interested-btn{
+      display:inline-block;
+      background:#c9a227;
+      color:#0d3b2c;
+      border:none;
+      padding:11px 16px;
+      border-radius:7px;
+      font-weight:bold;
+      font-size:14px;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      text-align:center;
+      text-decoration:none;
+    }
+
+    .interested-btn:hover{
+      background:#b78e1e;
+    }
+
+    /* ================= REVIEWS ================= */
+
+    .reviews-section{
+      margin-top:25px;
+      padding-top:20px;
+      border-top:1px solid #f3f0e9;
+    }
+
+    .reviews-section h3{
+      color:#135134;
+      margin-bottom:12px;
+      font-size:18px;
+    }
+
+    .review-form .star-input{
+      font-size:24px;
+      color:#d69e1d;
+      cursor:pointer;
+      margin-bottom:8px;
+    }
+
+    .review-form textarea{
+      width:100%;
+      border:1px solid #ddd;
+      border-radius:7px;
+      padding:9px;
+      font-size:13.5px;
+      font-family:inherit;
+      margin-bottom:8px;
+      resize:vertical;
+      min-height:60px;
+    }
+
+    .review-form button{
+      background:#135134;
+      color:white;
+      border:none;
+      padding:9px 15px;
+      border-radius:6px;
+      font-weight:bold;
+      cursor:pointer;
+      font-size:13.5px;
+    }
+
+    .review-form .review-error{
+      color:#b42318;
+      font-size:12.5px;
+      margin-top:6px;
+      display:none;
+    }
+
+    .review-item{
+      border-bottom:1px solid #f3f0e9;
+      padding:12px 0;
+    }
+
+    .review-item .review-head{
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      font-weight:bold;
+      color:#222;
+      margin-bottom:4px;
+    }
+
+    .review-item .review-stars{
+      color:#d69e1d;
+      font-size:13px;
+    }
+
+    .review-item .review-comment{
+      font-size:13.5px;
+      color:#555;
+      line-height:1.5;
+    }
+
+    .no-reviews{
+      font-size:13.5px;
+      color:#888;
+    }
+
     /* ================= LOADING ================= */
 
     .loading,
@@ -512,7 +658,16 @@ body.has-bottom-nav{
 
     import {
       doc,
-      getDoc
+      getDoc,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      where,
+      orderBy,
+      limit,
+      runTransaction,
+      serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -892,6 +1047,7 @@ body.has-bottom-nav{
       */
 
       let premiumBadge = "";
+      let verifiedBadge = "";
 
 
       if(
@@ -934,6 +1090,17 @@ body.has-bottom-nav{
 
             }
 
+
+            if(seller.verified === true){
+
+              verifiedBadge = `
+                <span class="verified-badge">
+                  ✔ Verified Seller
+                </span>
+              `;
+
+            }
+
           }
 
         }catch(error){
@@ -956,6 +1123,16 @@ body.has-bottom-nav{
         product.sellerId !== "admin"
       ){
 
+        const interestedUrl =
+          "messages.html?sellerId=" +
+          encodeURIComponent(product.sellerId) +
+          "&productId=" +
+          encodeURIComponent(productId) +
+          "&productName=" +
+          encodeURIComponent(name) +
+          "&productPrice=" +
+          encodeURIComponent(price);
+
         sellerBox = `
 
           <div class="seller-box">
@@ -968,6 +1145,7 @@ body.has-bottom-nav{
 
             <div class="seller-name">
               ${escapeHtml(sellerName)}
+              ${verifiedBadge}
             </div>
 
             <a
@@ -977,6 +1155,13 @@ body.has-bottom-nav{
               )}"
             >
               View Seller Profile →
+            </a>
+
+            <a
+              class="interested-btn"
+              href="${interestedUrl}"
+            >
+              🙋 Ina Sha'awa (I'm Interested)
             </a>
 
           </div>
@@ -1036,6 +1221,14 @@ body.has-bottom-nav{
               ₦${price}
             </div>
 
+            <div class="rating-line" id="ratingLine">
+              <span class="stars">${renderStarString(product.avgRating || 0)}</span>
+              <span>
+                ${(product.avgRating || 0).toFixed ? Number(product.avgRating || 0).toFixed(1) : "0.0"}
+                (${product.reviewCount || 0} reviews)
+              </span>
+            </div>
+
 
             <div class="meta">
 
@@ -1056,6 +1249,17 @@ body.has-bottom-nav{
 
             </div>
 
+            <div class="delivery-box">
+              🚚 <strong>Delivery:</strong>
+              ${deliveryLabel(product.deliveryOption)}
+              ${
+                product.deliveryOption === "seller_delivers" &&
+                Number(product.deliveryFee) > 0
+                  ? " — ₦" + Number(product.deliveryFee).toLocaleString("en-NG")
+                  : ""
+              }
+            </div>
+
 
             <h3 class="description-title">
               Product Description
@@ -1069,6 +1273,35 @@ body.has-bottom-nav{
 
             ${sellerBox}
 
+
+            <div class="reviews-section" id="reviewsSection">
+
+              <h3>Reviews & Ratings</h3>
+
+              <div class="review-form" id="reviewForm">
+
+                <p style="font-size:13px;margin-bottom:6px;color:#555;">
+                  Bar Review akan wannan kaya:
+                </p>
+
+                <div class="star-input" id="starInput">
+                  <span data-val="1">☆</span><span data-val="2">☆</span><span data-val="3">☆</span><span data-val="4">☆</span><span data-val="5">☆</span>
+                </div>
+
+                <textarea id="reviewComment" placeholder="Yaya kwarewarka da wannan seller/kaya?"></textarea>
+
+                <button id="submitReviewBtn" type="button">Aika Review</button>
+
+                <div class="review-error" id="reviewError"></div>
+
+              </div>
+
+              <div id="reviewsList" style="margin-top:16px;">
+                <p class="no-reviews">Loading reviews...</p>
+              </div>
+
+            </div>
+
           </div>
 
         </article>
@@ -1078,6 +1311,274 @@ body.has-bottom-nav{
 
       document.title =
         `${name} - Arewa Market`;
+
+
+      attachReviewFormHandlers(product);
+
+      loadReviews();
+
+    }
+
+
+    // =================================================
+    // DELIVERY LABEL
+    // =================================================
+
+    function deliveryLabel(option){
+
+      const labels = {
+        seller_delivers: "Seller Zai Kai Maka (Delivery)",
+        buyer_pickup: "Ka Zo Ka Ɗauka (Pickup)",
+        meetup: "Mu Hadu a Wuri (Meet-up)"
+      };
+
+      return labels[option] || "Ba a bayyana ba";
+
+    }
+
+
+    // =================================================
+    // STAR STRING HELPER
+    // =================================================
+
+    function renderStarString(rating){
+
+      const full =
+        Math.round(Number(rating) || 0);
+
+      return "★".repeat(full) + "☆".repeat(5 - full);
+
+    }
+
+
+    // =================================================
+    // REVIEWS: SUBMIT
+    // =================================================
+
+    let selectedReviewRating = 0;
+
+    function attachReviewFormHandlers(product){
+
+      selectedReviewRating = 0;
+
+      const starInput =
+        document.getElementById("starInput");
+
+      const submitBtn =
+        document.getElementById("submitReviewBtn");
+
+      const errorEl =
+        document.getElementById("reviewError");
+
+      if(!starInput || !submitBtn) return;
+
+      starInput.querySelectorAll("span").forEach(s => {
+
+        s.addEventListener("click", () => {
+
+          selectedReviewRating =
+            Number(s.dataset.val);
+
+          starInput.querySelectorAll("span").forEach(x => {
+
+            x.textContent =
+              Number(x.dataset.val) <= selectedReviewRating
+                ? "★"
+                : "☆";
+
+          });
+
+        });
+
+      });
+
+      submitBtn.addEventListener("click", async () => {
+
+        errorEl.style.display = "none";
+
+        if(!auth.currentUser){
+
+          errorEl.textContent =
+            "Dole ne ka Login kafin ka aika review.";
+
+          errorEl.style.display = "block";
+
+          return;
+
+        }
+
+        if(selectedReviewRating === 0){
+
+          errorEl.textContent =
+            "Zaɓi taurari (rating) kafin ka aika.";
+
+          errorEl.style.display = "block";
+
+          return;
+
+        }
+
+        const comment =
+          document.getElementById("reviewComment").value.trim();
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Ana Aikawa...";
+
+        try{
+
+          const buyerSnap =
+            await getDoc(
+              doc(db, "users", auth.currentUser.uid)
+            );
+
+          const buyerName =
+            buyerSnap.exists()
+              ? (buyerSnap.data().name || "Buyer")
+              : "Buyer";
+
+          const productRef =
+            doc(db, "products", productId);
+
+          await runTransaction(db, async (tx) => {
+
+            const productSnap =
+              await tx.get(productRef);
+
+            if(!productSnap.exists()){
+              throw new Error("Product din ba ya nan.");
+            }
+
+            const data =
+              productSnap.data();
+
+            const oldCount =
+              data.reviewCount || 0;
+
+            const oldAvg =
+              data.avgRating || 0;
+
+            const newCount =
+              oldCount + 1;
+
+            const newAvg =
+              ((oldAvg * oldCount) + selectedReviewRating) / newCount;
+
+            const reviewRef =
+              doc(collection(db, "reviews"));
+
+            tx.set(reviewRef, {
+              productId,
+              sellerId: product.sellerId || null,
+              buyerId: auth.currentUser.uid,
+              buyerName,
+              rating: selectedReviewRating,
+              comment: comment || "",
+              createdAt: serverTimestamp()
+            });
+
+            tx.update(productRef, {
+              avgRating: Math.round(newAvg * 10) / 10,
+              reviewCount: newCount
+            });
+
+          });
+
+          document.getElementById("reviewComment").value = "";
+
+          selectedReviewRating = 0;
+
+          starInput.querySelectorAll("span").forEach(x => {
+            x.textContent = "☆";
+          });
+
+          showMessage("Na gode! Review ɗinka an aika.");
+
+          await loadReviews();
+
+        }catch(error){
+
+          console.error("Submit review error:", error);
+
+          errorEl.textContent =
+            error.message || "An kasa aika review. Sake gwadawa.";
+
+          errorEl.style.display = "block";
+
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Aika Review";
+
+      });
+
+    }
+
+
+    // =================================================
+    // REVIEWS: LOAD & RENDER
+    // =================================================
+
+    async function loadReviews(){
+
+      const listEl =
+        document.getElementById("reviewsList");
+
+      if(!listEl) return;
+
+      try{
+
+        const q =
+          query(
+            collection(db, "reviews"),
+            where("productId", "==", productId),
+            orderBy("createdAt", "desc"),
+            limit(20)
+          );
+
+        const snap =
+          await getDocs(q);
+
+        if(snap.empty){
+
+          listEl.innerHTML =
+            `<p class="no-reviews">Babu review tukuna akan wannan kaya.</p>`;
+
+          return;
+
+        }
+
+        listEl.innerHTML =
+          snap.docs.map(d => {
+
+            const r = d.data();
+
+            const stars =
+              renderStarString(r.rating || 0);
+
+            return `
+              <div class="review-item">
+                <div class="review-head">
+                  <span>${escapeHtml(r.buyerName || "Buyer")}</span>
+                  <span class="review-stars">${stars}</span>
+                </div>
+                ${
+                  r.comment
+                    ? `<div class="review-comment">${escapeHtml(r.comment)}</div>`
+                    : ""
+                }
+              </div>
+            `;
+
+          }).join("");
+
+      }catch(error){
+
+        console.error("Load reviews error:", error);
+
+        listEl.innerHTML =
+          `<p class="no-reviews">An kasa loading reviews.</p>`;
+
+      }
 
     }
 
