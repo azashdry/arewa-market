@@ -424,6 +424,28 @@ header{
   color:#daefe5;
 }
 
+.commission-highlight{
+  margin-top:15px;
+  background:rgba(192,142,24,.18);
+  border:1px solid rgba(212,162,44,.55);
+  border-radius:10px;
+  padding:14px 16px;
+}
+
+.commission-highlight strong{
+  display:block;
+  font-size:17px;
+  color:#ffd76b;
+  margin-bottom:4px;
+}
+
+.commission-highlight span{
+  display:block;
+  font-size:12.5px;
+  color:#f3efe7;
+  line-height:1.5;
+}
+
 /* =========================
    WITHDRAWAL
 ========================= */
@@ -1157,6 +1179,11 @@ body.has-bottom-nav{
     Commission is generated only after the referred user gets Premium and the Super Admin approves the payment.
   </p>
 
+  <div class="commission-highlight" id="referralCommissionInfo">
+    <strong>Loading commission rate...</strong>
+    <span></span>
+  </div>
+
   <div class="referral-link-box">
 
     <input
@@ -1429,6 +1456,7 @@ body.has-bottom-nav{
     <div class="premium-info">
       <small>Expiry</small>
       <strong id="premiumExpiryText">Not applicable</strong>
+      <small id="premiumCountdownText" style="display:block;margin-top:4px;font-weight:normal;"></small>
     </div>
 
   </div>
@@ -2317,6 +2345,8 @@ let myWithdrawals = [];
 
 let minimumWithdrawal = 1000;
 
+let referralSettingsData = null;
+
 let withdrawalStats = {
 
   totalCommission:0,
@@ -2559,6 +2589,21 @@ onAuthStateChanged(auth, async user => {
     loadWithdrawalData();
 
     listenForMessages();
+
+    // Re-check the Premium countdown/expiry every minute so it
+    // flips to "Expired" and the Free-plan limits kick in on
+    // their own the moment the real date passes, with no need
+    // for the seller to reload the page.
+    setInterval(
+      () => {
+
+        if(sellerData){
+          renderPremiumCard();
+        }
+
+      },
+      60000
+    );
 
   }
   catch(error){
@@ -3085,12 +3130,42 @@ function renderReferralData(){
                 : "badge-pending";
 
 
+              // Read the actual commission(s) the Super Admin
+              // has generated for this specific referred user,
+              // from the real "commissions" collection records
+              // (myCommissions), not a field that never exists
+              // on the referral/user record itself.
               const commission =
-                Number(
-                  item.totalCommission ||
-                  item.commissionAmount ||
-                  0
-                );
+                myCommissions
+                  .filter(commissionItem => {
+
+                    const commissionStatus =
+                      String(
+                        commissionItem.status ||
+                        "approved"
+                      ).toLowerCase();
+
+                    if(
+                      commissionStatus === "rejected" ||
+                      commissionStatus === "cancelled"
+                    ){
+                      return false;
+                    }
+
+                    return (
+                      commissionItem.referredUserId ===
+                      (item.referredUserId || item.id)
+                    );
+
+                  })
+                  .reduce(
+                    (sum,commissionItem) => sum + Number(
+                      commissionItem.amount ||
+                      commissionItem.commissionAmount ||
+                      0
+                    ),
+                    0
+                  );
 
 
               return `
@@ -3386,6 +3461,9 @@ async function loadWithdrawalSettings(){
       const settings =
         settingsSnap.data();
 
+      referralSettingsData =
+        settings;
+
 
       const configuredMinimum =
         Number(
@@ -3404,6 +3482,12 @@ async function loadWithdrawalSettings(){
 
       }
 
+    }else{
+
+      referralSettingsData = {
+        referralSystemEnabled:false
+      };
+
     }
 
   }
@@ -3414,6 +3498,8 @@ async function loadWithdrawalSettings(){
       error
     );
 
+    referralSettingsData = null;
+
   }
 
 
@@ -3422,6 +3508,127 @@ async function loadWithdrawalSettings(){
 
   $("withdrawModalMinimum").textContent =
     formatMoney(minimumWithdrawal);
+
+  renderReferralCommissionInfo();
+
+}
+
+
+/* =========================================================
+   REFERRAL COMMISSION INFO (for sellers)
+========================================================= */
+
+function renderReferralCommissionInfo(){
+
+  const box =
+    $("referralCommissionInfo");
+
+  if(!box){
+    return;
+  }
+
+  const titleEl =
+    box.querySelector("strong");
+
+  const noteEl =
+    box.querySelector("span");
+
+  // Still loading one of the two sources needed.
+  if(referralSettingsData === null){
+
+    titleEl.textContent =
+      "Loading commission rate...";
+
+    noteEl.textContent = "";
+
+    return;
+
+  }
+
+  if(
+    referralSettingsData.referralSystemEnabled !== true
+  ){
+
+    titleEl.textContent =
+      "Referral commissions are currently OFF.";
+
+    noteEl.textContent =
+      "The Super Admin has temporarily disabled referral commissions. Check back later.";
+
+    return;
+
+  }
+
+  const commissionType =
+    referralSettingsData.commissionType ||
+    "fixed";
+
+  const commissionValue =
+    Number(
+      referralSettingsData.commissionValue || 0
+    );
+
+  const firstPremiumOn =
+    referralSettingsData.firstPremiumCommission !== false;
+
+  const renewalOn =
+    referralSettingsData.renewalCommission === true;
+
+  let earnText = "";
+
+  if(commissionType === "percentage"){
+
+    const premiumPrice =
+      Number(
+        premiumSettings?.price || 0
+      );
+
+    if(premiumPrice > 0){
+
+      const computed =
+        (premiumPrice * commissionValue) / 100;
+
+      earnText =
+        `You earn ${commissionValue}% (${formatMoney(computed)}) for every friend who becomes Premium!`;
+
+    }else{
+
+      earnText =
+        `You earn ${commissionValue}% of the Premium plan price for every friend who becomes Premium!`;
+
+    }
+
+  }else{
+
+    earnText =
+      `You earn ${formatMoney(commissionValue)} for every friend who becomes Premium!`;
+
+  }
+
+  titleEl.textContent =
+    earnText;
+
+  let noteText = "";
+
+  if(!firstPremiumOn){
+
+    noteText =
+      "Note: first-time Premium commission is currently OFF for new referrals.";
+
+  }else if(renewalOn){
+
+    noteText =
+      "You also earn again whenever they renew their Premium subscription.";
+
+  }else{
+
+    noteText =
+      "Commission applies to their first Premium upgrade only. Renewal commission is currently OFF.";
+
+  }
+
+  noteEl.textContent =
+    noteText;
 
 }
 
@@ -4675,6 +4882,8 @@ async function loadPremiumData(){
 
     renderPremiumCard();
 
+    renderReferralCommissionInfo();
+
   }
   catch(error){
 
@@ -4711,6 +4920,8 @@ async function loadPremiumData(){
 
 
     renderPremiumCard();
+
+    renderReferralCommissionInfo();
 
   }
 
@@ -4915,8 +5126,51 @@ function getPremiumState(){
 
 
 /* =========================================================
-   PREMIUM CARD
+   PREMIUM COUNTDOWN TEXT
+   Real countdown based on the actual subscriptionEnd date -
+   not a fake timer. Once the date passes, getPremiumState()
+   already flips "active" to false on its own (recomputed
+   every time this renders), so the seller automatically goes
+   back to the Free plan rules with no manual admin action.
 ========================================================= */
+
+function getPremiumCountdownText(endDate){
+
+  if(!endDate){
+    return "";
+  }
+
+  const msLeft =
+    endDate.getTime() - Date.now();
+
+  const daysLeft =
+    Math.ceil(
+      msLeft / (1000 * 60 * 60 * 24)
+    );
+
+  if(daysLeft > 1){
+    return `${daysLeft} days left`;
+  }
+
+  if(daysLeft === 1){
+    return "1 day left";
+  }
+
+  if(daysLeft === 0){
+    return "Expires today";
+  }
+
+  const daysAgo =
+    Math.abs(daysLeft);
+
+  return (
+    daysAgo === 1
+    ? "Expired 1 day ago"
+    : `Expired ${daysAgo} days ago`
+  );
+
+}
+
 
 function renderPremiumCard(){
 
@@ -5032,6 +5286,9 @@ function renderPremiumCard(){
       :
       "No expiry";
 
+    $("premiumCountdownText").textContent =
+      getPremiumCountdownText(premium.endDate);
+
     $("upgradePremiumBtn").textContent =
       "Renew Premium";
 
@@ -5056,6 +5313,10 @@ function renderPremiumCard(){
     $("premiumExpiryText").textContent =
       formatDate(premium.endDate);
 
+    $("premiumCountdownText").textContent =
+      getPremiumCountdownText(premium.endDate) +
+      " — reverted to Free plan";
+
     $("upgradePremiumBtn").textContent =
       "Renew Premium";
 
@@ -5079,6 +5340,9 @@ function renderPremiumCard(){
 
     $("premiumExpiryText").textContent =
       "Not applicable";
+
+    $("premiumCountdownText").textContent =
+      "";
 
 
     if(
