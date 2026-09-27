@@ -18,6 +18,11 @@
 const IMGBB_API_KEY = "dfaaa5e23758aefce7dbcf93a3edb304";
 const IMGBB_ENDPOINT = "https://api.imgbb.com/1/upload";
 
+// imgbb da kansa yana karban har zuwa 32MB, amma mun rage iyakar
+// zuwa 8MB anan domin hotuna su yi sauri wajen loading a app,
+// musamman ga masu amfani da net mai jinkiri.
+const MAX_IMAGE_SIZE_MB = 8;
+
 /**
  * Turo file guda daya zuwa imgbb.
  * @param {File} file
@@ -31,6 +36,15 @@ export async function uploadToImgbb(file) {
 
   if (!file.type.startsWith("image/")) {
     throw new Error("Dole ne ka zabi hoto (image file).");
+  }
+
+  const sizeMB = file.size / (1024 * 1024);
+  if (sizeMB > MAX_IMAGE_SIZE_MB) {
+    throw new Error(
+      `Hoton ya yi girma sosai (${sizeMB.toFixed(1)}MB). ` +
+      `Iyakar da aka amince da ita shine ${MAX_IMAGE_SIZE_MB}MB. ` +
+      `Ka rage girman hoton ka sake gwadawa.`
+    );
   }
 
   const formData = new FormData();
