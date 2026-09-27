@@ -1019,6 +1019,31 @@ h1{
 
       </div>
 
+
+      <div class="setting-box">
+
+        <h3>Withdrawal Limit</h3>
+
+        <label for="minimumWithdrawal">
+          Minimum Withdrawal (₦)
+        </label>
+
+        <input
+          type="number"
+          id="minimumWithdrawal"
+          min="0"
+          step="1"
+          placeholder="Example: 1000"
+        >
+
+        <p class="small-note">
+          The lowest amount a seller is allowed to request as
+          a withdrawal. Sellers cannot submit a withdrawal
+          request below this amount.
+        </p>
+
+      </div>
+
     </div>
 
     <br>
@@ -7118,7 +7143,10 @@ async function loadReferralSettings(){
           true,
 
         renewalCommission:
-          false
+          false,
+
+        minimumWithdrawal:
+          1000
 
       };
 
@@ -7149,7 +7177,10 @@ async function loadReferralSettings(){
         true,
 
       renewalCommission:
-        false
+        false,
+
+      minimumWithdrawal:
+        1000
 
     };
 
@@ -7193,6 +7224,13 @@ function fillReferralSettingsForm(){
     "renewalCommission"
   ).checked =
     data.renewalCommission === true;
+
+  document.getElementById(
+    "minimumWithdrawal"
+  ).value =
+    data.minimumWithdrawal ??
+    data.minWithdrawal ??
+    1000;
 
 }
 
@@ -7256,6 +7294,13 @@ document
           "renewalCommission"
         ).checked;
 
+      const minimumWithdrawal =
+        Number(
+          document.getElementById(
+            "minimumWithdrawal"
+          ).value
+        );
+
       if(
         commissionValue < 0 ||
         isNaN(commissionValue)
@@ -7277,6 +7322,19 @@ document
 
         alert(
           "Percentage commission cannot be more than 100%."
+        );
+
+        return;
+
+      }
+
+      if(
+        minimumWithdrawal < 0 ||
+        isNaN(minimumWithdrawal)
+      ){
+
+        alert(
+          "Please enter a valid minimum withdrawal amount."
         );
 
         return;
@@ -7307,6 +7365,8 @@ document
           firstPremiumCommission,
 
           renewalCommission,
+
+          minimumWithdrawal,
 
           updatedAt:
             serverTimestamp(),
