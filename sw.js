@@ -11,7 +11,7 @@
   fresh from the network as normal.
 */
 
-const CACHE_NAME = "arewa-market-v1";
+const CACHE_NAME = "arewa-market-v2";
 
 const APP_SHELL = [
   "./index.html",
@@ -19,7 +19,9 @@ const APP_SHELL = [
   "./register.html",
   "./manifest.json",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./icon-512-maskable.png",
+  "./apple-touch-icon.png"
 ];
 
 self.addEventListener("install", event => {
