@@ -736,13 +736,14 @@
             currentUserData.sellerStatus === "pending"
           ){
 
-            showStatus(
-              "Your seller application is already pending. Please wait for Admin approval.",
-              "warning"
-            );
-
             form.style.display =
               "none";
+
+            startAutoApproval(
+              currentUserData.sellerAppliedAt
+                ? currentUserData.sellerAppliedAt.toMillis()
+                : null
+            );
 
             return;
 
@@ -826,6 +827,141 @@
 
       }
     );
+
+
+    // =================================================
+    // AUTO APPROVAL (2 MINUTES AFTER APPLYING)
+    // =================================================
+
+    const AUTO_APPROVE_MS = 2 * 60 * 1000;
+
+    let autoApprovalStarted = false;
+
+    function startAutoApproval(appliedAtMs){
+
+      if(autoApprovalStarted) return;
+
+      autoApprovalStarted = true;
+
+
+      // Old pending applications without a timestamp:
+      // start the 2-minute timer from now and save it.
+
+      if(!appliedAtMs){
+
+        appliedAtMs = Date.now();
+
+        updateDoc(
+          doc(db, "users", currentUser.uid),
+          { sellerAppliedAt: serverTimestamp() }
+        ).catch(() => {});
+
+      }
+
+
+      const tick = async () => {
+
+        const remaining =
+          AUTO_APPROVE_MS - (Date.now() - appliedAtMs);
+
+
+        if(remaining > 0){
+
+          const total =
+            Math.ceil(remaining / 1000);
+
+          const m =
+            Math.floor(total / 60);
+
+          const s =
+            String(total % 60).padStart(2, "0");
+
+          showStatus(
+            "Your application was submitted. You will become a seller automatically in " +
+            m + ":" + s + ".",
+            "success"
+          );
+
+          setTimeout(tick, 1000);
+
+          return;
+
+        }
+
+
+        try{
+
+          // Re-check status: Admin may have rejected meanwhile.
+
+          const latest =
+            await getDoc(
+              doc(db, "users", currentUser.uid)
+            );
+
+          if(
+            !latest.exists() ||
+            latest.data().sellerStatus !== "pending"
+          ){
+
+            showStatus(
+              latest.exists() &&
+              latest.data().sellerStatus === "rejected"
+                ? "Your seller application was rejected by Admin."
+                : "Your seller status has changed.",
+              "warning"
+            );
+
+            return;
+
+          }
+
+
+          await updateDoc(
+            doc(db, "users", currentUser.uid),
+            {
+              role: "seller",
+              isSeller: true,
+              sellerStatus: "approved",
+              sellerApprovedAt: serverTimestamp(),
+              autoApproved: true
+            }
+          );
+
+
+          showStatus(
+            "Congratulations! You are now a seller. Opening your dashboard...",
+            "success"
+          );
+
+          setTimeout(() => {
+
+            window.location.replace(
+              "seller-dashboard.html"
+            );
+
+          }, 1500);
+
+        }catch(error){
+
+          console.error(
+            "Auto approval error:",
+            error
+          );
+
+          showStatus(
+            "Auto approval failed: " + error.message,
+            "error"
+          );
+
+          autoApprovalStarted = false;
+
+        }
+
+      };
+
+      tick();
+
+    }
 
 
     // =================================================
@@ -968,6 +1104,9 @@
               sellerStatus:
                 "pending",
 
+              sellerAppliedAt:
+                serverTimestamp(),
+
               updatedAt:
                 serverTimestamp()
 
@@ -979,14 +1118,10 @@
           // SUCCESS
           // ==========================================
 
-          showStatus(
-            "Your seller application has been submitted successfully. Please wait for Admin approval.",
-            "success"
-          );
-
-
           form.style.display =
             "none";
+
+          startAutoApproval(Date.now());
 
 
         }catch(error){
