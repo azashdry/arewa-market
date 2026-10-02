@@ -8,12 +8,10 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
   <style>
-:root{color-scheme:dark}input,select,textarea{background-color:#0b1020;color:#e8ecf8}input::placeholder,textarea::placeholder{color:#7f8bad}
-
     *{
       box-sizing:border-box;
       margin:0;
@@ -23,25 +21,25 @@
 
     
 h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
-  font-family:'Inter',system-ui,sans-serif;
+  font-family:'Playfair Display',Georgia,serif;
   letter-spacing:.2px;
 }
 body{
-      background:#0b1020;
-      color:#e8ecf8;
+      background:#f8f7f4;
+      color:#222;
     }
 
     /* ================= HEADER ================= */
 
     header{
-      background:linear-gradient(135deg,#0d1a3f,#2f6bff);
+      background:linear-gradient(135deg,#0d3b2c,#175e3f);
       color:white;
       padding:15px 20px;
       position:sticky;
       top:0;
       z-index:1000;
       box-shadow:0 2px 8px rgba(0,0,0,.15);
-      border-bottom:3px solid #2f6bff;
+      border-bottom:3px solid #c9a227;
     }
 
     .header-inner{
@@ -78,8 +76,8 @@ body{
     nav button{
       border:none;
       text-decoration:none;
-      background: #121a30;
-      color:#e8ecf8;
+      background:white;
+      color:#175e3f;
       padding:9px 13px;
       border-radius:8px;
       font-size:13px;
@@ -88,8 +86,8 @@ body{
     }
 
     nav a.seller-btn{
-      background:#2f6bff;
-      color:#e8ecf8;
+      background:#c9a227;
+      color:#0d3b2c;
     }
 
     nav button.logout{
@@ -109,9 +107,9 @@ body{
       display:inline-block;
       margin-bottom:20px;
       padding:10px 15px;
-      background: #121a30;
-      color:#e8ecf8;
-      border:1px solid #1f3a7a;
+      background:white;
+      color:#135134;
+      border:1px solid #135134;
       border-radius:7px;
       text-decoration:none;
       font-weight:bold;
@@ -119,14 +117,14 @@ body{
     }
 
     .back-btn:hover{
-      background:#1a3fa0;
+      background:#135134;
       color:white;
     }
 
     /* ================= PRODUCT ================= */
 
     .product-details{
-      background: #121a30;
+      background:white;
       border-radius:12px;
       overflow:hidden;
       box-shadow:0 3px 15px rgba(0,0,0,.08);
@@ -135,7 +133,7 @@ body{
     }
 
     .product-image-area{
-      background:#0b1020;
+      background:#f3f0e9;
       min-height:430px;
     }
 
@@ -153,7 +151,7 @@ body{
 
     .featured{
       display:inline-block;
-      background:#2f6bff;
+      background:#d69e1d;
       color:white;
       padding:5px 9px;
       border-radius:5px;
@@ -168,7 +166,7 @@ body{
       display:inline-flex;
       align-items:center;
       gap:5px;
-      background:#2f6bff;
+      background:#d69e1d;
       color:white;
       padding:6px 10px;
       border-radius:6px;
@@ -180,27 +178,27 @@ body{
 
     .product-info h2{
       font-size:30px;
-      color:#e8ecf8;
+      color:#222;
       margin-bottom:12px;
     }
 
     .price{
-      color:#f5c451;
+      color:#a9791a;
       font-size:27px;
       font-weight:bold;
       margin-bottom:20px;
     }
 
     .meta{
-      border-top:1px solid #243056;
-      border-bottom:1px solid #243056;
+      border-top:1px solid #f3f0e9;
+      border-bottom:1px solid #f3f0e9;
       padding:15px 0;
       margin-bottom:20px;
     }
 
     .meta div{
       margin-bottom:9px;
-      color:#9aa6c4;
+      color:#555;
       font-size:14px;
     }
 
@@ -209,13 +207,13 @@ body{
     }
 
     .description-title{
-      color:#e8ecf8;
+      color:#135134;
       margin-bottom:8px;
       font-size:18px;
     }
 
     .description{
-      color:#9aa6c4;
+      color:#666;
       line-height:1.7;
       font-size:14px;
       white-space:pre-wrap;
@@ -226,12 +224,12 @@ body{
     .seller-box{
       margin-top:25px;
       padding:18px;
-      background:#0b1020;
+      background:#f8f7f4;
       border-radius:9px;
     }
 
     .seller-box h3{
-      color:#e8ecf8;
+      color:#135134;
       margin-bottom:8px;
     }
 
@@ -242,7 +240,7 @@ body{
 
     .seller-link{
       display:inline-block;
-      background:#1a3fa0;
+      background:#135134;
       color:white;
       text-decoration:none;
       padding:10px 15px;
@@ -253,7 +251,7 @@ body{
     }
 
     .seller-link:hover{
-      background:#0d1a3f;
+      background:#0e3c27;
     }
 
     /* ================= VERIFIED BADGE ================= */
@@ -262,8 +260,8 @@ body{
       display:inline-flex;
       align-items:center;
       gap:4px;
-      background:#0b1020;
-      color:#e8ecf8;
+      background:#e1f5ee;
+      color:#085041;
       font-size:12px;
       font-weight:bold;
       padding:3px 9px;
@@ -279,11 +277,11 @@ body{
       gap:6px;
       margin-bottom:14px;
       font-size:14px;
-      color:#9aa6c4;
+      color:#666;
     }
 
     .rating-line .stars{
-      color:#6b9bff;
+      color:#d69e1d;
       letter-spacing:1px;
       font-size:16px;
     }
@@ -291,11 +289,11 @@ body{
     /* ================= DELIVERY INFO ================= */
 
     .delivery-box{
-      background:#0b1020;
+      background:#f3f0e9;
       border-radius:8px;
       padding:10px 14px;
       font-size:13.5px;
-      color:#e8ecf8;
+      color:#333;
       margin-bottom:18px;
     }
 
@@ -303,8 +301,8 @@ body{
 
     .interested-btn{
       display:inline-block;
-      background:#2f6bff;
-      color:#e8ecf8;
+      background:#c9a227;
+      color:#0d3b2c;
       border:none;
       padding:11px 16px;
       border-radius:7px;
@@ -318,7 +316,7 @@ body{
     }
 
     .interested-btn:hover{
-      background:#2f6bff;
+      background:#b78e1e;
     }
 
     /* ================= REVIEWS ================= */
@@ -326,25 +324,25 @@ body{
     .reviews-section{
       margin-top:25px;
       padding-top:20px;
-      border-top:1px solid #243056;
+      border-top:1px solid #f3f0e9;
     }
 
     .reviews-section h3{
-      color:#e8ecf8;
+      color:#135134;
       margin-bottom:12px;
       font-size:18px;
     }
 
     .review-form .star-input{
       font-size:24px;
-      color:#6b9bff;
+      color:#d69e1d;
       cursor:pointer;
       margin-bottom:8px;
     }
 
     .review-form textarea{
       width:100%;
-      border:1px solid #243056;
+      border:1px solid #ddd;
       border-radius:7px;
       padding:9px;
       font-size:13.5px;
@@ -355,7 +353,7 @@ body{
     }
 
     .review-form button{
-      background:#1a3fa0;
+      background:#135134;
       color:white;
       border:none;
       padding:9px 15px;
@@ -366,14 +364,14 @@ body{
     }
 
     .review-form .review-error{
-      color:#ff8a8a;
+      color:#b42318;
       font-size:12.5px;
       margin-top:6px;
       display:none;
     }
 
     .review-item{
-      border-bottom:1px solid #243056;
+      border-bottom:1px solid #f3f0e9;
       padding:12px 0;
     }
 
@@ -382,31 +380,31 @@ body{
       justify-content:space-between;
       font-size:13px;
       font-weight:bold;
-      color:#e8ecf8;
+      color:#222;
       margin-bottom:4px;
     }
 
     .review-item .review-stars{
-      color:#6b9bff;
+      color:#d69e1d;
       font-size:13px;
     }
 
     .review-item .review-comment{
       font-size:13.5px;
-      color:#9aa6c4;
+      color:#555;
       line-height:1.5;
     }
 
     .no-reviews{
       font-size:13.5px;
-      color:#9aa6c4;
+      color:#888;
     }
 
     /* ================= LOADING ================= */
 
     .loading,
     .error-box{
-      background: #121a30;
+      background:white;
       padding:50px 20px;
       text-align:center;
       border-radius:10px;
@@ -414,22 +412,22 @@ body{
     }
 
     .loading{
-      color:#e8ecf8;
+      color:#135134;
     }
 
     .error-box h2{
-      color:#e8ecf8;
+      color:#135134;
       margin-bottom:10px;
     }
 
     .error-box p{
-      color:#9aa6c4;
+      color:#666;
       margin-bottom:20px;
     }
 
     .home-btn{
       display:inline-block;
-      background:#1a3fa0;
+      background:#135134;
       color:white;
       text-decoration:none;
       padding:10px 16px;
@@ -449,14 +447,14 @@ body{
       padding:13px 16px;
       border-radius:7px;
       color:white;
-      background:#1a3fa0;
+      background:#135134;
       box-shadow:0 3px 12px rgba(0,0,0,.2);
     }
 
     /* ================= FOOTER ================= */
 
     footer{
-      background:#0d1a3f;
+      background:#0b2f1e;
       color:white;
       padding:25px 15px;
       text-align:center;
@@ -522,10 +520,10 @@ body{
   z-index:999;
   justify-content:space-around;
   align-items:center;
-  background:linear-gradient(135deg,#0d1a3f,#2f6bff);
-  border-top:3px solid #2f6bff;
+  background:#0b1020;
+  border-top:1px solid #243056;
   padding:8px 4px calc(6px + env(safe-area-inset-bottom,0px));
-  box-shadow:0 -2px 10px rgba(0,0,0,.25);
+  box-shadow:0 -4px 16px rgba(0,0,0,.35);
 }
 .bottom-nav .bn-item{
   display:flex;
@@ -533,14 +531,19 @@ body{
   align-items:center;
   gap:2px;
   text-decoration:none;
-  color:rgba(255,255,255,.75);
+  color:#9aa6c4;
   font-size:11px;
   flex:1;
   padding:4px 0;
+  font-weight:600;
+  border-radius:10px;
+  background:transparent;
+  border:0;
 }
 .bottom-nav .bn-item.active{
   color:#6b9bff;
   font-weight:bold;
+  background:rgba(47,107,255,.14);
 }
 .bottom-nav .bn-icon{
   font-size:20px;
@@ -555,7 +558,7 @@ body.has-bottom-nav{
 </style>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#10462d">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1369,7 +1372,7 @@ body.has-bottom-nav{
 
               <div class="review-form" id="reviewForm">
 
-                <p style="font-size:13px;margin-bottom:6px;color:#9aa6c4;">
+                <p style="font-size:13px;margin-bottom:6px;color:#555;">
                   Bar Review akan wannan kaya:
                 </p>
 

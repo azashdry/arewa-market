@@ -8,12 +8,10 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
 <style>
-:root{color-scheme:dark}input,select,textarea{background-color:#0b1020;color:#e8ecf8}input::placeholder,textarea::placeholder{color:#7f8bad}
-
 *{
   box-sizing:border-box;
   margin:0;
@@ -22,13 +20,14 @@
 
 
 h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
-  font-family:'Inter',system-ui,sans-serif;
+  font-family:'Playfair Display',Georgia,serif;
   letter-spacing:.2px;
 }
 body{
   font-family:'Inter',Arial,sans-serif;
-  background:linear-gradient(180deg,rgba(13,26,63,.96),rgba(13,26,63,.96)),
-    repeating-linear-gradient(45deg,rgba(47,107,255,.07) 0 2px,transparent 2px 18px);
+  background:
+    linear-gradient(180deg,rgba(13,59,44,.96),rgba(10,46,34,.96)),
+    repeating-linear-gradient(45deg,rgba(201,162,39,.07) 0 2px,transparent 2px 18px);
   min-height:100vh;
   display:flex;
   align-items:center;
@@ -39,11 +38,11 @@ body{
 .login-box{
   width:100%;
   max-width:420px;
-  background:#121a30;
+  background:#fff;
   padding:30px 25px;
   border-radius:14px;
   box-shadow:0 15px 45px rgba(0,0,0,.35);
-  border-top:4px solid #2f6bff;
+  border-top:4px solid #c9a227;
 }
 
 .logo{
@@ -52,13 +51,13 @@ body{
 }
 
 .logo h1{
-  color:#e8ecf8;
+  color:#0d3b2c;
   font-size:28px;
   margin-bottom:6px;
 }
 
 .logo p{
-  color:#9aa6c4;
+  color:#777;
   font-size:14px;
 }
 
@@ -70,21 +69,21 @@ label{
   display:block;
   margin-bottom:7px;
   font-weight:bold;
-  color:#e8ecf8;
+  color:#333;
   font-size:14px;
 }
 
 input{
   width:100%;
   padding:13px;
-  border:1px solid #243056;
+  border:1px solid #d5cfc3;
   border-radius:8px;
   font-size:15px;
   outline:none;
 }
 
 input:focus{
-  border-color:#1f3a7a;
+  border-color:#155a3a;
 }
 
 .password-box{
@@ -101,7 +100,7 @@ input:focus{
   top:50%;
   transform:translateY(-50%);
   cursor:pointer;
-  color:#9aa6c4;
+  color:#555;
   font-size:18px;
 }
 
@@ -110,7 +109,7 @@ button{
   padding:14px;
   border:none;
   border-radius:8px;
-  background:#2f6bff;
+  background:#155a3a;
   color:white;
   font-size:16px;
   font-weight:bold;
@@ -118,7 +117,7 @@ button{
 }
 
 button:hover{
-  background:#1a3fa0;
+  background:#11482e;
 }
 
 button:disabled{
@@ -132,7 +131,7 @@ button:disabled{
 }
 
 .forgot a{
-  color:#e8ecf8;
+  color:#155a3a;
   text-decoration:none;
   font-size:14px;
 }
@@ -140,12 +139,12 @@ button:disabled{
 .register{
   text-align:center;
   margin-top:20px;
-  color:#9aa6c4;
+  color:#666;
   font-size:14px;
 }
 
 .register a{
-  color:#e8ecf8;
+  color:#155a3a;
   font-weight:bold;
   text-decoration:none;
 }
@@ -161,19 +160,19 @@ button:disabled{
 
 .message.error{
   display:block;
-  background:#0b1020;
-  color:#ff8a8a;
+  background:#ffeaea;
+  color:#a00000;
 }
 
 .message.success{
   display:block;
-  background:#0b1020;
-  color:#e8ecf8;
+  background:#f5f1ea;
+  color:#155a3a;
 }
 </style>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#10462d">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">

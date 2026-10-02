@@ -7,12 +7,10 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
 <style>
-:root{color-scheme:dark}input,select,textarea{background-color:#0b1020;color:#e8ecf8}input::placeholder,textarea::placeholder{color:#7f8bad}
-
 *{
   box-sizing:border-box;
   margin:0;
@@ -22,13 +20,13 @@
 
 
 h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
-  font-family:'Inter',system-ui,sans-serif;
+  font-family:'Playfair Display',Georgia,serif;
   letter-spacing:.2px;
 }
 body{
   min-height:100vh;
-  background:#0b1020;
-  color:#e8ecf8;
+  background:#f8f6f2;
+  color:#0f2319;
   padding:15px;
 }
 
@@ -36,7 +34,7 @@ button{
   border:none;
   padding:11px 15px;
   border-radius:9px;
-  background:#0d1a3f;
+  background:#10422a;
   color:white;
   font-weight:600;
   cursor:pointer;
@@ -44,7 +42,7 @@ button{
 }
 
 button:hover{
-  background:#0d1a3f;
+  background:#0c3220;
   transform:translateY(-1px);
 }
 
@@ -59,24 +57,24 @@ select,
 textarea{
   width:100%;
   padding:12px;
-  border:1px solid #243056;
+  border:1px solid #cde9dc;
   border-radius:9px;
   outline:none;
-  background: #121a30;
-  color:#e8ecf8;
+  background:white;
+  color:#0f2319;
   margin-bottom:14px;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
-  border-color:#1f3a7a;
+  border-color:#10422a;
   box-shadow:0 0 0 3px rgba(16,66,42,.08);
 }
 
 select:disabled{
-  background:#0b1020;
-  color:#9aa6c4;
+  background:#f6f3ee;
+  color:#999;
   cursor:not-allowed;
 }
 
@@ -95,10 +93,10 @@ label{
 .login-box{
   max-width:420px;
   margin:55px auto;
-  background: #121a30;
+  background:white;
   padding:30px;
   border-radius:18px;
-  border:1px solid #243056;
+  border:1px solid #ede8df;
   box-shadow:0 12px 35px rgba(16,66,42,.1);
 }
 
@@ -107,7 +105,7 @@ label{
   height:68px;
   margin:auto auto 15px;
   border-radius:18px;
-  background:linear-gradient(135deg,#0d1a3f,#2f6bff);
+  background:linear-gradient(135deg,#10422a,#d4a22c);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -118,13 +116,13 @@ label{
 
 h1{
   text-align:center;
-  color:#e8ecf8;
+  color:#0f2d1f;
   margin-bottom:6px;
 }
 
 .subtitle{
   text-align:center;
-  color:#9aa6c4;
+  color:#718078;
   font-size:14px;
   margin-bottom:25px;
 }
@@ -142,15 +140,15 @@ h1{
 }
 
 .error{
-  background:#0b1020;
-  color:#ff8a8a;
-  border:1px solid #5a2430;
+  background:#fff0f0;
+  color:#a61b1b;
+  border:1px solid #ffd0d0;
 }
 
 .success{
-  background:#0b1020;
-  color:#e8ecf8;
-  border:1px solid #243056;
+  background:#f7f4ef;
+  color:#155a3a;
+  border:1px solid #ccebdd;
 }
 
 .dashboard{
@@ -160,13 +158,13 @@ h1{
 }
 
 .header{
-  background:linear-gradient(135deg,#0d1a3f,#2f6bff);
+  background:linear-gradient(135deg,#0d3b2c,#175e3f);
   color:white;
   padding:25px;
   border-radius:18px;
   margin-bottom:18px;
   box-shadow:0 10px 28px rgba(16,66,42,.18);
-  border-bottom:3px solid #2f6bff;
+  border-bottom:3px solid #c9a227;
 }
 
 .header h2{
@@ -194,30 +192,30 @@ h1{
 }
 
 .stat{
-  background: #121a30;
+  background:white;
   padding:20px;
   border-radius:15px;
-  border:1px solid #243056;
-  border-top:4px solid #2f6bff;
+  border:1px solid #ede8df;
+  border-top:4px solid #d4a22c;
   box-shadow:0 5px 20px rgba(16,66,42,.06);
 }
 
 .stat h3{
   font-size:13px;
-  color:#9aa6c4;
+  color:#718078;
   margin-bottom:8px;
 }
 
 .stat strong{
   font-size:29px;
-  color:#e8ecf8;
+  color:#10422a;
 }
 
 .section{
-  background: #121a30;
+  background:white;
   padding:22px;
   border-radius:17px;
-  border:1px solid #243056;
+  border:1px solid #ede8df;
   margin-bottom:18px;
   box-shadow:0 5px 20px rgba(16,66,42,.05);
 }
@@ -232,7 +230,7 @@ h1{
 }
 
 .section-header h2{
-  color:#e8ecf8;
+  color:#0f2d1f;
   font-size:20px;
 }
 
@@ -246,18 +244,18 @@ h1{
 }
 
 .item{
-  border:1px solid #243056;
+  border:1px solid #d9efe5;
   border-radius:13px;
   padding:15px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:15px;
-  background:#121a30;
+  background:#fff;
 }
 
 .item:hover{
-  border-color:#243056;
+  border-color:#aedcc7;
 }
 
 .item-main{
@@ -266,13 +264,13 @@ h1{
 }
 
 .item-main strong{
-  color:#e8ecf8;
+  color:#0f2d1f;
   font-size:16px;
 }
 
 .item-main small{
   display:block;
-  color:#9aa6c4;
+  color:#718078;
   line-height:1.7;
 }
 
@@ -299,8 +297,8 @@ h1{
 }
 
 .warning{
-  background:#2f6bff;
-  color:#e8ecf8;
+  background:#d4a22c;
+  color:#0f2319;
 }
 
 .gray{
@@ -308,7 +306,7 @@ h1{
 }
 
 .green{
-  background:#2f6bff;
+  background:#155a3a;
 }
 
 .premium{
@@ -320,7 +318,7 @@ h1{
 }
 
 .orange{
-  background:#2f6bff;
+  background:#dba11b;
 }
 
 .blue{
@@ -337,44 +335,44 @@ h1{
 }
 
 .active{
-  background:#0b1020;
-  color:#e8ecf8;
+  background:#f4f0e8;
+  color:#155a3a;
 }
 
 .inactive{
-  background:#0b1020;
-  color:#ff8a8a;
+  background:#fff0f0;
+  color:#a61b1b;
 }
 
 .pending{
-  background:#0b1020;
-  color:#f5c451;
+  background:#f5f1e9;
+  color:#72540e;
 }
 
 .rejected{
-  background:#0b1020;
-  color:#ff8a8a;
+  background:#fff0f0;
+  color:#a61b1b;
 }
 
 .approved{
-  background:#0b1020;
-  color:#6b9bff;
+  background:#e8f1ff;
+  color:#1856a5;
 }
 
 .paid{
-  background:#0b1020;
-  color:#e8ecf8;
+  background:#f4f0e8;
+  color:#155a3a;
 }
 
 .premium-badge{
-  background:#0b1020;
+  background:#f0e9ff;
   color:#6d28d9;
 }
 
 .form-box{
   display:none;
-  background:#0b1020;
-  border:1px solid #243056;
+  background:#f9f8f5;
+  border:1px solid #d6eee3;
   border-radius:13px;
   padding:18px;
   margin-bottom:18px;
@@ -399,7 +397,7 @@ h1{
   height:80px;
   object-fit:cover;
   border-radius:10px;
-  background:#0b1020;
+  background:#f4f2ed;
   flex-shrink:0;
 }
 
@@ -414,7 +412,7 @@ h1{
 .loading{
   text-align:center;
   padding:28px;
-  color:#9aa6c4;
+  color:#718078;
 }
 
 .dashboard-tools{
@@ -432,26 +430,26 @@ h1{
 
 .analytics-box{
   padding:18px;
-  background:#0b1020;
+  background:#f9f8f5;
   border-radius:12px;
-  border:1px solid #243056;
+  border:1px solid #d6eee3;
 }
 
 .analytics-box span{
   display:block;
-  color:#9aa6c4;
+  color:#718078;
   font-size:13px;
   margin-bottom:6px;
 }
 
 .analytics-box strong{
-  color:#e8ecf8;
+  color:#10422a;
   font-size:22px;
 }
 
 .premium-card{
-  background:linear-gradient(135deg,#0b1020,#121a30);
-  border:1px solid #243056;
+  background:linear-gradient(135deg,#f7f2ff,#fff);
+  border:1px solid #ddd0ff;
   border-radius:14px;
   padding:18px;
   margin-bottom:15px;
@@ -465,22 +463,22 @@ h1{
 .premium-price{
   font-size:30px;
   font-weight:bold;
-  color:#e8ecf8;
+  color:#10422a;
   margin:8px 0;
 }
 
 .benefits-preview{
   white-space:pre-line;
-  color:#9aa6c4;
+  color:#58655d;
   line-height:1.7;
 }
 
 .request-card{
-  border-left:5px solid #2f6bff;
+  border-left:5px solid #d4a22c;
 }
 
 .referral-card{
-  border-left:5px solid #1f3a7a;
+  border-left:5px solid #155a3a;
 }
 
 .commission-card{
@@ -498,14 +496,14 @@ h1{
 }
 
 .setting-box{
-  background:#0b1020;
-  border:1px solid #243056;
+  background:#f9f8f5;
+  border:1px solid #d6eee3;
   padding:16px;
   border-radius:13px;
 }
 
 .setting-box h3{
-  color:#e8ecf8;
+  color:#0f2d1f;
   margin-bottom:12px;
   font-size:16px;
 }
@@ -517,9 +515,9 @@ h1{
   gap:10px;
   margin-bottom:14px;
   padding:12px;
-  background: #121a30;
+  background:white;
   border-radius:10px;
-  border:1px solid #243056;
+  border:1px solid #ede8df;
 }
 
 .switch-row label{
@@ -534,7 +532,7 @@ h1{
 }
 
 .small-note{
-  color:#9aa6c4;
+  color:#718078;
   font-size:12px;
   line-height:1.6;
 }
@@ -550,7 +548,7 @@ h1{
 }
 
 .modal-content{
-  background: #121a30;
+  background:white;
   max-width:550px;
   margin:40px auto;
   padding:24px;
@@ -559,7 +557,7 @@ h1{
 
 .modal-content h2{
   margin-bottom:18px;
-  color:#e8ecf8;
+  color:#0f2d1f;
 }
 
 .close{
@@ -568,7 +566,7 @@ h1{
 }
 
 .help-text{
-  color:#9aa6c4;
+  color:#718078;
   font-size:13px;
   line-height:1.6;
   margin:-7px 0 14px;
@@ -642,7 +640,7 @@ h1{
 </style>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#10462d">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -2637,7 +2635,7 @@ function renderUsers(users){
             ? `
               <span
                 class="badge active"
-                style="background:#2f6bff;"
+                style="background:#0B6E4F;"
               >
                 ✔ Verified
               </span>
@@ -2656,7 +2654,7 @@ function renderUsers(users){
                 style="${
                   user.verified === true
                     ? "background:#999;"
-                    : "background:#2f6bff;color:white;"
+                    : "background:#0B6E4F;color:white;"
                 }"
                 onclick="
                   toggleVerifiedSeller(
@@ -3647,7 +3645,7 @@ function renderProducts(products){
               display:flex;
               align-items:center;
               justify-content:center;
-              color:#9aa6c4;
+              color:#777;
               font-size:12px;
             "
           >
@@ -11040,7 +11038,7 @@ function showExportMenu(
 
   box.style.cssText = `
 
-    background:#121a30;
+    background:#fff;
     width:100%;
     max-width:430px;
     border-radius:16px;
@@ -11061,7 +11059,7 @@ function showExportMenu(
 
     <h2 style="
       margin:0 0 8px;
-      color:#e8ecf8;
+      color:#145536;
     ">
       Export ${escapeHtml(
         report.title
@@ -11070,7 +11068,7 @@ function showExportMenu(
 
     <p style="
       margin:0 0 20px;
-      color:#9aa6c4;
+      color:#666;
       font-size:14px;
     ">
       Choose the format you want to download.
@@ -11105,7 +11103,7 @@ function showExportMenu(
           border:0;
           border-radius:10px;
           cursor:pointer;
-          background:#2f6bff;
+          background:#186742;
           color:white;
           font-weight:bold;
         "
@@ -11121,7 +11119,7 @@ function showExportMenu(
           border:0;
           border-radius:10px;
           cursor:pointer;
-          background:#2f6bff;
+          background:#b78717;
           color:white;
           font-weight:bold;
         "
@@ -11138,10 +11136,10 @@ function showExportMenu(
         margin-top:15px;
         width:100%;
         padding:11px;
-        border:1px solid #243056;
+        border:1px solid #e3dfd7;
         border-radius:9px;
-        background:#0b1020;
-        color:#e8ecf8;
+        background:#f8f6f2;
+        color:#333;
         cursor:pointer;
       "
     >
