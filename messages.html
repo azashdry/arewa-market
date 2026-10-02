@@ -13,10 +13,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
 <style>
+:root{color-scheme:dark}input,select,textarea{background-color:#0b1020;color:#e8ecf8}input::placeholder,textarea::placeholder{color:#7f8bad}
+
 
 *{
   box-sizing:border-box;
@@ -26,7 +28,7 @@
 
 
 h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
-  font-family:'Playfair Display',Georgia,serif;
+  font-family:'Inter',system-ui,sans-serif;
   letter-spacing:.2px;
 }
 html{
@@ -36,8 +38,8 @@ html{
 
 body{
   font-family:'Inter',Arial,sans-serif;
-  background:#f8f6f3;
-  color:#222;
+  background:#0b1020;
+  color:#e8ecf8;
 }
 
 /* =========================
@@ -45,7 +47,7 @@ body{
 ========================= */
 
 header{
-  background:linear-gradient(135deg,#0d3b2c,#175e3f);
+  background:linear-gradient(135deg,#0d1a3f,#2f6bff);
   color:white;
   padding:15px 20px;
 
@@ -57,7 +59,7 @@ header{
   flex-wrap:wrap;
 
   box-shadow:0 2px 8px rgba(0,0,0,.15);
-  border-bottom:3px solid #c9a227;
+  border-bottom:3px solid #2f6bff;
 }
 
 .logo{
@@ -89,12 +91,12 @@ header{
 }
 
 .btn-light{
-  background:white;
-  color:#165d3c;
+  background: #121a30;
+  color:#e8ecf8;
 }
 
 .btn-gold{
-  background:#d19a1a;
+  background:#2f6bff;
   color:white;
 }
 
@@ -131,14 +133,14 @@ header{
 
 .notice.error{
   display:block;
-  background:#f8d7da;
-  color:#721c24;
+  background:#0b1020;
+  color:#ff8a8a;
 }
 
 .notice.success{
   display:block;
-  background:#d4ede1;
-  color:#124a30;
+  background:#0b1020;
+  color:#e8ecf8;
 }
 
 /* =========================
@@ -149,7 +151,7 @@ header{
   height:650px;
   min-height:0;
 
-  background:white;
+  background: #121a30;
   border-radius:12px;
   overflow:hidden;
 
@@ -164,7 +166,7 @@ header{
 ========================= */
 
 .inbox{
-  border-right:1px solid #e3dfd7;
+  border-right:1px solid #243056;
 
   display:flex;
   flex-direction:column;
@@ -177,11 +179,11 @@ header{
   flex:0 0 auto;
 
   padding:18px;
-  border-bottom:1px solid #e3dfd7;
+  border-bottom:1px solid #243056;
 }
 
 .inbox-header h2{
-  color:#165d3c;
+  color:#e8ecf8;
   font-size:20px;
   margin-bottom:12px;
 }
@@ -189,13 +191,13 @@ header{
 .search{
   width:100%;
   padding:11px;
-  border:1px solid #e3dfd7;
+  border:1px solid #243056;
   border-radius:7px;
   outline:none;
 }
 
 .search:focus{
-  border-color:#165d3c;
+  border-color:#1f3a7a;
 }
 
 .conversations{
@@ -211,7 +213,7 @@ header{
 
 .conversation{
   padding:14px;
-  border-bottom:1px solid #f3f0e9;
+  border-bottom:1px solid #243056;
 
   cursor:pointer;
 
@@ -223,11 +225,11 @@ header{
 }
 
 .conversation:hover{
-  background:#f9f8f5;
+  background:#0b1020;
 }
 
 .conversation.active{
-  background:#f4f0e9;
+  background:#0b1020;
 }
 
 .avatar{
@@ -237,7 +239,7 @@ header{
 
   border-radius:50%;
 
-  background:#165d3c;
+  background:#2f6bff;
   color:white;
 
   display:flex;
@@ -269,7 +271,7 @@ header{
 
 .conversation-name{
   font-weight:bold;
-  color:#222;
+  color:#e8ecf8;
 
   white-space:nowrap;
   overflow:hidden;
@@ -277,13 +279,13 @@ header{
 }
 
 .conversation-time{
-  color:#888;
+  color:#9aa6c4;
   font-size:10px;
   white-space:nowrap;
 }
 
 .last-message{
-  color:#777;
+  color:#9aa6c4;
   font-size:12px;
   margin-top:5px;
 
@@ -304,7 +306,7 @@ header{
 
   border-radius:20px;
 
-  background:#d19a1a;
+  background:#2f6bff;
   color:white;
 
   font-size:11px;
@@ -338,13 +340,13 @@ header{
 
   text-align:center;
 
-  color:#777;
+  color:#9aa6c4;
 
   padding:30px;
 }
 
 .chat-empty h3{
-  color:#165d3c;
+  color:#e8ecf8;
   margin-bottom:8px;
 }
 
@@ -353,14 +355,14 @@ header{
 
   padding:14px 18px;
 
-  border-bottom:1px solid #e3dfd7;
+  border-bottom:1px solid #243056;
 
   display:flex;
   align-items:center;
 
   gap:12px;
 
-  background:white;
+  background: #121a30;
 
   position:relative;
   z-index:2;
@@ -372,7 +374,7 @@ header{
 }
 
 .chat-user h3{
-  color:#165d3c;
+  color:#e8ecf8;
 
   white-space:nowrap;
   overflow:hidden;
@@ -380,7 +382,7 @@ header{
 }
 
 .chat-user p{
-  color:#777;
+  color:#9aa6c4;
   font-size:12px;
   margin-top:3px;
 }
@@ -399,7 +401,7 @@ header{
   overflow-y:auto;
   overflow-x:hidden;
 
-  background:#faf9f7;
+  background:#0b1020;
 
   -webkit-overflow-scrolling:touch;
 
@@ -439,17 +441,17 @@ header{
 }
 
 .mine .bubble{
-  background:#165d3c;
+  background:#2f6bff;
   color:white;
 
   border-bottom-right-radius:3px;
 }
 
 .theirs .bubble{
-  background:white;
-  color:#222;
+  background: #121a30;
+  color:#e8ecf8;
 
-  border:1px solid #e8e5de;
+  border:1px solid #243056;
 
   border-bottom-left-radius:3px;
 }
@@ -473,11 +475,11 @@ header{
 .chat-input{
   flex:0 0 auto;
 
-  border-top:1px solid #e3dfd7;
+  border-top:1px solid #243056;
 
   padding:12px;
 
-  background:white;
+  background: #121a30;
 
   display:flex;
 
@@ -499,7 +501,7 @@ header{
 
   padding:12px;
 
-  border:1px solid #e3dfd7;
+  border:1px solid #243056;
 
   border-radius:8px;
 
@@ -511,7 +513,7 @@ header{
 }
 
 .chat-input textarea:focus{
-  border-color:#165d3c;
+  border-color:#1f3a7a;
 }
 
 .send-btn{
@@ -519,7 +521,7 @@ header{
 
   border:none;
 
-  background:#165d3c;
+  background:#2f6bff;
 
   color:white;
 
@@ -533,7 +535,7 @@ header{
 }
 
 .send-btn:hover{
-  background:#10462d;
+  background:#0d1a3f;
 }
 
 .send-btn:disabled{
@@ -582,8 +584,8 @@ header{
 
   z-index:5;
 
-  background:white;
-  color:#222;
+  background: #121a30;
+  color:#e8ecf8;
 
   border-radius:8px;
 
@@ -609,13 +611,13 @@ header{
 
   font-size:13px;
 
-  color:#165d3c;
+  color:#e8ecf8;
 
   cursor:pointer;
 }
 
 .msg-options-menu button:hover{
-  background:#eaf3ee;
+  background:#0b1020;
 }
 
 .msg-options-menu button.danger{
@@ -623,7 +625,7 @@ header{
 }
 
 .msg-options-menu button.danger:hover{
-  background:#fdeeee;
+  background:#0b1020;
 }
 
 .deleted-message{
@@ -642,8 +644,8 @@ header{
   z-index:999;
   justify-content:space-around;
   align-items:center;
-  background:linear-gradient(135deg,#0d3b2c,#175e3f);
-  border-top:3px solid #c9a227;
+  background:linear-gradient(135deg,#0d1a3f,#2f6bff);
+  border-top:3px solid #2f6bff;
   padding:8px 4px calc(6px + env(safe-area-inset-bottom,0px));
   box-shadow:0 -2px 10px rgba(0,0,0,.25);
 }
@@ -659,7 +661,7 @@ header{
   padding:4px 0;
 }
 .bottom-nav .bn-item.active{
-  color:#c9a227;
+  color:#6b9bff;
   font-weight:bold;
 }
 .bottom-nav .bn-icon{
@@ -700,9 +702,9 @@ body:has(.messaging.chat-open){
 
   border-radius:50%;
 
-  background:#eaf3ee;
+  background:#0b1020;
 
-  color:#165d3c;
+  color:#e8ecf8;
 
   font-size:18px;
 
@@ -712,7 +714,7 @@ body:has(.messaging.chat-open){
 }
 
 .chat-media-btn:hover{
-  background:#165d3c;
+  background:#2f6bff;
   color:white;
 }
 
@@ -750,16 +752,16 @@ body:has(.messaging.chat-open){
   padding:8px 10px;
   margin:0 12px 8px 12px;
 
-  background:#fbf7ec;
+  background:#0b1020;
 
-  border:1px solid #eadfc0;
-  border-left:3px solid #d19a1a;
+  border:1px solid #2f6bff;
+  border-left:3px solid #2f6bff;
 
   border-radius:10px;
 
   font-size:13px;
 
-  color:#5a4b1f;
+  color:#f5c451;
 }
 
 .chat-media-preview.show{
@@ -798,7 +800,7 @@ body:has(.messaging.chat-open){
   border:none;
   border-radius:50%;
 
-  background:white;
+  background: #121a30;
   color:#dc3545;
 
   font-size:14px;
@@ -818,16 +820,16 @@ body:has(.messaging.chat-open){
   padding:8px 12px;
   margin:0 12px 8px 12px;
 
-  background:#fdeeee;
+  background:#0b1020;
 
-  border:1px solid #f3c6c9;
+  border:1px solid #5a2430;
   border-left:3px solid #dc3545;
 
   border-radius:10px;
 
   font-size:13px;
 
-  color:#a71d2a;
+  color:#ff8a8a;
 
   font-weight:600;
 }
@@ -863,18 +865,18 @@ body:has(.messaging.chat-open){
 .loading{
   text-align:center;
   padding:30px;
-  color:#165d3c;
+  color:#e8ecf8;
   font-weight:bold;
 }
 
 .empty{
   text-align:center;
   padding:30px 20px;
-  color:#777;
+  color:#9aa6c4;
 }
 
 .empty h3{
-  color:#165d3c;
+  color:#e8ecf8;
   margin-bottom:7px;
 }
 
@@ -1160,7 +1162,7 @@ body:has(.messaging.chat-open){
 
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#10462d">
+<meta name="theme-color" content="#0b1020">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1441,14 +1443,14 @@ body:has(.messaging.chat-open){
         <div
           id="editMessageBox"
           class="chat-recording"
-          style="background:#fbf7ec;border-left-color:#d19a1a;color:#8a6d1f;"
+          style="background:#0b1020;border-left-color:#2f6bff;color:#f5c451;"
         >
           ✏️ Editing message...
           <button
             type="button"
             id="cancelEditBtn"
             class="chat-recording-stop"
-            style="background:#8a6d1f;"
+            style="background:#2f6bff;"
           >
             Cancel
           </button>

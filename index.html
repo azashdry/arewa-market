@@ -8,10 +8,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
   <style>
+:root{color-scheme:dark}input,select,textarea{background-color:#0b1020;color:#e8ecf8}input::placeholder,textarea::placeholder{color:#7f8bad}
+
     *{
       box-sizing:border-box;
       margin:0;
@@ -21,23 +23,23 @@
 
     
 h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
-  font-family:'Playfair Display',Georgia,serif;
+  font-family:'Inter',system-ui,sans-serif;
   letter-spacing:.2px;
 }
 body{
-      background:#f8f7f4;
-      color:#222;
+      background:#0b1020;
+      color:#e8ecf8;
     }
 
     header{
-      background:linear-gradient(135deg,#0d3b2c,#175e3f);
+      background:linear-gradient(135deg,#0d1a3f,#2f6bff);
       color:white;
       padding:15px 20px;
       position:sticky;
       top:0;
       z-index:1000;
       box-shadow:0 2px 8px rgba(0,0,0,.15);
-      border-bottom:3px solid #c9a227;
+      border-bottom:3px solid #2f6bff;
     }
 
     .header-inner{
@@ -110,8 +112,8 @@ body{
     nav button{
       border:none;
       text-decoration:none;
-      background:white;
-      color:#175e3f;
+      background: #121a30;
+      color:#e8ecf8;
       padding:9px 13px;
       border-radius:8px;
       font-size:13px;
@@ -126,8 +128,8 @@ body{
     }
 
     nav a.seller-btn{
-      background:#c9a227;
-      color:#0d3b2c;
+      background:#2f6bff;
+      color:#e8ecf8;
     }
 
     nav a.messages-btn{
@@ -161,19 +163,18 @@ body{
     .hero{
       max-width:1200px;
       margin:25px auto 0;
-      background:
-        linear-gradient(120deg,#0d3b2c,#175e3f 60%,#1f7a4d),
-        repeating-linear-gradient(45deg,rgba(201,162,39,.10) 0 2px,transparent 2px 18px);
+      background:linear-gradient(120deg,#0d1a3f,#2f6bff 60%,#2f6bff),
+        repeating-linear-gradient(45deg,rgba(47,107,255,.10) 0 2px,transparent 2px 18px);
       color:white;
       padding:42px 25px;
       text-align:center;
       border-radius:16px;
-      border:1px solid rgba(201,162,39,.5);
+      border:1px solid rgba(47,107,255,.5);
       box-shadow:0 10px 30px rgba(13,59,44,.25);
     }
 
     .hero .eyebrow{
-      color:#e8c766;
+      color:#6b9bff;
       font-weight:700;
       font-size:13px;
       letter-spacing:1px;
@@ -195,8 +196,8 @@ body{
 
     .hero-cta{
       display:inline-block;
-      background:#c9a227;
-      color:#0d3b2c;
+      background:#2f6bff;
+      color:#e8ecf8;
       padding:11px 26px;
       border-radius:8px;
       text-decoration:none;
@@ -222,8 +223,8 @@ body{
 
     .search-box button{
       border:none;
-      background:#c9a227;
-      color:#0d3b2c;
+      background:#2f6bff;
+      color:#e8ecf8;
       padding:0 20px;
       border-radius:7px;
       font-weight:bold;
@@ -238,7 +239,7 @@ body{
 
     .section-title{
       margin-bottom:6px;
-      color:#0d3b2c;
+      color:#e8ecf8;
       position:relative;
       display:inline-block;
       padding-bottom:8px;
@@ -251,7 +252,7 @@ body{
       bottom:0;
       width:46px;
       height:3px;
-      background:#c9a227;
+      background:#2f6bff;
       border-radius:3px;
     }
 
@@ -269,9 +270,9 @@ body{
 
     .category-btn{
       white-space:nowrap;
-      border:1px solid #d8cba3;
-      background:white;
-      color:#0d3b2c;
+      border:1px solid #2f6bff;
+      background: #121a30;
+      color:#e8ecf8;
       padding:9px 16px;
       border-radius:20px;
       cursor:pointer;
@@ -281,13 +282,13 @@ body{
 
     .category-btn.active,
     .category-btn:hover{
-      background:#c9a227;
-      border-color:#c9a227;
-      color:#0d3b2c;
+      background:#2f6bff;
+      border-color:#2f6bff;
+      color:#e8ecf8;
     }
 
     .filters{
-      background:white;
+      background: #121a30;
       padding:15px;
       border-radius:10px;
       margin-bottom:25px;
@@ -300,15 +301,15 @@ body{
     .filters select{
       width:100%;
       padding:11px;
-      border:1px solid #e3dfd7;
+      border:1px solid #243056;
       border-radius:6px;
-      background:white;
+      background: #121a30;
       outline:none;
     }
 
     .filters select:disabled{
-      background:#f6f3ee;
-      color:#999;
+      background:#0b1020;
+      color:#9aa6c4;
       cursor:not-allowed;
     }
 
@@ -321,7 +322,7 @@ body{
     }
 
     #productCount{
-      color:#666;
+      color:#9aa6c4;
       font-size:14px;
     }
 
@@ -333,10 +334,10 @@ body{
     }
 
     .product-card{
-      background:white;
+      background: #121a30;
       border-radius:12px;
       overflow:hidden;
-      border:1px solid #ede4c8;
+      border:1px solid #2f6bff;
       box-shadow:0 2px 10px rgba(13,59,44,.06);
       transition:.2s;
     }
@@ -344,14 +345,14 @@ body{
     .product-card:hover{
       transform:translateY(-3px);
       box-shadow:0 8px 22px rgba(13,59,44,.14);
-      border-color:#c9a227;
+      border-color:#2f6bff;
     }
 
     .product-image{
       width:100%;
       height:180px;
       object-fit:cover;
-      background:#f3f0e9;
+      background:#0b1020;
     }
 
     .product-body{
@@ -359,29 +360,29 @@ body{
     }
 
     .product-body h3{
-      color:#222;
+      color:#e8ecf8;
       font-size:17px;
       margin-bottom:8px;
     }
 
     .price{
-      color:#a9791a;
+      color:#f5c451;
       font-size:19px;
       font-weight:bold;
       margin-bottom:8px;
     }
 
     .product-meta{
-      color:#666;
+      color:#9aa6c4;
       font-size:13px;
       line-height:1.7;
     }
 
     .category-tag{
       display:inline-block;
-      background:#f7ecc9;
-      color:#a9791a;
-      border:1px solid #e0c15c;
+      background:#2b2410;
+      color:#f5c451;
+      border:1px solid #2f6bff;
       padding:3px 10px;
       border-radius:20px;
       font-size:11px;
@@ -391,7 +392,7 @@ body{
 
     .featured{
       display:inline-block;
-      background:#d69e1d;
+      background:#2f6bff;
       color:white;
       padding:4px 7px;
       border-radius:4px;
@@ -403,7 +404,7 @@ body{
       display:inline-flex;
       align-items:center;
       gap:4px;
-      background:#d69e1d;
+      background:#2f6bff;
       color:white;
       padding:5px 8px;
       border-radius:5px;
@@ -415,7 +416,7 @@ body{
     .seller-link{
       display:inline-block;
       margin-top:10px;
-      color:#135134;
+      color:#e8ecf8;
       text-decoration:none;
       font-size:13px;
       font-weight:bold;
@@ -428,7 +429,7 @@ body{
     .view-product{
       display:block;
       margin-top:10px;
-      background:#135134;
+      background:#1a3fa0;
       color:white;
       text-align:center;
       padding:10px;
@@ -439,27 +440,27 @@ body{
     }
 
     .view-product:hover{
-      background:#0e3c27;
+      background:#0d1a3f;
     }
 
     .empty{
-      background:white;
+      background: #121a30;
       padding:40px 20px;
       text-align:center;
       border-radius:10px;
-      color:#666;
+      color:#9aa6c4;
       grid-column:1/-1;
     }
 
     .empty h3{
-      color:#135134;
+      color:#e8ecf8;
       margin-bottom:8px;
     }
 
     .loading{
       text-align:center;
       padding:40px;
-      color:#135134;
+      color:#e8ecf8;
       grid-column:1/-1;
     }
 
@@ -473,12 +474,12 @@ body{
       padding:13px 16px;
       border-radius:7px;
       color:white;
-      background:#135134;
+      background:#1a3fa0;
       box-shadow:0 3px 12px rgba(0,0,0,.2);
     }
 
     footer{
-      background:#0b2f1e;
+      background:#0d1a3f;
       color:white;
       padding:25px 15px;
       text-align:center;
@@ -575,8 +576,8 @@ body{
   z-index:999;
   justify-content:space-around;
   align-items:center;
-  background:linear-gradient(135deg,#0d3b2c,#175e3f);
-  border-top:3px solid #c9a227;
+  background:linear-gradient(135deg,#0d1a3f,#2f6bff);
+  border-top:3px solid #2f6bff;
   padding:8px 4px calc(6px + env(safe-area-inset-bottom,0px));
   box-shadow:0 -2px 10px rgba(0,0,0,.25);
 }
@@ -592,7 +593,7 @@ body{
   padding:4px 0;
 }
 .bottom-nav .bn-item.active{
-  color:#c9a227;
+  color:#6b9bff;
   font-weight:bold;
 }
 .bottom-nav .bn-icon{
@@ -608,7 +609,7 @@ body.has-bottom-nav{
 </style>
 
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#10462d">
+<meta name="theme-color" content="#0b1020">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -2229,7 +2230,7 @@ function productCard(product){
               <p
                 style="
                   margin-top:8px;
-                  color:#666;
+                  color:#9aa6c4;
                   font-size:12px;
                   line-height:1.5;
                 "
