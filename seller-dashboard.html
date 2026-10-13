@@ -6,40 +6,28 @@
 
 <title>Arewa Market - Seller Dashboard</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-
 <style>
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:'Inter',Arial,sans-serif;
 }
 
-
-h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
-  font-family:'Playfair Display',Georgia,serif;
-  letter-spacing:.2px;
-}
 body{
-  background:#f8f6f2;
-  color:#0f241a;
-  min-height:100vh;
+  font-family:Arial, sans-serif;
+  background:#f4f7f5;
+  color:#222;
 }
 
 header{
-  background:linear-gradient(135deg,#0d3b2c,#175e3f);
+  background:#087f5b;
   color:white;
   padding:15px 20px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:15px;
   flex-wrap:wrap;
-  border-bottom:3px solid #c9a227;
 }
 
 .logo{
@@ -47,738 +35,344 @@ header{
   font-weight:bold;
 }
 
-.nav{
+.logo small{
+  display:block;
+  font-size:12px;
+  font-weight:normal;
+  margin-top:3px;
+}
+
+.header-actions{
   display:flex;
-  align-items:center;
-  gap:10px;
+  gap:8px;
   flex-wrap:wrap;
 }
 
-.nav a,
-.nav button{
-  text-decoration:none;
-  color:white;
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.18);
-  padding:9px 13px;
-  border-radius:8px;
+button,
+.btn{
+  border:none;
+  padding:10px 15px;
+  border-radius:7px;
   cursor:pointer;
-  font-size:14px;
+  font-weight:bold;
+  text-decoration:none;
+  display:inline-block;
 }
 
-.nav a:hover,
-.nav button:hover{
-  background:#c08e18;
-  color:#111;
+.btn-light{
+  background:white;
+  color:#087f5b;
 }
 
-.message-link{
+.btn-gold{
+  background:#d4a017;
+  color:white;
+}
+
+.btn-danger{
+  background:#dc3545;
+  color:white;
+}
+
+.btn-green{
+  background:#087f5b;
+  color:white;
+}
+
+.btn-gray{
+  background:#6c757d;
+  color:white;
+}
+
+button:hover,
+.btn:hover{
+  opacity:.9;
+}
+
+/* ================= MESSAGES BUTTON ================= */
+
+.messages-btn{
+  background:#198754;
+  color:white;
   position:relative;
 }
 
-.message-badge{
-  position:absolute;
-  top:-7px;
-  right:-7px;
-  background:#d32f2f;
-  color:white;
-  min-width:19px;
-  height:19px;
-  border-radius:50%;
-  font-size:11px;
-  display:none;
+.unread-badge{
+  display:inline-flex;
   align-items:center;
   justify-content:center;
-  padding:2px 5px;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  margin-left:5px;
+  background:#dc3545;
+  color:white;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
 }
+
+/* ================= CONTAINER ================= */
 
 .container{
   max-width:1200px;
   margin:auto;
-  padding:25px 15px 40px;
+  padding:20px;
 }
 
 .welcome{
-  background:white;
-  border-radius:14px;
-  padding:22px;
   margin-bottom:20px;
-  box-shadow:0 2px 10px rgba(0,0,0,.06);
 }
 
-.welcome h1{
-  color:#10462d;
-  margin-bottom:7px;
-}
-
-.welcome p{
-  color:#66736b;
+.welcome h2{
+  color:#087f5b;
+  margin-bottom:5px;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:15px;
-  margin-bottom:20px;
+  margin-bottom:25px;
 }
 
 .stat{
   background:white;
   padding:20px;
-  border-radius:14px;
-  box-shadow:0 2px 10px rgba(0,0,0,.06);
-  border-left:5px solid #10462d;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  text-align:center;
 }
 
 .stat h3{
-  font-size:14px;
-  color:#68756d;
-  margin-bottom:8px;
-}
-
-.stat strong{
-  font-size:28px;
-  color:#10462d;
-}
-
-/* PREMIUM */
-
-.premium-card{
-  background:linear-gradient(135deg,#fbf9f6,#ffffff);
-  border:2px solid #c08e18;
-  border-radius:16px;
-  padding:22px;
-  margin-bottom:20px;
-  box-shadow:0 3px 12px rgba(0,0,0,.07);
-}
-
-.premium-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:15px;
-  flex-wrap:wrap;
-}
-
-.premium-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.premium-title h2{
-  color:#10462d;
-}
-
-.premium-icon{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:#c08e18;
-  color:#111;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-}
-
-.plan-badge{
-  display:inline-block;
-  padding:7px 12px;
-  border-radius:20px;
-  font-size:13px;
-  font-weight:bold;
-}
-
-.plan-free{
-  background:#e9eeee;
-  color:#4e5a54;
-}
-
-.plan-premium{
-  background:#c08e18;
-  color:#111;
-}
-
-.plan-expired{
-  background:#fde2e2;
-  color:#a51d1d;
-}
-
-.premium-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-top:20px;
-}
-
-.premium-info{
-  background:white;
-  border:1px solid #e3e7e4;
-  border-radius:10px;
-  padding:14px;
-}
-
-.premium-info small{
-  display:block;
-  color:#748078;
+  font-size:30px;
+  color:#087f5b;
   margin-bottom:5px;
 }
 
-.premium-info strong{
-  color:#10462d;
+.stat p{
+  color:#666;
 }
-
-.premium-progress{
-  margin-top:18px;
-}
-
-.progress-head{
-  display:flex;
-  justify-content:space-between;
-  font-size:13px;
-  margin-bottom:7px;
-}
-
-.progress-bar{
-  height:10px;
-  background:#ece8e1;
-  border-radius:20px;
-  overflow:hidden;
-}
-
-.progress-fill{
-  height:100%;
-  background:#10462d;
-  border-radius:20px;
-  width:0%;
-}
-
-.premium-benefits{
-  margin-top:18px;
-  background:#fff;
-  padding:15px;
-  border-radius:10px;
-  border:1px solid #f3f0e9;
-}
-
-.premium-benefits h4{
-  color:#10462d;
-  margin-bottom:8px;
-}
-
-.premium-benefits ul{
-  padding-left:20px;
-}
-
-.premium-benefits li{
-  margin-bottom:5px;
-  color:#526058;
-}
-
-.premium-actions{
-  margin-top:18px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.btn{
-  border:none;
-  padding:10px 15px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.btn-primary{
-  background:#10462d;
-  color:white;
-}
-
-.btn-primary:hover{
-  background:#0d3723;
-}
-
-.btn-gold{
-  background:#c08e18;
-  color:#111;
-}
-
-.btn-gold:hover{
-  background:#a87c15;
-}
-
-.btn-danger{
-  background:#c62828;
-  color:white;
-}
-
-.btn-secondary{
-  background:#e9eeee;
-  color:#0f241a;
-}
-
-.btn:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-/* PANELS */
 
 .panel{
   background:white;
-  border-radius:14px;
   padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 2px 10px rgba(0,0,0,.06);
+  border-radius:10px;
+  margin-bottom:25px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .panel-header{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:10px;
-  margin-bottom:18px;
   flex-wrap:wrap;
+  margin-bottom:18px;
 }
 
 .panel-header h2{
-  color:#10462d;
-  font-size:20px;
+  color:#087f5b;
 }
-
-/* REFERRAL */
-
-.referral-card{
-  background:linear-gradient(135deg,#10462d,#155839);
-  color:white;
-  border-radius:16px;
-  padding:22px;
-  margin-bottom:20px;
-  box-shadow:0 3px 12px rgba(0,0,0,.10);
-}
-
-.referral-card h2{
-  margin-bottom:7px;
-}
-
-.referral-card p{
-  color:#f3efe7;
-  line-height:1.5;
-}
-
-.referral-link-box{
-  display:flex;
-  gap:8px;
-  margin-top:15px;
-}
-
-.referral-link-box input{
-  flex:1;
-  min-width:0;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  outline:none;
-  font-size:13px;
-}
-
-.referral-link-box button{
-  border:none;
-  background:#c08e18;
-  color:#111;
-  padding:0 16px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.referral-stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-top:18px;
-}
-
-.referral-stat{
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.18);
-  padding:15px;
-  border-radius:10px;
-}
-
-.referral-stat small{
-  display:block;
-  color:#daefe5;
-  margin-bottom:5px;
-}
-
-.referral-stat strong{
-  font-size:22px;
-}
-
-.referral-note{
-  margin-top:14px;
-  font-size:12px;
-  color:#daefe5;
-}
-
-.commission-highlight{
-  margin-top:15px;
-  background:rgba(192,142,24,.18);
-  border:1px solid rgba(212,162,44,.55);
-  border-radius:10px;
-  padding:14px 16px;
-}
-
-.commission-highlight strong{
-  display:block;
-  font-size:17px;
-  color:#ffd76b;
-  margin-bottom:4px;
-}
-
-.commission-highlight span{
-  display:block;
-  font-size:12.5px;
-  color:#f3efe7;
-  line-height:1.5;
-}
-
-/* =========================
-   WITHDRAWAL
-========================= */
-
-.withdrawal-summary{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-bottom:20px;
-}
-
-.withdrawal-stat{
-  border:1px solid #d9efe5;
-  background:#fbfaf9;
-  border-radius:12px;
-  padding:16px;
-}
-
-.withdrawal-stat small{
-  display:block;
-  color:#68756d;
-  font-size:12px;
-  margin-bottom:7px;
-}
-
-.withdrawal-stat strong{
-  display:block;
-  font-size:21px;
-  color:#10462d;
-  word-break:break-word;
-}
-
-.withdrawal-stat.available{
-  background:#f8f5f0;
-  border-color:#b8e0cd;
-}
-
-.withdrawal-stat.available strong{
-  color:#135335;
-}
-
-.withdrawal-stat.pending{
-  background:#f8f5ef;
-  border-color:#efd18c;
-}
-
-.withdrawal-stat.pending strong{
-  color:#7b5b0f;
-}
-
-.withdrawal-stat.paid{
-  background:#f8f5f0;
-  border-color:#c7e7d8;
-}
-
-.withdrawal-stat.paid strong{
-  color:#135335;
-}
-
-.withdrawal-action-box{
-  background:#faf9f7;
-  border:1px solid #d9eee4;
-  border-radius:12px;
-  padding:16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-
-.withdrawal-action-box h3{
-  color:#10462d;
-  margin-bottom:5px;
-}
-
-.withdrawal-action-box p{
-  color:#68756d;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.withdrawal-minimum{
-  margin-top:5px;
-  font-size:12px;
-  color:#7b5b0f;
-}
-
-.withdrawal-status-pending{
-  background:#f9ecce;
-  color:#7b5b0f;
-}
-
-.withdrawal-status-approved{
-  background:#e7eefc;
-  color:#315a9b;
-}
-
-.withdrawal-status-paid{
-  background:#f1ece2;
-  color:#135335;
-}
-
-.withdrawal-status-rejected{
-  background:#fde2e2;
-  color:#a51d1d;
-}
-
-.bank-preview{
-  background:#faf9f7;
-  border:1px solid #d9eee4;
-  border-radius:10px;
-  padding:14px;
-  margin-top:10px;
-}
-
-.bank-preview h4{
-  color:#10462d;
-  margin-bottom:8px;
-}
-
-.bank-preview p{
-  margin:5px 0;
-  color:#526058;
-  font-size:13px;
-}
-
-/* TABLE */
-
-.table-wrap{
-  overflow-x:auto;
-}
-
-.data-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:650px;
-}
-
-.data-table th,
-.data-table td{
-  padding:11px;
-  border-bottom:1px solid #edeae3;
-  text-align:left;
-  font-size:13px;
-}
-
-.data-table th{
-  background:#f9f7f4;
-  color:#10462d;
-}
-
-.badge{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:14px;
-  font-size:11px;
-  font-weight:bold;
-}
-
-.badge-approved{
-  background:#f1ece2;
-  color:#135335;
-}
-
-.badge-pending{
-  background:#f9ecce;
-  color:#7b5b0f;
-}
-
-.badge-rejected{
-  background:#fde2e2;
-  color:#a51d1d;
-}
-
-.badge-paid{
-  background:#f1ece2;
-  color:#135335;
-}
-
-.badge-unpaid{
-  background:#f9ecce;
-  color:#7b5b0f;
-}
-
-.badge-first{
-  background:#e7eefc;
-  color:#315a9b;
-}
-
-.badge-renewal{
-  background:#eee5fa;
-  color:#69439b;
-}
-
-/* PROFILE */
 
 .profile-box{
-  display:grid;
-  grid-template-columns:100px 1fr;
-  gap:18px;
+  display:flex;
+  gap:20px;
   align-items:center;
+  flex-wrap:wrap;
 }
 
 .profile-image{
-  width:100px;
-  height:100px;
+  width:110px;
+  height:110px;
   border-radius:50%;
   object-fit:cover;
-  background:#eeebe5;
-  border:3px solid #c08e18;
+  background:#ddd;
+  border:3px solid #087f5b;
 }
 
-.profile-details h3{
-  color:#10462d;
+.profile-info{
+  flex:1;
+  min-width:220px;
+}
+
+.profile-info h3{
+  font-size:23px;
+  color:#087f5b;
   margin-bottom:5px;
 }
 
-.profile-details p{
+.profile-info p{
   margin:5px 0;
-  color:#5f6c64;
+  color:#555;
 }
 
 .status{
   display:inline-block;
-  padding:5px 9px;
-  border-radius:15px;
+  padding:5px 10px;
+  border-radius:20px;
   font-size:12px;
   font-weight:bold;
-  margin-top:5px;
 }
 
-.status-approved{
-  background:#f1ece2;
-  color:#135335;
-}
-
-.status-pending{
-  background:#f9ecce;
-  color:#7b5b0f;
+.status-active{
+  background:#d4edda;
+  color:#155724;
 }
 
 .status-inactive{
-  background:#fde2e2;
-  color:#a51d1d;
+  background:#f8d7da;
+  color:#721c24;
 }
 
-/* PRODUCTS */
+.status-pending{
+  background:#fff3cd;
+  color:#856404;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+}
+
+.form-group.full{
+  grid-column:1 / -1;
+}
+
+label{
+  font-weight:bold;
+  margin-bottom:6px;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  padding:11px;
+  border:1px solid #ccc;
+  border-radius:7px;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:#087f5b;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.form-actions{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+  flex-wrap:wrap;
+}
 
 .products-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:15px;
+  gap:18px;
 }
 
 .product-card{
-  border:1px solid #d9efe5;
-  border-radius:12px;
-  overflow:hidden;
   background:#fff;
+  border:1px solid #ddd;
+  border-radius:10px;
+  overflow:hidden;
 }
 
 .product-image{
   width:100%;
   height:190px;
   object-fit:cover;
-  background:#f3f0eb;
+  background:#eee;
 }
 
 .product-body{
-  padding:14px;
+  padding:15px;
 }
 
 .product-body h3{
-  color:#10462d;
-  margin-bottom:7px;
-  font-size:17px;
+  color:#087f5b;
+  margin-bottom:8px;
 }
 
-.product-price{
-  font-size:18px;
+.price{
+  color:#d4a017;
   font-weight:bold;
-  color:#a87c15;
+  font-size:18px;
   margin-bottom:7px;
 }
 
 .product-meta{
-  color:#66736b;
-  font-size:13px;
-  line-height:1.6;
+  color:#666;
+  font-size:14px;
+  margin:5px 0;
+}
+
+.product-description{
+  margin-top:10px;
+  font-size:14px;
+  color:#555;
+  line-height:1.5;
 }
 
 .product-actions{
   display:flex;
   gap:7px;
   flex-wrap:wrap;
-  margin-top:12px;
+  margin-top:15px;
 }
 
 .product-actions button{
-  border:none;
-  padding:7px 9px;
-  border-radius:7px;
-  cursor:pointer;
   font-size:12px;
+  padding:8px 10px;
 }
 
-.edit-btn{
-  background:#f2eee5;
-  color:#10462d;
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#777;
 }
 
-.toggle-btn{
-  background:#f9ecce;
-  color:#6c4f0d;
+.message{
+  padding:12px;
+  border-radius:7px;
+  margin-bottom:15px;
+  display:none;
 }
 
-.delete-btn{
-  background:#fde2e2;
-  color:#a51d1d;
+.message.success{
+  display:block;
+  background:#d4edda;
+  color:#155724;
 }
 
-/* MODAL */
+.message.error{
+  display:block;
+  background:#f8d7da;
+  color:#721c24;
+}
 
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.6);
   display:none;
   align-items:center;
   justify-content:center;
-  padding:15px;
+  padding:20px;
   z-index:1000;
 }
 
@@ -786,210 +380,102 @@ header{
   display:flex;
 }
 
-.modal-box{
-  width:100%;
-  max-width:560px;
-  max-height:92vh;
-  overflow-y:auto;
+.modal-content{
   background:white;
-  border-radius:15px;
-  padding:22px;
-}
-
-.modal-box h2{
-  color:#10462d;
-  margin-bottom:18px;
-}
-
-.form-group{
-  margin-bottom:14px;
-}
-
-.form-group label{
-  display:block;
-  font-size:13px;
-  font-weight:bold;
-  color:#425048;
-  margin-bottom:6px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea{
   width:100%;
-  padding:11px;
-  border:1px solid #bfe3d2;
-  border-radius:8px;
-  outline:none;
-  font-size:14px;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
-  border-color:#10462d;
-}
-
-.form-group select:disabled{
-  background:#f6f3ee;
-  color:#999;
-  cursor:not-allowed;
-}
-
-.form-group textarea{
-  min-height:100px;
-  resize:vertical;
-}
-
-.modal-actions{
-  display:flex;
-  justify-content:flex-end;
-  gap:9px;
-  margin-top:18px;
-  flex-wrap:wrap;
-}
-
-.preview{
-  width:100%;
-  max-height:180px;
-  object-fit:cover;
-  border-radius:8px;
-  margin-top:8px;
-  display:none;
-}
-
-/* PAYMENT */
-
-.payment-box{
-  background:#faf9f7;
-  border:1px solid #d9eee4;
-  padding:15px;
+  max-width:700px;
+  max-height:90vh;
+  overflow-y:auto;
   border-radius:10px;
-  margin-bottom:18px;
+  padding:20px;
 }
 
-.payment-box h3{
-  color:#10462d;
-  margin-bottom:10px;
-}
-
-.payment-row{
+.modal-header{
   display:flex;
   justify-content:space-between;
-  gap:10px;
-  padding:6px 0;
-  border-bottom:1px solid #eeebe5;
+  align-items:center;
+  margin-bottom:20px;
 }
 
-.payment-row:last-child{
-  border-bottom:none;
+.modal-header h2{
+  color:#087f5b;
 }
 
-.payment-row span:first-child{
-  color:#657168;
+.close{
+  background:#dc3545;
+  color:white;
+  font-size:18px;
+  width:35px;
+  height:35px;
+  padding:0;
 }
 
-.payment-row strong{
-  text-align:right;
-  word-break:break-word;
-}
-
-.pending-box{
-  background:#f4f0e7;
-  border:1px solid #efd18c;
-  color:#654b0d;
-  padding:12px;
-  border-radius:9px;
-  margin-top:15px;
+.image-preview{
+  margin-top:10px;
   display:none;
 }
 
-.info-message{
-  padding:12px;
-  border-radius:8px;
-  margin-bottom:15px;
-  display:none;
-}
-
-.info-success{
-  background:#f1ece2;
-  color:#135335;
-}
-
-.info-error{
-  background:#fde2e2;
-  color:#a51d1d;
-}
-
-.info-warning{
-  background:#f0eadf;
-  color:#664b0d;
-}
-
-.empty{
-  text-align:center;
-  padding:35px 15px;
-  color:#78847d;
+.image-preview img{
+  width:120px;
+  height:90px;
+  object-fit:cover;
+  border-radius:7px;
+  border:1px solid #ddd;
 }
 
 .loading{
   text-align:center;
-  padding:25px;
-  color:#657168;
+  padding:30px;
+  color:#087f5b;
+  font-weight:bold;
 }
 
 footer{
-  background:#10462d;
-  color:white;
   text-align:center;
-  padding:20px;
-  margin-top:20px;
-  font-size:13px;
+  padding:25px;
+  color:#777;
+  font-size:14px;
 }
 
-@media(max-width:900px){
+/* MOBILE */
 
-  .premium-grid{
-    grid-template-columns:repeat(2,1fr);
+@media(max-width:800px){
+
+  .stats{
+    grid-template-columns:1fr;
   }
 
   .products-grid{
     grid-template-columns:repeat(2,1fr);
   }
 
-  .withdrawal-summary{
-    grid-template-columns:repeat(2,1fr);
-  }
-
 }
 
-@media(max-width:650px){
+@media(max-width:600px){
 
   header{
-    padding:13px;
+    align-items:flex-start;
   }
 
-  .logo{
+  .header-actions{
     width:100%;
   }
 
-  .nav{
-    width:100%;
-  }
-
-  .nav a,
-  .nav button{
+  .header-actions .btn{
     flex:1;
     text-align:center;
-    min-width:100px;
   }
 
-  .stats{
+  .container{
+    padding:12px;
+  }
+
+  .form-grid{
     grid-template-columns:1fr;
   }
 
-  .premium-grid{
-    grid-template-columns:1fr 1fr;
+  .form-group.full{
+    grid-column:auto;
   }
 
   .products-grid{
@@ -997,137 +483,65 @@ footer{
   }
 
   .profile-box{
-    grid-template-columns:1fr;
     text-align:center;
+    justify-content:center;
   }
 
-  .profile-image{
-    margin:auto;
+  .profile-info{
+    width:100%;
   }
 
-  .referral-stats{
-    grid-template-columns:1fr;
-  }
-
-}
-
-@media(max-width:420px){
-
-  .container{
-    padding:15px 10px 30px;
-  }
-
-  .premium-grid{
-    grid-template-columns:1fr;
-  }
-
-  .withdrawal-summary{
-    grid-template-columns:1fr;
-  }
-
-  .premium-card,
-  .panel,
-  .welcome,
-  .referral-card{
-    padding:16px;
-  }
-
-  .nav a,
-  .nav button{
-    min-width:0;
-    font-size:12px;
-    padding:8px;
-  }
-
-  .referral-link-box{
-    flex-direction:column;
-  }
-
-  .referral-link-box button{
-    padding:11px;
-  }
-
-}
-
-/* ================= BOTTOM NAV (mobile) ================= */
-.bottom-nav{
-  display:none;
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:999;
-  justify-content:space-around;
-  align-items:center;
-  background:#0b1020;
-  border-top:1px solid #243056;
-  padding:8px 4px calc(6px + env(safe-area-inset-bottom,0px));
-  box-shadow:0 -4px 16px rgba(0,0,0,.35);
-}
-.bottom-nav .bn-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:2px;
-  text-decoration:none;
-  color:#9aa6c4;
-  font-size:11px;
-  flex:1;
-  padding:4px 0;
-  font-weight:600;
-  border-radius:10px;
-  background:transparent;
-  border:0;
-}
-.bottom-nav .bn-item.active{
-  color:#6b9bff;
-  font-weight:bold;
-  background:rgba(47,107,255,.14);
-}
-.bottom-nav .bn-icon{
-  font-size:20px;
-  line-height:1;
-}
-body.has-bottom-nav{
-  padding-bottom:66px;
-}
-@media(max-width:900px){
-  .bottom-nav{display:flex;}
 }
 </style>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#10462d">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Arewa Market">
 </head>
 
-<body class="has-bottom-nav">
+<body>
 
 <header>
 
   <div class="logo">
     Arewa Market
+    <small>Seller Dashboard</small>
   </div>
 
-  <div class="nav">
+  <div class="header-actions">
 
-    <a href="index.html">
+    <a
+      href="index.html"
+      class="btn btn-light"
+    >
       Marketplace
     </a>
 
-    <a href="messages.html" class="message-link">
-      Messages
-      <span id="messageBadge" class="message-badge">0</span>
+    <!-- ================= MESSAGES ================= -->
+
+    <a
+      href="messages.html"
+      id="messagesBtn"
+      class="btn messages-btn"
+    >
+      💬 Messages
+      <span
+        id="unreadBadge"
+        class="unread-badge"
+        style="display:none;"
+      >
+        0
+      </span>
     </a>
 
-    <a href="#" id="publicProfileBtn">
+    <a
+      href="#"
+      id="publicProfileBtn"
+      class="btn btn-gold"
+    >
       My Public Profile
     </a>
 
-    <button id="logoutBtn">
+    <button
+      id="logoutBtn"
+      class="btn btn-danger"
+    >
       Logout
     </button>
 
@@ -1136,356 +550,153 @@ body.has-bottom-nav{
 </header>
 
 
-<main class="container">
+<div class="container">
 
-<section class="welcome">
+  <div id="message" class="message"></div>
 
-  <h1>
-    Welcome, <span id="sellerWelcome">Seller</span>
-  </h1>
-
-  <p>
-    Manage your seller profile, products, Premium subscription and referrals from here.
-  </p>
-
-</section>
-
-
-<section class="stats">
-
-  <div class="stat">
-    <h3>My Products</h3>
-    <strong id="totalProducts">0</strong>
-  </div>
-
-  <div class="stat">
-    <h3>Active Products</h3>
-    <strong id="activeProducts">0</strong>
-  </div>
-
-  <div class="stat">
-    <h3>Inactive Products</h3>
-    <strong id="inactiveProducts">0</strong>
-  </div>
-
-</section>
-
-
-<!-- ================= REFERRAL ================= -->
-
-<section class="referral-card">
-
-  <h2>
-    🎁 Referral Program
-  </h2>
-
-  <p>
-    Invite new users to Arewa Market. Registration itself does not generate commission.
-    Commission is generated only after the referred user gets Premium and the Super Admin approves the payment.
-  </p>
-
-  <div class="commission-highlight" id="referralCommissionInfo">
-    <strong>Loading commission rate...</strong>
-    <span></span>
-  </div>
-
-  <div class="referral-link-box">
-
-    <input
-      type="text"
-      id="referralLink"
-      readonly
-      value="Loading referral link...">
-
-    <button id="copyReferralBtn">
-      Copy Link
-    </button>
-
-  </div>
-
-  <div id="referralMessage"
-       style="margin-top:10px;font-size:13px;">
-  </div>
-
-  <div class="referral-stats">
-
-    <div class="referral-stat">
-      <small>Total Referrals</small>
-      <strong id="referralCount">0</strong>
-    </div>
-
-    <div class="referral-stat">
-      <small>Premium Referrals</small>
-      <strong id="premiumReferralCount">0</strong>
-    </div>
-
-    <div class="referral-stat">
-      <small>Total Commission</small>
-      <strong id="totalCommission">₦0</strong>
-    </div>
-
-  </div>
-
-  <div class="referral-note">
-    Your referral attribution remains connected to the referred user after registration.
-  </div>
-
-</section>
-
-
-<!-- ================= REFERRALS ================= -->
-
-<section class="panel">
-
-  <div class="panel-header">
+  <div class="welcome">
 
     <h2>
-      My Referrals
+      Welcome,
+      <span id="welcomeName">
+        Seller
+      </span>
     </h2>
 
-    <button
-      id="refreshReferralBtn"
-      class="btn btn-secondary">
-      Refresh
-    </button>
-
-  </div>
-
-  <div id="referralsContent">
-
-    <div class="loading">
-      Loading referrals...
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= COMMISSION ================= -->
-
-<section class="panel">
-
-  <div class="panel-header">
-
-    <h2>
-      Commission & Withdrawal
-    </h2>
-
-    <button
-      id="refreshWithdrawalBtn"
-      class="btn btn-secondary">
-      Refresh
-    </button>
+    <p>
+      Manage your seller profile and products from here.
+    </p>
 
   </div>
 
 
-  <div class="withdrawal-summary">
+  <!-- STATS -->
 
-    <div class="withdrawal-stat">
+  <div class="stats">
 
-      <small>
-        Total Commission
-      </small>
+    <div class="stat">
 
-      <strong id="withdrawalTotalCommission">
-        ₦0
-      </strong>
-
-    </div>
-
-
-    <div class="withdrawal-stat available">
-
-      <small>
-        Available Balance
-      </small>
-
-      <strong id="availableBalance">
-        ₦0
-      </strong>
-
-    </div>
-
-
-    <div class="withdrawal-stat pending">
-
-      <small>
-        Pending Withdrawal
-      </small>
-
-      <strong id="pendingWithdrawal">
-        ₦0
-      </strong>
-
-    </div>
-
-
-    <div class="withdrawal-stat paid">
-
-      <small>
-        Paid Withdrawal
-      </small>
-
-      <strong id="paidWithdrawal">
-        ₦0
-      </strong>
-
-    </div>
-
-  </div>
-
-
-  <div class="withdrawal-action-box">
-
-    <div>
-
-      <h3>
-        Withdraw Your Commission
+      <h3 id="totalProducts">
+        0
       </h3>
 
       <p>
-        Request withdrawal of your available commission directly from your seller dashboard.
+        My Products
       </p>
 
-      <div class="withdrawal-minimum">
-        Minimum withdrawal: <strong id="minimumWithdrawalText">₦1,000</strong>
-      </div>
+    </div>
+
+
+    <div class="stat">
+
+      <h3 id="activeProducts">
+        0
+      </h3>
+
+      <p>
+        Active Products
+      </p>
 
     </div>
 
-    <button
-      id="withdrawBtn"
-      class="btn btn-gold">
-      Withdraw Commission
-    </button>
 
-  </div>
+    <div class="stat">
 
+      <h3 id="inactiveProducts">
+        0
+      </h3>
 
-  <div id="withdrawalMessage"
-       class="info-message">
-  </div>
+      <p>
+        Inactive Products
+      </p>
 
-
-  <div class="panel-header"
-       style="margin-top:5px;">
-
-    <h2 style="font-size:17px;">
-      Commission History
-    </h2>
-
-  </div>
-
-
-  <div id="commissionContent">
-
-    <div class="loading">
-      Loading commission history...
     </div>
 
   </div>
 
 
-  <div class="panel-header"
-       style="margin-top:25px;">
+  <!-- PROFILE -->
 
-    <h2 style="font-size:17px;">
-      Withdrawal History
-    </h2>
+  <div class="panel">
 
-  </div>
+    <div class="panel-header">
 
+      <h2>
+        Seller Profile
+      </h2>
 
-  <div id="withdrawalContent">
+      <button
+        id="editProfileBtn"
+        class="btn btn-green"
+      >
+        Edit Profile
+      </button>
 
-    <div class="loading">
-      Loading withdrawal history...
     </div>
 
-  </div>
 
-</section>
+    <div class="profile-box">
+
+      <img
+        id="profileImage"
+        class="profile-image"
+        src=""
+        alt="Seller Profile"
+      >
 
 
-<!-- ================= PREMIUM ================= -->
+      <div class="profile-info">
 
-<section class="premium-card">
+        <h3 id="profileName">
+          Seller
+        </h3>
 
-  <div class="premium-top">
 
-    <div class="premium-title">
-
-      <div class="premium-icon">
-        ★
-      </div>
-
-      <div>
-        <h2>Premium Seller</h2>
-
-        <p style="color:#68756d;margin-top:4px;">
-          Get more product capacity and Premium benefits.
+        <p>
+          <strong>Business:</strong>
+          <span id="profileBusiness">
+            -
+          </span>
         </p>
-      </div>
-
-    </div>
-
-    <span id="premiumPlanBadge" class="plan-badge plan-free">
-      Free Plan
-    </span>
-
-  </div>
 
 
-  <div id="premiumMessage" class="info-message"></div>
+        <p>
+          <strong>Phone:</strong>
+          <span id="profilePhone">
+            -
+          </span>
+        </p>
 
 
-  <div class="premium-grid">
-
-    <div class="premium-info">
-      <small>Plan</small>
-      <strong id="premiumPlanText">Free</strong>
-    </div>
-
-    <div class="premium-info">
-      <small>Status</small>
-      <strong id="premiumStatusText">Active</strong>
-    </div>
-
-    <div class="premium-info">
-      <small>Products</small>
-      <strong id="premiumProductsText">0 / 5</strong>
-    </div>
-
-    <div class="premium-info">
-      <small>Expiry</small>
-      <strong id="premiumExpiryText">Not applicable</strong>
-      <small id="premiumCountdownText" style="display:block;margin-top:4px;font-weight:normal;"></small>
-    </div>
-
-  </div>
+        <p>
+          <strong>WhatsApp:</strong>
+          <span id="profileWhatsapp">
+            -
+          </span>
+        </p>
 
 
-  <div class="premium-progress">
+        <p>
+          <strong>Location:</strong>
+          <span id="profileLocation">
+            -
+          </span>
+        </p>
 
-    <div class="progress-head">
 
-      <span>
-        Product Usage
-      </span>
+        <p>
 
-      <span id="premiumUsageText">
-        0%
-      </span>
+          <strong>Status:</strong>
 
-    </div>
+          <span class="status status-active">
+            Approved Seller
+          </span>
 
-    <div class="progress-bar">
+        </p>
 
-      <div
-        id="premiumProgressFill"
-        class="progress-fill">
+
+        <p id="profileDescription"></p>
+
       </div>
 
     </div>
@@ -1493,791 +704,444 @@ body.has-bottom-nav{
   </div>
 
 
-  <div class="premium-benefits">
+  <!-- PRODUCTS -->
 
-    <h4>
-      Premium Benefits
-    </h4>
+  <div class="panel">
 
-    <ul id="premiumBenefitsList">
-      <li>More product capacity</li>
-      <li>Premium seller badge</li>
-      <li>Better seller visibility</li>
-    </ul>
+    <div class="panel-header">
 
-  </div>
+      <h2>
+        My Products
+      </h2>
 
+      <button
+        id="addProductBtn"
+        class="btn btn-green"
+      >
+        + Add Product
+      </button>
 
-  <div class="premium-actions">
-
-    <button
-      id="upgradePremiumBtn"
-      class="btn btn-gold">
-      Upgrade to Premium
-    </button>
-
-    <button
-      id="refreshPremiumBtn"
-      class="btn btn-secondary">
-      Refresh Premium
-    </button>
-
-  </div>
+    </div>
 
 
-  <div id="pendingRequestBox" class="pending-box">
-    You already have a pending Premium request.
-    Please wait for the Super Admin to review your payment.
-  </div>
+    <div id="productsContainer">
 
-</section>
+      <div class="loading">
+        Loading products...
+      </div>
 
-
-<!-- ================= SELLER PROFILE ================= -->
-
-<section class="panel">
-
-  <div class="panel-header">
-
-    <h2>
-      Seller Profile
-    </h2>
-
-    <button
-      id="editProfileBtn"
-      class="btn btn-primary">
-      Edit Profile
-    </button>
-
-  </div>
-
-
-  <div id="profileContent" class="loading">
-    Loading profile...
-  </div>
-
-</section>
-
-
-<!-- ================= PRODUCTS ================= -->
-
-<section class="panel">
-
-  <div class="panel-header">
-
-    <h2>
-      My Products
-    </h2>
-
-    <button
-      id="addProductBtn"
-      class="btn btn-primary">
-      + Add Product
-    </button>
-
-  </div>
-
-
-  <div id="productsContent">
-
-    <div class="loading">
-      Loading products...
     </div>
 
   </div>
 
-</section>
-
-</main>
+</div>
 
 
 <footer>
-  Arewa Market – Kasuwar Arewa a Hannunka
+
+  © 2026 Arewa Market - Kasuwar Arewa a Hannunka
+
 </footer>
 
 
-<!-- ================= PRODUCT MODAL ================= -->
 
-<div id="productModal" class="modal">
+<!-- PRODUCT MODAL -->
 
-  <div class="modal-box">
+<div
+  id="productModal"
+  class="modal"
+>
 
-    <h2 id="productModalTitle">
-      Add Product
-    </h2>
+  <div class="modal-content">
 
-    <div id="productMessage" class="info-message"></div>
+    <div class="modal-header">
 
-    <div class="form-group">
+      <h2 id="productModalTitle">
+        Add Product
+      </h2>
 
-      <label>Product Name</label>
+      <button
+        class="close"
+        id="closeProductModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="productForm">
 
       <input
-        type="text"
-        id="productName"
-        placeholder="Enter product name">
+        type="hidden"
+        id="productId"
+      >
 
-    </div>
 
-    <div class="form-group">
+      <div class="form-grid">
 
-      <label>Price (₦)</label>
+        <div class="form-group">
 
-      <input
-        type="number"
-        id="productPrice"
-        min="0"
-        placeholder="Enter price">
+          <label>
+            Product Name
+          </label>
 
-    </div>
+          <input
+            type="text"
+            id="productName"
+            required
+            placeholder="e.g. Farar Masara"
+          >
 
-    <div class="form-group">
-
-      <label>Category</label>
-
-      <select id="productCategory">
-
-        <option value="">
-          Select Category
-        </option>
-
-      </select>
-
-    </div>
-
-    <div class="form-group">
-
-      <label>State</label>
-
-      <select id="productState">
-        <option value="">Select State</option>
-      </select>
-
-    </div>
-
-    <div class="form-group">
-
-      <label>Local Government Area</label>
-
-      <select id="productLga" disabled>
-        <option value="">Select state first</option>
-      </select>
-
-    </div>
-
-    <div class="form-group">
-
-      <label>Product Image URL</label>
-
-      <input
-        type="url"
-        id="productImage"
-        placeholder="https://...">
-
-      <div style="margin:8px 0;">
-        <input
-          type="file"
-          id="productImageFile"
-          accept="image/*">
-        <div
-          id="productImageStatus"
-          style="font-size:13px;margin-top:4px;">
         </div>
-      </div>
-
-      <img
-        id="productImagePreview"
-        class="preview"
-        alt="Product preview">
-
-    </div>
-
-    <div class="form-group">
-
-      <label>Description</label>
-
-      <textarea
-        id="productDescription"
-        placeholder="Describe your product"></textarea>
-
-    </div>
-
-    <div class="form-group">
-
-      <label>Yadda za a kai Kaya (Delivery Option)</label>
-
-      <select id="productDeliveryOption">
-        <option value="seller_delivers">Seller Zai Kai (Delivery)</option>
-        <option value="buyer_pickup">Buyer Zai Zo Ɗauka (Pickup)</option>
-        <option value="meetup">Mu Hadu a Wuri (Meet-up)</option>
-      </select>
-
-    </div>
-
-    <div class="form-group" id="productDeliveryFeeGroup">
-
-      <label>Delivery Fee (₦)</label>
-
-      <input
-        type="number"
-        id="productDeliveryFee"
-        min="0"
-        placeholder="Enter delivery fee (0 idan babu)">
-
-    </div>
-
-    <div class="modal-actions">
-
-      <button
-        id="cancelProductBtn"
-        class="btn btn-secondary">
-        Cancel
-      </button>
-
-      <button
-        id="saveProductBtn"
-        class="btn btn-primary">
-        Save Product
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
 
 
-<!-- ================= PROFILE MODAL ================= -->
+        <div class="form-group">
 
-<div id="profileModal" class="modal">
+          <label>
+            Price (₦)
+          </label>
 
-  <div class="modal-box">
+          <input
+            type="number"
+            id="productPrice"
+            min="0"
+            required
+            placeholder="25000"
+          >
 
-    <h2>
-      Edit Seller Profile
-    </h2>
-
-    <div id="profileMessage" class="info-message"></div>
-
-    <div class="form-group">
-      <label>Full Name</label>
-      <input type="text" id="sellerName" placeholder="Full name">
-    </div>
-
-    <div class="form-group">
-      <label>Business Name</label>
-      <input type="text" id="sellerBusiness" placeholder="Business name">
-    </div>
-
-    <div class="form-group">
-      <label>Phone</label>
-      <input type="text" id="sellerPhone" placeholder="Phone number">
-    </div>
-
-    <div class="form-group">
-      <label>WhatsApp</label>
-      <input type="text" id="sellerWhatsapp" placeholder="WhatsApp number">
-    </div>
-
-    <div class="form-group">
-      <label>State</label>
-      <select id="sellerState">
-        <option value="">Select State</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Local Government Area</label>
-      <select id="sellerLga" disabled>
-        <option value="">Select state first</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Profile Image URL</label>
-      <input type="url" id="sellerProfileImage" placeholder="https://...">
-
-      <div style="margin:8px 0;">
-        <input
-          type="file"
-          id="sellerProfileImageFile"
-          accept="image/*">
-        <div
-          id="sellerProfileImageStatus"
-          style="font-size:13px;margin-top:4px;">
         </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Category
+          </label>
+
+          <select
+            id="productCategory"
+            required
+          >
+
+            <option value="">
+              Select Category
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Location
+          </label>
+
+          <select
+            id="productLocation"
+            required
+          >
+
+            <option value="">
+              Select State
+            </option>
+
+            <option>Adamawa</option>
+            <option>Bauchi</option>
+            <option>Borno</option>
+            <option>Gombe</option>
+            <option>Jigawa</option>
+            <option>Kaduna</option>
+            <option>Kano</option>
+            <option>Katsina</option>
+            <option>Kebbi</option>
+            <option>Kogi</option>
+            <option>Kwara</option>
+            <option>Nasarawa</option>
+            <option>Niger</option>
+            <option>Plateau</option>
+            <option>Sokoto</option>
+            <option>Taraba</option>
+            <option>Yobe</option>
+            <option>Zamfara</option>
+            <option>FCT Abuja</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Product Image URL
+          </label>
+
+          <input
+            type="url"
+            id="productImage"
+            placeholder="https://example.com/image.jpg"
+          >
+
+
+          <div
+            id="productImagePreview"
+            class="image-preview"
+          >
+
+            <img
+              id="productPreviewImg"
+              src=""
+              alt="Preview"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Description
+          </label>
+
+          <textarea
+            id="productDescription"
+            placeholder="Describe your product..."
+          ></textarea>
+
+        </div>
+
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>Description</label>
-      <textarea id="sellerDescription" placeholder="Tell buyers about your business"></textarea>
-    </div>
 
-    <div class="modal-actions">
+      <div class="form-actions">
 
-      <button
-        id="cancelProfileBtn"
-        class="btn btn-secondary">
-        Cancel
-      </button>
+        <button
+          type="submit"
+          class="btn btn-green"
+          id="saveProductBtn"
+        >
+          Save Product
+        </button>
 
-      <button
-        id="saveProfileBtn"
-        class="btn btn-primary">
-        Save Profile
-      </button>
 
-    </div>
+        <button
+          type="button"
+          class="btn btn-gray"
+          id="cancelProductBtn"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
 
   </div>
 
 </div>
 
 
-<!-- ================= PREMIUM MODAL ================= -->
 
-<div id="premiumModal" class="modal">
+<!-- PROFILE MODAL -->
 
-  <div class="modal-box">
+<div
+  id="profileModal"
+  class="modal"
+>
 
-    <h2>
-      Upgrade / Renew Premium
-    </h2>
+  <div class="modal-content">
 
-    <div id="premiumRequestMessage" class="info-message"></div>
+    <div class="modal-header">
 
-    <div class="payment-box">
-
-      <h3>
-        Payment Details
-      </h3>
-
-      <div class="payment-row">
-        <span>Plan</span>
-        <strong id="requestPlanName">Premium Seller</strong>
-      </div>
-
-      <div class="payment-row">
-        <span>Amount</span>
-        <strong id="requestPlanPrice">₦0</strong>
-      </div>
-
-      <div class="payment-row">
-
-        <span>Duration</span>
-
-        <strong>
-          <span id="requestPlanDuration">30</span>
-          days
-        </strong>
-
-      </div>
-
-      <div class="payment-row">
-        <span>Bank</span>
-        <strong id="requestBankName">Not set</strong>
-      </div>
-
-      <div class="payment-row">
-        <span>Account Name</span>
-        <strong id="requestAccountName">Not set</strong>
-      </div>
-
-      <div class="payment-row">
-        <span>Account Number</span>
-        <strong id="requestAccountNumber">Not set</strong>
-      </div>
-
-      <div class="payment-row">
-
-        <span>Request Type</span>
-
-        <strong id="requestTypeText">
-          First Premium
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Amount Paid (₦)
-      </label>
-
-      <input
-        type="number"
-        id="premiumAmount"
-        min="1"
-        placeholder="Enter amount paid">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Payment Reference
-      </label>
-
-      <input
-        type="text"
-        id="paymentReference"
-        placeholder="Enter transaction/payment reference">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Payment Date
-      </label>
-
-      <input
-        type="date"
-        id="paymentDate">
-
-    </div>
-
-
-    <div class="modal-actions">
+      <h2>
+        Edit Seller Profile
+      </h2>
 
       <button
-        id="cancelPremiumBtn"
-        class="btn btn-secondary">
-        Cancel
-      </button>
-
-      <button
-        id="submitPremiumBtn"
-        class="btn btn-gold">
-        Submit Premium Request
+        class="close"
+        id="closeProfileModal"
+      >
+        ×
       </button>
 
     </div>
+
+
+    <form id="profileForm">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label>
+            Full Name
+          </label>
+
+          <input
+            type="text"
+            id="sellerName"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Business Name
+          </label>
+
+          <input
+            type="text"
+            id="sellerBusiness"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Phone
+          </label>
+
+          <input
+            type="tel"
+            id="sellerPhone"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            WhatsApp
+          </label>
+
+          <input
+            type="tel"
+            id="sellerWhatsapp"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Location
+          </label>
+
+          <select id="sellerLocation">
+
+            <option value="">
+              Select State
+            </option>
+
+            <option>Adamawa</option>
+            <option>Bauchi</option>
+            <option>Borno</option>
+            <option>Gombe</option>
+            <option>Jigawa</option>
+            <option>Kaduna</option>
+            <option>Kano</option>
+            <option>Katsina</option>
+            <option>Kebbi</option>
+            <option>Kogi</option>
+            <option>Kwara</option>
+            <option>Nasarawa</option>
+            <option>Niger</option>
+            <option>Plateau</option>
+            <option>Sokoto</option>
+            <option>Taraba</option>
+            <option>Yobe</option>
+            <option>Zamfara</option>
+            <option>FCT Abuja</option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Profile Image URL
+          </label>
+
+          <input
+            type="url"
+            id="sellerProfileImage"
+            placeholder="https://example.com/profile.jpg"
+          >
+
+        </div>
+
+
+        <div class="form-group full">
+
+          <label>
+            Business Description
+          </label>
+
+          <textarea
+            id="sellerDescription"
+            placeholder="Tell customers about your business..."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="submit"
+          class="btn btn-green"
+        >
+          Save Profile
+        </button>
+
+
+        <button
+          type="button"
+          id="cancelProfileBtn"
+          class="btn btn-gray"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
 
   </div>
 
 </div>
 
 
-<!-- ================= FEATURED REQUEST MODAL ================= -->
 
-<div id="featuredRequestModal" class="modal">
-
-  <div class="modal-box">
-
-    <h2>
-      Request Featured Listing
-    </h2>
-
-    <div id="featuredRequestMessage" class="info-message"></div>
-
-    <div class="payment-box">
-
-      <h3>
-        Payment Details
-      </h3>
-
-      <div class="payment-row">
-        <span>Product</span>
-        <strong id="featuredRequestProductName">Product</strong>
-      </div>
-
-      <div class="payment-row">
-        <span>Price</span>
-        <strong id="featuredRequestPrice">₦0</strong>
-      </div>
-
-      <div class="payment-row">
-
-        <span>Duration</span>
-
-        <strong>
-          <span id="featuredRequestDuration">7</span>
-          days
-        </strong>
-
-      </div>
-
-      <div class="payment-row">
-        <span>Bank</span>
-        <strong id="featuredRequestBankName">Not set</strong>
-      </div>
-
-      <div class="payment-row">
-        <span>Account Name</span>
-        <strong id="featuredRequestAccountName">Not set</strong>
-      </div>
-
-      <div class="payment-row">
-        <span>Account Number</span>
-        <strong id="featuredRequestAccountNumber">Not set</strong>
-      </div>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Amount Paid (₦)
-      </label>
-
-      <input
-        type="number"
-        id="featuredAmount"
-        min="1"
-        placeholder="Enter amount paid">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Payment Reference
-      </label>
-
-      <input
-        type="text"
-        id="featuredPaymentReference"
-        placeholder="Enter transaction/payment reference">
-
-      <div class="hint" style="margin-top:6px;">
-        Ko turo hoto na screenshot/receipt na transaction — zai zama reference ɗinka kai tsaye.
-      </div>
-
-      <div style="margin:8px 0;display:flex;align-items:center;gap:10px;">
-
-        <input
-          type="file"
-          id="featuredPaymentProofFile"
-          accept="image/*">
-
-        <img
-          id="featuredPaymentProofPreview"
-          style="display:none;width:60px;height:60px;object-fit:cover;border-radius:8px;"
-          alt="Payment proof">
-
-      </div>
-
-      <div
-        id="featuredPaymentProofStatus"
-        style="font-size:13px;">
-      </div>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Payment Date
-      </label>
-
-      <input
-        type="date"
-        id="featuredPaymentDate">
-
-    </div>
-
-
-    <div class="modal-actions">
-
-      <button
-        id="cancelFeaturedBtn"
-        class="btn btn-secondary">
-        Cancel
-      </button>
-
-      <button
-        id="submitFeaturedBtn"
-        class="btn btn-gold">
-        Submit Featured Request
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ================= WITHDRAWAL MODAL ================= -->
-
-<div id="withdrawalModal" class="modal">
-
-  <div class="modal-box">
-
-    <h2>
-      Withdraw Commission
-    </h2>
-
-    <div id="withdrawalModalMessage"
-         class="info-message">
-    </div>
-
-
-    <div class="payment-box">
-
-      <h3>
-        Withdrawal Information
-      </h3>
-
-      <div class="payment-row">
-
-        <span>
-          Available Balance
-        </span>
-
-        <strong id="withdrawModalBalance">
-          ₦0
-        </strong>
-
-      </div>
-
-      <div class="payment-row">
-
-        <span>
-          Minimum Withdrawal
-        </span>
-
-        <strong id="withdrawModalMinimum">
-          ₦1,000
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Bank Name
-      </label>
-
-      <input
-        type="text"
-        id="withdrawBankName"
-        placeholder="e.g. First Bank">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Account Name
-      </label>
-
-      <input
-        type="text"
-        id="withdrawAccountName"
-        placeholder="Account holder name">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Account Number
-      </label>
-
-      <input
-        type="text"
-        id="withdrawAccountNumber"
-        inputmode="numeric"
-        maxlength="20"
-        placeholder="Enter account number">
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Amount to Withdraw (₦)
-      </label>
-
-      <input
-        type="number"
-        id="withdrawAmount"
-        min="1000"
-        step="1"
-        placeholder="Enter amount">
-
-    </div>
-
-
-    <div class="bank-preview">
-
-      <h4>
-        Important
-      </h4>
-
-      <p>
-        Your withdrawal request will first be reviewed by Super Admin.
-      </p>
-
-      <p>
-        Do not submit an amount greater than your available balance.
-      </p>
-
-    </div>
-
-
-    <div class="modal-actions">
-
-      <button
-        id="cancelWithdrawalBtn"
-        class="btn btn-secondary">
-        Cancel
-      </button>
-
-      <button
-        id="submitWithdrawalBtn"
-        class="btn btn-primary">
-        Submit Withdrawal
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<script type="module" id="sx9h2c">
-
-import { auth, db } from "./firebase.js";
+<script type="module">
 
 import {
-  NIGERIA_STATES,
-  populateLgaSelect
-} from "./states-lga.js";
+  auth,
+  db
+} from "./firebase.js";
 
-import {
-  FREE_MAX_PRODUCTS,
-  isPremiumActive,
-  getVisibleProductIds
-} from "./premium-utils.js";
-
-import {
-  attachImgbbUploader,
-  uploadToImgbb
-} from "./imgbb-upload.js";
 
 import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 
 import {
   doc,
@@ -2294,2283 +1158,516 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/* =========================================================
-   IMGBB IMAGE UPLOAD (file -> imgbb -> fills URL input)
-========================================================= */
 
-attachImgbbUploader({
-  fileInputId: "productImageFile",
-  urlInputId: "productImage",
-  statusId: "productImageStatus",
-  // Muhimmi: toshe "Save Product" har sai hoto ya
-  // gama turawa, don kada a ajiye tsohon URL a Firestore.
-  onStart: () => {
-    $("saveProductBtn").disabled = true;
-  },
-  onDone: () => {
-    $("saveProductBtn").disabled = false;
-  }
-});
-
-attachImgbbUploader({
-  fileInputId: "sellerProfileImageFile",
-  urlInputId: "sellerProfileImage",
-  statusId: "sellerProfileImageStatus",
-  // Muhimmi: toshe "Save Profile" har sai hoto ya
-  // gama turawa, don kada a ajiye tsohon URL a Firestore.
-  onStart: () => {
-    $("saveProfileBtn").disabled = true;
-  },
-  onDone: () => {
-    $("saveProfileBtn").disabled = false;
-  }
-});
-
-
-/* =========================================================
+/* =========================================
    GLOBAL VARIABLES
-========================================================= */
+========================================= */
 
 let currentUser = null;
+
 let sellerData = null;
 
 let allProducts = [];
-let categories = [];
 
-let editingProductId = null;
-
-let premiumSettings = null;
-let featuredSettings = null;
-let premiumRequest = null;
-
-let myReferrals = [];
-let myCommissions = [];
-
-let myWithdrawals = [];
-
-let minimumWithdrawal = 1000;
-
-let referralSettingsData = null;
-
-let withdrawalStats = {
-
-  totalCommission:0,
-  pendingWithdrawal:0,
-  paidWithdrawal:0,
-  reservedWithdrawal:0,
-  availableBalance:0
-
-};
+let conversationsUnsubscribe = null;
 
 
-/* =========================================================
-   DOM
-========================================================= */
 
-const $ = id => document.getElementById(id);
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const messageBox =
+  document.getElementById("message");
 
 
-/* =========================================================
-   STATE / LGA DROPDOWNS (Product form + Seller Profile form)
-========================================================= */
+const welcomeName =
+  document.getElementById("welcomeName");
 
-function populateStateSelect(selectEl){
 
-  NIGERIA_STATES.forEach(state => {
+const totalProducts =
+  document.getElementById("totalProducts");
 
-    const option = document.createElement("option");
 
-    option.value = state;
+const activeProducts =
+  document.getElementById("activeProducts");
 
-    option.textContent = state;
 
-    selectEl.appendChild(option);
+const inactiveProducts =
+  document.getElementById("inactiveProducts");
 
+
+const productsContainer =
+  document.getElementById("productsContainer");
+
+
+const productModal =
+  document.getElementById("productModal");
+
+
+const profileModal =
+  document.getElementById("profileModal");
+
+
+const unreadBadge =
+  document.getElementById("unreadBadge");
+
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(text,type="success"){
+
+  messageBox.textContent =
+    text;
+
+  messageBox.className =
+    "message " + type;
+
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
   });
 
-}
 
-populateStateSelect($("productState"));
-populateStateSelect($("sellerState"));
+  setTimeout(() => {
 
-$("productState").addEventListener(
-  "change",
-  () => populateLgaSelect($("productState"), $("productLga"))
-);
+    messageBox.className =
+      "message";
 
-$("sellerState").addEventListener(
-  "change",
-  () => populateLgaSelect($("sellerState"), $("sellerLga"))
-);
-
-
-console.log(
-  "%cAREWA MARKET SELLER DASHBOARD — build 2026-09-23-FIX2",
-  "background:#10462d;color:#fff;padding:6px 10px;border-radius:6px;font-weight:bold;"
-);
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value){
-
-  if(value === null || value === undefined){
-    return "";
-  }
-
-  return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  },4000);
 
 }
 
 
-/* =========================================================
-   MONEY
-========================================================= */
 
-function formatMoney(value){
+/* =========================================
+   AUTH CHECK
+========================================= */
 
-  const number = Number(value || 0);
+onAuthStateChanged(
+  auth,
+  async (user) => {
 
-  return "₦" + number.toLocaleString("en-NG");
+    if(!user){
 
-}
+      window.location.replace(
+        "login.html"
+      );
 
-
-/* =========================================================
-   DATE
-========================================================= */
-
-function formatDate(value){
-
-  if(!value){
-    return "Not available";
-  }
-
-  try{
-
-    let date;
-
-    if(value?.toDate){
-      date = value.toDate();
-    }
-    else{
-      date = new Date(value);
+      return;
     }
 
-    if(isNaN(date.getTime())){
-      return "Not available";
+
+    currentUser =
+      user;
+
+
+    try{
+
+      const userRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
+
+
+      const userSnap =
+        await getDoc(
+          userRef
+        );
+
+
+      if(!userSnap.exists()){
+
+        alert(
+          "Seller profile not found."
+        );
+
+
+        await signOut(auth);
+
+
+        window.location.replace(
+          "login.html"
+        );
+
+        return;
+      }
+
+
+      sellerData =
+        userSnap.data();
+
+
+      if(
+        sellerData.role !== "seller" ||
+        sellerData.isSeller !== true ||
+        sellerData.sellerStatus !== "approved"
+      ){
+
+        alert(
+          "Your seller account is not approved."
+        );
+
+
+        window.location.replace(
+          "index.html"
+        );
+
+        return;
+      }
+
+
+      renderSellerProfile();
+
+
+      await loadCategories();
+
+
+      await loadProducts();
+
+
+      /* START MESSAGE LISTENER */
+
+      startMessageListener();
+
+
+    }catch(error){
+
+      console.error(error);
+
+
+      showMessage(
+        "Failed to load seller dashboard: " +
+        error.message,
+        "error"
+      );
+
     }
 
-    return date.toLocaleDateString("en-NG",{
-      year:"numeric",
-      month:"short",
-      day:"numeric"
-    });
-
   }
-  catch(error){
-
-    return "Not available";
-
-  }
-
-}
+);
 
 
-/* =========================================================
-   MESSAGE
-========================================================= */
 
-function showMessage(element,message,type="success"){
+/* =========================================
+   MESSAGE / CONVERSATION LISTENER
+========================================= */
 
-  if(!element){
+function startMessageListener(){
+
+  if(!currentUser){
+
     return;
   }
 
-  element.className = "info-message";
 
-  if(type === "success"){
-    element.classList.add("info-success");
-  }
-  else if(type === "error"){
-    element.classList.add("info-error");
-  }
-  else{
-    element.classList.add("info-warning");
+  if(conversationsUnsubscribe){
+
+    conversationsUnsubscribe();
+
+    conversationsUnsubscribe =
+      null;
   }
 
-  element.textContent = message;
 
-  element.style.display = "block";
-
-}
-
-
-function hideMessage(element){
-
-  if(element){
-    element.style.display = "none";
-  }
-
-}
+  const conversationsRef =
+    collection(
+      db,
+      "conversations"
+    );
 
 
-/* =========================================================
-   AUTH
-========================================================= */
-
-onAuthStateChanged(auth, async user => {
-
-  if(!user){
-
-    window.location.href = "login.html";
-
-    return;
-
-  }
-
-  currentUser = user;
-
-  try{
-
-    const userRef =
-      doc(db,"users",user.uid);
-
-    const userSnap =
-      await getDoc(userRef);
-
-    if(!userSnap.exists()){
-
-      alert("Seller account not found.");
-
-      await signOut(auth);
-
-      window.location.href = "login.html";
-
-      return;
-
-    }
-
-    sellerData = {
-      uid:user.uid,
-      ...userSnap.data()
-    };
+  const q =
+    query(
+      conversationsRef,
+      where(
+        "participantIds",
+        "array-contains",
+        currentUser.uid
+      )
+    );
 
 
-    if(
-      sellerData.role !== "seller" ||
-      sellerData.isSeller !== true ||
-      sellerData.sellerStatus !== "approved"
-    ){
+  conversationsUnsubscribe =
+    onSnapshot(
+      q,
+      (snapshot) => {
 
-      window.location.href = "index.html";
-
-      return;
-
-    }
+        let unreadTotal = 0;
 
 
-    renderSellerProfile();
+        snapshot.forEach(
+          conversationDoc => {
 
-    loadCategories();
+            const data =
+              conversationDoc.data();
 
-    loadProducts();
 
-    loadPremiumData();
+            const unreadCount =
+              data.unreadCount || {};
 
-    loadFeaturedSettingsData();
 
-    loadReferralData();
+            const count =
+              Number(
+                unreadCount[
+                  currentUser.uid
+                ] || 0
+              );
 
-    loadWithdrawalSettings();
 
-    loadWithdrawalData();
+            unreadTotal +=
+              count;
 
-    listenForMessages();
+          }
+        );
 
-    // Re-check the Premium countdown/expiry every minute so it
-    // flips to "Expired" and the Free-plan limits kick in on
-    // their own the moment the real date passes, with no need
-    // for the seller to reload the page.
-    setInterval(
-      () => {
 
-        if(sellerData){
-          renderPremiumCard();
-        }
+        updateUnreadBadge(
+          unreadTotal
+        );
 
       },
-      60000
+      (error) => {
+
+        console.error(
+          "Messages listener error:",
+          error
+        );
+
+      }
     );
+
+}
+
+
+
+/* =========================================
+   UPDATE UNREAD BADGE
+========================================= */
+
+function updateUnreadBadge(
+  unreadTotal
+){
+
+  if(!unreadBadge){
+
+    return;
+  }
+
+
+  if(unreadTotal > 0){
+
+    unreadBadge.textContent =
+      unreadTotal > 99
+        ? "99+"
+        : unreadTotal;
+
+
+    unreadBadge.style.display =
+      "inline-flex";
+
+  }else{
+
+    unreadBadge.textContent =
+      "0";
+
+
+    unreadBadge.style.display =
+      "none";
 
   }
-  catch(error){
 
-    console.error(
-      "Authentication error:",
-      error
-    );
-
-    alert(
-      "Unable to load seller account. Please try again."
-    );
-
-  }
-
-});
+}
 
 
-/* =========================================================
-   SELLER PROFILE
-========================================================= */
+
+/* =========================================
+   RENDER SELLER PROFILE
+========================================= */
 
 function renderSellerProfile(){
 
   const name =
     sellerData.name ||
-    sellerData.fullName ||
-    sellerData.sellerName ||
+    currentUser.displayName ||
     "Seller";
 
 
-  $("sellerWelcome").textContent = name;
+  welcomeName.textContent =
+    name;
 
 
-  const image =
-    sellerData.profileImage ||
-    sellerData.sellerProfileImage ||
-    sellerData.profileImageUrl ||
+  document.getElementById(
+    "profileName"
+  ).textContent =
+    name;
+
+
+  document.getElementById(
+    "profileBusiness"
+  ).textContent =
+    sellerData.businessName ||
+    "-";
+
+
+  document.getElementById(
+    "profilePhone"
+  ).textContent =
+    sellerData.phone ||
+    "-";
+
+
+  document.getElementById(
+    "profileWhatsapp"
+  ).textContent =
+    sellerData.whatsapp ||
+    "-";
+
+
+  document.getElementById(
+    "profileLocation"
+  ).textContent =
+    sellerData.location ||
+    "-";
+
+
+  document.getElementById(
+    "profileDescription"
+  ).textContent =
+    sellerData.businessDescription ||
     "";
 
 
-  const statusClass =
-    sellerData.sellerStatus === "approved"
-      ? "status-approved"
-      : "status-pending";
-
-
-  const statusText =
-    sellerData.sellerStatus === "approved"
-      ? "Approved Seller"
-      : "Seller Status: " +
-        (sellerData.sellerStatus || "Unknown");
-
-
-  $("profileContent").innerHTML = `
-
-    <div class="profile-box">
-
-      ${
-        image
-        ?
-        `<img
-          class="profile-image"
-          src="${escapeHtml(image)}"
-          alt="Seller profile">`
-        :
-        `<div
-          class="profile-image"
-          style="
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:#10462d;
-            font-weight:bold;
-          ">
-          AM
-        </div>`
-      }
-
-      <div class="profile-details">
-
-        <h3>
-          ${escapeHtml(name)}
-        </h3>
-
-        <p>
-          <strong>Business:</strong>
-          ${escapeHtml(
-            sellerData.businessName ||
-            sellerData.sellerBusiness ||
-            "Not provided"
-          )}
-        </p>
-
-        <p>
-          <strong>Phone:</strong>
-          ${escapeHtml(
-            sellerData.phone ||
-            sellerData.sellerPhone ||
-            "Not provided"
-          )}
-        </p>
-
-        <p>
-          <strong>WhatsApp:</strong>
-          ${escapeHtml(
-            sellerData.whatsapp ||
-            sellerData.sellerWhatsapp ||
-            "Not provided"
-          )}
-        </p>
-
-        <p>
-          <strong>Location:</strong>
-          ${escapeHtml(
-            sellerData.location ||
-            sellerData.sellerLocation ||
-            "Not provided"
-          )}
-        </p>
-
-        ${
-          sellerData.description ||
-          sellerData.sellerDescription
-          ?
-          `<p>
-            ${escapeHtml(
-              sellerData.description ||
-              sellerData.sellerDescription
-            )}
-          </p>`
-          :
-          ""
-        }
-
-        <span class="status ${statusClass}">
-          ${escapeHtml(statusText)}
-        </span>
-
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   REFERRAL LINK
-========================================================= */
-
-function getReferralCode(){
-
-  return String(
-    sellerData.referralCode ||
-    sellerData.referralId ||
-    sellerData.uid ||
-    currentUser.uid
-  );
-
-}
-
-
-function buildReferralLink(){
-
-  const code =
-    getReferralCode();
-
-  return `${window.location.origin}${window.location.pathname.replace("seller-dashboard.html","")}register.html?ref=${encodeURIComponent(code)}`;
-
-}
-
-
-function renderReferralLink(){
-
-  $("referralLink").value =
-    buildReferralLink();
-
-}
-
-
-/* =========================================================
-   LOAD REFERRAL DATA
-========================================================= */
-
-async function loadReferralData(){
-
-  renderReferralLink();
-
-  try{
-
-    /*
-      There is no separate "referrals" collection in this
-      app. Referral relationships live as fields on the
-      "users" documents themselves (referredByUserId,
-      referredBy, referralStatus, referralJoinedAt).
-
-      This mirrors exactly how admin.html builds its
-      referral list (buildReferralRecords), so seller and
-      admin numbers always match.
-    */
-
-    const referredUsersQuery =
-      query(
-        collection(db,"users"),
-        where(
-          "referredByUserId",
-          "==",
-          currentUser.uid
-        )
-      );
-
-
-    const referredUsersSnapshot =
-      await getDocs(referredUsersQuery);
-
-
-    myReferrals = [];
-
-
-    referredUsersSnapshot.forEach(item => {
-
-      const user = item.data();
-
-      const isPremium =
-        user.subscriptionPlan === "premium" &&
-        user.subscriptionStatus === "active";
-
-      let status =
-        user.referralStatus || "registered";
-
-      if(user.active === false){
-
-        status = "inactive";
-
-      }
-
-      myReferrals.push({
-
-        id:item.id,
-
-        referredUserId:item.id,
-
-        referredUserName:
-          user.name ||
-          user.fullName ||
-          "No name",
-
-        referredUserEmail:
-          user.email || "",
-
-        createdAt:
-          user.referralJoinedAt ||
-          user.createdAt ||
-          null,
-
-        premiumStatus:
-          isPremium
-            ? "premium"
-            : "none",
-
-        referralStatus:status
-
-      });
-
-    });
-
-
-    myReferrals.sort((a,b) => {
-
-      const aTime =
-        a.createdAt?.seconds || 0;
-
-      const bTime =
-        b.createdAt?.seconds || 0;
-
-      return bTime - aTime;
-
-    });
-
-
-    const commissionQuery =
-      query(
-        collection(db,"commissions"),
-        where(
-          "referrerId",
-          "==",
-          currentUser.uid
-        )
-      );
-
-
-    const commissionSnapshot =
-      await getDocs(commissionQuery);
-
-
-    myCommissions = [];
-
-
-    commissionSnapshot.forEach(item => {
-
-      myCommissions.push({
-        id:item.id,
-        ...item.data()
-      });
-
-    });
-
-
-    myCommissions.sort((a,b) => {
-
-      const aTime =
-        a.createdAt?.seconds ||
-        a.date?.seconds ||
-        0;
-
-      const bTime =
-        b.createdAt?.seconds ||
-        b.date?.seconds ||
-        0;
-
-      return bTime - aTime;
-
-    });
-
-
-    renderReferralData();
-
-    renderCommissionData();
-
-    calculateWithdrawalStats();
-
-  }
-  catch(error){
-
-    console.error(
-      "Referral loading error:",
-      error
-    );
-
-    $("referralsContent").innerHTML = `
-
-      <div class="empty">
-        Referral information is currently unavailable.
-      </div>
-
-    `;
-
-    $("commissionContent").innerHTML = `
-
-      <div class="empty">
-        Commission information is currently unavailable.
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* =========================================================
-   RENDER REFERRALS
-========================================================= */
-
-function renderReferralData(){
-
-  const total =
-    myReferrals.length;
-
-
-  const premiumCount =
-    myReferrals.filter(item => {
-
-      const status =
-        String(
-          item.premiumStatus ||
-          item.subscriptionStatus ||
-          item.status ||
-          ""
-        ).toLowerCase();
-
-      return (
-        status === "premium" ||
-        status === "approved" ||
-        item.premiumApproved === true
-      );
-
-    }).length;
-
-
-  const totalCommission =
-    myCommissions.reduce(
-      (sum,item) => {
-
-        const status =
-          String(
-            item.status ||
-            "approved"
-          ).toLowerCase();
-
-        if(
-          status === "rejected" ||
-          status === "cancelled"
-        ){
-          return sum;
-        }
-
-        return sum + Number(
-          item.amount ||
-          item.commissionAmount ||
-          0
-        );
-
-      },
-      0
+  const profileImage =
+    document.getElementById(
+      "profileImage"
     );
 
 
-  $("referralCount").textContent =
-    total;
+  if(sellerData.profileImageUrl){
 
-
-  $("premiumReferralCount").textContent =
-    premiumCount;
-
-
-  $("totalCommission").textContent =
-    formatMoney(totalCommission);
-
-
-  if(!myReferrals.length){
-
-    $("referralsContent").innerHTML = `
-
-      <div class="empty">
-
-        <h3>No referrals yet</h3>
-
-        <p style="margin-top:7px;">
-          Share your referral link to invite users to Arewa Market.
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  $("referralsContent").innerHTML = `
-
-    <div class="table-wrap">
-
-      <table class="data-table">
-
-        <thead>
-
-          <tr>
-
-            <th>Referred User</th>
-            <th>Registered</th>
-            <th>Premium</th>
-            <th>Referral Status</th>
-            <th>Commission</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          ${
-            myReferrals.map(item => {
-
-              const userName =
-                item.referredUserName ||
-                item.referredName ||
-                item.userName ||
-                item.referredUserEmail ||
-                item.userEmail ||
-                "User";
-
-
-              const registered =
-                item.createdAt ||
-                item.registeredAt;
-
-
-              const premiumStatus =
-                String(
-                  item.premiumStatus ||
-                  item.subscriptionStatus ||
-                  ""
-                ).toLowerCase();
-
-
-              const premium =
-                premiumStatus === "premium" ||
-                premiumStatus === "active" ||
-                item.premiumApproved === true;
-
-
-              const referralStatus =
-                item.referralStatus ||
-                item.status ||
-                "Registered";
-
-
-              const statusLower =
-                String(referralStatus).toLowerCase();
-
-
-              const badgeClass =
-                statusLower === "approved"
-                || statusLower === "premium"
-                || statusLower === "active"
-                ? "badge-approved"
-                : statusLower === "rejected"
-                ? "badge-rejected"
-                : "badge-pending";
-
-
-              // Read the actual commission(s) the Super Admin
-              // has generated for this specific referred user,
-              // from the real "commissions" collection records
-              // (myCommissions), not a field that never exists
-              // on the referral/user record itself.
-              const commission =
-                myCommissions
-                  .filter(commissionItem => {
-
-                    const commissionStatus =
-                      String(
-                        commissionItem.status ||
-                        "approved"
-                      ).toLowerCase();
-
-                    if(
-                      commissionStatus === "rejected" ||
-                      commissionStatus === "cancelled"
-                    ){
-                      return false;
-                    }
-
-                    return (
-                      commissionItem.referredUserId ===
-                      (item.referredUserId || item.id)
-                    );
-
-                  })
-                  .reduce(
-                    (sum,commissionItem) => sum + Number(
-                      commissionItem.amount ||
-                      commissionItem.commissionAmount ||
-                      0
-                    ),
-                    0
-                  );
-
-
-              return `
-
-                <tr>
-
-                  <td>
-                    ${escapeHtml(userName)}
-                  </td>
-
-                  <td>
-                    ${formatDate(registered)}
-                  </td>
-
-                  <td>
-
-                    <span class="badge ${
-                      premium
-                      ? "badge-approved"
-                      : "badge-pending"
-                    }">
-
-                      ${
-                        premium
-                        ? "Premium"
-                        : "Not Premium"
-                      }
-
-                    </span>
-
-                  </td>
-
-                  <td>
-
-                    <span class="badge ${badgeClass}">
-                      ${escapeHtml(referralStatus)}
-                    </span>
-
-                  </td>
-
-                  <td>
-                    ${formatMoney(commission)}
-                  </td>
-
-                </tr>
-
-              `;
-
-            }).join("")
-          }
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   RENDER COMMISSION
-========================================================= */
-
-function renderCommissionData(){
-
-  if(!myCommissions.length){
-
-    $("commissionContent").innerHTML = `
-
-      <div class="empty">
-
-        <h3>No commission yet</h3>
-
-        <p style="margin-top:7px;">
-          Commission will appear here after an eligible Premium payment is approved by Super Admin.
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  $("commissionContent").innerHTML = `
-
-    <div class="table-wrap">
-
-      <table class="data-table">
-
-        <thead>
-
-          <tr>
-
-            <th>Referred User</th>
-            <th>Type</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Date</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          ${
-            myCommissions.map(item => {
-
-              const referredUser =
-                item.referredUserName ||
-                item.referredName ||
-                item.userName ||
-                item.referredUserEmail ||
-                "User";
-
-
-              const type =
-                String(
-                  item.type ||
-                  item.commissionType ||
-                  ""
-                ).toLowerCase();
-
-
-              const isRenewal =
-                type.includes("renew");
-
-
-              const typeText =
-                isRenewal
-                ? "Renewal"
-                : "First Premium";
-
-
-              const typeClass =
-                isRenewal
-                ? "badge-renewal"
-                : "badge-first";
-
-
-              const status =
-                item.status ||
-                "pending";
-
-
-              const statusLower =
-                String(status).toLowerCase();
-
-
-              const statusClass =
-                statusLower === "paid" ||
-                statusLower === "approved" ||
-                statusLower === "completed"
-                ? "badge-paid"
-                : "badge-unpaid";
-
-
-              const amount =
-                Number(
-                  item.amount ||
-                  item.commissionAmount ||
-                  0
-                );
-
-
-              const date =
-                item.createdAt ||
-                item.date ||
-                item.approvedAt;
-
-
-              return `
-
-                <tr>
-
-                  <td>
-                    ${escapeHtml(referredUser)}
-                  </td>
-
-                  <td>
-
-                    <span class="badge ${typeClass}">
-                      ${typeText}
-                    </span>
-
-                  </td>
-
-                  <td>
-                    ${formatMoney(amount)}
-                  </td>
-
-                  <td>
-
-                    <span class="badge ${statusClass}">
-                      ${escapeHtml(status)}
-                    </span>
-
-                  </td>
-
-                  <td>
-                    ${formatDate(date)}
-                  </td>
-
-                </tr>
-
-              `;
-
-            }).join("")
-          }
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   COPY REFERRAL LINK
-========================================================= */
-
-$("copyReferralBtn").addEventListener(
-  "click",
-  async () => {
-
-    const link =
-      $("referralLink").value;
-
-    try{
-
-      await navigator.clipboard.writeText(link);
-
-      $("referralMessage").textContent =
-        "Referral link copied successfully.";
-
-    }
-    catch(error){
-
-      $("referralLink").select();
-
-      document.execCommand("copy");
-
-      $("referralMessage").textContent =
-        "Referral link copied.";
-
-    }
-
-    setTimeout(() => {
-
-      $("referralMessage").textContent = "";
-
-    },2500);
-
-  }
-);
-
-
-/* =========================================================
-   WITHDRAWAL SETTINGS
-========================================================= */
-
-async function loadWithdrawalSettings(){
-
-  minimumWithdrawal = 1000;
-
-
-  try{
-
-    const settingsRef =
-      doc(
-        db,
-        "referralSettings",
-        "main"
-      );
-
-
-    const settingsSnap =
-      await getDoc(settingsRef);
-
-
-    if(settingsSnap.exists()){
-
-      const settings =
-        settingsSnap.data();
-
-      referralSettingsData =
-        settings;
-
-
-      const configuredMinimum =
-        Number(
-          settings.minimumWithdrawal ||
-          settings.minWithdrawal ||
-          0
-        );
-
-
-      if(
-        configuredMinimum > 0
-      ){
-
-        minimumWithdrawal =
-          configuredMinimum;
-
-      }
-
-    }else{
-
-      referralSettingsData = {
-        referralSystemEnabled:false
-      };
-
-    }
-
-  }
-  catch(error){
-
-    console.warn(
-      "Withdrawal settings not available. Using default ₦1,000.",
-      error
-    );
-
-    referralSettingsData = null;
-
-  }
-
-
-  $("minimumWithdrawalText").textContent =
-    formatMoney(minimumWithdrawal);
-
-  $("withdrawModalMinimum").textContent =
-    formatMoney(minimumWithdrawal);
-
-  renderReferralCommissionInfo();
-
-}
-
-
-/* =========================================================
-   REFERRAL COMMISSION INFO (for sellers)
-========================================================= */
-
-function renderReferralCommissionInfo(){
-
-  const box =
-    $("referralCommissionInfo");
-
-  if(!box){
-    return;
-  }
-
-  const titleEl =
-    box.querySelector("strong");
-
-  const noteEl =
-    box.querySelector("span");
-
-  // Still loading one of the two sources needed.
-  if(referralSettingsData === null){
-
-    titleEl.textContent =
-      "Loading commission rate...";
-
-    noteEl.textContent = "";
-
-    return;
-
-  }
-
-  if(
-    referralSettingsData.referralSystemEnabled !== true
-  ){
-
-    titleEl.textContent =
-      "Referral commissions are currently OFF.";
-
-    noteEl.textContent =
-      "The Super Admin has temporarily disabled referral commissions. Check back later.";
-
-    return;
-
-  }
-
-  const commissionType =
-    referralSettingsData.commissionType ||
-    "fixed";
-
-  const commissionValue =
-    Number(
-      referralSettingsData.commissionValue || 0
-    );
-
-  const firstPremiumOn =
-    referralSettingsData.firstPremiumCommission !== false;
-
-  const renewalOn =
-    referralSettingsData.renewalCommission === true;
-
-  let earnText = "";
-
-  if(commissionType === "percentage"){
-
-    const premiumPrice =
-      Number(
-        premiumSettings?.price || 0
-      );
-
-    if(premiumPrice > 0){
-
-      const computed =
-        (premiumPrice * commissionValue) / 100;
-
-      earnText =
-        `You earn ${commissionValue}% (${formatMoney(computed)}) for every friend who becomes Premium!`;
-
-    }else{
-
-      earnText =
-        `You earn ${commissionValue}% of the Premium plan price for every friend who becomes Premium!`;
-
-    }
+    profileImage.src =
+      sellerData.profileImageUrl;
 
   }else{
 
-    earnText =
-      `You earn ${formatMoney(commissionValue)} for every friend who becomes Premium!`;
+    profileImage.src =
+      "https://via.placeholder.com/110?text=Seller";
 
   }
 
-  titleEl.textContent =
-    earnText;
 
-  let noteText = "";
-
-  if(!firstPremiumOn){
-
-    noteText =
-      "Note: first-time Premium commission is currently OFF for new referrals.";
-
-  }else if(renewalOn){
-
-    noteText =
-      "You also earn again whenever they renew their Premium subscription.";
-
-  }else{
-
-    noteText =
-      "Commission applies to their first Premium upgrade only. Renewal commission is currently OFF.";
-
-  }
-
-  noteEl.textContent =
-    noteText;
+  document.getElementById(
+    "publicProfileBtn"
+  ).href =
+    "seller-profile.html?id=" +
+    encodeURIComponent(
+      currentUser.uid
+    );
 
 }
 
 
-/* =========================================================
-   LOAD WITHDRAWALS
-========================================================= */
 
-async function loadWithdrawalData(){
-
-  if(!currentUser){
-    return;
-  }
-
-
-  $("withdrawalContent").innerHTML =
-    `<div class="loading">Loading withdrawal history...</div>`;
-
-
-  try{
-
-    const withdrawalQuery =
-      query(
-        collection(
-          db,
-          "withdrawalRequests"
-        ),
-        where(
-          "sellerId",
-          "==",
-          currentUser.uid
-        )
-      );
-
-
-    const snapshot =
-      await getDocs(
-        withdrawalQuery
-      );
-
-
-    myWithdrawals = [];
-
-
-    snapshot.forEach(item => {
-
-      myWithdrawals.push({
-        id:item.id,
-        ...item.data()
-      });
-
-    });
-
-
-    myWithdrawals.sort((a,b) => {
-
-      const aTime =
-        a.createdAt?.seconds || 0;
-
-      const bTime =
-        b.createdAt?.seconds || 0;
-
-      return bTime - aTime;
-
-    });
-
-
-    calculateWithdrawalStats();
-
-    renderWithdrawalHistory();
-
-  }
-  catch(error){
-
-    console.error(
-      "Withdrawal loading error:",
-      error
-    );
-
-
-    $("withdrawalContent").innerHTML = `
-
-      <div class="empty">
-
-        Unable to load withdrawal history.
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* =========================================================
-   CALCULATE WITHDRAWAL STATS
-========================================================= */
-
-function calculateWithdrawalStats(){
-
-  const totalCommission =
-    myCommissions.reduce(
-      (sum,item) => {
-
-        const status =
-          String(
-            item.status ||
-            "approved"
-          ).toLowerCase();
-
-
-        /*
-          Commission created by Super Admin after
-          Premium approval is considered earned.
-
-          Rejected/cancelled commission is excluded.
-        */
-
-        if(
-          status === "rejected" ||
-          status === "cancelled"
-        ){
-
-          return sum;
-
-        }
-
-
-        return sum +
-          Number(
-            item.amount ||
-            item.commissionAmount ||
-            0
-          );
-
-      },
-      0
-    );
-
-
-  let pendingWithdrawal = 0;
-
-  let paidWithdrawal = 0;
-
-  let reservedWithdrawal = 0;
-
-
-  myWithdrawals.forEach(item => {
-
-    const status =
-      String(
-        item.status ||
-        "pending"
-      ).toLowerCase();
-
-
-    const amount =
-      Number(
-        item.amount || 0
-      );
-
-
-    if(
-      status === "pending"
-    ){
-
-      pendingWithdrawal += amount;
-
-      reservedWithdrawal += amount;
-
-    }
-    else if(
-      status === "approved"
-    ){
-
-      reservedWithdrawal += amount;
-
-    }
-    else if(
-      status === "paid" ||
-      status === "completed"
-    ){
-
-      paidWithdrawal += amount;
-
-      reservedWithdrawal += amount;
-
-    }
-
-  });
-
-
-  const availableBalance =
-    Math.max(
-      0,
-      totalCommission -
-      reservedWithdrawal
-    );
-
-
-  withdrawalStats = {
-
-    totalCommission,
-
-    pendingWithdrawal,
-
-    paidWithdrawal,
-
-    reservedWithdrawal,
-
-    availableBalance
-
-  };
-
-
-  renderWithdrawalSummary();
-
-}
-
-
-/* =========================================================
-   RENDER WITHDRAWAL SUMMARY
-========================================================= */
-
-function renderWithdrawalSummary(){
-
-  $("withdrawalTotalCommission").textContent =
-    formatMoney(
-      withdrawalStats.totalCommission
-    );
-
-
-  $("availableBalance").textContent =
-    formatMoney(
-      withdrawalStats.availableBalance
-    );
-
-
-  $("pendingWithdrawal").textContent =
-    formatMoney(
-      withdrawalStats.pendingWithdrawal
-    );
-
-
-  $("paidWithdrawal").textContent =
-    formatMoney(
-      withdrawalStats.paidWithdrawal
-    );
-
-
-  $("withdrawModalBalance").textContent =
-    formatMoney(
-      withdrawalStats.availableBalance
-    );
-
-
-  const withdrawButton =
-    $("withdrawBtn");
-
-
-  if(
-    withdrawalStats.availableBalance <
-    minimumWithdrawal
-  ){
-
-    withdrawButton.disabled = true;
-
-    withdrawButton.textContent =
-      "Insufficient Balance";
-
-  }
-  else{
-
-    withdrawButton.disabled = false;
-
-    withdrawButton.textContent =
-      "Withdraw Commission";
-
-  }
-
-}
-
-
-/* =========================================================
-   RENDER WITHDRAWAL HISTORY
-========================================================= */
-
-function renderWithdrawalHistory(){
-
-  if(!myWithdrawals.length){
-
-    $("withdrawalContent").innerHTML = `
-
-      <div class="empty">
-
-        <h3>No withdrawal requests yet</h3>
-
-        <p style="margin-top:7px;">
-          Your withdrawal requests will appear here.
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  $("withdrawalContent").innerHTML = `
-
-    <div class="table-wrap">
-
-      <table class="data-table">
-
-        <thead>
-
-          <tr>
-
-            <th>Amount</th>
-            <th>Bank</th>
-            <th>Account Name</th>
-            <th>Account Number</th>
-            <th>Status</th>
-            <th>Date</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          ${
-            myWithdrawals.map(item => {
-
-              const amount =
-                Number(
-                  item.amount || 0
-                );
-
-
-              const status =
-                String(
-                  item.status ||
-                  "pending"
-                );
-
-
-              const statusLower =
-                status.toLowerCase();
-
-
-              let statusClass =
-                "withdrawal-status-pending";
-
-
-              if(
-                statusLower === "approved"
-              ){
-
-                statusClass =
-                  "withdrawal-status-approved";
-
-              }
-              else if(
-                statusLower === "paid" ||
-                statusLower === "completed"
-              ){
-
-                statusClass =
-                  "withdrawal-status-paid";
-
-              }
-              else if(
-                statusLower === "rejected"
-              ){
-
-                statusClass =
-                  "withdrawal-status-rejected";
-
-              }
-
-
-              return `
-
-                <tr>
-
-                  <td>
-                    <strong>
-                      ${formatMoney(amount)}
-                    </strong>
-                  </td>
-
-                  <td>
-                    ${escapeHtml(
-                      item.bankName ||
-                      "Not provided"
-                    )}
-                  </td>
-
-                  <td>
-                    ${escapeHtml(
-                      item.accountName ||
-                      "Not provided"
-                    )}
-                  </td>
-
-                  <td>
-                    ${escapeHtml(
-                      item.accountNumber ||
-                      "Not provided"
-                    )}
-                  </td>
-
-                  <td>
-
-                    <span
-                      class="badge ${statusClass}">
-                      ${escapeHtml(status)}
-                    </span>
-
-                  </td>
-
-                  <td>
-                    ${formatDate(
-                      item.createdAt
-                    )}
-                  </td>
-
-                </tr>
-
-              `;
-
-            }).join("")
-          }
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  `;
-
-}
-
-
-/* =========================================================
-   OPEN WITHDRAWAL MODAL
-========================================================= */
-
-function openWithdrawalModal(){
-
-  hideMessage(
-    $("withdrawalModalMessage")
-  );
-
-
-  calculateWithdrawalStats();
-
-
-  if(
-    withdrawalStats.availableBalance <
-    minimumWithdrawal
-  ){
-
-    showMessage(
-      $("withdrawalMessage"),
-      `Your available balance must be at least ${formatMoney(minimumWithdrawal)} before you can withdraw.`,
-      "warning"
-    );
-
-    return;
-
-  }
-
-
-  $("withdrawModalBalance").textContent =
-    formatMoney(
-      withdrawalStats.availableBalance
-    );
-
-
-  $("withdrawModalMinimum").textContent =
-    formatMoney(
-      minimumWithdrawal
-    );
-
-
-  $("withdrawBankName").value = "";
-
-  $("withdrawAccountName").value = "";
-
-  $("withdrawAccountNumber").value = "";
-
-  $("withdrawAmount").value = "";
-
-
-  $("withdrawAmount").max =
-    withdrawalStats.availableBalance;
-
-
-  $("withdrawalModal").classList.add("show");
-
-}
-
-
-/* =========================================================
-   CLOSE WITHDRAWAL MODAL
-========================================================= */
-
-function closeWithdrawalModal(){
-
-  $("withdrawalModal").classList.remove("show");
-
-}
-
-
-/* =========================================================
-   SUBMIT WITHDRAWAL
-========================================================= */
-
-async function submitWithdrawal(){
-
-  hideMessage(
-    $("withdrawalModalMessage")
-  );
-
-
-  /*
-    Reload withdrawal data immediately before submission.
-    This reduces the chance of using an old balance.
-  */
-
-  await loadWithdrawalData();
-
-
-  const availableBalance =
-    Number(
-      withdrawalStats.availableBalance || 0
-    );
-
-
-  const bankName =
-    $("withdrawBankName")
-      .value
-      .trim();
-
-
-  const accountName =
-    $("withdrawAccountName")
-      .value
-      .trim();
-
-
-  const accountNumber =
-    $("withdrawAccountNumber")
-      .value
-      .trim();
-
-
-  const amount =
-    Number(
-      $("withdrawAmount").value
-    );
-
-
-  if(!bankName){
-
-    showMessage(
-      $("withdrawalModalMessage"),
-      "Please enter your bank name.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!accountName){
-
-    showMessage(
-      $("withdrawalModalMessage"),
-      "Please enter the account name.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!accountNumber){
-
-    showMessage(
-      $("withdrawalModalMessage"),
-      "Please enter your account number.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    accountNumber.length < 8
-  ){
-
-    showMessage(
-      $("withdrawalModalMessage"),
-      "Please enter a valid account number.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    !amount ||
-    amount <= 0
-  ){
-
-    showMessage(
-      $("withdrawalModalMessage"),
-      "Please enter the withdrawal amount.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    amount < minimumWithdrawal
-  ){
-
-    showMessage(
-      $("withdrawalModalMessage"),
-      `Minimum withdrawal is ${formatMoney(minimumWithdrawal)}.`,
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    amount > availableBalance
-  ){
-
-    showMessage(
-      $("withdrawalModalMessage"),
-      `You cannot withdraw more than your available balance of ${formatMoney(availableBalance)}.`,
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const confirmed =
-    confirm(
-      `Confirm withdrawal request?\n\nAmount: ${formatMoney(amount)}\nBank: ${bankName}\nAccount Name: ${accountName}\nAccount Number: ${accountNumber}`
-    );
-
-
-  if(!confirmed){
-    return;
-  }
-
-
-  const button =
-    $("submitWithdrawalBtn");
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "Submitting...";
-
-
-  try{
-
-    /*
-      Final balance check from current local data
-      before creating the request.
-    */
-
-    await loadWithdrawalData();
-
-
-    const finalAvailableBalance =
-      Number(
-        withdrawalStats.availableBalance || 0
-      );
-
-
-    if(
-      amount > finalAvailableBalance
-    ){
-
-      throw new Error(
-        `Your available balance has changed. The maximum you can withdraw now is ${formatMoney(finalAvailableBalance)}.`
-      );
-
-    }
-
-
-    await addDoc(
-      collection(
-        db,
-        "withdrawalRequests"
-      ),
-      {
-
-        sellerId:
-          currentUser.uid,
-
-        sellerName:
-          sellerData.name ||
-          sellerData.fullName ||
-          sellerData.sellerName ||
-          "",
-
-        sellerEmail:
-          currentUser.email ||
-          "",
-
-        amount,
-
-        bankName,
-
-        accountName,
-
-        accountNumber,
-
-        status:"pending",
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    await loadWithdrawalData();
-
-
-    showMessage(
-      $("withdrawalMessage"),
-      "Withdrawal request submitted successfully. Super Admin will review it.",
-      "success"
-    );
-
-
-    setTimeout(() => {
-
-      closeWithdrawalModal();
-
-    },1000);
-
-  }
-  catch(error){
-
-    console.error(
-      "Withdrawal submission error:",
-      error
-    );
-
-
-    showMessage(
-      $("withdrawalModalMessage"),
-      error.message ||
-      "Unable to submit withdrawal request.",
-      "error"
-    );
-
-  }
-  finally{
-
-    button.disabled = false;
-
-    button.textContent =
-      "Submit Withdrawal";
-
-  }
-
-}
-
-
-/* =========================================================
-   CATEGORIES
-========================================================= */
+/* =========================================
+   LOAD CATEGORIES
+========================================= */
 
 async function loadCategories(){
 
+  const categorySelect =
+    document.getElementById(
+      "productCategory"
+    );
+
+
+  categorySelect.innerHTML = `
+    <option value="">
+      Loading categories...
+    </option>
+  `;
+
+
   try{
 
     const snapshot =
       await getDocs(
-        collection(db,"categories")
+        collection(
+          db,
+          "categories"
+        )
       );
 
 
-    categories = [];
+    categorySelect.innerHTML = `
+      <option value="">
+        Select Category
+      </option>
+    `;
 
 
-    snapshot.forEach(item => {
+    if(snapshot.empty){
 
-      categories.push({
-        id:item.id,
-        ...item.data()
-      });
+      categorySelect.innerHTML = `
+        <option value="">
+          No categories available
+        </option>
+      `;
 
-    });
-
-
-    const select =
-      $("productCategory");
+      return;
+    }
 
 
-    select.innerHTML =
-      `<option value="">Select Category</option>`;
+    snapshot.forEach(
+      categoryDoc => {
+
+        const data =
+          categoryDoc.data();
 
 
-    categories
-      .sort((a,b) =>
-        String(a.name || "")
-        .localeCompare(
-          String(b.name || "")
-        )
-      )
-      .forEach(category => {
+        if(data.name){
 
-        const option =
-          document.createElement("option");
+          const option =
+            document.createElement(
+              "option"
+            );
 
 
-        option.value =
-          category.name ||
-          category.id;
+          option.value =
+            data.name;
 
 
-        option.textContent =
-          category.name ||
-          category.id;
+          option.textContent =
+            data.name;
 
 
-        select.appendChild(option);
+          categorySelect.appendChild(
+            option
+          );
 
-      });
+        }
 
-  }
-  catch(error){
+      }
+    );
+
+  }catch(error){
 
     console.error(
       "Category loading error:",
       error
     );
 
-  }
 
-}
-
-
-/* =========================================================
-   PRODUCTS
-========================================================= */
-
-async function loadProducts(){
-
-  $("productsContent").innerHTML =
-    `<div class="loading">Loading products...</div>`;
-
-
-  try{
-
-    const snapshot =
-      await getDocs(
-        collection(db,"products")
-      );
-
-
-    allProducts = [];
-
-
-    snapshot.forEach(item => {
-
-      const data =
-        item.data();
-
-
-      if(
-        data.sellerId ===
-        currentUser.uid
-      ){
-
-        allProducts.push({
-          id:item.id,
-          ...data
-        });
-
-      }
-
-    });
-
-
-    renderProducts();
-
-    updateProductStats();
-
-    renderPremiumCard();
-
-  }
-  catch(error){
-
-    console.error(
-      "Product loading error:",
-      error
-    );
-
-
-    $("productsContent").innerHTML = `
-
-      <div class="empty">
-        Unable to load products.
-      </div>
-
+    categorySelect.innerHTML = `
+      <option value="">
+        Unable to load categories
+      </option>
     `;
 
   }
@@ -4578,7 +1675,92 @@ async function loadProducts(){
 }
 
 
-function updateProductStats(){
+
+/* =========================================
+   LOAD PRODUCTS
+========================================= */
+
+async function loadProducts(){
+
+  productsContainer.innerHTML =
+    `<div class="loading">
+      Loading products...
+    </div>`;
+
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "products"
+        )
+      );
+
+
+    allProducts = [];
+
+
+    snapshot.forEach(
+      productDoc => {
+
+        const data =
+          productDoc.data();
+
+
+        if(
+          data.sellerId ===
+          currentUser.uid
+        ){
+
+          allProducts.push({
+
+            id:productDoc.id,
+
+            ...data
+
+          });
+
+        }
+
+      }
+    );
+
+
+    updateStats();
+
+
+    renderProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+
+    productsContainer.innerHTML =
+      `<div class="empty">
+        Failed to load products.
+      </div>`;
+
+
+    showMessage(
+      "Failed to load products: " +
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+
+/* =========================================
+   UPDATE STATS
+========================================= */
+
+function updateStats(){
 
   const total =
     allProducts.length;
@@ -4586,237 +1768,226 @@ function updateProductStats(){
 
   const active =
     allProducts.filter(
-      product =>
-        product.status !== "inactive"
+      p =>
+        p.status === "active"
     ).length;
 
 
   const inactive =
     allProducts.filter(
-      product =>
-        product.status === "inactive"
+      p =>
+        p.status !== "active"
     ).length;
 
 
-  $("totalProducts").textContent =
+  totalProducts.textContent =
     total;
 
 
-  $("activeProducts").textContent =
+  activeProducts.textContent =
     active;
 
 
-  $("inactiveProducts").textContent =
+  inactiveProducts.textContent =
     inactive;
 
 }
 
 
+
+/* =========================================
+   RENDER PRODUCTS
+========================================= */
+
 function renderProducts(){
 
-  const container =
-    $("productsContent");
+  if(allProducts.length === 0){
 
+    productsContainer.innerHTML =
+      `<div class="empty">
 
-  if(!allProducts.length){
+        <h3>
+          No products yet
+        </h3>
 
-    container.innerHTML = `
-
-      <div class="empty">
-
-        <h3>No products yet</h3>
-
-        <p style="margin-top:7px;">
+        <p>
           Add your first product to start selling.
         </p>
 
-      </div>
-
-    `;
+      </div>`;
 
     return;
-
   }
 
 
-  container.innerHTML = `
+  productsContainer.innerHTML =
+    `<div class="products-grid">
 
-    <div class="products-grid">
+      ${allProducts.map(
+        productCard
+      ).join("")}
 
-      ${
-        allProducts.map(product => {
+    </div>`;
 
-          const image =
-            product.imageUrl || "";
-
-
-          const status =
-            product.status === "inactive"
-            ? "Inactive"
-            : "Active";
+}
 
 
-          const statusStyle =
-            product.status === "inactive"
-            ? "background:#fde2e2;color:#a51d1d;"
-            : "background:#f1ece2;color:#135335;";
+
+/* =========================================
+   PRODUCT CARD
+========================================= */
+
+function productCard(product){
+
+  const image =
+    product.imageUrl ||
+    "https://via.placeholder.com/500x300?text=No+Image";
 
 
-          return `
+  const status =
+    product.status === "active";
 
-            <div class="product-card">
 
-              ${
-                image
-                ?
-                `<img
-                  class="product-image"
-                  src="${escapeHtml(image)}"
-                  alt="${escapeHtml(product.name || "Product")}"
-                  onerror="this.style.display='none';">`
-                :
-                `<div
-                  class="product-image"
-                  style="
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    color:#718078;
-                  ">
-                  No Image
-                </div>`
-              }
+  const statusClass =
+    status
+      ? "status-active"
+      : "status-inactive";
 
-              <div class="product-body">
 
-                <h3>
-                  ${escapeHtml(
-                    product.name ||
-                    "Unnamed Product"
-                  )}
-                </h3>
+  const statusText =
+    status
+      ? "Active"
+      : "Inactive";
 
-                <div class="product-price">
-                  ${formatMoney(product.price)}
-                </div>
 
-                <div class="product-meta">
+  const toggleText =
+    status
+      ? "Deactivate"
+      : "Activate";
 
-                  <div>
-                    <strong>Category:</strong>
-                    ${escapeHtml(
-                      product.category ||
-                      "Not set"
-                    )}
-                  </div>
 
-                  <div>
-                    <strong>Location:</strong>
-                    ${escapeHtml(
-                      product.location ||
-                      "Not set"
-                    )}
-                  </div>
+  const toggleClass =
+    status
+      ? "btn-gray"
+      : "btn-green";
 
-                  <div style="margin-top:5px;">
 
-                    <span
-                      style="
-                        display:inline-block;
-                        padding:4px 8px;
-                        border-radius:12px;
-                        font-size:11px;
-                        font-weight:bold;
-                        ${statusStyle}
-                      ">
+  const price =
+    Number(
+      product.price || 0
+    ).toLocaleString();
 
-                      ${status}
 
-                    </span>
+  return `
 
-                  </div>
+    <div class="product-card">
 
-                </div>
+      <img
+        class="product-image"
+        src="${escapeHtml(image)}"
+        alt="${escapeHtml(
+          product.name ||
+          "Product"
+        )}"
+        onerror="this.src='https://via.placeholder.com/500x300?text=No+Image'"
+      >
 
-                ${
-                  product.description
-                  ?
-                  `<p style="
-                    margin-top:9px;
-                    font-size:13px;
-                    color:#66736b;
-                    line-height:1.5;
-                  ">
-                    ${escapeHtml(
-                      product.description
-                    )}
-                  </p>`
-                  :
-                  ""
-                }
 
-                <div class="product-actions">
+      <div class="product-body">
 
-                  <button
-                    class="edit-btn"
-                    onclick="editProduct('${product.id}')">
-                    Edit
-                  </button>
+        <h3>
+          ${escapeHtml(
+            product.name ||
+            "Unnamed Product"
+          )}
+        </h3>
 
-                  <button
-                    class="toggle-btn"
-                    onclick="toggleProduct('${product.id}')">
 
-                    ${
-                      product.status === "inactive"
-                      ? "Activate"
-                      : "Deactivate"
-                    }
+        <div class="price">
+          ₦${price}
+        </div>
 
-                  </button>
 
-                  ${
-                    product.featured === true
-                    ? `<button class="toggle-btn" style="background:#c9a227;color:#0d3b2c;cursor:default;" disabled>
-                        ⭐ Featured
-                      </button>`
-                    : product.featuredRequested === true
-                    ? `<button class="toggle-btn" style="background:#f7ecc9;color:#a9791a;cursor:default;" disabled>
-                        Request sent ⏳
-                      </button>`
-                    : `<span style="display:inline-flex;flex-direction:column;gap:2px;">
-                        <button
-                          class="toggle-btn"
-                          style="background:#c9a227;color:#0d3b2c;"
-                          onclick="requestFeatured('${product.id}')">
-                          ⭐ Request Featured
-                        </button>
-                        <small style="color:#a9791a;font-size:11px;">
-                          ${
-                            featuredSettings && featuredSettings.active !== false
-                            ? `${formatMoney(featuredSettings?.price || 0)} / ${featuredSettings?.durationDays || 7} days`
-                            : "Ask admin for price"
-                          }
-                        </small>
-                      </span>`
-                  }
+        <div class="product-meta">
 
-                  <button
-                    class="delete-btn"
-                    onclick="deleteProduct('${product.id}')">
-                    Delete
-                  </button>
+          <strong>
+            Category:
+          </strong>
 
-                </div>
+          ${escapeHtml(
+            product.category ||
+            "-"
+          )}
 
-              </div>
+        </div>
 
-            </div>
 
-          `;
+        <div class="product-meta">
 
-        }).join("")
-      }
+          <strong>
+            Location:
+          </strong>
+
+          ${escapeHtml(
+            product.location ||
+            "-"
+          )}
+
+        </div>
+
+
+        <div class="product-meta">
+
+          <span
+            class="status ${statusClass}"
+          >
+            ${statusText}
+          </span>
+
+        </div>
+
+
+        <div class="product-description">
+
+          ${escapeHtml(
+            product.description ||
+            "No description."
+          )}
+
+        </div>
+
+
+        <div class="product-actions">
+
+          <button
+            class="btn btn-green"
+            onclick="editProduct('${product.id}')"
+          >
+            Edit
+          </button>
+
+
+          <button
+            class="btn ${toggleClass}"
+            onclick="toggleProductStatus(
+              '${product.id}',
+              ${status}
+            )"
+          >
+            ${toggleText}
+          </button>
+
+
+          <button
+            class="btn btn-danger"
+            onclick="deleteProduct('${product.id}')"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
 
     </div>
 
@@ -4825,1196 +1996,494 @@ function renderProducts(){
 }
 
 
-/* =========================================================
-   PREMIUM DATA
-========================================================= */
 
-async function loadPremiumData(){
+/* =========================================
+   ESCAPE HTML
+========================================= */
 
-  try{
+function escapeHtml(value){
 
-    const settingsRef =
-      doc(
-        db,
-        "premiumSettings",
-        "main"
-      );
-
-
-    const settingsSnap =
-      await getDoc(settingsRef);
-
-
-    if(settingsSnap.exists()){
-
-      premiumSettings =
-        settingsSnap.data();
-
-    }
-    else{
-
-      premiumSettings = {
-
-        planName:"Premium Seller",
-
-        price:2000,
-
-        durationDays:30,
-
-        maxProducts:50,
-
-        bankName:"",
-
-        accountName:"",
-
-        accountNumber:"",
-
-        benefits:
-          "Premium badge\n" +
-          "Up to 50 products\n" +
-          "Better seller visibility\n" +
-          "Full seller profile\n" +
-          "Messaging",
-
-        active:true
-
-      };
-
-    }
-
-
-    await loadPremiumRequest();
-
-    renderPremiumCard();
-
-    renderReferralCommissionInfo();
-
-  }
-  catch(error){
-
-    console.error(
-      "Premium loading error:",
-      error
-    );
-
-
-    premiumSettings = {
-
-      planName:"Premium Seller",
-
-      price:2000,
-
-      durationDays:30,
-
-      maxProducts:50,
-
-      bankName:"",
-
-      accountName:"",
-
-      accountNumber:"",
-
-      benefits:
-        "Premium badge\n" +
-        "Up to 50 products\n" +
-        "Better seller visibility",
-
-      active:true
-
-    };
-
-
-    renderPremiumCard();
-
-    renderReferralCommissionInfo();
-
-  }
-
-}
-
-
-/* =========================================================
-   FEATURED LISTING SETTINGS (buyer-facing price for sellers)
-========================================================= */
-
-async function loadFeaturedSettingsData(){
-
-  try{
-
-    const snap =
-      await getDoc(
-        doc(
-          db,
-          "featuredSettings",
-          "main"
-        )
-      );
-
-    if(snap.exists()){
-
-      featuredSettings =
-        snap.data();
-
-    }else{
-
-      featuredSettings = {
-
-        price:2000,
-
-        durationDays:7,
-
-        bankName:"",
-
-        accountName:"",
-
-        accountNumber:"",
-
-        active:true
-
-      };
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "Featured settings loading error:",
-      error
-    );
-
-  }
-
-  // Re-render so the price/bank hint next to
-  // "Request Featured" reflects the real settings.
-  renderProducts();
-
-}
-
-
-/* =========================================================
-   PREMIUM REQUEST
-========================================================= */
-
-async function loadPremiumRequest(){
-
-  try{
-
-    const requestsQuery =
-      query(
-        collection(
-          db,
-          "premiumRequests"
-        ),
-        where(
-          "sellerId",
-          "==",
-          currentUser.uid
-        )
-      );
-
-
-    const snapshot =
-      await getDocs(
-        requestsQuery
-      );
-
-
-    const requests = [];
-
-
-    snapshot.forEach(item => {
-
-      requests.push({
-        id:item.id,
-        ...item.data()
-      });
-
-    });
-
-
-    requests.sort((a,b) => {
-
-      const aTime =
-        a.createdAt?.seconds || 0;
-
-      const bTime =
-        b.createdAt?.seconds || 0;
-
-      return bTime - aTime;
-
-    });
-
-
-    premiumRequest =
-      requests.find(
-        request =>
-          String(
-            request.status || ""
-          ).toLowerCase() ===
-          "pending"
-      ) || null;
-
-  }
-  catch(error){
-
-    console.error(
-      "Premium request loading error:",
-      error
-    );
-
-    premiumRequest = null;
-
-  }
-
-}
-
-
-/* =========================================================
-   PREMIUM STATE
-========================================================= */
-
-function getPremiumState(){
-
-  const plan =
-    sellerData?.subscriptionPlan ||
-    "free";
-
-
-  const status =
-    sellerData?.subscriptionStatus ||
-    "inactive";
-
-
-  let endDate = null;
-
-
-  if(sellerData?.subscriptionEnd){
-
-    const parsed =
-      new Date(
-        sellerData.subscriptionEnd
-      );
-
-
-    if(!isNaN(parsed.getTime())){
-
-      endDate = parsed;
-
-    }
-
-  }
-
-
-  // Uses the SAME rule as premium-utils.js (isPremiumActive) so
-  // every page in the app agrees on whether Premium is active.
-  const active =
-    isPremiumActive(sellerData);
-
-
-  const expired =
-    plan.toLowerCase() === "premium" &&
-    endDate &&
-    endDate.getTime() <= Date.now();
-
-
-  return {
-
-    plan,
-    status,
-    endDate,
-    active,
-    expired
-
-  };
-
-}
-
-
-/* =========================================================
-   PREMIUM COUNTDOWN TEXT
-   Real countdown based on the actual subscriptionEnd date -
-   not a fake timer. Once the date passes, getPremiumState()
-   already flips "active" to false on its own (recomputed
-   every time this renders), so the seller automatically goes
-   back to the Free plan rules with no manual admin action.
-========================================================= */
-
-function getPremiumCountdownText(endDate){
-
-  if(!endDate){
-    return "";
-  }
-
-  const msLeft =
-    endDate.getTime() - Date.now();
-
-  const daysLeft =
-    Math.ceil(
-      msLeft / (1000 * 60 * 60 * 24)
-    );
-
-  if(daysLeft > 1){
-    return `${daysLeft} days left`;
-  }
-
-  if(daysLeft === 1){
-    return "1 day left";
-  }
-
-  if(daysLeft === 0){
-    return "Expires today";
-  }
-
-  const daysAgo =
-    Math.abs(daysLeft);
-
-  return (
-    daysAgo === 1
-    ? "Expired 1 day ago"
-    : `Expired ${daysAgo} days ago`
-  );
-
-}
-
-
-function renderPremiumCard(){
-
-  if(!sellerData){
-    return;
-  }
-
-
-  const premium =
-    getPremiumState();
-
-
-  const maxProducts =
-    premium.active
-    ?
-    Number(
-      premiumSettings?.maxProducts ||
-      sellerData.premiumMaxProducts ||
-      50
+  return String(value)
+    .replace(
+      /&/g,
+      "&amp;"
     )
-    :
-    FREE_MAX_PRODUCTS;
-
-
-  const currentProducts =
-    allProducts.length;
-
-
-  let usage =
-    maxProducts > 0
-    ?
-    (currentProducts / maxProducts) * 100
-    :
-    0;
-
-
-  usage =
-    Math.min(
-      Math.max(usage,0),
-      100
-    );
-
-
-  $("premiumProductsText").textContent =
-    `${currentProducts} / ${maxProducts}`;
-
-
-  /*
-    HIDDEN PRODUCTS NOTICE
-    =================================================
-    If Premium has expired/is inactive and the seller has
-    more products than the free limit allows, tell them
-    clearly how many are currently hidden from buyers and
-    why - and that nothing was deleted.
-  */
-
-  const visibleIds =
-    getVisibleProductIds(
-      allProducts,
-      premium.active
-    );
-
-  const hiddenCount =
-    allProducts.length - visibleIds.size;
-
-
-  if(hiddenCount > 0){
-
-    showMessage(
-      $("premiumMessage"),
-      `⚠️ ${hiddenCount} of your products are currently ` +
-      `HIDDEN from buyers because you're over the Free plan ` +
-      `limit (${FREE_MAX_PRODUCTS}). Nothing was deleted - ` +
-      `renew Premium or remove older products to make them ` +
-      `visible again.`,
-      "warning"
-    );
-
-  }else{
-
-    $("premiumMessage").textContent = "";
-    $("premiumMessage").style.display = "none";
-
-  }
-
-
-  $("premiumUsageText").textContent =
-    `${Math.round(usage)}%`;
-
-
-  $("premiumProgressFill").style.width =
-    `${usage}%`;
-
-
-  if(premium.active){
-
-    $("premiumPlanBadge").textContent =
-      "Premium Seller";
-
-    $("premiumPlanBadge").className =
-      "plan-badge plan-premium";
-
-    $("premiumPlanText").textContent =
-      "Premium";
-
-    $("premiumStatusText").textContent =
-      "Active";
-
-    $("premiumExpiryText").textContent =
-      premium.endDate
-      ?
-      formatDate(premium.endDate)
-      :
-      "No expiry";
-
-    $("premiumCountdownText").textContent =
-      getPremiumCountdownText(premium.endDate);
-
-    $("upgradePremiumBtn").textContent =
-      "Renew Premium";
-
-    $("upgradePremiumBtn").disabled =
-      false;
-
-  }
-  else if(premium.expired){
-
-    $("premiumPlanBadge").textContent =
-      "Premium Expired";
-
-    $("premiumPlanBadge").className =
-      "plan-badge plan-expired";
-
-    $("premiumPlanText").textContent =
-      "Premium";
-
-    $("premiumStatusText").textContent =
-      "Expired";
-
-    $("premiumExpiryText").textContent =
-      formatDate(premium.endDate);
-
-    $("premiumCountdownText").textContent =
-      getPremiumCountdownText(premium.endDate) +
-      " — reverted to Free plan";
-
-    $("upgradePremiumBtn").textContent =
-      "Renew Premium";
-
-    $("upgradePremiumBtn").disabled =
-      false;
-
-  }
-  else{
-
-    $("premiumPlanBadge").textContent =
-      "Free Plan";
-
-    $("premiumPlanBadge").className =
-      "plan-badge plan-free";
-
-    $("premiumPlanText").textContent =
-      "Free";
-
-    $("premiumStatusText").textContent =
-      "Active";
-
-    $("premiumExpiryText").textContent =
-      "Not applicable";
-
-    $("premiumCountdownText").textContent =
-      "";
-
-
-    if(
-      premiumSettings &&
-      premiumSettings.active === false
-    ){
-
-      $("upgradePremiumBtn").textContent =
-        "Premium Unavailable";
-
-      $("upgradePremiumBtn").disabled =
-        true;
-
-    }
-    else{
-
-      $("upgradePremiumBtn").textContent =
-        "Upgrade to Premium";
-
-      $("upgradePremiumBtn").disabled =
-        false;
-
-    }
-
-  }
-
-
-  if(premiumRequest){
-
-    $("pendingRequestBox").style.display =
-      "block";
-
-    $("upgradePremiumBtn").disabled =
-      true;
-
-    $("upgradePremiumBtn").textContent =
-      "Request Pending";
-
-  }
-  else{
-
-    $("pendingRequestBox").style.display =
-      "none";
-
-  }
-
-
-  const benefits =
-    premiumSettings?.benefits ||
-    "Premium badge\nMore product capacity\nBetter seller visibility";
-
-
-  const benefitArray =
-    String(benefits)
-      .split(/\r?\n/)
-      .map(item => item.trim())
-      .filter(Boolean);
-
-
-  $("premiumBenefitsList").innerHTML =
-    benefitArray.map(
-      benefit =>
-        `<li>${escapeHtml(benefit)}</li>`
-    ).join("");
-
-
-  if(!benefitArray.length){
-
-    $("premiumBenefitsList").innerHTML = `
-
-      <li>Premium seller badge</li>
-      <li>More product capacity</li>
-      <li>Better seller visibility</li>
-
-    `;
-
-  }
-
-}
-
-
-/* =========================================================
-   PRODUCT LIMIT
-========================================================= */
-
-function canAddProduct(){
-
-  const premium =
-    getPremiumState();
-
-
-  const maxProducts =
-    premium.active
-    ?
-    Number(
-      premiumSettings?.maxProducts ||
-      sellerData.premiumMaxProducts ||
-      50
+    .replace(
+      /</g,
+      "&lt;"
     )
-    :
-    FREE_MAX_PRODUCTS;
-
-
-  if(allProducts.length >= maxProducts){
-
-    if(premium.active){
-
-      showMessage(
-        $("productMessage"),
-        `Your Premium product limit is ${maxProducts}.`,
-        "warning"
-      );
-
-    }
-    else{
-
-      showMessage(
-        $("productMessage"),
-        `Free sellers can add up to ${maxProducts} products. Upgrade to Premium for more.`,
-        "warning"
-      );
-
-    }
-
-    return false;
-
-  }
-
-
-  return true;
-
-}
-
-
-/* =========================================================
-   DELIVERY OPTION FIELD TOGGLE
-========================================================= */
-
-function toggleDeliveryFeeField(){
-
-  const isDelivery =
-    $("productDeliveryOption").value ===
-    "seller_delivers";
-
-  $("productDeliveryFeeGroup").style.display =
-    isDelivery ? "block" : "none";
-
-  if(!isDelivery){
-
-    $("productDeliveryFee").value = "";
-
-  }
-
-}
-
-if($("productDeliveryOption")){
-
-  $("productDeliveryOption").addEventListener(
-    "change",
-    toggleDeliveryFeeField
-  );
-
-}
-
-
-/* =========================================================
-   PRODUCT MODAL
-========================================================= */
-
-function openProductModal(product=null){
-
-  hideMessage(
-    $("productMessage")
-  );
-
-
-  if(!product){
-
-    editingProductId = null;
-
-    $("productModalTitle").textContent =
-      "Add Product";
-
-    $("productName").value = "";
-    $("productPrice").value = "";
-    $("productCategory").value = "";
-
-    $("productState").value =
-      (sellerData && sellerData.state) || "";
-
-    populateLgaSelect(
-      $("productState"),
-      $("productLga"),
-      (sellerData && sellerData.lga) || ""
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
     );
 
-    $("productImage").value = "";
-    $("productDescription").value = "";
-
-    $("productDeliveryOption").value =
-      "seller_delivers";
-
-    $("productDeliveryFee").value = "";
-
-    toggleDeliveryFeeField();
-
-    $("productImagePreview").style.display =
-      "none";
-
-    $("saveProductBtn").textContent =
-      "Save Product";
-
-  }
-  else{
-
-    editingProductId =
-      product.id;
-
-    $("productModalTitle").textContent =
-      "Edit Product";
-
-    $("productName").value =
-      product.name || "";
-
-    $("productPrice").value =
-      product.price || "";
-
-    $("productCategory").value =
-      product.category || "";
-
-    $("productState").value =
-      product.state || "";
-
-    populateLgaSelect(
-      $("productState"),
-      $("productLga"),
-      product.lga || ""
-    );
-
-    $("productImage").value =
-      product.imageUrl || "";
-
-    $("productDescription").value =
-      product.description || "";
-
-    $("productDeliveryOption").value =
-      product.deliveryOption || "seller_delivers";
-
-    $("productDeliveryFee").value =
-      product.deliveryFee || "";
-
-    toggleDeliveryFeeField();
+}
 
 
-    if(product.imageUrl){
 
-      $("productImagePreview").src =
-        product.imageUrl;
+/* =========================================
+   OPEN ADD PRODUCT
+========================================= */
 
-      $("productImagePreview").style.display =
-        "block";
+document
+  .getElementById(
+    "addProductBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-    }
-    else{
+      document.getElementById(
+        "productModalTitle"
+      ).textContent =
+        "Add Product";
 
-      $("productImagePreview").style.display =
+
+      document.getElementById(
+        "productForm"
+      ).reset();
+
+
+      document.getElementById(
+        "productId"
+      ).value =
+        "";
+
+
+      document.getElementById(
+        "productImagePreview"
+      ).style.display =
         "none";
 
+
+      productModal.classList.add(
+        "show"
+      );
+
     }
-
-
-    $("saveProductBtn").textContent =
-      "Update Product";
-
-  }
-
-
-  $("productModal").classList.add("show");
-
-}
-
-
-function closeProductModal(){
-
-  $("productModal").classList.remove("show");
-
-  editingProductId = null;
-
-}
-
-
-/* =========================================================
-   SAVE PRODUCT
-========================================================= */
-
-async function saveProduct(){
-
-  hideMessage(
-    $("productMessage")
   );
 
 
-  const name =
-    $("productName").value.trim();
 
-
-  const price =
-    Number(
-      $("productPrice").value
-    );
-
-
-  const category =
-    $("productCategory").value.trim();
-
-
-  const state =
-    $("productState").value;
-
-  const lga =
-    $("productLga").value;
-
-
-  const imageUrl =
-    $("productImage").value.trim();
-
-
-  const description =
-    $("productDescription").value.trim();
-
-  const deliveryOption =
-    $("productDeliveryOption").value;
-
-  const deliveryFee =
-    deliveryOption === "seller_delivers"
-      ? (Number($("productDeliveryFee").value) || 0)
-      : 0;
-
-
-  if(!name){
-
-    showMessage(
-      $("productMessage"),
-      "Please enter product name.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!price || price < 0){
-
-    showMessage(
-      $("productMessage"),
-      "Please enter a valid product price.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!category){
-
-    showMessage(
-      $("productMessage"),
-      "Please select a category.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!state || !lga){
-
-    showMessage(
-      $("productMessage"),
-      "Please select the product's state and LGA.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const saveButton =
-    $("saveProductBtn");
-
-
-  saveButton.disabled = true;
-
-  saveButton.textContent =
-    "Saving...";
-
-
-  try{
-
-    if(editingProductId){
-
-      const existing =
-        allProducts.find(
-          product =>
-            product.id ===
-            editingProductId
-        );
-
-
-      if(!existing){
-
-        throw new Error(
-          "Product not found."
-        );
-
-      }
-
-
-      if(
-        existing.sellerId !==
-        currentUser.uid
-      ){
-
-        throw new Error(
-          "You are not allowed to edit this product."
-        );
-
-      }
-
-
-      await updateDoc(
-        doc(
-          db,
-          "products",
-          editingProductId
-        ),
-        {
-
-          name,
-          price,
-          category,
-          state,
-          lga,
-          location:
-            lga + ", " + state,
-          imageUrl,
-          description,
-          deliveryOption,
-          deliveryFee,
-
-          updatedAt:
-            serverTimestamp()
-
-        }
-      );
-
-
-      showMessage(
-        $("productMessage"),
-        "Product updated successfully.",
-        "success"
-      );
-
-    }
-    else{
-
-      if(!canAddProduct()){
-
-        saveButton.disabled = false;
-
-        saveButton.textContent =
-          "Save Product";
-
-        return;
-
-      }
-
-
-      await addDoc(
-        collection(db,"products"),
-        {
-
-          name,
-          price,
-          category,
-          state,
-          lga,
-          location:
-            lga + ", " + state,
-          imageUrl,
-          description,
-          deliveryOption,
-          deliveryFee,
-
-          avgRating:0,
-          reviewCount:0,
-
-          featured:false,
-
-          sellerId:
-            currentUser.uid,
-
-          sellerName:
-            sellerData.name ||
-            sellerData.fullName ||
-            sellerData.sellerName ||
-            "",
-
-          sellerPhone:
-            sellerData.phone ||
-            sellerData.sellerPhone ||
-            "",
-
-          whatsapp:
-            sellerData.whatsapp ||
-            sellerData.sellerWhatsapp ||
-            "",
-
-          status:"active",
-
-          createdAt:
-            serverTimestamp(),
-
-          updatedAt:
-            serverTimestamp()
-
-        }
-      );
-
-
-      showMessage(
-        $("productMessage"),
-        "Product added successfully.",
-        "success"
-      );
-
-    }
-
-
-    await loadProducts();
-
-
-    setTimeout(() => {
-
-      closeProductModal();
-
-    },700);
-
-  }
-  catch(error){
-
-    console.error(
-      "Save product error:",
-      error
-    );
-
-
-    showMessage(
-      $("productMessage"),
-      error.message ||
-      "Unable to save product.",
-      "error"
-    );
-
-  }
-
-
-  saveButton.disabled = false;
-
-  saveButton.textContent =
-    editingProductId
-    ?
-    "Update Product"
-    :
-    "Save Product";
-
-}
-
-
-/* =========================================================
+/* =========================================
    EDIT PRODUCT
-========================================================= */
+========================================= */
 
-window.editProduct = function(productId){
+window.editProduct =
+function(productId){
 
   const product =
     allProducts.find(
-      item => item.id === productId
+      p =>
+        p.id === productId
     );
 
 
   if(!product){
 
-    alert("Product not found.");
-
-    return;
-
-  }
-
-
-  if(
-    product.sellerId !==
-    currentUser.uid
-  ){
-
-    alert(
-      "You are not allowed to edit this product."
+    showMessage(
+      "Product not found.",
+      "error"
     );
 
     return;
-
   }
 
 
-  openProductModal(product);
+  document.getElementById(
+    "productModalTitle"
+  ).textContent =
+    "Edit Product";
+
+
+  document.getElementById(
+    "productId"
+  ).value =
+    product.id;
+
+
+  document.getElementById(
+    "productName"
+  ).value =
+    product.name || "";
+
+
+  document.getElementById(
+    "productPrice"
+  ).value =
+    product.price || "";
+
+
+  document.getElementById(
+    "productCategory"
+  ).value =
+    product.category || "";
+
+
+  document.getElementById(
+    "productLocation"
+  ).value =
+    product.location || "";
+
+
+  document.getElementById(
+    "productImage"
+  ).value =
+    product.imageUrl || "";
+
+
+  document.getElementById(
+    "productDescription"
+  ).value =
+    product.description || "";
+
+
+  updateProductImagePreview();
+
+
+  productModal.classList.add(
+    "show"
+  );
 
 };
 
 
-/* =========================================================
-   TOGGLE PRODUCT
-========================================================= */
 
-window.toggleProduct = async function(productId){
+/* =========================================
+   SAVE PRODUCT
+========================================= */
 
-  const product =
-    allProducts.find(
-      item => item.id === productId
-    );
+document
+  .getElementById(
+    "productForm"
+  )
+  .addEventListener(
+    "submit",
+    async (event) => {
 
-
-  if(!product){
-
-    alert("Product not found.");
-
-    return;
-
-  }
+      event.preventDefault();
 
 
-  if(
-    product.sellerId !==
-    currentUser.uid
-  ){
+      if(!currentUser){
 
-    alert(
-      "You are not allowed to change this product."
-    );
+        showMessage(
+          "You are not logged in.",
+          "error"
+        );
 
-    return;
-
-  }
+        return;
+      }
 
 
-  const newStatus =
-    product.status === "inactive"
-    ?
-    "active"
-    :
-    "inactive";
+      const productId =
+        document.getElementById(
+          "productId"
+        ).value.trim();
 
+
+      const name =
+        document.getElementById(
+          "productName"
+        ).value.trim();
+
+
+      const price =
+        Number(
+          document.getElementById(
+            "productPrice"
+          ).value
+        );
+
+
+      const category =
+        document.getElementById(
+          "productCategory"
+        ).value;
+
+
+      const location =
+        document.getElementById(
+          "productLocation"
+        ).value;
+
+
+      const imageUrl =
+        document.getElementById(
+          "productImage"
+        ).value.trim();
+
+
+      const description =
+        document.getElementById(
+          "productDescription"
+        ).value.trim();
+
+
+      if(!name){
+
+        showMessage(
+          "Product name is required.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if(
+        price < 0 ||
+        Number.isNaN(price)
+      ){
+
+        showMessage(
+          "Enter a valid price.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if(!category){
+
+        showMessage(
+          "Please select a category.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if(!location){
+
+        showMessage(
+          "Please select a location.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const saveButton =
+        document.getElementById(
+          "saveProductBtn"
+        );
+
+
+      saveButton.disabled =
+        true;
+
+
+      saveButton.textContent =
+        "Saving...";
+
+
+      try{
+
+        if(productId){
+
+          const existing =
+            allProducts.find(
+              p =>
+                p.id ===
+                productId
+            );
+
+
+          if(!existing){
+
+            throw new Error(
+              "Product not found."
+            );
+          }
+
+
+          if(
+            existing.sellerId !==
+            currentUser.uid
+          ){
+
+            throw new Error(
+              "You can only edit your own products."
+            );
+
+          }
+
+
+          await updateDoc(
+            doc(
+              db,
+              "products",
+              productId
+            ),
+            {
+
+              name:name,
+
+              price:price,
+
+              category:category,
+
+              location:location,
+
+              imageUrl:imageUrl,
+
+              description:description,
+
+              updatedAt:
+                serverTimestamp()
+
+            }
+          );
+
+
+          showMessage(
+            "Product updated successfully."
+          );
+
+
+        }else{
+
+          await addDoc(
+            collection(
+              db,
+              "products"
+            ),
+            {
+
+              name:name,
+
+              price:price,
+
+              category:category,
+
+              location:location,
+
+              imageUrl:imageUrl,
+
+              description:description,
+
+              featured:false,
+
+              sellerId:
+                currentUser.uid,
+
+              sellerName:
+                sellerData.name ||
+                "",
+
+              sellerPhone:
+                sellerData.phone ||
+                "",
+
+              whatsapp:
+                sellerData.whatsapp ||
+                "",
+
+              status:"active",
+
+              createdAt:
+                serverTimestamp(),
+
+              updatedAt:
+                serverTimestamp()
+
+            }
+          );
+
+
+          showMessage(
+            "Product added successfully."
+          );
+
+        }
+
+
+        closeProductModal();
+
+
+        await loadProducts();
+
+      }catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+          "Failed to save product: " +
+          error.message,
+          "error"
+        );
+
+      }finally{
+
+        saveButton.disabled =
+          false;
+
+
+        saveButton.textContent =
+          "Save Product";
+
+      }
+
+    }
+  );
+
+
+
+/* =========================================
+   TOGGLE PRODUCT STATUS
+========================================= */
+
+window.toggleProductStatus =
+async function(
+  productId,
+  currentStatus
+){
 
   try{
+
+    const product =
+      allProducts.find(
+        p =>
+          p.id === productId
+      );
+
+
+    if(!product){
+
+      showMessage(
+        "Product not found.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if(
+      product.sellerId !==
+      currentUser.uid
+    ){
+
+      showMessage(
+        "You can only change your own product.",
+        "error"
+      );
+
+      return;
+    }
+
 
     await updateDoc(
       doc(
@@ -6024,7 +2493,10 @@ window.toggleProduct = async function(productId){
       ),
       {
 
-        status:newStatus,
+        status:
+          currentStatus
+            ? "inactive"
+            : "active",
 
         updatedAt:
           serverTimestamp()
@@ -6033,550 +2505,54 @@ window.toggleProduct = async function(productId){
     );
 
 
+    showMessage(
+      currentStatus
+        ? "Product deactivated."
+        : "Product activated."
+    );
+
+
     await loadProducts();
 
-  }
-  catch(error){
+  }catch(error){
 
-    console.error(
-      "Toggle product error:",
-      error
-    );
+    console.error(error);
 
-
-    alert(
-      error.message ||
-      "Unable to update product."
-    );
-
-  }
-
-};
-
-
-let pendingFeaturedProductId = null;
-
-let featuredPaymentProofUrl = null;
-
-const featuredPaymentProofFile =
-  document.getElementById(
-    "featuredPaymentProofFile"
-  );
-
-const featuredPaymentProofPreview =
-  document.getElementById(
-    "featuredPaymentProofPreview"
-  );
-
-const featuredPaymentProofStatus =
-  document.getElementById(
-    "featuredPaymentProofStatus"
-  );
-
-function resetFeaturedPaymentProof(){
-
-  featuredPaymentProofUrl =
-    null;
-
-  featuredPaymentProofFile.value =
-    "";
-
-  featuredPaymentProofPreview.style.display =
-    "none";
-
-  featuredPaymentProofPreview.src =
-    "";
-
-  featuredPaymentProofStatus.textContent =
-    "";
-
-}
-
-featuredPaymentProofFile.addEventListener(
-  "change",
-  async () => {
-
-    const file =
-      featuredPaymentProofFile.files &&
-      featuredPaymentProofFile.files[0];
-
-    if(!file){
-      return;
-    }
-
-    featuredPaymentProofPreview.src =
-      URL.createObjectURL(file);
-
-    featuredPaymentProofPreview.style.display =
-      "block";
-
-    featuredPaymentProofStatus.textContent =
-      "⏳ Uploading...";
-
-    featuredPaymentProofFile.disabled =
-      true;
-
-    try{
-
-      const url =
-        await uploadToImgbb(file);
-
-      featuredPaymentProofUrl =
-        url;
-
-      // Turawar hoto ita ce ta zama "reference" ɗin
-      // idan mai amfani bai rubuta wani text ba da hannu.
-      $("featuredPaymentReference").value =
-        url;
-
-      featuredPaymentProofStatus.textContent =
-        "✅ Payment proof attached";
-
-    }catch(error){
-
-      console.error(
-        "Payment proof upload error:",
-        error
-      );
-
-      featuredPaymentProofStatus.textContent =
-        "❌ " + error.message;
-
-      featuredPaymentProofUrl =
-        null;
-
-    }
-
-    featuredPaymentProofFile.disabled =
-      false;
-
-  }
-);
-
-
-window.requestFeatured = async function(productId){
-
-  const product =
-    allProducts.find(
-      item => item.id === productId
-    );
-
-
-  if(!product){
-
-    alert("Product not found.");
-
-    return;
-
-  }
-
-
-  if(
-    product.sellerId !==
-    currentUser.uid
-  ){
-
-    alert(
-      "You are not allowed to change this product."
-    );
-
-    return;
-
-  }
-
-
-  if(product.featured === true){
-
-    alert(
-      "This product is already Featured."
-    );
-
-    return;
-
-  }
-
-
-  if(product.featuredRequested === true){
-
-    alert(
-      "You've already requested Featured for this product. The admin will review it soon."
-    );
-
-    return;
-
-  }
-
-
-  pendingFeaturedProductId =
-    productId;
-
-
-  const price =
-    Number(featuredSettings?.price || 0);
-
-  const duration =
-    Number(featuredSettings?.durationDays || 7);
-
-
-  $("featuredRequestProductName").textContent =
-    product.name || "Product";
-
-  $("featuredRequestPrice").textContent =
-    formatMoney(price);
-
-  $("featuredRequestDuration").textContent =
-    duration;
-
-  $("featuredRequestBankName").textContent =
-    featuredSettings?.bankName || "Not set";
-
-  $("featuredRequestAccountName").textContent =
-    featuredSettings?.accountName || "Not set";
-
-  $("featuredRequestAccountNumber").textContent =
-    featuredSettings?.accountNumber || "Not set";
-
-  $("featuredAmount").value =
-    price || "";
-
-  $("featuredPaymentReference").value =
-    "";
-
-  resetFeaturedPaymentProof();
-
-
-  const today =
-    new Date();
-
-  const year =
-    today.getFullYear();
-
-  const month =
-    String(today.getMonth()+1).padStart(2,"0");
-
-  const day =
-    String(today.getDate()).padStart(2,"0");
-
-  $("featuredPaymentDate").value =
-    `${year}-${month}-${day}`;
-
-
-  hideMessage(
-    $("featuredRequestMessage")
-  );
-
-
-  $("featuredRequestModal").classList.add("show");
-
-};
-
-
-function closeFeaturedRequestModal(){
-
-  $("featuredRequestModal").classList.remove("show");
-
-  pendingFeaturedProductId = null;
-
-  resetFeaturedPaymentProof();
-
-}
-
-
-async function submitFeaturedRequest(){
-
-  hideMessage(
-    $("featuredRequestMessage")
-  );
-
-
-  if(!pendingFeaturedProductId){
 
     showMessage(
-      $("featuredRequestMessage"),
-      "No product selected.",
+      "Failed to change product status: " +
+      error.message,
       "error"
     );
 
-    return;
-
   }
 
+};
+
+
+
+/* =========================================
+   DELETE PRODUCT
+========================================= */
+
+window.deleteProduct =
+async function(productId){
 
   const product =
     allProducts.find(
-      item => item.id === pendingFeaturedProductId
+      p =>
+        p.id === productId
     );
 
 
   if(!product){
 
     showMessage(
-      $("featuredRequestMessage"),
       "Product not found.",
       "error"
     );
 
     return;
-
-  }
-
-
-  const amount =
-    Number(
-      $("featuredAmount").value
-    );
-
-  const paymentReference =
-    $("featuredPaymentReference").value.trim();
-
-  const paymentDate =
-    $("featuredPaymentDate").value;
-
-
-  if(!amount || amount <= 0){
-
-    showMessage(
-      $("featuredRequestMessage"),
-      "Please enter the amount you paid.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!paymentReference){
-
-    showMessage(
-      $("featuredRequestMessage"),
-      "Please enter your payment reference.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!paymentDate){
-
-    showMessage(
-      $("featuredRequestMessage"),
-      "Please select the payment date.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const expectedAmount =
-    Number(featuredSettings?.price || 0);
-
-  if(
-    expectedAmount > 0 &&
-    amount !== expectedAmount
-  ){
-
-    const proceed =
-      confirm(
-        `The current Featured price is ${formatMoney(expectedAmount)}, but you entered ${formatMoney(amount)}.\n\nDo you want to submit the request anyway?`
-      );
-
-    if(!proceed){
-      return;
-    }
-
-  }
-
-
-  const button =
-    $("submitFeaturedBtn");
-
-  button.disabled = true;
-
-  button.textContent =
-    "Submitting...";
-
-
-  try{
-
-    const duplicateQuery =
-      query(
-        collection(
-          db,
-          "featuredRequests"
-        ),
-        where(
-          "sellerId",
-          "==",
-          currentUser.uid
-        ),
-        where(
-          "productId",
-          "==",
-          pendingFeaturedProductId
-        ),
-        where(
-          "status",
-          "==",
-          "pending"
-        )
-      );
-
-    const duplicateSnapshot =
-      await getDocs(duplicateQuery);
-
-    if(!duplicateSnapshot.empty){
-
-      showMessage(
-        $("featuredRequestMessage"),
-        "You already have a pending Featured request for this product.",
-        "warning"
-      );
-
-      return;
-
-    }
-
-
-    const durationDays =
-      Number(featuredSettings?.durationDays || 7);
-
-
-    await addDoc(
-      collection(
-        db,
-        "featuredRequests"
-      ),
-      {
-
-        productId:
-          pendingFeaturedProductId,
-
-        productName:
-          product.name || "Product",
-
-        productPrice:
-          product.price || 0,
-
-        sellerId:
-          currentUser.uid,
-
-        sellerName:
-          sellerData.name ||
-          sellerData.fullName ||
-          sellerData.sellerName ||
-          "",
-
-        sellerEmail:
-          currentUser.email ||
-          "",
-
-        amount,
-
-        paymentReference,
-
-        paymentProofUrl:
-          featuredPaymentProofUrl || null,
-
-        paymentDate,
-
-        durationDays,
-
-        status:"pending",
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    await updateDoc(
-      doc(
-        db,
-        "products",
-        pendingFeaturedProductId
-      ),
-      {
-
-        featuredRequested:true,
-
-        featuredRequestedAt:
-          serverTimestamp(),
-
-        updatedAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    showMessage(
-      $("featuredRequestMessage"),
-      "Featured request submitted successfully. Please wait for Super Admin approval.",
-      "success"
-    );
-
-
-    await loadProducts();
-
-
-    setTimeout(() => {
-
-      closeFeaturedRequestModal();
-
-    },1200);
-
-  }
-  catch(error){
-
-    console.error(
-      "Featured request error:",
-      error
-    );
-
-    showMessage(
-      $("featuredRequestMessage"),
-      error.message ||
-      "Unable to send request.",
-      "error"
-    );
-
-  }
-  finally{
-
-    button.disabled = false;
-
-    button.textContent =
-      "Submit Featured Request";
-
-  }
-
-}
-
-
-/* =========================================================
-   DELETE PRODUCT
-========================================================= */
-
-window.deleteProduct = async function(productId){
-
-  const product =
-    allProducts.find(
-      item => item.id === productId
-    );
-
-
-  if(!product){
-
-    alert("Product not found.");
-
-    return;
-
   }
 
 
@@ -6585,22 +2561,23 @@ window.deleteProduct = async function(productId){
     currentUser.uid
   ){
 
-    alert(
-      "You are not allowed to delete this product."
+    showMessage(
+      "You can only delete your own products.",
+      "error"
     );
 
     return;
-
   }
 
 
   const confirmed =
     confirm(
-      "Are you sure you want to delete this product?"
+      `Delete "${product.name}"?\n\nThis action cannot be undone.`
     );
 
 
   if(!confirmed){
+
     return;
   }
 
@@ -6616,20 +2593,22 @@ window.deleteProduct = async function(productId){
     );
 
 
-    await loadProducts();
-
-  }
-  catch(error){
-
-    console.error(
-      "Delete product error:",
-      error
+    showMessage(
+      "Product deleted successfully."
     );
 
 
-    alert(
-      error.message ||
-      "Unable to delete product."
+    await loadProducts();
+
+  }catch(error){
+
+    console.error(error);
+
+
+    showMessage(
+      "Failed to delete product: " +
+      error.message,
+      "error"
     );
 
   }
@@ -6637,1213 +2616,430 @@ window.deleteProduct = async function(productId){
 };
 
 
-/* =========================================================
+
+/* =========================================
+   PRODUCT IMAGE PREVIEW
+========================================= */
+
+function updateProductImagePreview(){
+
+  const url =
+    document.getElementById(
+      "productImage"
+    ).value.trim();
+
+
+  const preview =
+    document.getElementById(
+      "productImagePreview"
+    );
+
+
+  const image =
+    document.getElementById(
+      "productPreviewImg"
+    );
+
+
+  if(url){
+
+    image.src =
+      url;
+
+
+    preview.style.display =
+      "block";
+
+  }else{
+
+    preview.style.display =
+      "none";
+
+  }
+
+}
+
+
+document
+  .getElementById(
+    "productImage"
+  )
+  .addEventListener(
+    "input",
+    updateProductImagePreview
+  );
+
+
+
+/* =========================================
+   CLOSE PRODUCT MODAL
+========================================= */
+
+function closeProductModal(){
+
+  productModal.classList.remove(
+    "show"
+  );
+
+}
+
+
+document
+  .getElementById(
+    "closeProductModal"
+  )
+  .addEventListener(
+    "click",
+    closeProductModal
+  );
+
+
+document
+  .getElementById(
+    "cancelProductBtn"
+  )
+  .addEventListener(
+    "click",
+    closeProductModal
+  );
+
+
+
+/* =========================================
    PROFILE MODAL
-========================================================= */
+========================================= */
+
+document
+  .getElementById(
+    "editProfileBtn"
+  )
+  .addEventListener(
+    "click",
+    openProfileModal
+  );
+
 
 function openProfileModal(){
 
-  hideMessage(
-    $("profileMessage")
-  );
-
-
-  $("sellerName").value =
+  document.getElementById(
+    "sellerName"
+  ).value =
     sellerData.name ||
-    sellerData.fullName ||
-    sellerData.sellerName ||
     "";
 
 
-  $("sellerBusiness").value =
+  document.getElementById(
+    "sellerBusiness"
+  ).value =
     sellerData.businessName ||
-    sellerData.sellerBusiness ||
     "";
 
 
-  $("sellerPhone").value =
+  document.getElementById(
+    "sellerPhone"
+  ).value =
     sellerData.phone ||
-    sellerData.sellerPhone ||
     "";
 
 
-  $("sellerWhatsapp").value =
+  document.getElementById(
+    "sellerWhatsapp"
+  ).value =
     sellerData.whatsapp ||
-    sellerData.sellerWhatsapp ||
     "";
 
 
-  $("sellerState").value =
-    sellerData.state || "";
-
-  populateLgaSelect(
-    $("sellerState"),
-    $("sellerLga"),
-    sellerData.lga || ""
-  );
+  document.getElementById(
+    "sellerLocation"
+  ).value =
+    sellerData.location ||
+    "";
 
 
-  $("sellerProfileImage").value =
-    sellerData.profileImage ||
-    sellerData.sellerProfileImage ||
+  document.getElementById(
+    "sellerProfileImage"
+  ).value =
     sellerData.profileImageUrl ||
     "";
 
 
-  $("sellerDescription").value =
-    sellerData.description ||
-    sellerData.sellerDescription ||
+  document.getElementById(
+    "sellerDescription"
+  ).value =
+    sellerData.businessDescription ||
     "";
 
 
-  $("profileModal").classList.add("show");
+  profileModal.classList.add(
+    "show"
+  );
 
 }
 
 
-function closeProfileModal(){
 
-  $("profileModal").classList.remove("show");
-
-}
-
-
-/* =========================================================
+/* =========================================
    SAVE PROFILE
-========================================================= */
+========================================= */
 
-async function saveProfile(){
+document
+  .getElementById(
+    "profileForm"
+  )
+  .addEventListener(
+    "submit",
+    async (event) => {
 
-  hideMessage(
-    $("profileMessage")
-  );
-
-
-  const name =
-    $("sellerName").value.trim();
-
-
-  const businessName =
-    $("sellerBusiness").value.trim();
+      event.preventDefault();
 
 
-  const phone =
-    $("sellerPhone").value.trim();
+      if(!currentUser){
 
-
-  const whatsapp =
-    $("sellerWhatsapp").value.trim();
-
-
-  const state =
-    $("sellerState").value;
-
-  const lga =
-    $("sellerLga").value;
-
-
-  const profileImage =
-    $("sellerProfileImage").value.trim();
-
-
-  const description =
-    $("sellerDescription").value.trim();
-
-
-  if(!name){
-
-    showMessage(
-      $("profileMessage"),
-      "Please enter your name.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!state || !lga){
-
-    showMessage(
-      $("profileMessage"),
-      "Please select your state and LGA.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    $("saveProfileBtn");
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "Saving...";
-
-
-  try{
-
-    await updateDoc(
-      doc(
-        db,
-        "users",
-        currentUser.uid
-      ),
-      {
-
-        name,
-        fullName:name,
-        sellerName:name,
-
-        businessName,
-        sellerBusiness:businessName,
-
-        phone,
-        sellerPhone:phone,
-
-        whatsapp,
-        sellerWhatsapp:whatsapp,
-
-        state,
-        lga,
-        location:
-          lga + ", " + state,
-        sellerLocation:
-          lga + ", " + state,
-
-        profileImage,
-        sellerProfileImage:profileImage,
-        profileImageUrl:profileImage,
-
-        description,
-        sellerDescription:description
-
+        return;
       }
-    );
 
 
-    sellerData = {
+      const name =
+        document.getElementById(
+          "sellerName"
+        ).value.trim();
 
-      ...sellerData,
 
-      name,
-      fullName:name,
-      sellerName:name,
+      const businessName =
+        document.getElementById(
+          "sellerBusiness"
+        ).value.trim();
 
-      businessName,
-      sellerBusiness:businessName,
 
-      phone,
-      sellerPhone:phone,
+      const phone =
+        document.getElementById(
+          "sellerPhone"
+        ).value.trim();
 
-      whatsapp,
-      sellerWhatsapp:whatsapp,
 
-      state,
-      lga,
-      location:
-        lga + ", " + state,
-      sellerLocation:
-        lga + ", " + state,
+      const whatsapp =
+        document.getElementById(
+          "sellerWhatsapp"
+        ).value.trim();
 
-      profileImage,
-      sellerProfileImage:profileImage,
-      profileImageUrl:profileImage,
 
-      description,
-      sellerDescription:description
+      const location =
+        document.getElementById(
+          "sellerLocation"
+        ).value;
 
-    };
 
+      const profileImageUrl =
+        document.getElementById(
+          "sellerProfileImage"
+        ).value.trim();
 
-    renderSellerProfile();
 
+      const businessDescription =
+        document.getElementById(
+          "sellerDescription"
+        ).value.trim();
 
-    showMessage(
-      $("profileMessage"),
-      "Profile updated successfully.",
-      "success"
-    );
 
+      if(!name){
 
-    setTimeout(() => {
-
-      closeProfileModal();
-
-    },700);
-
-  }
-  catch(error){
-
-    console.error(
-      "Profile update error:",
-      error
-    );
-
-
-    showMessage(
-      $("profileMessage"),
-      error.message ||
-      "Unable to update profile.",
-      "error"
-    );
-
-  }
-
-
-  button.disabled = false;
-
-  button.textContent =
-    "Save Profile";
-
-}
-
-
-/* =========================================================
-   PREMIUM REQUEST TYPE
-========================================================= */
-
-function getPremiumRequestType(){
-
-  const premium =
-    getPremiumState();
-
-
-  if(
-    premium.active ||
-    premium.expired
-  ){
-
-    return "renewal";
-
-  }
-
-
-  return "firstPremium";
-
-}
-
-
-/* =========================================================
-   OPEN PREMIUM MODAL
-========================================================= */
-
-async function openPremiumModal(){
-
-  hideMessage(
-    $("premiumRequestMessage")
-  );
-
-
-  if(
-    premiumSettings &&
-    premiumSettings.active === false
-  ){
-
-    showMessage(
-      $("premiumMessage"),
-      "Premium upgrade is currently unavailable.",
-      "warning"
-    );
-
-    return;
-
-  }
-
-
-  if(premiumRequest){
-
-    showMessage(
-      $("premiumRequestMessage"),
-      "You already have a pending Premium request.",
-      "warning"
-    );
-
-    $("premiumModal").classList.add("show");
-
-    return;
-
-  }
-
-
-  const price =
-    Number(
-      premiumSettings?.price || 0
-    );
-
-
-  const duration =
-    Number(
-      premiumSettings?.durationDays ||
-      30
-    );
-
-
-  const requestType =
-    getPremiumRequestType();
-
-
-  $("requestPlanName").textContent =
-    premiumSettings?.planName ||
-    "Premium Seller";
-
-
-  $("requestPlanPrice").textContent =
-    formatMoney(price);
-
-
-  $("requestPlanDuration").textContent =
-    duration;
-
-
-  $("requestBankName").textContent =
-    premiumSettings?.bankName ||
-    "Not set";
-
-
-  $("requestAccountName").textContent =
-    premiumSettings?.accountName ||
-    "Not set";
-
-
-  $("requestAccountNumber").textContent =
-    premiumSettings?.accountNumber ||
-    "Not set";
-
-
-  $("requestTypeText").textContent =
-    requestType === "renewal"
-    ? "Premium Renewal"
-    : "First Premium";
-
-
-  $("premiumAmount").value =
-    price || "";
-
-
-  $("paymentReference").value =
-    "";
-
-
-  const today =
-    new Date();
-
-
-  const year =
-    today.getFullYear();
-
-
-  const month =
-    String(
-      today.getMonth()+1
-    ).padStart(2,"0");
-
-
-  const day =
-    String(
-      today.getDate()
-    ).padStart(2,"0");
-
-
-  $("paymentDate").value =
-    `${year}-${month}-${day}`;
-
-
-  $("premiumModal").classList.add("show");
-
-}
-
-
-function closePremiumModal(){
-
-  $("premiumModal").classList.remove("show");
-
-}
-
-
-/* =========================================================
-   SUBMIT PREMIUM REQUEST
-========================================================= */
-
-async function submitPremiumRequest(){
-
-  hideMessage(
-    $("premiumRequestMessage")
-  );
-
-
-  if(premiumRequest){
-
-    showMessage(
-      $("premiumRequestMessage"),
-      "You already have a pending Premium request.",
-      "warning"
-    );
-
-    return;
-
-  }
-
-
-  const amount =
-    Number(
-      $("premiumAmount").value
-    );
-
-
-  const paymentReference =
-    $("paymentReference").value.trim();
-
-
-  const paymentDate =
-    $("paymentDate").value;
-
-
-  const expectedAmount =
-    Number(
-      premiumSettings?.price || 0
-    );
-
-
-  const requestType =
-    getPremiumRequestType();
-
-
-  if(!amount || amount <= 0){
-
-    showMessage(
-      $("premiumRequestMessage"),
-      "Please enter the amount you paid.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!paymentReference){
-
-    showMessage(
-      $("premiumRequestMessage"),
-      "Please enter your payment reference.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!paymentDate){
-
-    showMessage(
-      $("premiumRequestMessage"),
-      "Please select the payment date.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    expectedAmount > 0 &&
-    amount !== expectedAmount
-  ){
-
-    const proceed =
-      confirm(
-        `The current Premium price is ${formatMoney(expectedAmount)}, but you entered ${formatMoney(amount)}.\n\nDo you want to submit the request anyway?`
-      );
-
-
-    if(!proceed){
-      return;
-    }
-
-  }
-
-
-  const button =
-    $("submitPremiumBtn");
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "Submitting...";
-
-
-  try{
-
-    const duplicateQuery =
-      query(
-        collection(
-          db,
-          "premiumRequests"
-        ),
-        where(
-          "sellerId",
-          "==",
-          currentUser.uid
-        ),
-        where(
-          "status",
-          "==",
-          "pending"
-        )
-      );
-
-
-    const duplicateSnapshot =
-      await getDocs(
-        duplicateQuery
-      );
-
-
-    if(!duplicateSnapshot.empty){
-
-      premiumRequest = {
-        status:"pending"
-      };
-
-
-      renderPremiumCard();
-
-
-      showMessage(
-        $("premiumRequestMessage"),
-        "You already have a pending Premium request.",
-        "warning"
-      );
-
-
-      return;
-
-    }
-
-
-    const durationDays =
-      Number(
-        premiumSettings?.durationDays ||
-        30
-      );
-
-
-    const referredBy =
-      sellerData.referredBy ||
-      sellerData.referrerId ||
-      sellerData.referredById ||
-      "";
-
-
-    const referredByName =
-      sellerData.referredByName ||
-      sellerData.referrerName ||
-      "";
-
-
-    await addDoc(
-      collection(
-        db,
-        "premiumRequests"
-      ),
-      {
-
-        sellerId:
-          currentUser.uid,
-
-        sellerName:
-          sellerData.name ||
-          sellerData.fullName ||
-          sellerData.sellerName ||
-          "",
-
-        sellerEmail:
-          currentUser.email ||
-          "",
-
-        plan:
-          premiumSettings?.planName ||
-          "Premium Seller",
-
-        amount,
-
-        paymentReference,
-
-        paymentDate,
-
-        durationDays,
-
-        requestType,
-
-        type:
-          requestType,
-
-        referredBy,
-
-        referrerId:
-          referredBy,
-
-        referredByName,
-
-        status:"pending",
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    premiumRequest = {
-      status:"pending",
-      requestType
-    };
-
-
-    renderPremiumCard();
-
-
-    showMessage(
-      $("premiumRequestMessage"),
-      "Premium request submitted successfully. Please wait for Super Admin approval.",
-      "success"
-    );
-
-
-    setTimeout(() => {
-
-      closePremiumModal();
-
-    },1200);
-
-  }
-  catch(error){
-
-    console.error(
-      "Premium request error:",
-      error
-    );
-
-
-    showMessage(
-      $("premiumRequestMessage"),
-      error.message ||
-      "Unable to submit Premium request.",
-      "error"
-    );
-
-  }
-  finally{
-
-    button.disabled = false;
-
-    button.textContent =
-      "Submit Premium Request";
-
-  }
-
-}
-
-
-/* =========================================================
-   MESSAGES
-========================================================= */
-
-function listenForMessages(){
-
-  try{
-
-    const messagesQuery =
-      query(
-        collection(
-          db,
-          "conversations"
-        ),
-        where(
-          "participantIds",
-          "array-contains",
-          currentUser.uid
-        )
-      );
-
-
-    onSnapshot(
-      messagesQuery,
-      snapshot => {
-
-        let unread = 0;
-
-
-        snapshot.forEach(item => {
-
-          const data =
-            item.data();
-
-
-          const unreadCount =
-            data.unreadCount || {};
-
-
-          unread +=
-            Number(
-              unreadCount[
-                currentUser.uid
-              ] || 0
-            );
-
-        });
-
-
-        const badge =
-          $("messageBadge");
-
-
-        if(unread > 0){
-
-          badge.textContent =
-            unread > 99
-            ? "99+"
-            : unread;
-
-
-          badge.style.display =
-            "flex";
-
-        }
-        else{
-
-          badge.style.display =
-            "none";
-
-        }
-
-      },
-      error => {
-
-        console.error(
-          "Message listener error:",
-          error
+        showMessage(
+          "Name is required.",
+          "error"
         );
 
+        return;
       }
-    );
 
-  }
-  catch(error){
 
-    console.error(
-      "Message listener setup error:",
-      error
-    );
+      try{
 
-  }
-
-}
-
-
-/* =========================================================
-   IMAGE PREVIEW
-========================================================= */
-
-$("productImage").addEventListener(
-  "input",
-  () => {
-
-    const url =
-      $("productImage").value.trim();
-
-
-    const preview =
-      $("productImagePreview");
-
-
-    if(url){
-
-      preview.src = url;
-
-      preview.style.display =
-        "block";
-
-    }
-    else{
-
-      preview.style.display =
-        "none";
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-$("addProductBtn").addEventListener(
-  "click",
-  () => {
-
-    hideMessage(
-      $("productMessage")
-    );
-
-
-    if(!canAddProduct()){
-
-      return;
-
-    }
-
-
-    openProductModal();
-
-  }
-);
-
-
-$("cancelProductBtn").addEventListener(
-  "click",
-  closeProductModal
-);
-
-
-$("saveProductBtn").addEventListener(
-  "click",
-  saveProduct
-);
-
-
-$("editProfileBtn").addEventListener(
-  "click",
-  openProfileModal
-);
-
-
-$("cancelProfileBtn").addEventListener(
-  "click",
-  closeProfileModal
-);
-
-
-$("saveProfileBtn").addEventListener(
-  "click",
-  saveProfile
-);
-
-
-$("upgradePremiumBtn").addEventListener(
-  "click",
-  openPremiumModal
-);
-
-
-$("cancelPremiumBtn").addEventListener(
-  "click",
-  closePremiumModal
-);
-
-
-$("submitPremiumBtn").addEventListener(
-  "click",
-  submitPremiumRequest
-);
-
-
-$("cancelFeaturedBtn").addEventListener(
-  "click",
-  closeFeaturedRequestModal
-);
-
-
-$("submitFeaturedBtn").addEventListener(
-  "click",
-  submitFeaturedRequest
-);
-
-
-$("featuredRequestModal").addEventListener(
-  "click",
-  function(event){
-
-    if(event.target === $("featuredRequestModal")){
-
-      closeFeaturedRequestModal();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   WITHDRAWAL BUTTONS
-========================================================= */
-
-$("withdrawBtn").addEventListener(
-  "click",
-  openWithdrawalModal
-);
-
-
-$("cancelWithdrawalBtn").addEventListener(
-  "click",
-  closeWithdrawalModal
-);
-
-
-$("submitWithdrawalBtn").addEventListener(
-  "click",
-  submitWithdrawal
-);
-
-
-$("refreshWithdrawalBtn").addEventListener(
-  "click",
-  async () => {
-
-    const button =
-      $("refreshWithdrawalBtn");
-
-
-    button.disabled = true;
-
-    button.textContent =
-      "Refreshing...";
-
-
-    try{
-
-      await loadWithdrawalSettings();
-
-      await loadReferralData();
-
-      await loadWithdrawalData();
-
-
-      showMessage(
-        $("withdrawalMessage"),
-        "Commission and withdrawal information refreshed.",
-        "success"
-      );
-
-    }
-    catch(error){
-
-      console.error(error);
-
-      showMessage(
-        $("withdrawalMessage"),
-        error.message ||
-        "Unable to refresh withdrawal information.",
-        "error"
-      );
-
-    }
-
-
-    button.disabled = false;
-
-    button.textContent =
-      "Refresh";
-
-  }
-);
-
-
-$("refreshReferralBtn").addEventListener(
-  "click",
-  async () => {
-
-    const button =
-      $("refreshReferralBtn");
-
-
-    button.disabled = true;
-
-    button.textContent =
-      "Refreshing...";
-
-
-    await loadReferralData();
-
-    await loadWithdrawalData();
-
-
-    button.disabled = false;
-
-    button.textContent =
-      "Refresh";
-
-  }
-);
-
-
-$("refreshPremiumBtn").addEventListener(
-  "click",
-  async () => {
-
-    const button =
-      $("refreshPremiumBtn");
-
-
-    button.disabled = true;
-
-    button.textContent =
-      "Refreshing...";
-
-
-    try{
-
-      const userSnap =
-        await getDoc(
+        await updateDoc(
           doc(
             db,
             "users",
             currentUser.uid
-          )
+          ),
+          {
+
+            name:name,
+
+            businessName:
+              businessName,
+
+            phone:
+              phone,
+
+            whatsapp:
+              whatsapp,
+
+            location:
+              location,
+
+            profileImageUrl:
+              profileImageUrl,
+
+            businessDescription:
+              businessDescription,
+
+            updatedAt:
+              serverTimestamp()
+
+          }
         );
 
 
-      if(userSnap.exists()){
-
         sellerData = {
 
-          uid:currentUser.uid,
+          ...sellerData,
 
-          ...userSnap.data()
+          name:name,
+
+          businessName:
+            businessName,
+
+          phone:
+            phone,
+
+          whatsapp:
+            whatsapp,
+
+          location:
+            location,
+
+          profileImageUrl:
+            profileImageUrl,
+
+          businessDescription:
+            businessDescription
 
         };
 
+
+        renderSellerProfile();
+
+
+        closeProfileModal();
+
+
+        showMessage(
+          "Seller profile updated successfully."
+        );
+
+
+      }catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+          "Failed to update profile: " +
+          error.message,
+          "error"
+        );
+
       }
 
-
-      await loadPremiumData();
-
-      await loadProducts();
-
-      await loadReferralData();
-
-      await loadWithdrawalData();
-
-
-      showMessage(
-        $("premiumMessage"),
-        "Premium and referral information refreshed.",
-        "success"
-      );
-
     }
-    catch(error){
-
-      console.error(error);
+  );
 
 
-      showMessage(
-        $("premiumMessage"),
-        error.message ||
-        "Unable to refresh information.",
-        "error"
-      );
 
-    }
+/* =========================================
+   CLOSE PROFILE MODAL
+========================================= */
 
+function closeProfileModal(){
 
-    button.disabled = false;
+  profileModal.classList.remove(
+    "show"
+  );
 
-    button.textContent =
-      "Refresh Premium";
-
-  }
-);
+}
 
 
-/* =========================================================
-   PUBLIC PROFILE
-========================================================= */
-
-$("publicProfileBtn").addEventListener(
-  "click",
-  event => {
-
-    event.preventDefault();
-
-
-    if(currentUser){
-
-      window.location.href =
-        `seller-profile.html?id=${encodeURIComponent(currentUser.uid)}`;
-
-    }
-
-  }
-);
+document
+  .getElementById(
+    "closeProfileModal"
+  )
+  .addEventListener(
+    "click",
+    closeProfileModal
+  );
 
 
-/* =========================================================
+document
+  .getElementById(
+    "cancelProfileBtn"
+  )
+  .addEventListener(
+    "click",
+    closeProfileModal
+  );
+
+
+
+/* =========================================
    LOGOUT
-========================================================= */
+========================================= */
 
-$("logoutBtn").addEventListener(
+document
+  .getElementById(
+    "logoutBtn"
+  )
+  .addEventListener(
+    "click",
+    async () => {
+
+      try{
+
+        if(
+          conversationsUnsubscribe
+        ){
+
+          conversationsUnsubscribe();
+
+          conversationsUnsubscribe =
+            null;
+        }
+
+
+        await signOut(auth);
+
+
+        window.location.replace(
+          "login.html"
+        );
+
+      }catch(error){
+
+        console.error(error);
+
+
+        showMessage(
+          "Logout failed: " +
+          error.message,
+          "error"
+        );
+
+      }
+
+    }
+  );
+
+
+
+/* =========================================
+   CLOSE MODALS OUTSIDE
+========================================= */
+
+productModal.addEventListener(
   "click",
-  async () => {
-
-    const confirmed =
-      confirm(
-        "Are you sure you want to logout?"
-      );
-
-
-    if(!confirmed){
-      return;
-    }
-
-
-    try{
-
-      await signOut(auth);
-
-      window.location.href =
-        "login.html";
-
-    }
-    catch(error){
-
-      console.error(
-        "Logout error:",
-        error
-      );
-
-      alert(
-        "Unable to logout."
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   CLOSE MODALS
-========================================================= */
-
-$("productModal").addEventListener(
-  "click",
-  event => {
+  (event) => {
 
     if(
       event.target ===
-      $("productModal")
+      productModal
     ){
 
       closeProductModal();
@@ -7854,13 +3050,13 @@ $("productModal").addEventListener(
 );
 
 
-$("profileModal").addEventListener(
+profileModal.addEventListener(
   "click",
-  event => {
+  (event) => {
 
     if(
       event.target ===
-      $("profileModal")
+      profileModal
     ){
 
       closeProfileModal();
@@ -7870,137 +3066,7 @@ $("profileModal").addEventListener(
   }
 );
 
-
-$("premiumModal").addEventListener(
-  "click",
-  event => {
-
-    if(
-      event.target ===
-      $("premiumModal")
-    ){
-
-      closePremiumModal();
-
-    }
-
-  }
-);
-
-
-$("withdrawalModal").addEventListener(
-  "click",
-  event => {
-
-    if(
-      event.target ===
-      $("withdrawalModal")
-    ){
-
-      closeWithdrawalModal();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   WITHDRAWAL AMOUNT INPUT
-========================================================= */
-
-$("withdrawAmount").addEventListener(
-  "input",
-  () => {
-
-    const amount =
-      Number(
-        $("withdrawAmount").value || 0
-      );
-
-
-    const balance =
-      Number(
-        withdrawalStats.availableBalance || 0
-      );
-
-
-    if(amount > balance){
-
-      $("withdrawAmount").setCustomValidity(
-        `Maximum available balance is ${formatMoney(balance)}.`
-      );
-
-    }
-    else if(
-      amount > 0 &&
-      amount < minimumWithdrawal
-    ){
-
-      $("withdrawAmount").setCustomValidity(
-        `Minimum withdrawal is ${formatMoney(minimumWithdrawal)}.`
-      );
-
-    }
-    else{
-
-      $("withdrawAmount").setCustomValidity("");
-
-    }
-
-  }
-);
-
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
-  });
-}
-</script>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-
-  <a href="index.html" class="bn-item">
-    <span class="bn-icon">🏠</span>
-    <span class="bn-label">Home</span>
-  </a>
-
-  <a href="messages.html" class="bn-item">
-    <span class="bn-icon">💬</span>
-    <span class="bn-label">Messages</span>
-  </a>
-
-  <a href="seller-dashboard.html" class="bn-item active">
-    <span class="bn-icon">🏪</span>
-    <span class="bn-label">Dashboard</span>
-  </a>
-
-  <a href="login.html" id="navProfileLink" class="bn-item">
-    <span class="bn-icon">👤</span>
-    <span class="bn-label">Profile</span>
-  </a>
-
-</nav>
-
-
-<script type="module">
-  import { auth } from "./firebase.js";
-  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-  onAuthStateChanged(auth, (user) => {
-    const link = document.getElementById("navProfileLink");
-    if(link){
-      link.href = user
-        ? "seller-profile.html?id=" + user.uid
-        : "login.html";
-    }
-  });
 </script>
 
 </body>
-
 </html>

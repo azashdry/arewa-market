@@ -5,28 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arewa Market - Super Admin</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-
 <style>
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:'Inter',Arial,sans-serif;
+  font-family:Arial,sans-serif;
 }
 
-
-h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
-  font-family:'Playfair Display',Georgia,serif;
-  letter-spacing:.2px;
-}
 body{
   min-height:100vh;
-  background:#f8f6f2;
-  color:#0f2319;
+  background:#f3f7f4;
+  color:#17231b;
   padding:15px;
 }
 
@@ -34,7 +24,7 @@ button{
   border:none;
   padding:11px 15px;
   border-radius:9px;
-  background:#10422a;
+  background:#0f5132;
   color:white;
   font-weight:600;
   cursor:pointer;
@@ -42,7 +32,7 @@ button{
 }
 
 button:hover{
-  background:#0c3220;
+  background:#0b3d26;
   transform:translateY(-1px);
 }
 
@@ -52,30 +42,22 @@ button:disabled{
   transform:none;
 }
 
-input,
-select,
-textarea{
+input,select,textarea{
   width:100%;
   padding:12px;
-  border:1px solid #cde9dc;
+  border:1px solid #d5e1d8;
   border-radius:9px;
   outline:none;
   background:white;
-  color:#0f2319;
+  color:#17231b;
   margin-bottom:14px;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
-  border-color:#10422a;
-  box-shadow:0 0 0 3px rgba(16,66,42,.08);
-}
-
-select:disabled{
-  background:#f6f3ee;
-  color:#999;
-  cursor:not-allowed;
+  border-color:#0f5132;
+  box-shadow:0 0 0 3px rgba(15,81,50,.08);
 }
 
 textarea{
@@ -96,8 +78,8 @@ label{
   background:white;
   padding:30px;
   border-radius:18px;
-  border:1px solid #ede8df;
-  box-shadow:0 12px 35px rgba(16,66,42,.1);
+  border:1px solid #e1ebe4;
+  box-shadow:0 12px 35px rgba(20,83,45,.1);
 }
 
 .logo{
@@ -105,7 +87,7 @@ label{
   height:68px;
   margin:auto auto 15px;
   border-radius:18px;
-  background:linear-gradient(135deg,#10422a,#d4a22c);
+  background:linear-gradient(135deg,#0f5132,#d4a72c);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -116,7 +98,7 @@ label{
 
 h1{
   text-align:center;
-  color:#0f2d1f;
+  color:#123524;
   margin-bottom:6px;
 }
 
@@ -146,9 +128,9 @@ h1{
 }
 
 .success{
-  background:#f7f4ef;
-  color:#155a3a;
-  border:1px solid #ccebdd;
+  background:#edf9f0;
+  color:#176b35;
+  border:1px solid #ccebd4;
 }
 
 .dashboard{
@@ -158,13 +140,12 @@ h1{
 }
 
 .header{
-  background:linear-gradient(135deg,#0d3b2c,#175e3f);
+  background:linear-gradient(135deg,#0f5132,#176b43);
   color:white;
   padding:25px;
   border-radius:18px;
   margin-bottom:18px;
-  box-shadow:0 10px 28px rgba(16,66,42,.18);
-  border-bottom:3px solid #c9a227;
+  box-shadow:0 10px 28px rgba(15,81,50,.18);
 }
 
 .header h2{
@@ -172,7 +153,7 @@ h1{
 }
 
 .header p{
-  color:#dbefe6;
+  color:#dceee3;
 }
 
 .logout{
@@ -195,9 +176,9 @@ h1{
   background:white;
   padding:20px;
   border-radius:15px;
-  border:1px solid #ede8df;
-  border-top:4px solid #d4a22c;
-  box-shadow:0 5px 20px rgba(16,66,42,.06);
+  border:1px solid #e1ebe4;
+  border-top:4px solid #d4a72c;
+  box-shadow:0 5px 20px rgba(20,83,45,.06);
 }
 
 .stat h3{
@@ -208,16 +189,16 @@ h1{
 
 .stat strong{
   font-size:29px;
-  color:#10422a;
+  color:#0f5132;
 }
 
 .section{
   background:white;
   padding:22px;
   border-radius:17px;
-  border:1px solid #ede8df;
+  border:1px solid #e1ebe4;
   margin-bottom:18px;
-  box-shadow:0 5px 20px rgba(16,66,42,.05);
+  box-shadow:0 5px 20px rgba(20,83,45,.05);
 }
 
 .section-header{
@@ -230,7 +211,7 @@ h1{
 }
 
 .section-header h2{
-  color:#0f2d1f;
+  color:#123524;
   font-size:20px;
 }
 
@@ -244,7 +225,7 @@ h1{
 }
 
 .item{
-  border:1px solid #d9efe5;
+  border:1px solid #dfe9e2;
   border-radius:13px;
   padding:15px;
   display:flex;
@@ -255,7 +236,7 @@ h1{
 }
 
 .item:hover{
-  border-color:#aedcc7;
+  border-color:#b9d2c0;
 }
 
 .item-main{
@@ -264,7 +245,7 @@ h1{
 }
 
 .item-main strong{
-  color:#0f2d1f;
+  color:#123524;
   font-size:16px;
 }
 
@@ -297,8 +278,8 @@ h1{
 }
 
 .warning{
-  background:#d4a22c;
-  color:#0f2319;
+  background:#d4a72c;
+  color:#17231b;
 }
 
 .gray{
@@ -306,23 +287,7 @@ h1{
 }
 
 .green{
-  background:#155a3a;
-}
-
-.premium{
-  background:#8b5cf6;
-}
-
-.premium:hover{
-  background:#7041d8;
-}
-
-.orange{
-  background:#dba11b;
-}
-
-.blue{
-  background:#2563eb;
+  background:#176b43;
 }
 
 .badge{
@@ -335,8 +300,8 @@ h1{
 }
 
 .active{
-  background:#f4f0e8;
-  color:#155a3a;
+  background:#e5f7ea;
+  color:#176b35;
 }
 
 .inactive{
@@ -345,34 +310,14 @@ h1{
 }
 
 .pending{
-  background:#f5f1e9;
-  color:#72540e;
-}
-
-.rejected{
-  background:#fff0f0;
-  color:#a61b1b;
-}
-
-.approved{
-  background:#e8f1ff;
-  color:#1856a5;
-}
-
-.paid{
-  background:#f4f0e8;
-  color:#155a3a;
-}
-
-.premium-badge{
-  background:#f0e9ff;
-  color:#6d28d9;
+  background:#fff8df;
+  color:#806500;
 }
 
 .form-box{
   display:none;
-  background:#f9f8f5;
-  border:1px solid #d6eee3;
+  background:#f5f9f6;
+  border:1px solid #dce8df;
   border-radius:13px;
   padding:18px;
   margin-bottom:18px;
@@ -397,7 +342,7 @@ h1{
   height:80px;
   object-fit:cover;
   border-radius:10px;
-  background:#f4f2ed;
+  background:#eef3ef;
   flex-shrink:0;
 }
 
@@ -430,9 +375,9 @@ h1{
 
 .analytics-box{
   padding:18px;
-  background:#f9f8f5;
+  background:#f5f9f6;
   border-radius:12px;
-  border:1px solid #d6eee3;
+  border:1px solid #dce8df;
 }
 
 .analytics-box span{
@@ -443,98 +388,8 @@ h1{
 }
 
 .analytics-box strong{
-  color:#10422a;
+  color:#0f5132;
   font-size:22px;
-}
-
-.premium-card{
-  background:linear-gradient(135deg,#f7f2ff,#fff);
-  border:1px solid #ddd0ff;
-  border-radius:14px;
-  padding:18px;
-  margin-bottom:15px;
-}
-
-.premium-card h3{
-  color:#6d28d9;
-  margin-bottom:10px;
-}
-
-.premium-price{
-  font-size:30px;
-  font-weight:bold;
-  color:#10422a;
-  margin:8px 0;
-}
-
-.benefits-preview{
-  white-space:pre-line;
-  color:#58655d;
-  line-height:1.7;
-}
-
-.request-card{
-  border-left:5px solid #d4a22c;
-}
-
-.referral-card{
-  border-left:5px solid #155a3a;
-}
-
-.commission-card{
-  border-left:5px solid #8b5cf6;
-}
-
-.withdrawal-card{
-  border-left:5px solid #0891b2;
-}
-
-.setting-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-}
-
-.setting-box{
-  background:#f9f8f5;
-  border:1px solid #d6eee3;
-  padding:16px;
-  border-radius:13px;
-}
-
-.setting-box h3{
-  color:#0f2d1f;
-  margin-bottom:12px;
-  font-size:16px;
-}
-
-.switch-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:14px;
-  padding:12px;
-  background:white;
-  border-radius:10px;
-  border:1px solid #ede8df;
-}
-
-.switch-row label{
-  margin:0;
-}
-
-.switch{
-  width:48px;
-  height:25px;
-  margin:0;
-  accent-color:#10422a;
-}
-
-.small-note{
-  color:#718078;
-  font-size:12px;
-  line-height:1.6;
 }
 
 .modal{
@@ -557,7 +412,7 @@ h1{
 
 .modal-content h2{
   margin-bottom:18px;
-  color:#0f2d1f;
+  color:#123524;
 }
 
 .close{
@@ -565,15 +420,7 @@ h1{
   background:#68746d;
 }
 
-.help-text{
-  color:#718078;
-  font-size:13px;
-  line-height:1.6;
-  margin:-7px 0 14px;
-}
-
 @media(max-width:800px){
-
   .stats{
     grid-template-columns:repeat(2,1fr);
   }
@@ -581,14 +428,9 @@ h1{
   .analytics{
     grid-template-columns:1fr;
   }
-
-  .setting-grid{
-    grid-template-columns:1fr;
-  }
 }
 
 @media(max-width:600px){
-
   body{
     padding:10px;
   }
@@ -638,13 +480,6 @@ h1{
   }
 }
 </style>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#10462d">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Arewa Market">
 </head>
 
 <body>
@@ -736,10 +571,17 @@ h1{
       📥 Export Products
     </button>
 
+    <button
+      class="warning"
+      id="exportOrdersBtn"
+    >
+      📥 Export Orders
+    </button>
+
   </div>
 
 
-  <!-- MAIN STATISTICS -->
+  <!-- STATISTICS -->
 
   <div class="stats">
 
@@ -766,61 +608,7 @@ h1{
   </div>
 
 
-  <!-- REFERRAL STATISTICS -->
-
-  <div class="stats">
-
-    <div class="stat">
-      <h3>🔗 Total Referrals</h3>
-      <strong id="totalReferralsCount">0</strong>
-    </div>
-
-    <div class="stat">
-      <h3>🟢 Active Referrals</h3>
-      <strong id="activeReferralsCount">0</strong>
-    </div>
-
-    <div class="stat">
-      <h3>💎 Premium Referrals</h3>
-      <strong id="premiumReferralsCount">0</strong>
-    </div>
-
-    <div class="stat">
-      <h3>⏳ Pending Commissions</h3>
-      <strong id="pendingCommissionsCount">0</strong>
-    </div>
-
-  </div>
-
-
-  <!-- COMMISSION STATISTICS -->
-
-  <div class="stats">
-
-    <div class="stat">
-      <h3>✅ Approved Commissions</h3>
-      <strong id="approvedCommissionsCount">0</strong>
-    </div>
-
-    <div class="stat">
-      <h3>💰 Paid Commissions</h3>
-      <strong id="paidCommissionsCount">0</strong>
-    </div>
-
-    <div class="stat">
-      <h3>💵 Total Commission</h3>
-      <strong id="totalCommissionAmount">₦0</strong>
-    </div>
-
-    <div class="stat">
-      <h3>🔗 Referral System</h3>
-      <strong id="referralSystemStatus">OFF</strong>
-    </div>
-
-  </div>
-
-
-  <!-- MARKET ANALYTICS -->
+  <!-- ANALYTICS -->
 
   <div class="section">
 
@@ -856,351 +644,25 @@ h1{
       </div>
 
       <div class="analytics-box">
-        <span>Pending Featured Requests</span>
-        <strong id="pendingFeaturedRequestsCount">0</strong>
-      </div>
-
-      <div class="analytics-box">
         <span>Total Product Value</span>
         <strong id="productValue">₦0</strong>
       </div>
 
       <div class="analytics-box">
-        <span>Premium Sellers</span>
-        <strong id="premiumSellersCount">0</strong>
+        <span>Total Orders</span>
+        <strong id="ordersCount">0</strong>
       </div>
 
       <div class="analytics-box">
-        <span>Pending Premium Requests</span>
-        <strong id="pendingPremiumRequestsCount">0</strong>
+        <span>Pending Orders</span>
+        <strong id="pendingOrdersCount">0</strong>
       </div>
 
       <div class="analytics-box">
-        <span>Premium Revenue Requests</span>
-        <strong id="premiumRevenueCount">₦0</strong>
+        <span>Total Order Revenue</span>
+        <strong id="orderRevenue">₦0</strong>
       </div>
 
-    </div>
-
-  </div>
-
-
-  <!-- ==========================================
-       REFERRAL SETTINGS
-  =========================================== -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <h2>🔗 Referral Settings</h2>
-
-      <button
-        id="refreshReferralSettingsBtn"
-      >
-        Refresh
-      </button>
-
-    </div>
-
-    <div class="setting-grid">
-
-      <div class="setting-box">
-
-        <h3>Referral System</h3>
-
-        <div class="switch-row">
-
-          <label for="referralSystemEnabled">
-            Referral System
-          </label>
-
-          <input
-            type="checkbox"
-            class="switch"
-            id="referralSystemEnabled"
-          >
-
-        </div>
-
-        <p class="small-note">
-          ON = referral tracking and eligible
-          commission processing are enabled.
-        </p>
-
-      </div>
-
-
-      <div class="setting-box">
-
-        <h3>Commission Type</h3>
-
-        <select id="commissionType">
-
-          <option value="fixed">
-            Fixed Amount
-          </option>
-
-          <option value="percentage">
-            Percentage
-          </option>
-
-        </select>
-
-        <label>
-          Commission Amount / %
-        </label>
-
-        <input
-          type="number"
-          id="commissionValue"
-          min="0"
-          step="0.01"
-          placeholder="Example: 500 or 10"
-        >
-
-        <p class="small-note">
-          Fixed = ₦ amount per eligible commission.
-          Percentage = percentage of Premium amount.
-        </p>
-
-      </div>
-
-
-      <div class="setting-box">
-
-        <h3>Premium Commission</h3>
-
-        <div class="switch-row">
-
-          <label for="firstPremiumCommission">
-            First Premium Commission
-          </label>
-
-          <input
-            type="checkbox"
-            class="switch"
-            id="firstPremiumCommission"
-          >
-
-        </div>
-
-        <p class="small-note">
-          Controls commission generated when a referred
-          user receives their first Premium approval.
-        </p>
-
-      </div>
-
-
-      <div class="setting-box">
-
-        <h3>Renewal Commission</h3>
-
-        <div class="switch-row">
-
-          <label for="renewalCommission">
-            Renewal Commission
-          </label>
-
-          <input
-            type="checkbox"
-            class="switch"
-            id="renewalCommission"
-          >
-
-        </div>
-
-        <p class="small-note">
-          Renewal commission is generated only when this
-          option is ON and the Premium request is identified
-          as a renewal.
-        </p>
-
-      </div>
-
-
-      <div class="setting-box">
-
-        <h3>Withdrawal Limit</h3>
-
-        <label for="minimumWithdrawal">
-          Minimum Withdrawal (₦)
-        </label>
-
-        <input
-          type="number"
-          id="minimumWithdrawal"
-          min="0"
-          step="1"
-          placeholder="Example: 1000"
-        >
-
-        <p class="small-note">
-          The lowest amount a seller is allowed to request as
-          a withdrawal. Sellers cannot submit a withdrawal
-          request below this amount.
-        </p>
-
-      </div>
-
-    </div>
-
-    <br>
-
-    <button
-      class="green"
-      id="saveReferralSettingsBtn"
-      style="width:100%;"
-    >
-      💾 Save Referral Settings
-    </button>
-
-  </div>
-
-
-  <!-- ==========================================
-       LOCATION DATA TOOLS
-  =========================================== -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <h2>🗺️ Location Data Tools</h2>
-
-      <button
-        class="warning"
-        id="fixMissingStateLgaBtn"
-      >
-        🔧 Fix Missing State/LGA
-      </button>
-
-    </div>
-
-    <p class="small-note">
-      Scans every user and product created before the
-      State + LGA system, tries to match their old
-      free-text "location" to one of the 37 states, and
-      sets it as their new "state" field. LGA is set to
-      "Not specified" since it cannot be determined from
-      old data — sellers/admins should update it by hand
-      afterwards.
-    </p>
-
-  </div>
-
-
-  <!-- ==========================================
-       REFERRAL MANAGEMENT
-  =========================================== -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <h2>🔗 Referral Management</h2>
-
-      <button
-        id="refreshReferralsBtn"
-      >
-        Refresh
-      </button>
-
-      <button
-        class="warning"
-        id="fixReferralCodesBtn"
-      >
-        🔧 Fix Missing Codes
-      </button>
-
-    </div>
-
-    <input
-      class="search"
-      id="referralsSearch"
-      placeholder="Search referrer, referred user, code or email..."
-    >
-
-    <div
-      class="list"
-      id="referralsList"
-    >
-      <div class="loading">
-        Loading referrals...
-      </div>
-    </div>
-
-  </div>
-
-
-  <!-- ==========================================
-       COMMISSION MANAGEMENT
-  =========================================== -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <h2>💰 Commission Management</h2>
-
-      <button
-        id="refreshCommissionsBtn"
-      >
-        Refresh
-      </button>
-
-    </div>
-
-    <input
-      class="search"
-      id="commissionsSearch"
-      placeholder="Search referrer, referred user, type or status..."
-    >
-
-    <div
-      class="list"
-      id="commissionsList"
-    >
-      <div class="loading">
-        Loading commissions...
-      </div>
-    </div>
-
-  </div>
-
-
-  <!-- ==========================================
-       WITHDRAWAL REQUESTS
-  =========================================== -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <h2>🏦 Withdrawal Requests</h2>
-
-      <button
-        id="refreshWithdrawalRequestsBtn"
-      >
-        Refresh
-      </button>
-
-    </div>
-
-    <input
-      class="search"
-      id="withdrawalRequestsSearch"
-      placeholder="Search seller, bank, account or status..."
-    >
-
-    <div
-      class="list"
-      id="withdrawalRequestsList"
-    >
-      <div class="loading">
-        Loading withdrawal requests...
-      </div>
     </div>
 
   </div>
@@ -1366,23 +828,51 @@ h1{
         placeholder="Example: Phones"
       >
 
-      <label>State</label>
+      <label>Location</label>
 
-      <select id="productState">
+      <select id="productLocation">
 
         <option value="">
           -- Zabi Jiha --
         </option>
 
-      </select>
-
-      <label>Local Government Area</label>
-
-      <select id="productLga" disabled>
-
-        <option value="">
-          -- Zabi Jiha da farko --
-        </option>
+        <option>Abia</option>
+        <option>Adamawa</option>
+        <option>Akwa Ibom</option>
+        <option>Anambra</option>
+        <option>Bauchi</option>
+        <option>Bayelsa</option>
+        <option>Benue</option>
+        <option>Borno</option>
+        <option>Cross River</option>
+        <option>Delta</option>
+        <option>Ebonyi</option>
+        <option>Edo</option>
+        <option>Ekiti</option>
+        <option>Enugu</option>
+        <option>FCT Abuja</option>
+        <option>Gombe</option>
+        <option>Imo</option>
+        <option>Jigawa</option>
+        <option>Kaduna</option>
+        <option>Kano</option>
+        <option>Katsina</option>
+        <option>Kebbi</option>
+        <option>Kogi</option>
+        <option>Kwara</option>
+        <option>Lagos</option>
+        <option>Nasarawa</option>
+        <option>Niger</option>
+        <option>Ogun</option>
+        <option>Ondo</option>
+        <option>Osun</option>
+        <option>Oyo</option>
+        <option>Plateau</option>
+        <option>Rivers</option>
+        <option>Sokoto</option>
+        <option>Taraba</option>
+        <option>Yobe</option>
+        <option>Zamfara</option>
 
       </select>
 
@@ -1393,17 +883,6 @@ h1{
         id="productImageUrl"
         placeholder="https://..."
       >
-
-      <div style="margin:8px 0;">
-        <input
-          type="file"
-          id="productImageUrlFile"
-          accept="image/*">
-        <div
-          id="productImageUrlStatus"
-          style="font-size:13px;margin-top:4px;">
-        </div>
-      </div>
 
       <div
         id="imagePreviewBox"
@@ -1468,240 +947,15 @@ h1{
   </div>
 
 
-  <!-- PREMIUM SETTINGS -->
+  <!-- ORDERS -->
 
   <div class="section">
 
     <div class="section-header">
 
-      <h2>💎 Premium Seller Settings</h2>
+      <h2>🛒 Orders Management</h2>
 
-      <button
-        class="premium"
-        id="refreshPremiumSettingsBtn"
-      >
-        Refresh
-      </button>
-
-    </div>
-
-    <div
-      class="premium-card"
-      id="premiumSettingsSummary"
-    >
-      <div class="loading">
-        Loading Premium settings...
-      </div>
-    </div>
-
-    <div
-      class="form-box"
-      id="premiumSettingsFormBox"
-      style="display:block;"
-    >
-
-      <label>Plan Name</label>
-
-      <input
-        id="premiumPlanName"
-        placeholder="Example: Premium Seller"
-      >
-
-      <label>Price (₦)</label>
-
-      <input
-        type="number"
-        id="premiumPrice"
-        min="0"
-        placeholder="2000"
-      >
-
-      <label>Duration (Days)</label>
-
-      <input
-        type="number"
-        id="premiumDuration"
-        min="1"
-        placeholder="30"
-      >
-
-      <label>Maximum Products</label>
-
-      <input
-        type="number"
-        id="premiumMaxProducts"
-        min="1"
-        placeholder="50"
-      >
-
-      <label>Bank Name</label>
-
-      <input
-        id="premiumBankName"
-        placeholder="Example: First Bank"
-      >
-
-      <label>Account Name</label>
-
-      <input
-        id="premiumAccountName"
-        placeholder="Example: Arewa Market"
-      >
-
-      <label>Account Number</label>
-
-      <input
-        id="premiumAccountNumber"
-        inputmode="numeric"
-        placeholder="Enter account number"
-      >
-
-      <label>Premium Benefits</label>
-
-      <textarea
-        id="premiumBenefits"
-        placeholder="Example:
-Premium badge
-Up to 50 products
-Better seller visibility
-Full seller profile
-Messaging"
-      ></textarea>
-
-      <label>
-        <input
-          type="checkbox"
-          id="premiumActive"
-          style="width:auto;margin-right:6px;"
-        >
-        Premium Plan Active
-      </label>
-
-      <p class="help-text">
-        Duk lokacin da ka canza wannan information,
-        seller zai ga sabon bayani daga Premium page.
-      </p>
-
-      <button
-        class="premium"
-        id="savePremiumSettingsBtn"
-        style="width:100%;"
-      >
-        💾 Save Premium Settings
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- FEATURED LISTING SETTINGS -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <h2>⭐ Featured Listing Settings</h2>
-
-      <button
-        class="premium"
-        id="refreshFeaturedSettingsBtn"
-      >
-        Refresh
-      </button>
-
-    </div>
-
-    <div
-      class="premium-card"
-      id="featuredSettingsSummary"
-    >
-      <div class="loading">
-        Loading Featured settings...
-      </div>
-    </div>
-
-    <div
-      class="form-box"
-      id="featuredSettingsFormBox"
-      style="display:block;"
-    >
-
-      <label>Price per boost (₦)</label>
-
-      <input
-        type="number"
-        id="featuredPrice"
-        min="0"
-        placeholder="2000"
-      >
-
-      <label>Duration (Days)</label>
-
-      <input
-        type="number"
-        id="featuredDuration"
-        min="1"
-        placeholder="7"
-      >
-
-      <label>Bank Name</label>
-
-      <input
-        id="featuredBankName"
-        placeholder="Example: First Bank"
-      >
-
-      <label>Account Name</label>
-
-      <input
-        id="featuredAccountName"
-        placeholder="Example: Arewa Market"
-      >
-
-      <label>Account Number</label>
-
-      <input
-        id="featuredAccountNumber"
-        inputmode="numeric"
-        placeholder="Enter account number"
-      >
-
-      <label>
-        <input
-          type="checkbox"
-          id="featuredActive"
-          style="width:auto;margin-right:6px;"
-        >
-        Featured Listings Active
-      </label>
-
-      <p class="help-text">
-        Wannan farashi da bayanin banki shine abin da seller zai gani
-        idan ya danna "Request Featured" a Seller Dashboard.
-      </p>
-
-      <button
-        class="premium"
-        id="saveFeaturedSettingsBtn"
-        style="width:100%;"
-      >
-        💾 Save Featured Settings
-      </button>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <h2>💳 Premium Requests</h2>
-
-      <button id="refreshPremiumRequestsBtn">
+      <button id="refreshOrdersBtn">
         Refresh
       </button>
 
@@ -1709,48 +963,16 @@ Messaging"
 
     <input
       class="search"
-      id="premiumRequestsSearch"
-      placeholder="Search by seller, email or payment reference..."
+      id="ordersSearch"
+      placeholder="Search orders by ID, buyer, seller or status..."
     >
 
     <div
       class="list"
-      id="premiumRequestsList"
+      id="ordersList"
     >
       <div class="loading">
-        Loading Premium requests...
-      </div>
-    </div>
-
-  </div>
-
-
-  <!-- FEATURED REQUESTS -->
-
-  <div class="section">
-
-    <div class="section-header">
-
-      <h2>⭐ Featured Requests</h2>
-
-      <button id="refreshFeaturedRequestsBtn">
-        Refresh
-      </button>
-
-    </div>
-
-    <input
-      class="search"
-      id="featuredRequestsSearch"
-      placeholder="Search by product, seller, email or payment reference..."
-    >
-
-    <div
-      class="list"
-      id="featuredRequestsList"
-    >
-      <div class="loading">
-        Loading Featured requests...
+        Loading orders...
       </div>
     </div>
 
@@ -1766,15 +988,6 @@ import {
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-  NIGERIA_STATES,
-  populateLgaSelect
-} from "./states-lga.js";
-
-import {
-  attachImgbbUploader
-} from "./imgbb-upload.js";
 
 import {
   getAuth,
@@ -1794,27 +1007,10 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  setDoc,
-  serverTimestamp,
-  Timestamp
+  serverTimestamp
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-
-attachImgbbUploader({
-  fileInputId: "productImageUrlFile",
-  urlInputId: "productImageUrl",
-  statusId: "productImageUrlStatus",
-  // Muhimmi: toshe "Save Product" har sai hoto ya
-  // gama turawa, don kada a ajiye tsohon URL a Firestore.
-  onStart: () => {
-    document.getElementById("saveProductBtn").disabled = true;
-  },
-  onDone: () => {
-    document.getElementById("saveProductBtn").disabled = false;
-  }
-});
 
 
 /* ==========================================
@@ -1855,35 +1051,6 @@ const auth =
 
 const db =
   getFirestore(app);
-
-
-/* ==========================================
-   STATE / LGA DROPDOWN (Product form)
-========================================== */
-
-NIGERIA_STATES.forEach(state => {
-
-  const option =
-    document.createElement("option");
-
-  option.value = state;
-  option.textContent = state;
-
-  document.getElementById(
-    "productState"
-  ).appendChild(option);
-
-});
-
-document.getElementById(
-  "productState"
-).addEventListener(
-  "change",
-  () => populateLgaSelect(
-    document.getElementById("productState"),
-    document.getElementById("productLga")
-  )
-);
 
 
 /* ==========================================
@@ -1948,6 +1115,14 @@ const productsSearch =
     "productsSearch"
   );
 
+const ordersList =
+  document.getElementById("ordersList");
+
+const ordersSearch =
+  document.getElementById(
+    "ordersSearch"
+  );
+
 const imagePreviewBox =
   document.getElementById(
     "imagePreviewBox"
@@ -1963,66 +1138,6 @@ const productImageUrl =
     "productImageUrl"
   );
 
-const premiumSettingsSummary =
-  document.getElementById(
-    "premiumSettingsSummary"
-  );
-
-const featuredSettingsSummary =
-  document.getElementById(
-    "featuredSettingsSummary"
-  );
-
-const premiumRequestsList =
-  document.getElementById(
-    "premiumRequestsList"
-  );
-
-const premiumRequestsSearch =
-  document.getElementById(
-    "premiumRequestsSearch"
-  );
-
-const featuredRequestsList =
-  document.getElementById(
-    "featuredRequestsList"
-  );
-
-const featuredRequestsSearch =
-  document.getElementById(
-    "featuredRequestsSearch"
-  );
-
-const referralsList =
-  document.getElementById(
-    "referralsList"
-  );
-
-const referralsSearch =
-  document.getElementById(
-    "referralsSearch"
-  );
-
-const commissionsList =
-  document.getElementById(
-    "commissionsList"
-  );
-
-const commissionsSearch =
-  document.getElementById(
-    "commissionsSearch"
-  );
-
-const withdrawalRequestsList =
-  document.getElementById(
-    "withdrawalRequestsList"
-  );
-
-const withdrawalRequestsSearch =
-  document.getElementById(
-    "withdrawalRequestsSearch"
-  );
-
 
 /* ==========================================
    VARIABLES
@@ -2031,18 +1146,8 @@ const withdrawalRequestsSearch =
 let allUsers = [];
 let allProducts = [];
 let allCategories = [];
+let allOrders = [];
 let allSellerApplications = [];
-let allPremiumRequests = [];
-let allFeaturedRequests = [];
-
-let allReferrals = [];
-let allCommissions = [];
-let allWithdrawalRequests = [];
-
-let premiumSettings = null;
-let featuredSettings = null;
-
-let referralSettings = null;
 
 let editingCategoryId = null;
 
@@ -2086,164 +1191,14 @@ function showMessage(
 }
 
 
-function formatDate(value){
+function getOrderTotal(order){
 
-  if(!value){
-
-    return "N/A";
-
-  }
-
-  try{
-
-    if(
-      value &&
-      typeof value.toDate ===
-      "function"
-    ){
-
-      return value
-        .toDate()
-        .toLocaleString("en-NG");
-
-    }
-
-    if(
-      value &&
-      typeof value.seconds ===
-      "number"
-    ){
-
-      return new Date(
-        value.seconds * 1000
-      ).toLocaleString("en-NG");
-
-    }
-
-    if(
-      typeof value ===
-      "string"
-    ){
-
-      const date =
-        new Date(value);
-
-      if(!isNaN(date.getTime())){
-
-        return date.toLocaleString(
-          "en-NG"
-        );
-
-      }
-
-    }
-
-    return "N/A";
-
-  }catch(error){
-
-    return "N/A";
-
-  }
-}
-
-
-function timestampToDate(value){
-
-  if(!value){
-
-    return null;
-
-  }
-
-  if(
-    value &&
-    typeof value.toDate ===
-    "function"
-  ){
-
-    return value.toDate();
-
-  }
-
-  if(
-    value &&
-    typeof value.seconds ===
-    "number"
-  ){
-
-    return new Date(
-      value.seconds * 1000
-    );
-
-  }
-
-  if(
-    typeof value ===
-    "string"
-  ){
-
-    const date =
-      new Date(value);
-
-    if(!isNaN(date.getTime())){
-
-      return date;
-
-    }
-
-  }
-
-  return null;
-}
-
-
-function getUserById(userId){
-
-  if(!userId){
-
-    return null;
-
-  }
-
-  return allUsers.find(
-    user =>
-      user.id === userId
-  ) || null;
-}
-
-
-function getUserName(userId){
-
-  const user =
-    getUserById(userId);
-
-  if(!user){
-
-    return "Unknown User";
-
-  }
-
-  return (
-    user.name ||
-    user.fullName ||
-    user.email ||
-    userId
+  return Number(
+    order.total ||
+    order.amount ||
+    order.price ||
+    0
   );
-
-}
-
-
-function getUserEmail(userId){
-
-  const user =
-    getUserById(userId);
-
-  return (
-    user?.email ||
-    "N/A"
-  );
-
 }
 
 
@@ -2410,22 +1365,10 @@ async function refreshAll(){
     loadUsers(),
     loadCategories(),
     loadProducts(),
-    loadPremiumSettings(),
-    loadFeaturedSettings(),
-    loadPremiumRequests(),
-    loadFeaturedRequests(),
-    loadReferralSettings(),
-    loadCommissions(),
-    loadWithdrawalRequests()
+    loadOrders()
   ]);
 
-  buildReferralRecords();
-
   await loadSellerApplications();
-
-  renderReferrals(
-    allReferrals
-  );
 
   updateAnalytics();
 }
@@ -2524,12 +1467,6 @@ function renderUsers(users){
     const active =
       user.active !== false;
 
-    const isPremium =
-      user.subscriptionPlan ===
-        "premium" &&
-      user.subscriptionStatus ===
-        "active";
-
     const item =
       document.createElement(
         "div"
@@ -2570,42 +1507,6 @@ function renderUsers(users){
           ${escapeHtml(role)}
         </small>
 
-        ${
-          user.referralCode
-            ? `
-              <small>
-                Referral Code:
-                ${escapeHtml(
-                  user.referralCode
-                )}
-              </small>
-            `
-            : ""
-        }
-
-        ${
-          user.referredBy
-            ? `
-              <small>
-                Referred By:
-                ${escapeHtml(
-                  user.referredBy
-                )}
-              </small>
-            `
-            : ""
-        }
-
-        ${
-          isPremium
-            ? `
-              <span class="badge premium-badge">
-                💎 Premium
-              </span>
-            `
-            : ""
-        }
-
         <span class="badge ${
           active
             ? "active"
@@ -2630,48 +1531,9 @@ function renderUsers(users){
             : ""
         }
 
-        ${
-          user.verified === true
-            ? `
-              <span
-                class="badge active"
-                style="background:#0B6E4F;"
-              >
-                ✔ Verified
-              </span>
-            `
-            : ""
-        }
-
       </div>
 
       <div class="actions">
-
-        ${
-          seller
-            ? `
-              <button
-                style="${
-                  user.verified === true
-                    ? "background:#999;"
-                    : "background:#0B6E4F;color:white;"
-                }"
-                onclick="
-                  toggleVerifiedSeller(
-                    '${escapeHtml(user.id)}',
-                    ${user.verified === true}
-                  )
-                "
-              >
-                ${
-                  user.verified === true
-                    ? "Cire Verified"
-                    : "✔ Verify Seller"
-                }
-              </button>
-            `
-            : ""
-        }
 
         <button
           onclick="
@@ -2750,57 +1612,6 @@ window.toggleUserStatus =
 
       alert(
         "Failed to update user: " +
-        error.message
-      );
-    }
-  };
-
-
-window.toggleVerifiedSeller =
-  async function(
-    userId,
-    currentlyVerified
-  ){
-
-    const confirmText =
-      currentlyVerified
-        ? "Cire Verified badge daga wannan seller?"
-        : "Amince cewa wannan seller Verified ne (an duba lambar waya/NIN)?";
-
-    if(!confirm(confirmText)) return;
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "users",
-          userId
-        ),
-        {
-          verified:
-            !currentlyVerified,
-
-          verifiedAt:
-            !currentlyVerified
-              ? serverTimestamp()
-              : null,
-
-          verifiedBy:
-            !currentlyVerified
-              ? (auth.currentUser
-                  ? auth.currentUser.uid
-                  : "admin")
-              : null
-        }
-      );
-
-      await loadUsers();
-
-    }catch(error){
-
-      alert(
-        "Failed to update verification: " +
         error.message
       );
     }
@@ -2908,11 +1719,7 @@ usersSearch.addEventListener(
               " " +
               user.email +
               " " +
-              user.phone +
-              " " +
-              user.referralCode +
-              " " +
-              user.referredBy
+              user.phone
             )
             .toLowerCase();
 
@@ -3118,11 +1925,6 @@ window.approveSeller =
       alert(
         "Seller approved successfully."
       );
-
-      /*
-        IMPORTANT:
-        Seller approval creates NO commission.
-      */
 
       await refreshAll();
 
@@ -3560,26 +2362,6 @@ async function loadProducts(){
       }
     );
 
-    await autoExpireFeaturedProducts(
-      allProducts
-    );
-
-    // Surface pending Featured requests at the top
-    // so the admin doesn't have to hunt for them.
-    allProducts.sort((a,b) => {
-
-      const aPending =
-        a.featuredRequested === true &&
-        a.featured !== true;
-
-      const bPending =
-        b.featuredRequested === true &&
-        b.featured !== true;
-
-      return Number(bPending) - Number(aPending);
-
-    });
-
     renderProducts(
       allProducts
     );
@@ -3712,32 +2494,10 @@ function renderProducts(products){
           </span>
 
           ${
-            !product.featured &&
-            product.featuredRequested === true
-              ? `
-                <span class="badge pending">
-                  🙋 Featured Requested
-                </span>
-              `
-              : ""
-          }
-
-          ${
             product.featured
               ? `
                 <span class="badge pending">
-                  ⭐ Featured${
-                    product.featuredUntil &&
-                    product.featuredUntil.toMillis
-                      ? ` · ${Math.max(
-                          0,
-                          Math.ceil(
-                            (product.featuredUntil.toMillis() - Date.now()) /
-                            (24*60*60*1000)
-                          )
-                        )}d left`
-                      : ""
-                  }
+                  ⭐ Featured
                 </span>
               `
               : ""
@@ -3831,13 +2591,8 @@ function resetProductForm(){
   ).value = "";
 
   document.getElementById(
-    "productState"
+    "productLocation"
   ).value = "";
-
-  populateLgaSelect(
-    document.getElementById("productState"),
-    document.getElementById("productLga")
-  );
 
   document.getElementById(
     "productImageUrl"
@@ -3972,19 +2727,13 @@ document
           .value
           .trim();
 
-      const state =
+      const location =
         document
           .getElementById(
-            "productState"
+            "productLocation"
           )
-          .value;
-
-      const lga =
-        document
-          .getElementById(
-            "productLga"
-          )
-          .value;
+          .value
+          .trim();
 
       const imageUrl =
         document
@@ -4013,12 +2762,11 @@ document
         !name ||
         !price ||
         !category ||
-        !state ||
-        !lga
+        !location
       ){
 
         alert(
-          "Please fill Product Name, Price, Category, State and LGA."
+          "Please fill Product Name, Price, Category and Location."
         );
 
         return;
@@ -4049,12 +2797,7 @@ document
 
           category,
 
-          state,
-
-          lga,
-
-          location:
-            lga + ", " + state,
+          location,
 
           imageUrl,
 
@@ -4181,15 +2924,9 @@ window.editProduct =
         product.category || "";
 
       document.getElementById(
-        "productState"
+        "productLocation"
       ).value =
-        product.state || "";
-
-      populateLgaSelect(
-        document.getElementById("productState"),
-        document.getElementById("productLga"),
-        product.lga || ""
-      );
+        product.location || "";
 
       document.getElementById(
         "productImageUrl"
@@ -4331,70 +3068,19 @@ window.toggleFeatured =
 
     try{
 
-      // Turning Featured ON: ask the admin how many
-      // days the seller paid for, and store an
-      // expiry timestamp so it un-features itself.
-      if(!current){
-
-        const daysInput = prompt(
-          "How many days should this product stay Featured?\n(e.g. 7)",
-          "7"
-        );
-
-        if(daysInput === null){
-          // Admin cancelled the prompt
-          return;
+      await updateDoc(
+        doc(
+          db,
+          "products",
+          productId
+        ),
+        {
+          featured:
+            !current,
+          updatedAt:
+            serverTimestamp()
         }
-
-        const days =
-          parseInt(daysInput, 10);
-
-        if(!days || days <= 0){
-          alert("Please enter a valid number of days.");
-          return;
-        }
-
-        const featuredUntil =
-          Timestamp.fromDate(
-            new Date(
-              Date.now() + days * 24 * 60 * 60 * 1000
-            )
-          );
-
-        await updateDoc(
-          doc(
-            db,
-            "products",
-            productId
-          ),
-          {
-            featured: true,
-            featuredUntil,
-            featuredRequested: false,
-            updatedAt:
-              serverTimestamp()
-          }
-        );
-
-      }else{
-
-        // Turning Featured OFF: clear the expiry too
-        await updateDoc(
-          doc(
-            db,
-            "products",
-            productId
-          ),
-          {
-            featured: false,
-            featuredUntil: null,
-            featuredRequested: false,
-            updatedAt:
-              serverTimestamp()
-          }
-        );
-
-      }
+      );
 
       await loadProducts();
 
@@ -4406,57 +3092,6 @@ window.toggleFeatured =
       );
     }
   };
-
-
-// =====================================================
-// Auto-expire Featured products whose paid period
-// has passed. Runs every time the admin loads the
-// products list, since there is no backend cron job.
-// =====================================================
-
-async function autoExpireFeaturedProducts(products){
-
-  const now = Date.now();
-
-  const expired =
-    products.filter(product =>
-
-      product.featured === true &&
-      product.featuredUntil &&
-      product.featuredUntil.toMillis &&
-      product.featuredUntil.toMillis() <= now
-
-    );
-
-  for(const product of expired){
-
-    try{
-
-      await updateDoc(
-        doc(db, "products", product.id),
-        {
-          featured: false,
-          featuredUntil: null,
-          updatedAt: serverTimestamp()
-        }
-      );
-
-      product.featured = false;
-      product.featuredUntil = null;
-
-    }catch(error){
-
-      console.error(
-        "Failed to auto-expire product:",
-        product.id,
-        error
-      );
-
-    }
-
-  }
-
-}
 
 
 productsSearch.addEventListener(
@@ -4493,843 +3128,14 @@ productsSearch.addEventListener(
 
 
 /* ==========================================
-   PREMIUM SETTINGS
+   ORDERS
 ========================================== */
 
-async function loadPremiumSettings(){
+async function loadOrders(){
 
-  premiumSettingsSummary.innerHTML =
+  ordersList.innerHTML =
     `<div class="loading">
-      Loading Premium settings...
-    </div>`;
-
-  try{
-
-    const snap =
-      await getDoc(
-        doc(
-          db,
-          "premiumSettings",
-          "main"
-        )
-      );
-
-    if(snap.exists()){
-
-      premiumSettings =
-        snap.data();
-
-    }else{
-
-      premiumSettings = {
-
-        planName:
-          "Premium Seller",
-
-        price:
-          2000,
-
-        durationDays:
-          30,
-
-        maxProducts:
-          50,
-
-        bankName:
-          "",
-
-        accountName:
-          "",
-
-        accountNumber:
-          "",
-
-        benefits:
-          "Premium badge\nUp to 50 products\nBetter seller visibility\nFull seller profile\nMessaging",
-
-        active:
-          true
-      };
-
-    }
-
-    fillPremiumSettingsForm();
-
-    renderPremiumSettingsSummary();
-
-  }catch(error){
-
-    console.error(error);
-
-    premiumSettingsSummary.innerHTML =
-      `<div class="empty">
-        Failed to load Premium settings.
-        <br>
-        ${escapeHtml(
-          error.message
-        )}
-      </div>`;
-  }
-}
-
-
-function fillPremiumSettingsForm(){
-
-  const data =
-    premiumSettings || {};
-
-  document.getElementById(
-    "premiumPlanName"
-  ).value =
-    data.planName ||
-    "Premium Seller";
-
-  document.getElementById(
-    "premiumPrice"
-  ).value =
-    data.price ??
-    2000;
-
-  document.getElementById(
-    "premiumDuration"
-  ).value =
-    data.durationDays ??
-    30;
-
-  document.getElementById(
-    "premiumMaxProducts"
-  ).value =
-    data.maxProducts ??
-    50;
-
-  document.getElementById(
-    "premiumBankName"
-  ).value =
-    data.bankName ||
-    "";
-
-  document.getElementById(
-    "premiumAccountName"
-  ).value =
-    data.accountName ||
-    "";
-
-  document.getElementById(
-    "premiumAccountNumber"
-  ).value =
-    data.accountNumber ||
-    "";
-
-  document.getElementById(
-    "premiumBenefits"
-  ).value =
-    data.benefits ||
-    "";
-
-  document.getElementById(
-    "premiumActive"
-  ).checked =
-    data.active !== false;
-}
-
-
-function renderPremiumSettingsSummary(){
-
-  const data =
-    premiumSettings || {};
-
-  const active =
-    data.active !== false;
-
-  premiumSettingsSummary.innerHTML = `
-
-    <h3>
-      💎 ${escapeHtml(
-        data.planName ||
-        "Premium Seller"
-      )}
-    </h3>
-
-    <div class="premium-price">
-      ${money(data.price)}
-    </div>
-
-    <p>
-      Duration:
-      <b>
-        ${escapeHtml(
-          data.durationDays ||
-          0
-        )}
-        days
-      </b>
-    </p>
-
-    <p>
-      Maximum Products:
-      <b>
-        ${escapeHtml(
-          data.maxProducts ||
-          0
-        )}
-      </b>
-    </p>
-
-    <p>
-      Bank:
-      <b>
-        ${escapeHtml(
-          data.bankName ||
-          "Not set"
-        )}
-      </b>
-    </p>
-
-    <p>
-      Account Name:
-      <b>
-        ${escapeHtml(
-          data.accountName ||
-          "Not set"
-        )}
-      </b>
-    </p>
-
-    <p>
-      Account Number:
-      <b>
-        ${escapeHtml(
-          data.accountNumber ||
-          "Not set"
-        )}
-      </b>
-    </p>
-
-    <p>
-      Status:
-      <span class="badge ${
-        active
-          ? "active"
-          : "inactive"
-      }">
-        ${
-          active
-            ? "Active"
-            : "Inactive"
-        }
-      </span>
-    </p>
-
-    <br>
-
-    <strong>
-      Benefits
-    </strong>
-
-    <div class="benefits-preview">
-      ${escapeHtml(
-        data.benefits ||
-        "No benefits configured."
-      )}
-    </div>
-
-  `;
-}
-
-
-document
-  .getElementById(
-    "refreshPremiumSettingsBtn"
-  )
-  .addEventListener(
-    "click",
-    loadPremiumSettings
-  );
-
-
-document
-  .getElementById(
-    "savePremiumSettingsBtn"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      const planName =
-        document
-          .getElementById(
-            "premiumPlanName"
-          )
-          .value
-          .trim();
-
-      const price =
-        Number(
-          document
-            .getElementById(
-              "premiumPrice"
-            )
-            .value
-        );
-
-      const durationDays =
-        Number(
-          document
-            .getElementById(
-              "premiumDuration"
-            )
-            .value
-        );
-
-      const maxProducts =
-        Number(
-          document
-            .getElementById(
-              "premiumMaxProducts"
-            )
-            .value
-        );
-
-      const bankName =
-        document
-          .getElementById(
-            "premiumBankName"
-          )
-          .value
-          .trim();
-
-      const accountName =
-        document
-          .getElementById(
-            "premiumAccountName"
-          )
-          .value
-          .trim();
-
-      const accountNumber =
-        document
-          .getElementById(
-            "premiumAccountNumber"
-          )
-          .value
-          .trim();
-
-      const benefits =
-        document
-          .getElementById(
-            "premiumBenefits"
-          )
-          .value
-          .trim();
-
-      const active =
-        document
-          .getElementById(
-            "premiumActive"
-          )
-          .checked;
-
-      if(!planName){
-
-        alert(
-          "Please enter Premium Plan Name."
-        );
-
-        return;
-      }
-
-      if(
-        price < 0 ||
-        isNaN(price)
-      ){
-
-        alert(
-          "Please enter a valid Premium price."
-        );
-
-        return;
-      }
-
-      if(
-        !durationDays ||
-        durationDays < 1
-      ){
-
-        alert(
-          "Duration must be at least 1 day."
-        );
-
-        return;
-      }
-
-      if(
-        !maxProducts ||
-        maxProducts < 1
-      ){
-
-        alert(
-          "Maximum products must be at least 1."
-        );
-
-        return;
-      }
-
-      const saveBtn =
-        document.getElementById(
-          "savePremiumSettingsBtn"
-        );
-
-      saveBtn.disabled =
-        true;
-
-      saveBtn.textContent =
-        "Saving...";
-
-      try{
-
-        const data = {
-
-          planName,
-
-          price,
-
-          durationDays,
-
-          maxProducts,
-
-          bankName,
-
-          accountName,
-
-          accountNumber,
-
-          benefits,
-
-          active,
-
-          updatedAt:
-            serverTimestamp()
-
-        };
-
-        await setDoc(
-          doc(
-            db,
-            "premiumSettings",
-            "main"
-          ),
-          data,
-          {
-            merge:true
-          }
-        );
-
-        premiumSettings =
-          {
-            ...premiumSettings,
-            ...data
-          };
-
-        renderPremiumSettingsSummary();
-
-        alert(
-          "Premium Settings saved successfully."
-        );
-
-      }catch(error){
-
-        console.error(error);
-
-        alert(
-          "Failed to save Premium Settings: " +
-          error.message
-        );
-
-      }finally{
-
-        saveBtn.disabled =
-          false;
-
-        saveBtn.textContent =
-          "💾 Save Premium Settings";
-
-      }
-
-    }
-  );
-
-
-/* ==========================================
-   FEATURED LISTING SETTINGS
-========================================== */
-
-async function loadFeaturedSettings(){
-
-  featuredSettingsSummary.innerHTML =
-    `<div class="loading">
-      Loading Featured settings...
-    </div>`;
-
-  try{
-
-    const snap =
-      await getDoc(
-        doc(
-          db,
-          "featuredSettings",
-          "main"
-        )
-      );
-
-    if(snap.exists()){
-
-      featuredSettings =
-        snap.data();
-
-    }else{
-
-      featuredSettings = {
-
-        price:
-          2000,
-
-        durationDays:
-          7,
-
-        bankName:
-          "",
-
-        accountName:
-          "",
-
-        accountNumber:
-          "",
-
-        active:
-          true
-      };
-
-    }
-
-    fillFeaturedSettingsForm();
-
-    renderFeaturedSettingsSummary();
-
-  }catch(error){
-
-    console.error(error);
-
-    featuredSettingsSummary.innerHTML =
-      `<div class="empty">
-        Failed to load Featured settings.
-        <br>
-        ${escapeHtml(
-          error.message
-        )}
-      </div>`;
-  }
-}
-
-
-function fillFeaturedSettingsForm(){
-
-  const data =
-    featuredSettings || {};
-
-  document.getElementById(
-    "featuredPrice"
-  ).value =
-    data.price ??
-    2000;
-
-  document.getElementById(
-    "featuredDuration"
-  ).value =
-    data.durationDays ??
-    7;
-
-  document.getElementById(
-    "featuredBankName"
-  ).value =
-    data.bankName ||
-    "";
-
-  document.getElementById(
-    "featuredAccountName"
-  ).value =
-    data.accountName ||
-    "";
-
-  document.getElementById(
-    "featuredAccountNumber"
-  ).value =
-    data.accountNumber ||
-    "";
-
-  document.getElementById(
-    "featuredActive"
-  ).checked =
-    data.active !== false;
-}
-
-
-function renderFeaturedSettingsSummary(){
-
-  const data =
-    featuredSettings || {};
-
-  const active =
-    data.active !== false;
-
-  featuredSettingsSummary.innerHTML = `
-
-    <h3>
-      ⭐ Featured Listing Boost
-    </h3>
-
-    <div class="premium-price">
-      ${money(data.price)}
-    </div>
-
-    <p>
-      Duration:
-      <b>
-        ${escapeHtml(
-          data.durationDays ||
-          0
-        )}
-        days
-      </b>
-    </p>
-
-    <p>
-      Bank:
-      <b>
-        ${escapeHtml(
-          data.bankName ||
-          "Not set"
-        )}
-      </b>
-    </p>
-
-    <p>
-      Account Name:
-      <b>
-        ${escapeHtml(
-          data.accountName ||
-          "Not set"
-        )}
-      </b>
-    </p>
-
-    <p>
-      Account Number:
-      <b>
-        ${escapeHtml(
-          data.accountNumber ||
-          "Not set"
-        )}
-      </b>
-    </p>
-
-    <p>
-      Status:
-      <span class="badge ${
-        active
-          ? "active"
-          : "inactive"
-      }">
-        ${
-          active
-            ? "Active"
-            : "Inactive"
-        }
-      </span>
-    </p>
-
-  `;
-}
-
-
-document
-  .getElementById(
-    "refreshFeaturedSettingsBtn"
-  )
-  .addEventListener(
-    "click",
-    loadFeaturedSettings
-  );
-
-
-document
-  .getElementById(
-    "saveFeaturedSettingsBtn"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      const price =
-        Number(
-          document
-            .getElementById(
-              "featuredPrice"
-            )
-            .value
-        );
-
-      const durationDays =
-        Number(
-          document
-            .getElementById(
-              "featuredDuration"
-            )
-            .value
-        );
-
-      const bankName =
-        document
-          .getElementById(
-            "featuredBankName"
-          )
-          .value
-          .trim();
-
-      const accountName =
-        document
-          .getElementById(
-            "featuredAccountName"
-          )
-          .value
-          .trim();
-
-      const accountNumber =
-        document
-          .getElementById(
-            "featuredAccountNumber"
-          )
-          .value
-          .trim();
-
-      const active =
-        document
-          .getElementById(
-            "featuredActive"
-          )
-          .checked;
-
-      if(
-        price < 0 ||
-        isNaN(price)
-      ){
-
-        alert(
-          "Please enter a valid Featured price."
-        );
-
-        return;
-      }
-
-      if(
-        !durationDays ||
-        durationDays < 1
-      ){
-
-        alert(
-          "Duration must be at least 1 day."
-        );
-
-        return;
-      }
-
-      const saveBtn =
-        document.getElementById(
-          "saveFeaturedSettingsBtn"
-        );
-
-      saveBtn.disabled =
-        true;
-
-      saveBtn.textContent =
-        "Saving...";
-
-      try{
-
-        const data = {
-
-          price,
-
-          durationDays,
-
-          bankName,
-
-          accountName,
-
-          accountNumber,
-
-          active,
-
-          updatedAt:
-            serverTimestamp()
-
-        };
-
-        await setDoc(
-          doc(
-            db,
-            "featuredSettings",
-            "main"
-          ),
-          data,
-          {
-            merge:true
-          }
-        );
-
-        featuredSettings =
-          {
-            ...featuredSettings,
-            ...data
-          };
-
-        renderFeaturedSettingsSummary();
-
-        alert(
-          "Featured Settings saved successfully."
-        );
-
-      }catch(error){
-
-        console.error(error);
-
-        alert(
-          "Failed to save Featured Settings: " +
-          error.message
-        );
-
-      }finally{
-
-        saveBtn.disabled =
-          false;
-
-        saveBtn.textContent =
-          "💾 Save Featured Settings";
-
-      }
-
-    }
-  );
-
-
-/* ==========================================
-   PREMIUM REQUESTS
-========================================== */
-
-async function loadPremiumRequests(){
-
-  premiumRequestsList.innerHTML =
-    `<div class="loading">
-      Loading Premium requests...
+      Loading orders...
     </div>`;
 
   try{
@@ -5338,94 +3144,73 @@ async function loadPremiumRequests(){
       await getDocs(
         collection(
           db,
-          "premiumRequests"
+          "orders"
         )
       );
 
-    allPremiumRequests = [];
+    allOrders = [];
 
     snapshot.forEach(
-      requestDoc => {
+      orderDoc => {
 
-        allPremiumRequests.push({
-
-          id:
-            requestDoc.id,
-
-          ...requestDoc.data()
-
+        allOrders.push({
+          id:orderDoc.id,
+          ...orderDoc.data()
         });
 
       }
     );
 
-    allPremiumRequests.sort(
-      (a,b) => {
-
-        const dateA =
-          timestampToDate(
-            a.createdAt
-          );
-
-        const dateB =
-          timestampToDate(
-            b.createdAt
-          );
-
-        return (
-          (dateB?.getTime() || 0) -
-          (dateA?.getTime() || 0)
-        );
-
-      }
-    );
-
-    renderPremiumRequests(
-      allPremiumRequests
+    renderOrders(
+      allOrders
     );
 
     updateAnalytics();
 
   }catch(error){
 
-    console.error(error);
+    console.warn(
+      "Orders collection unavailable:",
+      error
+    );
 
-    premiumRequestsList.innerHTML =
+    allOrders = [];
+
+    ordersList.innerHTML =
       `<div class="empty">
-        Failed to load Premium requests.
+        No orders found yet.
         <br>
-        ${escapeHtml(
-          error.code || ""
-        )}
+        <small>
+          Orders will appear here when the
+          <b>orders</b> collection is created.
+        </small>
       </div>`;
+
+    updateAnalytics();
   }
 }
 
 
-function renderPremiumRequests(
-  requests
-){
+function renderOrders(orders){
 
-  if(!requests.length){
+  if(!orders.length){
 
-    premiumRequestsList.innerHTML =
+    ordersList.innerHTML =
       `<div class="empty">
-        No Premium requests yet.
+        No orders found.
       </div>`;
 
     return;
   }
 
-  premiumRequestsList.innerHTML =
+  ordersList.innerHTML =
     "";
 
-  requests.forEach(request => {
+  orders.forEach(order => {
 
     const status =
-      String(
-        request.status ||
-        "pending"
-      ).toLowerCase();
+      order.status ||
+      "pending";
 
     const item =
       document.createElement(
@@ -5433,1641 +3218,143 @@ function renderPremiumRequests(
       );
 
     item.className =
-      "item request-card";
-
-    let statusClass =
-      "pending";
-
-    if(status === "approved"){
-
-      statusClass =
-        "active";
-
-    }
-
-    if(
-      status === "rejected" ||
-      status === "revoked"
-    ){
-
-      statusClass =
-        "rejected";
-
-    }
+      "item";
 
     item.innerHTML = `
 
       <div class="item-main">
 
         <strong>
-          💎 ${escapeHtml(
-            request.sellerName ||
-            "Premium Seller"
+          Order #${escapeHtml(
+            order.id
           )}
         </strong>
 
         <small>
-          Seller ID:
+          Buyer:
           ${escapeHtml(
-            request.sellerId ||
-            "N/A"
-          )}
-        </small>
-
-        <small>
-          Email:
-          ${escapeHtml(
-            request.sellerEmail ||
-            "N/A"
-          )}
-        </small>
-
-        <small>
-          Plan:
-          ${escapeHtml(
-            request.plan ||
-            "premium"
-          )}
-        </small>
-
-        <small>
-          Amount:
-          <b>
-            ${money(
-              request.amount
-            )}
-          </b>
-        </small>
-
-        <small>
-          Payment Reference:
-          <b>
-            ${escapeHtml(
-              request.paymentReference ||
-              "Not provided"
-            )}
-          </b>
-        </small>
-
-        <small>
-          Payment Date:
-          ${escapeHtml(
-            request.paymentDate ||
-            "Not provided"
-          )}
-        </small>
-
-        <small>
-          Submitted:
-          ${escapeHtml(
-            formatDate(
-              request.createdAt
-            )
-          )}
-        </small>
-
-        <span class="badge ${statusClass}">
-          ${escapeHtml(
-            status
-          )}
-        </span>
-
-      </div>
-
-      ${
-        status === "pending"
-          ? `
-            <div class="actions">
-
-              <button
-                class="green"
-                onclick="
-                  approvePremiumRequest(
-                    '${escapeHtml(request.id)}'
-                  )
-                "
-              >
-                Approve
-              </button>
-
-              <button
-                class="delete"
-                onclick="
-                  rejectPremiumRequest(
-                    '${escapeHtml(request.id)}'
-                  )
-                "
-              >
-                Reject
-              </button>
-
-            </div>
-          `
-          : ""
-      }
-
-      ${
-        status === "approved"
-          ? `
-            <div class="actions">
-
-              <button
-                class="warning"
-                onclick="
-                  revokePremiumApproval(
-                    '${escapeHtml(request.id)}'
-                  )
-                "
-              >
-                Revoke Premium
-              </button>
-
-            </div>
-          `
-          : ""
-      }
-
-    `;
-
-    premiumRequestsList.appendChild(
-      item
-    );
-
-  });
-}
-
-
-/* ==========================================
-   COMMISSION CALCULATION
-========================================== */
-
-function calculateCommission(
-  premiumAmount
-){
-
-  const settings =
-    referralSettings || {};
-
-  const amount =
-    Number(
-      premiumAmount || 0
-    );
-
-  if(
-    !settings.referralSystemEnabled
-  ){
-
-    return 0;
-
-  }
-
-  const value =
-    Number(
-      settings.commissionValue || 0
-    );
-
-  if(
-    value <= 0
-  ){
-
-    return 0;
-
-  }
-
-  if(
-    settings.commissionType ===
-    "percentage"
-  ){
-
-    return (
-      amount *
-      value /
-      100
-    );
-
-  }
-
-  return value;
-}
-
-
-function isRenewalRequest(
-  request,
-  seller
-){
-
-  return (
-    request.isRenewal === true ||
-    request.type === "renewal" ||
-    request.requestType === "renewal" ||
-    seller?.premiumRenewal === true ||
-    seller?.subscriptionRenewal === true
-  );
-
-}
-
-
-async function findExistingCommissionForPremium(
-  sellerId,
-  type
-){
-
-  const snapshot =
-    await getDocs(
-      collection(
-        db,
-        "commissions"
-      )
-    );
-
-  let found = false;
-
-  snapshot.forEach(
-    commissionDoc => {
-
-      const data =
-        commissionDoc.data();
-
-      if(
-        data.referredUserId === sellerId &&
-        data.type === type &&
-        data.status !== "rejected"
-      ){
-
-        found = true;
-
-      }
-
-    }
-  );
-
-  return found;
-}
-
-
-/* ==========================================
-   CREATE PREMIUM COMMISSION
-========================================== */
-
-async function createPremiumCommissionIfEligible(
-  request,
-  seller
-){
-
-  /*
-    Registration = ₦0
-    Seller Application = ₦0
-    Seller Approval = ₦0
-
-    Commission starts only from Premium approval.
-  */
-
-  if(
-    !referralSettings?.referralSystemEnabled
-  ){
-
-    return {
-      created:false,
-      reason:"Referral system is OFF."
-    };
-
-  }
-
-  const referredByUserId =
-    seller?.referredByUserId ||
-    request?.referredByUserId ||
-    "";
-
-  if(!referredByUserId){
-
-    return {
-      created:false,
-      reason:"User has no referrer."
-    };
-
-  }
-
-  const renewal =
-    isRenewalRequest(
-      request,
-      seller
-    );
-
-  let commissionType = "";
-
-  if(renewal){
-
-    if(
-      !referralSettings.renewalCommission
-    ){
-
-      return {
-        created:false,
-        reason:"Renewal commission is OFF."
-      };
-
-    }
-
-    commissionType =
-      "renewal";
-
-  }else{
-
-    if(
-      !referralSettings.firstPremiumCommission
-    ){
-
-      return {
-        created:false,
-        reason:"First Premium commission is OFF."
-      };
-
-    }
-
-    const alreadyExists =
-      await findExistingCommissionForPremium(
-        seller.id,
-        "firstPremium"
-      );
-
-    if(alreadyExists){
-
-      return {
-        created:false,
-        reason:"First Premium commission already exists."
-      };
-
-    }
-
-    commissionType =
-      "firstPremium";
-
-  }
-
-  const commissionAmount =
-    calculateCommission(
-      request.amount
-    );
-
-  if(
-    commissionAmount <= 0
-  ){
-
-    return {
-      created:false,
-      reason:"Commission amount is zero."
-    };
-
-  }
-
-  const referrer =
-    getUserById(
-      referredByUserId
-    );
-
-  const commissionData = {
-
-    referrerId:
-      referredByUserId,
-
-    referrerName:
-      referrer?.name ||
-      referrer?.fullName ||
-      referrer?.email ||
-      "Unknown Referrer",
-
-    referrerEmail:
-      referrer?.email ||
-      "",
-
-    referredUserId:
-      seller.id,
-
-    referredUserName:
-      seller.name ||
-      seller.fullName ||
-      request.sellerName ||
-      "Unknown User",
-
-    referredUserEmail:
-      seller.email ||
-      request.sellerEmail ||
-      "",
-
-    referralCode:
-      referrer?.referralCode ||
-      seller.referredBy ||
-      "",
-
-    type:
-      commissionType,
-
-    premiumRequestId:
-      request.id,
-
-    premiumAmount:
-      Number(
-        request.amount || 0
-      ),
-
-    commissionType:
-      referralSettings.commissionType,
-
-    commissionRate:
-      Number(
-        referralSettings.commissionValue || 0
-      ),
-
-    commissionAmount:
-      Number(
-        commissionAmount
-      ),
-
-    status:
-      "pending",
-
-    createdAt:
-      serverTimestamp(),
-
-    createdBy:
-      auth.currentUser?.uid ||
-      ""
-
-  };
-
-  await addDoc(
-    collection(
-      db,
-      "commissions"
-    ),
-    commissionData
-  );
-
-  return {
-    created:true,
-    amount:commissionAmount,
-    type:commissionType
-  };
-
-}
-
-
-/* ==========================================
-   APPROVE PREMIUM
-========================================== */
-
-window.approvePremiumRequest =
-  async function(requestId){
-
-    const request =
-      allPremiumRequests.find(
-        item =>
-          item.id ===
-          requestId
-      );
-
-    if(!request){
-
-      alert(
-        "Premium request not found."
-      );
-
-      return;
-    }
-
-    if(
-      request.status &&
-      request.status !==
-        "pending"
-    ){
-
-      alert(
-        "This request has already been processed."
-      );
-
-      return;
-    }
-
-    const sellerId =
-      request.sellerId;
-
-    if(!sellerId){
-
-      alert(
-        "This request has no seller ID."
-      );
-
-      return;
-    }
-
-    if(
-      !confirm(
-        "Approve this Premium payment and activate Premium for this seller?"
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      const sellerSnap =
-        await getDoc(
-          doc(
-            db,
-            "users",
-            sellerId
-          )
-        );
-
-      if(!sellerSnap.exists()){
-
-        alert(
-          "Seller user profile not found."
-        );
-
-        return;
-
-      }
-
-      const seller =
-        {
-          id:sellerId,
-          ...sellerSnap.data()
-        };
-
-      const durationDays =
-        Number(
-          premiumSettings?.durationDays ||
-          request.durationDays ||
-          30
-        );
-
-      const now =
-        new Date();
-
-      const endDate =
-        new Date(
-          now.getTime() +
-          (
-            durationDays *
-            24 *
-            60 *
-            60 *
-            1000
-          )
-        );
-
-      await updateDoc(
-        doc(
-          db,
-          "users",
-          sellerId
-        ),
-        {
-
-          subscriptionPlan:
-            "premium",
-
-          subscriptionStatus:
-            "active",
-
-          subscriptionStart:
-            serverTimestamp(),
-
-          subscriptionEnd:
-            endDate.toISOString(),
-
-          premiumMaxProducts:
-            Number(
-              premiumSettings?.maxProducts ||
-              50
-            ),
-
-          premiumApprovedAt:
-            serverTimestamp()
-
-        }
-      );
-
-      await updateDoc(
-        doc(
-          db,
-          "premiumRequests",
-          requestId
-        ),
-        {
-
-          status:
-            "approved",
-
-          approvedAt:
-            serverTimestamp(),
-
-          approvedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-
-      /*
-        Commission is created ONLY here,
-        after Premium approval.
-
-        Registration does NOT create commission.
-        Seller Application does NOT create commission.
-        Seller Approval does NOT create commission.
-      */
-
-      let commissionResult =
-        {
-          created:false,
-          reason:""
-        };
-
-      try{
-
-        commissionResult =
-          await createPremiumCommissionIfEligible(
-            request,
-            seller
-          );
-
-      }catch(commissionError){
-
-        console.error(
-          "Commission creation error:",
-          commissionError
-        );
-
-        commissionResult = {
-          created:false,
-          reason:
-            commissionError.message
-        };
-
-      }
-
-
-      if(
-        commissionResult.created
-      ){
-
-        alert(
-          "Premium approved successfully.\n\n" +
-          "Pending referral commission created: " +
-          money(
-            commissionResult.amount
-          )
-        );
-
-      }else{
-
-        alert(
-          "Premium approved successfully.\n\n" +
-          "No commission created: " +
-          commissionResult.reason
-        );
-
-      }
-
-      await refreshAll();
-
-    }catch(error){
-
-      console.error(error);
-
-      alert(
-        "Failed to approve Premium: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-/* ==========================================
-   REJECT PREMIUM
-========================================== */
-
-window.rejectPremiumRequest =
-  async function(requestId){
-
-    const request =
-      allPremiumRequests.find(
-        item =>
-          item.id ===
-          requestId
-      );
-
-    if(!request){
-
-      alert(
-        "Premium request not found."
-      );
-
-      return;
-    }
-
-    if(
-      request.status &&
-      request.status !==
-        "pending"
-    ){
-
-      alert(
-        "This request has already been processed."
-      );
-
-      return;
-    }
-
-    if(
-      !confirm(
-        "Reject this Premium payment request?"
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "premiumRequests",
-          requestId
-        ),
-        {
-
-          status:
-            "rejected",
-
-          rejectedAt:
-            serverTimestamp(),
-
-          rejectedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-      alert(
-        "Premium request rejected."
-      );
-
-      await loadPremiumRequests();
-
-      updateAnalytics();
-
-    }catch(error){
-
-      console.error(error);
-
-      alert(
-        "Failed to reject Premium request: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-/* ==========================================
-   REVOKE PREMIUM (after it was Approved)
-
-   Used when an Approved Premium payment turns
-   out to be invalid (e.g. fake transaction ID)
-   after the fact.
-
-   This:
-   1. Turns off the seller's Premium status.
-   2. Cancels the referral commission that was
-      created for that approval, so it stops
-      counting toward the referrer's Total
-      Commission.
-
-   Note: if the referrer already withdrew that
-   money, this does NOT claw the cash back. It
-   simply stops counting it going forward, so
-   the referrer's Available Balance will stay
-   at ₦0 until their genuine future commissions
-   cover the amount already paid out — this
-   happens automatically through the normal
-   Total Commission vs Total Withdrawn math on
-   the seller dashboard, no extra step needed.
-========================================== */
-
-window.revokePremiumApproval =
-  async function(requestId){
-
-    const request =
-      allPremiumRequests.find(
-        item =>
-          item.id ===
-          requestId
-      );
-
-    if(!request){
-
-      alert(
-        "Premium request not found."
-      );
-
-      return;
-
-    }
-
-    if(
-      String(
-        request.status ||
-        ""
-      ).toLowerCase() !==
-      "approved"
-    ){
-
-      alert(
-        "Only an already Approved request can be revoked."
-      );
-
-      return;
-
-    }
-
-    const sellerId =
-      request.sellerId;
-
-    if(!sellerId){
-
-      alert(
-        "This request has no seller ID."
-      );
-
-      return;
-
-    }
-
-    if(
-      !confirm(
-        "Revoke this seller's Premium approval?\n\n" +
-        "This will:\n" +
-        "- Turn OFF their Premium status\n" +
-        "- Cancel the referral commission tied to this approval\n\n" +
-        "If the referrer already withdrew that commission, the cash itself is " +
-        "NOT clawed back automatically — it will simply be deducted from " +
-        "their future commissions before they can withdraw again.\n\n" +
-        "This cannot be undone."
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      let sellerDocMissing = false;
-
-      try{
-
-        await updateDoc(
-          doc(
-            db,
-            "users",
-            sellerId
-          ),
-          {
-
-            subscriptionStatus:
-              "revoked",
-
-            premiumRevokedAt:
-              serverTimestamp(),
-
-            premiumRevokedBy:
-              auth.currentUser?.uid ||
-              ""
-
-          }
-        );
-
-      }catch(userError){
-
-        /*
-          The seller account may have been
-          deleted already (e.g. via Users
-          Management). There is then nothing
-          to turn off there, but the request
-          and any commission should still be
-          revoked/cancelled below.
-        */
-
-        if(
-          userError.code ===
-          "not-found"
-        ){
-
-          sellerDocMissing = true;
-
-        }
-        else{
-
-          throw userError;
-
-        }
-
-      }
-
-      await updateDoc(
-        doc(
-          db,
-          "premiumRequests",
-          requestId
-        ),
-        {
-
-          status:
-            "revoked",
-
-          revokedAt:
-            serverTimestamp(),
-
-          revokedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-
-      /*
-        Find and cancel the commission that
-        was created for this specific approval.
-      */
-
-      const relatedCommissions =
-        allCommissions.filter(
-          commission =>
-            commission.premiumRequestId ===
-              requestId &&
-            String(
-              commission.status ||
-              ""
-            ).toLowerCase() !==
-              "cancelled"
-        );
-
-      for(
-        const commission of
-          relatedCommissions
-      ){
-
-        await updateDoc(
-          doc(
-            db,
-            "commissions",
-            commission.id
-          ),
-          {
-
-            status:
-              "cancelled",
-
-            cancelledAt:
-              serverTimestamp(),
-
-            cancelledBy:
-              auth.currentUser?.uid ||
-              "",
-
-            cancelReason:
-              "Premium approval revoked"
-
-          }
-        );
-
-      }
-
-      alert(
-        "Premium approval revoked.\n\n" +
-        (
-          sellerDocMissing
-            ? "Note: the seller account no longer exists (already deleted), so there was nothing to turn Premium off for there.\n\n"
-            : ""
-        ) +
-        (
-          relatedCommissions.length > 0
-            ? relatedCommissions.length +
-              " related commission(s) cancelled."
-            : "No related commission was found to cancel."
-        )
-      );
-
-      await refreshAll();
-
-    }catch(error){
-
-      console.error(error);
-
-      alert(
-        "Failed to revoke Premium approval: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-document
-  .getElementById(
-    "refreshPremiumRequestsBtn"
-  )
-  .addEventListener(
-    "click",
-    loadPremiumRequests
-  );
-
-
-premiumRequestsSearch.addEventListener(
-  "input",
-  function(){
-
-    const q =
-      this.value
-        .toLowerCase()
-        .trim();
-
-    renderPremiumRequests(
-      allPremiumRequests.filter(
-        request => {
-
-          const text =
-            (
-              request.sellerName +
-              " " +
-              request.sellerEmail +
-              " " +
-              request.paymentReference +
-              " " +
-              request.status
-            )
-            .toLowerCase();
-
-          return text.includes(q);
-
-        }
-      )
-    );
-
-  }
-);
-
-
-/* ==========================================
-   FEATURED REQUESTS
-========================================== */
-
-async function loadFeaturedRequests(){
-
-  featuredRequestsList.innerHTML =
-    `<div class="loading">
-      Loading Featured requests...
-    </div>`;
-
-  try{
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "featuredRequests"
-        )
-      );
-
-    allFeaturedRequests = [];
-
-    snapshot.forEach(
-      requestDoc => {
-
-        allFeaturedRequests.push({
-
-          id:
-            requestDoc.id,
-
-          ...requestDoc.data()
-
-        });
-
-      }
-    );
-
-    allFeaturedRequests.sort(
-      (a,b) => {
-
-        const dateA =
-          timestampToDate(
-            a.createdAt
-          );
-
-        const dateB =
-          timestampToDate(
-            b.createdAt
-          );
-
-        return (
-          (dateB?.getTime() || 0) -
-          (dateA?.getTime() || 0)
-        );
-
-      }
-    );
-
-    renderFeaturedRequests(
-      allFeaturedRequests
-    );
-
-    updateAnalytics();
-
-  }catch(error){
-
-    console.error(error);
-
-    featuredRequestsList.innerHTML =
-      `<div class="empty">
-        Failed to load Featured requests.
-        <br>
-        ${escapeHtml(
-          error.code || ""
-        )}
-      </div>`;
-  }
-}
-
-
-function renderFeaturedRequests(
-  requests
-){
-
-  if(!requests.length){
-
-    featuredRequestsList.innerHTML =
-      `<div class="empty">
-        No Featured requests yet.
-      </div>`;
-
-    return;
-  }
-
-  featuredRequestsList.innerHTML =
-    "";
-
-  requests.forEach(request => {
-
-    const status =
-      String(
-        request.status ||
-        "pending"
-      ).toLowerCase();
-
-    const item =
-      document.createElement(
-        "div"
-      );
-
-    item.className =
-      "item request-card";
-
-    let statusClass =
-      "pending";
-
-    if(status === "approved"){
-
-      statusClass =
-        "active";
-
-    }
-
-    if(status === "rejected"){
-
-      statusClass =
-        "rejected";
-
-    }
-
-    item.innerHTML = `
-
-      <div class="item-main">
-
-        <strong>
-          ⭐ ${escapeHtml(
-            request.productName ||
-            "Product"
-          )}
-        </strong>
-
-        <small>
-          Product Price:
-          <b>
-            ${money(
-              request.productPrice
-            )}
-          </b>
-        </small>
-
-        <small>
-          Seller:
-          ${escapeHtml(
-            request.sellerName ||
+            order.buyerName ||
+            order.customerName ||
             "Unknown"
           )}
         </small>
 
         <small>
-          Email:
+          Phone:
           ${escapeHtml(
-            request.sellerEmail ||
-            "N/A"
-          )}
-        </small>
-
-        <small>
-          Amount Paid:
-          <b>
-            ${money(
-              request.amount
-            )}
-          </b>
-        </small>
-
-        <small>
-          Payment Reference:
-          <b>
-            ${escapeHtml(
-              request.paymentReference ||
-              "Not provided"
-            )}
-          </b>
-        </small>
-
-        ${
-          request.paymentProofUrl
-            ? `
-              <small>
-                Payment Proof:
-                <br>
-                <a
-                  href="${escapeHtml(request.paymentProofUrl)}"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <img
-                    src="${escapeHtml(request.paymentProofUrl)}"
-                    alt="Payment proof"
-                    style="width:90px;height:90px;object-fit:cover;border-radius:8px;margin-top:4px;"
-                  >
-                </a>
-              </small>
-            `
-            : ""
-        }
-
-        <small>
-          Payment Date:
-          ${escapeHtml(
-            request.paymentDate ||
+            order.buyerPhone ||
+            order.customerPhone ||
             "Not provided"
           )}
         </small>
 
         <small>
-          Requested Duration:
+          Seller:
           ${escapeHtml(
-            request.durationDays ||
-            "N/A"
+            order.sellerName ||
+            "Unknown"
           )}
-          days
         </small>
 
         <small>
-          Submitted:
-          ${escapeHtml(
-            formatDate(
-              request.createdAt
-            )
+          Amount:
+          ${money(
+            getOrderTotal(order)
           )}
         </small>
 
-        <span class="badge ${statusClass}">
-          ${escapeHtml(
-            status
-          )}
+        <span class="badge ${
+          status === "completed"
+            ? "active"
+            : status === "cancelled"
+              ? "inactive"
+              : "pending"
+        }">
+          ${escapeHtml(status)}
         </span>
 
       </div>
 
-      ${
-        status === "pending"
-          ? `
-            <div class="actions">
+      <div class="actions">
 
-              <button
-                class="green"
-                onclick="
-                  approveFeaturedRequest(
-                    '${escapeHtml(request.id)}'
-                  )
-                "
-              >
-                Approve
-              </button>
+        <button
+          onclick="
+            updateOrderStatus(
+              '${escapeHtml(order.id)}',
+              'pending'
+            )
+          "
+        >
+          Pending
+        </button>
 
-              <button
-                class="delete"
-                onclick="
-                  rejectFeaturedRequest(
-                    '${escapeHtml(request.id)}'
-                  )
-                "
-              >
-                Reject
-              </button>
+        <button
+          class="green"
+          onclick="
+            updateOrderStatus(
+              '${escapeHtml(order.id)}',
+              'completed'
+            )
+          "
+        >
+          Complete
+        </button>
 
-            </div>
-          `
-          : ""
-      }
+        <button
+          class="delete"
+          onclick="
+            updateOrderStatus(
+              '${escapeHtml(order.id)}',
+              'cancelled'
+            )
+          "
+        >
+          Cancel
+        </button>
 
+      </div>
     `;
 
-    featuredRequestsList.appendChild(
-      item
-    );
+    ordersList.appendChild(item);
 
   });
 }
 
 
-window.approveFeaturedRequest =
-  async function(requestId){
-
-    const request =
-      allFeaturedRequests.find(
-        item =>
-          item.id ===
-          requestId
-      );
-
-    if(!request){
-
-      alert(
-        "Featured request not found."
-      );
-
-      return;
-    }
-
-    if(
-      request.status &&
-      request.status !==
-        "pending"
-    ){
-
-      alert(
-        "This request has already been processed."
-      );
-
-      return;
-    }
-
-    if(!request.productId){
-
-      alert(
-        "This request has no product ID."
-      );
-
-      return;
-    }
-
-    if(
-      !confirm(
-        "Approve this payment and mark the product as Featured?"
-      )
-    ){
-
-      return;
-
-    }
+window.updateOrderStatus =
+  async function(
+    orderId,
+    status
+  ){
 
     try{
-
-      const durationDays =
-        Number(
-          request.durationDays ||
-          featuredSettings?.durationDays ||
-          7
-        );
-
-      const featuredUntil =
-        Timestamp.fromDate(
-          new Date(
-            Date.now() +
-            durationDays * 24 * 60 * 60 * 1000
-          )
-        );
 
       await updateDoc(
         doc(
           db,
-          "products",
-          request.productId
+          "orders",
+          orderId
         ),
         {
-
-          featured:
-            true,
-
-          featuredUntil,
-
-          featuredRequested:
-            false,
-
+          status,
           updatedAt:
             serverTimestamp()
-
         }
       );
 
-      await updateDoc(
-        doc(
-          db,
-          "featuredRequests",
-          requestId
-        ),
-        {
-
-          status:
-            "approved",
-
-          approvedAt:
-            serverTimestamp(),
-
-          approvedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-      alert(
-        "Featured request approved."
-      );
-
-      await loadFeaturedRequests();
-
-      await loadProducts();
+      await loadOrders();
 
     }catch(error){
 
-      console.error(error);
-
       alert(
-        "Failed to approve Featured request: " +
+        "Failed to update order: " +
         error.message
       );
-
     }
-
   };
 
 
-window.rejectFeaturedRequest =
-  async function(requestId){
-
-    const request =
-      allFeaturedRequests.find(
-        item =>
-          item.id ===
-          requestId
-      );
-
-    if(!request){
-
-      alert(
-        "Featured request not found."
-      );
-
-      return;
-    }
-
-    if(
-      request.status &&
-      request.status !==
-        "pending"
-    ){
-
-      alert(
-        "This request has already been processed."
-      );
-
-      return;
-    }
-
-    if(
-      !confirm(
-        "Reject this Featured request?"
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "featuredRequests",
-          requestId
-        ),
-        {
-
-          status:
-            "rejected",
-
-          rejectedAt:
-            serverTimestamp(),
-
-          rejectedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-      if(request.productId){
-
-        await updateDoc(
-          doc(
-            db,
-            "products",
-            request.productId
-          ),
-          {
-
-            featuredRequested:
-              false,
-
-            updatedAt:
-              serverTimestamp()
-
-          }
-        );
-
-      }
-
-      alert(
-        "Featured request rejected."
-      );
-
-      await loadFeaturedRequests();
-
-      await loadProducts();
-
-    }catch(error){
-
-      console.error(error);
-
-      alert(
-        "Failed to reject Featured request: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-document
-  .getElementById(
-    "refreshFeaturedRequestsBtn"
-  )
-  .addEventListener(
-    "click",
-    loadFeaturedRequests
-  );
-
-
-featuredRequestsSearch.addEventListener(
+ordersSearch.addEventListener(
   "input",
   function(){
 
@@ -7076,2196 +3363,40 @@ featuredRequestsSearch.addEventListener(
         .toLowerCase()
         .trim();
 
-    renderFeaturedRequests(
-      allFeaturedRequests.filter(
-        request => {
+    renderOrders(
+      allOrders.filter(
+        order => {
 
           const text =
             (
-              (request.productName || "") +
+              order.id +
               " " +
-              (request.sellerName || "") +
+              order.buyerName +
               " " +
-              (request.sellerEmail || "") +
+              order.customerName +
               " " +
-              (request.paymentReference || "") +
+              order.sellerName +
               " " +
-              (request.status || "")
+              order.status
             )
             .toLowerCase();
 
           return text.includes(q);
-
         }
       )
     );
-
   }
 );
 
 
-/* ==========================================
-   REFERRAL SETTINGS
-========================================== */
-
-async function loadReferralSettings(){
-
-  try{
-
-    const snap =
-      await getDoc(
-        doc(
-          db,
-          "referralSettings",
-          "main"
-        )
-      );
-
-    if(snap.exists()){
-
-      referralSettings =
-        snap.data();
-
-    }else{
-
-      referralSettings = {
-
-        referralSystemEnabled:
-          false,
-
-        commissionType:
-          "fixed",
-
-        commissionValue:
-          500,
-
-        firstPremiumCommission:
-          true,
-
-        renewalCommission:
-          false,
-
-        minimumWithdrawal:
-          1000
-
-      };
-
-    }
-
-    fillReferralSettingsForm();
-
-    updateReferralSystemStatus();
-
-  }catch(error){
-
-    console.error(
-      error
-    );
-
-    referralSettings = {
-
-      referralSystemEnabled:
-        false,
-
-      commissionType:
-        "fixed",
-
-      commissionValue:
-        500,
-
-      firstPremiumCommission:
-        true,
-
-      renewalCommission:
-        false,
-
-      minimumWithdrawal:
-        1000
-
-    };
-
-    fillReferralSettingsForm();
-
-    updateReferralSystemStatus();
-
-  }
-
-}
-
-
-function fillReferralSettingsForm(){
-
-  const data =
-    referralSettings || {};
-
-  document.getElementById(
-    "referralSystemEnabled"
-  ).checked =
-    data.referralSystemEnabled === true;
-
-  document.getElementById(
-    "commissionType"
-  ).value =
-    data.commissionType ||
-    "fixed";
-
-  document.getElementById(
-    "commissionValue"
-  ).value =
-    data.commissionValue ??
-    500;
-
-  document.getElementById(
-    "firstPremiumCommission"
-  ).checked =
-    data.firstPremiumCommission !== false;
-
-  document.getElementById(
-    "renewalCommission"
-  ).checked =
-    data.renewalCommission === true;
-
-  document.getElementById(
-    "minimumWithdrawal"
-  ).value =
-    data.minimumWithdrawal ??
-    data.minWithdrawal ??
-    1000;
-
-}
-
-
-function updateReferralSystemStatus(){
-
-  const enabled =
-    referralSettings?.referralSystemEnabled === true;
-
-  document.getElementById(
-    "referralSystemStatus"
-  ).textContent =
-    enabled
-      ? "ON"
-      : "OFF";
-}
-
-
 document
   .getElementById(
-    "refreshReferralSettingsBtn"
+    "refreshOrdersBtn"
   )
   .addEventListener(
     "click",
-    loadReferralSettings
+    loadOrders
   );
-
-
-document
-  .getElementById(
-    "saveReferralSettingsBtn"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      const referralSystemEnabled =
-        document.getElementById(
-          "referralSystemEnabled"
-        ).checked;
-
-      const commissionType =
-        document.getElementById(
-          "commissionType"
-        ).value;
-
-      const commissionValue =
-        Number(
-          document.getElementById(
-            "commissionValue"
-          ).value
-        );
-
-      const firstPremiumCommission =
-        document.getElementById(
-          "firstPremiumCommission"
-        ).checked;
-
-      const renewalCommission =
-        document.getElementById(
-          "renewalCommission"
-        ).checked;
-
-      const minimumWithdrawal =
-        Number(
-          document.getElementById(
-            "minimumWithdrawal"
-          ).value
-        );
-
-      if(
-        commissionValue < 0 ||
-        isNaN(commissionValue)
-      ){
-
-        alert(
-          "Please enter a valid commission amount or percentage."
-        );
-
-        return;
-
-      }
-
-      if(
-        commissionType ===
-          "percentage" &&
-        commissionValue > 100
-      ){
-
-        alert(
-          "Percentage commission cannot be more than 100%."
-        );
-
-        return;
-
-      }
-
-      if(
-        minimumWithdrawal < 0 ||
-        isNaN(minimumWithdrawal)
-      ){
-
-        alert(
-          "Please enter a valid minimum withdrawal amount."
-        );
-
-        return;
-
-      }
-
-      const saveBtn =
-        document.getElementById(
-          "saveReferralSettingsBtn"
-        );
-
-      saveBtn.disabled =
-        true;
-
-      saveBtn.textContent =
-        "Saving...";
-
-      try{
-
-        const data = {
-
-          referralSystemEnabled,
-
-          commissionType,
-
-          commissionValue,
-
-          firstPremiumCommission,
-
-          renewalCommission,
-
-          minimumWithdrawal,
-
-          updatedAt:
-            serverTimestamp(),
-
-          updatedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        };
-
-        await setDoc(
-          doc(
-            db,
-            "referralSettings",
-            "main"
-          ),
-          data,
-          {
-            merge:true
-          }
-        );
-
-        referralSettings =
-          {
-            ...referralSettings,
-            ...data
-          };
-
-        updateReferralSystemStatus();
-
-        alert(
-          "Referral Settings saved successfully."
-        );
-
-      }catch(error){
-
-        console.error(
-          error
-        );
-
-        alert(
-          "Failed to save Referral Settings: " +
-          error.message
-        );
-
-      }finally{
-
-        saveBtn.disabled =
-          false;
-
-        saveBtn.textContent =
-          "💾 Save Referral Settings";
-
-      }
-
-    }
-  );
-
-
-/* ==========================================
-   BUILD REFERRALS FROM USERS
-========================================== */
-
-function buildReferralRecords(){
-
-  allReferrals = [];
-
-  allUsers.forEach(
-    user => {
-
-      if(
-        !user.referredBy &&
-        !user.referredByUserId
-      ){
-
-        return;
-
-      }
-
-      const referrerId =
-        user.referredByUserId ||
-        "";
-
-      const referrer =
-        getUserById(
-          referrerId
-        );
-
-      const isPremium =
-        user.subscriptionPlan ===
-          "premium" &&
-        user.subscriptionStatus ===
-          "active";
-
-      let status =
-        user.referralStatus ||
-        "active";
-
-      if(
-        user.active === false
-      ){
-
-        status =
-          "inactive";
-
-      }
-
-      allReferrals.push({
-
-        id:
-          user.id,
-
-        referrerId,
-
-        referrerName:
-          referrer?.name ||
-          referrer?.fullName ||
-          referrer?.email ||
-          user.referredBy ||
-          "Unknown Referrer",
-
-        referrerEmail:
-          referrer?.email ||
-          "",
-
-        referrerCode:
-          referrer?.referralCode ||
-          user.referredBy ||
-          "",
-
-        referredUserId:
-          user.id,
-
-        referredUserName:
-          user.name ||
-          user.fullName ||
-          "No name",
-
-        referredUserEmail:
-          user.email ||
-          "",
-
-        status,
-
-        joinedAt:
-          user.referralJoinedAt ||
-          user.createdAt ||
-          null,
-
-        premium:
-          isPremium,
-
-        premiumStatus:
-          isPremium
-            ? "Premium Active"
-            : "Not Premium"
-
-      });
-
-    }
-  );
-
-  renderReferrals(
-    allReferrals
-  );
-
-  updateAnalytics();
-
-}
-
-
-function renderReferrals(
-  referrals
-){
-
-  if(!referrals.length){
-
-    referralsList.innerHTML =
-      `<div class="empty">
-        No referrals found.
-      </div>`;
-
-    return;
-
-  }
-
-  referralsList.innerHTML =
-    "";
-
-  referrals.forEach(
-    referral => {
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-      item.className =
-        "item referral-card";
-
-      item.innerHTML = `
-
-        <div class="item-main">
-
-          <strong>
-            🔗 ${escapeHtml(
-              referral.referredUserName
-            )}
-          </strong>
-
-          <small>
-            Referrer:
-            <b>
-              ${escapeHtml(
-                referral.referrerName
-              )}
-            </b>
-          </small>
-
-          <small>
-            Referrer Email:
-            ${escapeHtml(
-              referral.referrerEmail ||
-              "N/A"
-            )}
-          </small>
-
-          <small>
-            Referral Code:
-            ${escapeHtml(
-              referral.referrerCode ||
-              "N/A"
-            )}
-          </small>
-
-          <small>
-            Referred User:
-            ${escapeHtml(
-              referral.referredUserEmail ||
-              "N/A"
-            )}
-          </small>
-
-          <small>
-            Joined:
-            ${escapeHtml(
-              formatDate(
-                referral.joinedAt
-              )
-            )}
-          </small>
-
-          <small>
-            Referral Status:
-            ${escapeHtml(
-              referral.status
-            )}
-          </small>
-
-          <span class="badge ${
-            referral.premium
-              ? "premium-badge"
-              : "inactive"
-          }">
-            ${
-              referral.premium
-                ? "💎 Premium Active"
-                : "Not Premium"
-            }
-          </span>
-
-        </div>
-
-      `;
-
-      referralsList.appendChild(
-        item
-      );
-
-    }
-  );
-
-}
-
-
-document
-  .getElementById(
-    "refreshReferralsBtn"
-  )
-  .addEventListener(
-    "click",
-    async () => {
-
-      await loadUsers();
-
-      buildReferralRecords();
-
-    }
-  );
-
-
-/* ==========================================
-   FIX MISSING REFERRAL CODES
-
-   Users created before referralCode generation
-   existed at registration have no referralCode
-   field, so their referral link falls back to
-   showing their raw Firebase UID instead of a
-   proper code like AREWA-NAME-XXXXX.
-
-   This scans all users, generates a proper code
-   (same format register.html uses) for anyone
-   missing one, and saves it.
-========================================== */
-
-function createReferralCodeForUser(
-  name
-){
-
-  const cleanName =
-    String(
-      name || "USER"
-    )
-      .toUpperCase()
-      .replace(
-        /[^A-Z0-9]/g,
-        ""
-      )
-      .substring(0,8);
-
-  const randomPart =
-    Math.random()
-      .toString(36)
-      .substring(2,7)
-      .toUpperCase();
-
-  return `AREWA-${cleanName}-${randomPart}`;
-
-}
-
-
-async function fixMissingReferralCodes(){
-
-  const usersMissingCode =
-    allUsers.filter(
-      user =>
-        !user.referralCode
-    );
-
-  if(
-    usersMissingCode.length === 0
-  ){
-
-    alert(
-      "Every user already has a referral code. Nothing to fix."
-    );
-
-    return;
-
-  }
-
-  if(
-    !confirm(
-      `${usersMissingCode.length} user(s) have no referral code.\n\n` +
-      "Generate one for each of them now?"
-    )
-  ){
-
-    return;
-
-  }
-
-  const existingCodes =
-    new Set(
-      allUsers
-        .map(
-          user =>
-            user.referralCode
-        )
-        .filter(Boolean)
-    );
-
-  let fixedCount = 0;
-
-  let failedCount = 0;
-
-  for(
-    const user of
-      usersMissingCode
-  ){
-
-    let newCode = "";
-
-    let attempts = 0;
-
-    while(attempts < 5){
-
-      const candidate =
-        createReferralCodeForUser(
-          user.name ||
-          user.fullName ||
-          user.email
-        );
-
-      if(
-        !existingCodes.has(
-          candidate
-        )
-      ){
-
-        newCode = candidate;
-
-        break;
-
-      }
-
-      attempts++;
-
-    }
-
-    if(!newCode){
-
-      failedCount++;
-
-      continue;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "users",
-          user.id
-        ),
-        {
-          referralCode:
-            newCode
-        }
-      );
-
-      existingCodes.add(
-        newCode
-      );
-
-      fixedCount++;
-
-    }catch(error){
-
-      console.error(
-        "Failed to set referral code for",
-        user.id,
-        error
-      );
-
-      failedCount++;
-
-    }
-
-  }
-
-  alert(
-    `Done.\n\n` +
-    `Fixed: ${fixedCount}\n` +
-    `Failed: ${failedCount}`
-  );
-
-  await loadUsers();
-
-  buildReferralRecords();
-
-}
-
-
-document
-  .getElementById(
-    "fixReferralCodesBtn"
-  )
-  .addEventListener(
-    "click",
-    fixMissingReferralCodes
-  );
-
-
-/* ==========================================
-   FIX MISSING STATE / LGA
-
-   Users and products created before the
-   State + LGA system have only an old
-   free-text "location" field (e.g. "Kano",
-   "Abuja", "Lagos State") and no "state" /
-   "lga" fields at all.
-
-   This scans all users and products, tries
-   to match their old "location" text to one
-   of the 37 official state names, and saves
-   it as the new "state" field. The "lga"
-   field is set to "Not specified" because it
-   cannot be reliably determined from old
-   free-text data — it must be corrected by
-   hand afterwards (by the seller, or an
-   admin editing the record).
-========================================== */
-
-function matchOldLocationToState(
-  rawLocation
-){
-
-  if(!rawLocation){
-    return "";
-  }
-
-  const text =
-    String(rawLocation)
-      .toLowerCase()
-      .trim();
-
-  if(!text){
-    return "";
-  }
-
-  // Exact match against a state name
-  for(const state of NIGERIA_STATES){
-
-    if(text === state.toLowerCase()){
-      return state;
-    }
-
-  }
-
-  // FCT / Abuja is stored under a longer
-  // official name, so old data referring to
-  // it needs special-casing
-  if(
-    text.includes("abuja") ||
-    text.includes("fct")
-  ){
-    return "Federal Capital Territory";
-  }
-
-  // Loose match, e.g. "Kano State",
-  // "Lagos, Nigeria", "Living in Kaduna"
-  for(const state of NIGERIA_STATES){
-
-    if(
-      text.includes(
-        state.toLowerCase()
-      )
-    ){
-      return state;
-    }
-
-  }
-
-  return "";
-
-}
-
-
-async function fixMissingStateLga(){
-
-  const usersMissingState =
-    allUsers.filter(
-      user => !user.state
-    );
-
-  const productsMissingState =
-    allProducts.filter(
-      product => !product.state
-    );
-
-  const totalMissing =
-    usersMissingState.length +
-    productsMissingState.length;
-
-  if(totalMissing === 0){
-
-    alert(
-      "Every user and product already has a state. Nothing to fix."
-    );
-
-    return;
-
-  }
-
-  if(
-    !confirm(
-      `${usersMissingState.length} user(s) and ${productsMissingState.length} product(s) have no state set.\n\n` +
-      "Try to match each one's old location text to a state now?\n" +
-      "LGA will be set to \"Not specified\" and should be corrected by hand afterwards."
-    )
-  ){
-
-    return;
-
-  }
-
-  let fixedCount = 0;
-  let unmatchedCount = 0;
-  let failedCount = 0;
-
-  for(
-    const user of
-      usersMissingState
-  ){
-
-    const matchedState =
-      matchOldLocationToState(
-        user.location ||
-        user.sellerLocation ||
-        ""
-      );
-
-    if(!matchedState){
-
-      unmatchedCount++;
-
-      continue;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "users",
-          user.id
-        ),
-        {
-          state: matchedState,
-          lga: "Not specified"
-        }
-      );
-
-      fixedCount++;
-
-    }catch(error){
-
-      console.error(
-        "Failed to fix state for user",
-        user.id,
-        error
-      );
-
-      failedCount++;
-
-    }
-
-  }
-
-  for(
-    const product of
-      productsMissingState
-  ){
-
-    const matchedState =
-      matchOldLocationToState(
-        product.location || ""
-      );
-
-    if(!matchedState){
-
-      unmatchedCount++;
-
-      continue;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "products",
-          product.id
-        ),
-        {
-          state: matchedState,
-          lga: "Not specified"
-        }
-      );
-
-      fixedCount++;
-
-    }catch(error){
-
-      console.error(
-        "Failed to fix state for product",
-        product.id,
-        error
-      );
-
-      failedCount++;
-
-    }
-
-  }
-
-  alert(
-    `Done.\n\n` +
-    `Fixed: ${fixedCount}\n` +
-    `Could not match a state (left unchanged): ${unmatchedCount}\n` +
-    `Failed: ${failedCount}\n\n` +
-    "Records fixed here have LGA set to \"Not specified\" — please review and correct the LGA by hand where it matters."
-  );
-
-  await loadUsers();
-
-  await loadProducts();
-
-}
-
-
-document
-  .getElementById(
-    "fixMissingStateLgaBtn"
-  )
-  .addEventListener(
-    "click",
-    fixMissingStateLga
-  );
-
-
-referralsSearch.addEventListener(
-  "input",
-  function(){
-
-    const q =
-      this.value
-        .toLowerCase()
-        .trim();
-
-    renderReferrals(
-      allReferrals.filter(
-        referral => {
-
-          const text =
-            (
-              referral.referrerName +
-              " " +
-              referral.referrerEmail +
-              " " +
-              referral.referrerCode +
-              " " +
-              referral.referredUserName +
-              " " +
-              referral.referredUserEmail +
-              " " +
-              referral.status
-            )
-            .toLowerCase();
-
-          return text.includes(q);
-
-        }
-      )
-    );
-
-  }
-);
-
-
-/* ==========================================
-   COMMISSIONS
-========================================== */
-
-async function loadCommissions(){
-
-  commissionsList.innerHTML =
-    `<div class="loading">
-      Loading commissions...
-    </div>`;
-
-  try{
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "commissions"
-        )
-      );
-
-    allCommissions = [];
-
-    snapshot.forEach(
-      commissionDoc => {
-
-        allCommissions.push({
-
-          id:
-            commissionDoc.id,
-
-          ...commissionDoc.data()
-
-        });
-
-      }
-    );
-
-    allCommissions.sort(
-      (a,b) => {
-
-        const dateA =
-          timestampToDate(
-            a.createdAt
-          );
-
-        const dateB =
-          timestampToDate(
-            b.createdAt
-          );
-
-        return (
-          (dateB?.getTime() || 0) -
-          (dateA?.getTime() || 0)
-        );
-
-      }
-    );
-
-    renderCommissions(
-      allCommissions
-    );
-
-    updateAnalytics();
-
-  }catch(error){
-
-    console.error(
-      error
-    );
-
-    commissionsList.innerHTML =
-      `<div class="empty">
-        No commission records found.
-        <br>
-        ${escapeHtml(
-          error.code || ""
-        )}
-      </div>`;
-
-  }
-
-}
-
-
-function commissionStatusClass(
-  status
-){
-
-  switch(
-    String(
-      status || ""
-    ).toLowerCase()
-  ){
-
-    case "approved":
-      return "approved";
-
-    case "paid":
-      return "paid";
-
-    case "rejected":
-      return "rejected";
-
-    case "cancelled":
-      return "rejected";
-
-    default:
-      return "pending";
-
-  }
-
-}
-
-
-function renderCommissions(
-  commissions
-){
-
-  if(!commissions.length){
-
-    commissionsList.innerHTML =
-      `<div class="empty">
-        No commissions found.
-      </div>`;
-
-    return;
-
-  }
-
-  commissionsList.innerHTML =
-    "";
-
-  commissions.forEach(
-    commission => {
-
-      const status =
-        String(
-          commission.status ||
-          "pending"
-        ).toLowerCase();
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-      item.className =
-        "item commission-card";
-
-      item.innerHTML = `
-
-        <div class="item-main">
-
-          <strong>
-            💰 ${money(
-              commission.commissionAmount
-            )}
-          </strong>
-
-          <small>
-            Referrer:
-            <b>
-              ${escapeHtml(
-                commission.referrerName ||
-                getUserName(
-                  commission.referrerId
-                )
-              )}
-            </b>
-          </small>
-
-          <small>
-            Referred User:
-            ${escapeHtml(
-              commission.referredUserName ||
-              getUserName(
-                commission.referredUserId
-              )
-            )}
-          </small>
-
-          <small>
-            Type:
-            ${escapeHtml(
-              commission.type ||
-              "N/A"
-            )}
-          </small>
-
-          <small>
-            Premium Amount:
-            ${money(
-              commission.premiumAmount
-            )}
-          </small>
-
-          <small>
-            Commission Rule:
-            ${escapeHtml(
-              commission.commissionType ||
-              "fixed"
-            )}
-            —
-            ${escapeHtml(
-              commission.commissionRate ??
-              0
-            )}
-            ${
-              commission.commissionType ===
-              "percentage"
-                ? "%"
-                : "₦"
-            }
-          </small>
-
-          <small>
-            Created:
-            ${escapeHtml(
-              formatDate(
-                commission.createdAt
-              )
-            )}
-          </small>
-
-          <span class="badge ${
-            commissionStatusClass(
-              status
-            )
-          }">
-            ${escapeHtml(
-              status
-            )}
-          </span>
-
-        </div>
-
-        <div class="actions">
-
-          ${
-            status === "pending"
-              ? `
-                <button
-                  class="green"
-                  onclick="
-                    approveCommission(
-                      '${escapeHtml(
-                        commission.id
-                      )}'
-                    )
-                  "
-                >
-                  Approve
-                </button>
-
-                <button
-                  class="delete"
-                  onclick="
-                    rejectCommission(
-                      '${escapeHtml(
-                        commission.id
-                      )}'
-                    )
-                  "
-                >
-                  Reject
-                </button>
-              `
-              : ""
-          }
-
-          ${
-            status === "approved"
-              ? `
-                <button
-                  class="premium"
-                  onclick="
-                    markCommissionPaid(
-                      '${escapeHtml(
-                        commission.id
-                      )}'
-                    )
-                  "
-                >
-                  Mark Paid
-                </button>
-              `
-              : ""
-          }
-
-        </div>
-
-      `;
-
-      commissionsList.appendChild(
-        item
-      );
-
-    }
-  );
-
-}
-
-
-window.approveCommission =
-  async function(
-    commissionId
-  ){
-
-    const commission =
-      allCommissions.find(
-        item =>
-          item.id ===
-          commissionId
-      );
-
-    if(!commission){
-
-      alert(
-        "Commission not found."
-      );
-
-      return;
-
-    }
-
-    if(
-      String(
-        commission.status ||
-        "pending"
-      ).toLowerCase() !==
-      "pending"
-    ){
-
-      alert(
-        "Only Pending commissions can be approved."
-      );
-
-      return;
-
-    }
-
-    if(
-      !confirm(
-        "Approve this commission?"
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "commissions",
-          commissionId
-        ),
-        {
-
-          status:
-            "approved",
-
-          approvedAt:
-            serverTimestamp(),
-
-          approvedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-      alert(
-        "Commission approved."
-      );
-
-      await loadCommissions();
-
-      updateAnalytics();
-
-    }catch(error){
-
-      alert(
-        "Failed to approve commission: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-window.markCommissionPaid =
-  async function(
-    commissionId
-  ){
-
-    const commission =
-      allCommissions.find(
-        item =>
-          item.id ===
-          commissionId
-      );
-
-    if(!commission){
-
-      alert(
-        "Commission not found."
-      );
-
-      return;
-
-    }
-
-    if(
-      String(
-        commission.status ||
-        ""
-      ).toLowerCase() !==
-      "approved"
-    ){
-
-      alert(
-        "Only Approved commissions can be marked as Paid."
-      );
-
-      return;
-
-    }
-
-    if(
-      !confirm(
-        "Mark this commission as Paid?"
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "commissions",
-          commissionId
-        ),
-        {
-
-          status:
-            "paid",
-
-          paidAt:
-            serverTimestamp(),
-
-          paidBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-      alert(
-        "Commission marked as Paid."
-      );
-
-      await loadCommissions();
-
-      updateAnalytics();
-
-    }catch(error){
-
-      alert(
-        "Failed to mark commission as Paid: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-window.rejectCommission =
-  async function(
-    commissionId
-  ){
-
-    const commission =
-      allCommissions.find(
-        item =>
-          item.id ===
-          commissionId
-      );
-
-    if(!commission){
-
-      alert(
-        "Commission not found."
-      );
-
-      return;
-
-    }
-
-    const status =
-      String(
-        commission.status ||
-        "pending"
-      ).toLowerCase();
-
-    if(
-      status !== "pending"
-    ){
-
-      alert(
-        "Only Pending commissions can be rejected."
-      );
-
-      return;
-
-    }
-
-    if(
-      !confirm(
-        "Reject this commission?"
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "commissions",
-          commissionId
-        ),
-        {
-
-          status:
-            "rejected",
-
-          rejectedAt:
-            serverTimestamp(),
-
-          rejectedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-      alert(
-        "Commission rejected."
-      );
-
-      await loadCommissions();
-
-      updateAnalytics();
-
-    }catch(error){
-
-      alert(
-        "Failed to reject commission: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-document
-  .getElementById(
-    "refreshCommissionsBtn"
-  )
-  .addEventListener(
-    "click",
-    loadCommissions
-  );
-
-
-commissionsSearch.addEventListener(
-  "input",
-  function(){
-
-    const q =
-      this.value
-        .toLowerCase()
-        .trim();
-
-    renderCommissions(
-      allCommissions.filter(
-        commission => {
-
-          const text =
-            (
-              commission.referrerName +
-              " " +
-              commission.referrerEmail +
-              " " +
-              commission.referredUserName +
-              " " +
-              commission.referredUserEmail +
-              " " +
-              commission.type +
-              " " +
-              commission.status
-            )
-            .toLowerCase();
-
-          return text.includes(q);
-
-        }
-      )
-    );
-
-  }
-);
-
-
-/* ==========================================
-   WITHDRAWAL REQUESTS
-
-   This is the ONLY place a seller's referral
-   commission should actually be marked as
-   Paid. It carries the seller's real bank
-   details, unlike Commission Management above
-   (which only tracks whether a commission is
-   valid, not whether money was sent).
-========================================== */
-
-async function loadWithdrawalRequests(){
-
-  withdrawalRequestsList.innerHTML =
-    `<div class="loading">
-      Loading withdrawal requests...
-    </div>`;
-
-  try{
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "withdrawalRequests"
-        )
-      );
-
-    allWithdrawalRequests = [];
-
-    snapshot.forEach(
-      requestDoc => {
-
-        allWithdrawalRequests.push({
-
-          id:
-            requestDoc.id,
-
-          ...requestDoc.data()
-
-        });
-
-      }
-    );
-
-    allWithdrawalRequests.sort(
-      (a,b) => {
-
-        const dateA =
-          timestampToDate(
-            a.createdAt
-          );
-
-        const dateB =
-          timestampToDate(
-            b.createdAt
-          );
-
-        return (
-          (dateB?.getTime() || 0) -
-          (dateA?.getTime() || 0)
-        );
-
-      }
-    );
-
-    renderWithdrawalRequests(
-      allWithdrawalRequests
-    );
-
-  }catch(error){
-
-    console.error(
-      error
-    );
-
-    withdrawalRequestsList.innerHTML =
-      `<div class="empty">
-        No withdrawal requests found.
-        <br>
-        ${escapeHtml(
-          error.code || ""
-        )}
-      </div>`;
-
-  }
-
-}
-
-
-function withdrawalStatusClass(
-  status
-){
-
-  switch(
-    String(
-      status || ""
-    ).toLowerCase()
-  ){
-
-    case "paid":
-      return "paid";
-
-    case "rejected":
-      return "rejected";
-
-    default:
-      return "pending";
-
-  }
-
-}
-
-
-function renderWithdrawalRequests(
-  requests
-){
-
-  if(!requests.length){
-
-    withdrawalRequestsList.innerHTML =
-      `<div class="empty">
-        No withdrawal requests found.
-      </div>`;
-
-    return;
-
-  }
-
-  withdrawalRequestsList.innerHTML =
-    "";
-
-  requests.forEach(
-    request => {
-
-      const status =
-        String(
-          request.status ||
-          "pending"
-        ).toLowerCase();
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-      item.className =
-        "item withdrawal-card";
-
-      item.innerHTML = `
-
-        <div class="item-main">
-
-          <strong>
-            🏦 ${money(
-              request.amount
-            )}
-          </strong>
-
-          <small>
-            Seller:
-            <b>
-              ${escapeHtml(
-                request.sellerName ||
-                getUserName(
-                  request.sellerId
-                )
-              )}
-            </b>
-          </small>
-
-          <small>
-            Email:
-            ${escapeHtml(
-              request.sellerEmail ||
-              getUserEmail(
-                request.sellerId
-              )
-            )}
-          </small>
-
-          <small>
-            Bank:
-            <b>
-              ${escapeHtml(
-                request.bankName ||
-                "N/A"
-              )}
-            </b>
-          </small>
-
-          <small>
-            Account Name:
-            ${escapeHtml(
-              request.accountName ||
-              "N/A"
-            )}
-          </small>
-
-          <small>
-            Account Number:
-            <b>
-              ${escapeHtml(
-                request.accountNumber ||
-                "N/A"
-              )}
-            </b>
-          </small>
-
-          <small>
-            Requested:
-            ${escapeHtml(
-              formatDate(
-                request.createdAt
-              )
-            )}
-          </small>
-
-          <span class="badge ${
-            withdrawalStatusClass(
-              status
-            )
-          }">
-            ${escapeHtml(
-              status
-            )}
-          </span>
-
-        </div>
-
-        <div class="actions">
-
-          ${
-            status === "pending"
-              ? `
-                <button
-                  class="green"
-                  onclick="
-                    markWithdrawalPaid(
-                      '${escapeHtml(
-                        request.id
-                      )}'
-                    )
-                  "
-                >
-                  Mark as Paid
-                </button>
-
-                <button
-                  class="delete"
-                  onclick="
-                    rejectWithdrawalRequest(
-                      '${escapeHtml(
-                        request.id
-                      )}'
-                    )
-                  "
-                >
-                  Reject
-                </button>
-              `
-              : ""
-          }
-
-        </div>
-
-      `;
-
-      withdrawalRequestsList.appendChild(
-        item
-      );
-
-    }
-  );
-
-}
-
-
-window.markWithdrawalPaid =
-  async function(
-    requestId
-  ){
-
-    const request =
-      allWithdrawalRequests.find(
-        item =>
-          item.id ===
-          requestId
-      );
-
-    if(!request){
-
-      alert(
-        "Withdrawal request not found."
-      );
-
-      return;
-
-    }
-
-    if(
-      String(
-        request.status ||
-        "pending"
-      ).toLowerCase() !==
-      "pending"
-    ){
-
-      alert(
-        "This request has already been processed."
-      );
-
-      return;
-
-    }
-
-    if(
-      !confirm(
-        `Only click OK if you have ALREADY sent ${money(request.amount)} to:\n\n` +
-        `Bank: ${request.bankName || "N/A"}\n` +
-        `Account Name: ${request.accountName || "N/A"}\n` +
-        `Account Number: ${request.accountNumber || "N/A"}\n\n` +
-        `This cannot be undone.`
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "withdrawalRequests",
-          requestId
-        ),
-        {
-
-          status:
-            "paid",
-
-          paidAt:
-            serverTimestamp(),
-
-          paidBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-      alert(
-        "Withdrawal marked as Paid."
-      );
-
-      await loadWithdrawalRequests();
-
-    }catch(error){
-
-      alert(
-        "Failed to mark withdrawal as Paid: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-window.rejectWithdrawalRequest =
-  async function(
-    requestId
-  ){
-
-    const request =
-      allWithdrawalRequests.find(
-        item =>
-          item.id ===
-          requestId
-      );
-
-    if(!request){
-
-      alert(
-        "Withdrawal request not found."
-      );
-
-      return;
-
-    }
-
-    if(
-      String(
-        request.status ||
-        "pending"
-      ).toLowerCase() !==
-      "pending"
-    ){
-
-      alert(
-        "This request has already been processed."
-      );
-
-      return;
-
-    }
-
-    if(
-      !confirm(
-        "Reject this withdrawal request? The seller's balance will remain available for a future request."
-      )
-    ){
-
-      return;
-
-    }
-
-    try{
-
-      await updateDoc(
-        doc(
-          db,
-          "withdrawalRequests",
-          requestId
-        ),
-        {
-
-          status:
-            "rejected",
-
-          rejectedAt:
-            serverTimestamp(),
-
-          rejectedBy:
-            auth.currentUser?.uid ||
-            ""
-
-        }
-      );
-
-      alert(
-        "Withdrawal request rejected."
-      );
-
-      await loadWithdrawalRequests();
-
-    }catch(error){
-
-      alert(
-        "Failed to reject withdrawal request: " +
-        error.message
-      );
-
-    }
-
-  };
-
-
-document
-  .getElementById(
-    "refreshWithdrawalRequestsBtn"
-  )
-  .addEventListener(
-    "click",
-    loadWithdrawalRequests
-  );
-
-
-withdrawalRequestsSearch.addEventListener(
-  "input",
-  function(){
-
-    const q =
-      this.value
-        .toLowerCase()
-        .trim();
-
-    renderWithdrawalRequests(
-      allWithdrawalRequests.filter(
-        request => {
-
-          const text =
-            (
-              request.sellerName +
-              " " +
-              request.sellerEmail +
-              " " +
-              request.bankName +
-              " " +
-              request.accountName +
-              " " +
-              request.accountNumber +
-              " " +
-              request.status
-            )
-            .toLowerCase();
-
-          return text.includes(q);
-
-        }
-      )
-    );
-
-  }
-);
 
 
 /* ==========================================
@@ -9315,13 +3446,6 @@ function updateAnalytics(){
         product.featured === true
     ).length;
 
-  const pendingFeaturedRequests =
-    allProducts.filter(
-      product =>
-        product.featuredRequested === true &&
-        product.featured !== true
-    ).length;
-
   const productValue =
     allProducts.reduce(
       (sum,product) =>
@@ -9332,124 +3456,27 @@ function updateAnalytics(){
       0
     );
 
-  const premiumSellers =
-    allUsers.filter(
-      user =>
-        user.subscriptionPlan ===
-          "premium" &&
-        user.subscriptionStatus ===
-          "active"
-    ).length;
-
-  const pendingPremiumRequests =
-    allPremiumRequests.filter(
-      request =>
-        String(
-          request.status ||
+  const pendingOrders =
+    allOrders.filter(
+      order =>
+        !order.status ||
+        order.status ===
           "pending"
-        ).toLowerCase() ===
-        "pending"
     ).length;
 
-  const premiumRevenue =
-    allPremiumRequests
+  const orderRevenue =
+    allOrders
       .filter(
-        request =>
-          String(
-            request.status ||
-            ""
-          ).toLowerCase() ===
-          "approved"
+        order =>
+          order.status ===
+          "completed"
       )
       .reduce(
-        (sum,request) =>
+        (sum,order) =>
           sum +
-          Number(
-            request.amount || 0
-          ),
+          getOrderTotal(order),
         0
       );
-
-
-  /* REFERRAL STATS */
-
-  const totalReferrals =
-    allReferrals.length;
-
-  const activeReferrals =
-    allReferrals.filter(
-      referral =>
-        String(
-          referral.status ||
-          "active"
-        ).toLowerCase() ===
-        "active"
-    ).length;
-
-  const premiumReferrals =
-    allReferrals.filter(
-      referral =>
-        referral.premium === true
-    ).length;
-
-
-  /* COMMISSION STATS */
-
-  const pendingCommissions =
-    allCommissions.filter(
-      commission =>
-        String(
-          commission.status ||
-          "pending"
-        ).toLowerCase() ===
-        "pending"
-    ).length;
-
-  const approvedCommissions =
-    allCommissions.filter(
-      commission =>
-        String(
-          commission.status ||
-          ""
-        ).toLowerCase() ===
-        "approved"
-    ).length;
-
-  const paidCommissions =
-    allCommissions.filter(
-      commission =>
-        String(
-          commission.status ||
-          ""
-        ).toLowerCase() ===
-        "paid"
-    ).length;
-
-  const totalCommissionAmount =
-    allCommissions
-      .filter(
-        commission =>
-          String(
-            commission.status ||
-            ""
-          ).toLowerCase() !==
-          "rejected" &&
-          String(
-            commission.status ||
-            ""
-          ).toLowerCase() !==
-          "cancelled"
-      )
-      .reduce(
-        (sum,commission) =>
-          sum +
-          Number(
-            commission.commissionAmount ||
-            0
-          ),
-        0
-      );
-
 
   document.getElementById(
     "usersCount"
@@ -9497,84 +3524,45 @@ function updateAnalytics(){
     featuredProducts;
 
   document.getElementById(
-    "pendingFeaturedRequestsCount"
-  ).textContent =
-    pendingFeaturedRequests;
-
-  document.getElementById(
     "productValue"
   ).textContent =
     money(productValue);
 
   document.getElementById(
-    "premiumSellersCount"
+    "ordersCount"
   ).textContent =
-    premiumSellers;
+    allOrders.length;
 
   document.getElementById(
-    "pendingPremiumRequestsCount"
+    "pendingOrdersCount"
   ).textContent =
-    pendingPremiumRequests;
+    pendingOrders;
 
   document.getElementById(
-    "premiumRevenueCount"
+    "orderRevenue"
   ).textContent =
-    money(
-      premiumRevenue
-    );
-
-
-  document.getElementById(
-    "totalReferralsCount"
-  ).textContent =
-    totalReferrals;
-
-  document.getElementById(
-    "activeReferralsCount"
-  ).textContent =
-    activeReferrals;
-
-  document.getElementById(
-    "premiumReferralsCount"
-  ).textContent =
-    premiumReferrals;
-
-  document.getElementById(
-    "pendingCommissionsCount"
-  ).textContent =
-    pendingCommissions;
-
-  document.getElementById(
-    "approvedCommissionsCount"
-  ).textContent =
-    approvedCommissions;
-
-  document.getElementById(
-    "paidCommissionsCount"
-  ).textContent =
-    paidCommissions;
-
-  document.getElementById(
-    "totalCommissionAmount"
-  ).textContent =
-    money(
-      totalCommissionAmount
-    );
-
-  updateReferralSystemStatus();
-
-}
+    money(orderRevenue);
+};
 
 
 /* =========================================================
    PROFESSIONAL EXPORT SYSTEM
    ========================================================= */
 
+
+/* ------------------------------------------
+   EXPORT LIBRARIES
+------------------------------------------ */
+
 let exportLibraries = {
   pdf:null,
   excel:null
 };
 
+
+/* ------------------------------------------
+   LOAD EXTERNAL SCRIPT
+------------------------------------------ */
 
 function loadExternalScript(src){
 
@@ -9617,6 +3605,7 @@ function loadExternalScript(src){
         return;
       }
 
+
       const script =
         document.createElement(
           "script"
@@ -9658,6 +3647,10 @@ function loadExternalScript(src){
 
 }
 
+
+/* ------------------------------------------
+   LOAD PDF LIBRARIES
+------------------------------------------ */
 
 async function loadPDFLibraries(){
 
@@ -9703,6 +3696,10 @@ async function loadPDFLibraries(){
 }
 
 
+/* ------------------------------------------
+   LOAD EXCEL LIBRARY
+------------------------------------------ */
+
 async function loadExcelLibrary(){
 
   if(exportLibraries.excel){
@@ -9737,6 +3734,10 @@ async function loadExcelLibrary(){
 }
 
 
+/* ------------------------------------------
+   FORMAT FIREBASE DATE
+------------------------------------------ */
+
 function formatExportDate(value){
 
   if(!value){
@@ -9748,6 +3749,7 @@ function formatExportDate(value){
   try{
 
     let date = null;
+
 
     if(
       value &&
@@ -9769,6 +3771,20 @@ function formatExportDate(value){
       date =
         new Date(
           value.seconds *
+          1000
+        );
+
+    }
+
+    else if(
+      value &&
+      typeof value._seconds ===
+      "number"
+    ){
+
+      date =
+        new Date(
+          value._seconds *
           1000
         );
 
@@ -9803,6 +3819,7 @@ function formatExportDate(value){
 
     }
 
+
     if(
       !date ||
       isNaN(
@@ -9813,6 +3830,7 @@ function formatExportDate(value){
       return "N/A";
 
     }
+
 
     return new Intl.DateTimeFormat(
       "en-NG",
@@ -9834,6 +3852,10 @@ function formatExportDate(value){
 }
 
 
+/* ------------------------------------------
+   CLEAN EXPORT VALUE
+------------------------------------------ */
+
 function cleanExportValue(value){
 
   if(
@@ -9844,6 +3866,7 @@ function cleanExportValue(value){
     return "";
 
   }
+
 
   if(
     value &&
@@ -9857,6 +3880,7 @@ function cleanExportValue(value){
 
   }
 
+
   if(
     value &&
     typeof value.seconds ===
@@ -9868,6 +3892,7 @@ function cleanExportValue(value){
     );
 
   }
+
 
   if(
     typeof value ===
@@ -9888,10 +3913,15 @@ function cleanExportValue(value){
 
   }
 
+
   return String(value);
 
 }
 
+
+/* ------------------------------------------
+   SELLER NAME
+------------------------------------------ */
 
 function getSellerName(product){
 
@@ -9905,6 +3935,36 @@ function getSellerName(product){
 
 }
 
+
+/* ------------------------------------------
+   ORDER TOTAL
+------------------------------------------ */
+
+function getExportOrderTotal(
+  order
+){
+
+  const value =
+    order.total ??
+    order.totalAmount ??
+    order.amount ??
+    order.price ??
+    order.orderTotal ??
+    0;
+
+  const number =
+    Number(value);
+
+  return isNaN(number)
+    ? 0
+    : number;
+
+}
+
+
+/* ------------------------------------------
+   MONEY
+------------------------------------------ */
 
 function formatExportMoney(
   value
@@ -9932,6 +3992,10 @@ function formatExportMoney(
 
 }
 
+
+/* ------------------------------------------
+   USERS REPORT
+------------------------------------------ */
 
 function createUsersReport(){
 
@@ -9979,23 +4043,6 @@ function createUsersReport(){
           user.sellerStatus ||
           "N/A",
 
-        "Referral Code":
-          user.referralCode ||
-          "N/A",
-
-        "Referred By":
-          user.referredBy ||
-          "N/A",
-
-        "Referral Status":
-          user.referralStatus ||
-          "N/A",
-
-        "Subscription":
-          user.subscriptionPlan === "premium"
-            ? "Premium"
-            : "Free",
-
         "Status":
           user.active === false
             ? "Inactive"
@@ -10008,6 +4055,10 @@ function createUsersReport(){
 
 }
 
+
+/* ------------------------------------------
+   SELLERS REPORT
+------------------------------------------ */
 
 function createSellersReport(){
 
@@ -10060,20 +4111,6 @@ function createSellersReport(){
           user.sellerStatus ||
           "N/A",
 
-        "Referral Code":
-          user.referralCode ||
-          "N/A",
-
-        "Referred By":
-          user.referredBy ||
-          "N/A",
-
-        "Subscription":
-          user.subscriptionPlan ===
-            "premium"
-            ? "Premium"
-            : "Free",
-
         "Account Status":
           user.active === false
             ? "Inactive"
@@ -10086,6 +4123,10 @@ function createSellersReport(){
 
 }
 
+
+/* ------------------------------------------
+   PRODUCTS REPORT
+------------------------------------------ */
 
 function createProductsReport(){
 
@@ -10153,6 +4194,10 @@ function createProductsReport(){
 }
 
 
+/* ------------------------------------------
+   CATEGORIES REPORT
+------------------------------------------ */
+
 function createCategoriesReport(){
 
   return allCategories.map(
@@ -10184,6 +4229,10 @@ function createCategoriesReport(){
 
 }
 
+
+/* ------------------------------------------
+   SELLER APPLICATIONS REPORT
+------------------------------------------ */
 
 function createSellerApplicationsReport(){
 
@@ -10249,123 +4298,62 @@ function createSellerApplicationsReport(){
 }
 
 
-function createReferralsReport(){
+/* ------------------------------------------
+   ORDERS REPORT
+------------------------------------------ */
 
-  return allReferrals.map(
-    (referral,index) => {
+function createOrdersReport(){
 
-      return {
-
-        "#":
-          index + 1,
-
-        "Referrer":
-          referral.referrerName ||
-          "N/A",
-
-        "Referrer Email":
-          referral.referrerEmail ||
-          "N/A",
-
-        "Referral Code":
-          referral.referrerCode ||
-          "N/A",
-
-        "Referred User":
-          referral.referredUserName ||
-          "N/A",
-
-        "Referred Email":
-          referral.referredUserEmail ||
-          "N/A",
-
-        "Referral Status":
-          referral.status ||
-          "N/A",
-
-        "Joined Date":
-          formatExportDate(
-            referral.joinedAt
-          ),
-
-        "Premium Status":
-          referral.premium
-            ? "Premium Active"
-            : "Not Premium"
-
-      };
-
-    }
-  );
-
-}
-
-
-function createCommissionsReport(){
-
-  return allCommissions.map(
-    (commission,index) => {
+  return allOrders.map(
+    (order,index) => {
 
       return {
 
         "#":
           index + 1,
 
-        "Referrer":
-          commission.referrerName ||
+        "Order ID":
+          order.id ||
+          order.orderId ||
           "N/A",
 
-        "Referrer Email":
-          commission.referrerEmail ||
+        "Buyer":
+          order.buyerName ||
+          order.customerName ||
+          order.userName ||
+          order.buyer ||
           "N/A",
 
-        "Referred User":
-          commission.referredUserName ||
+        "Buyer Phone":
+          order.buyerPhone ||
+          order.customerPhone ||
+          order.phone ||
           "N/A",
 
-        "Referred Email":
-          commission.referredUserEmail ||
+        "Seller":
+          order.sellerName ||
+          order.seller ||
           "N/A",
 
-        "Type":
-          commission.type ||
-          "N/A",
-
-        "Premium Amount":
+        "Amount":
           formatExportMoney(
-            commission.premiumAmount
-          ),
-
-        "Commission Rule":
-          commission.commissionType ||
-          "N/A",
-
-        "Commission Rate":
-          commission.commissionRate ??
-          0,
-
-        "Commission Amount":
-          formatExportMoney(
-            commission.commissionAmount
+            getExportOrderTotal(
+              order
+            )
           ),
 
         "Status":
-          commission.status ||
+          order.status ||
           "Pending",
 
         "Created At":
           formatExportDate(
-            commission.createdAt
+            order.createdAt
           ),
 
-        "Approved At":
+        "Updated At":
           formatExportDate(
-            commission.approvedAt
-          ),
-
-        "Paid At":
-          formatExportDate(
-            commission.paidAt
+            order.updatedAt
           )
 
       };
@@ -10375,6 +4363,10 @@ function createCommissionsReport(){
 
 }
 
+
+/* ------------------------------------------
+   GET REPORT
+------------------------------------------ */
 
 function getExportReport(
   reportType
@@ -10389,12 +4381,14 @@ function getExportReport(
         rows:createUsersReport()
       };
 
+
     case "sellers":
 
       return {
         title:"Sellers Report",
         rows:createSellersReport()
       };
+
 
     case "products":
 
@@ -10403,12 +4397,14 @@ function getExportReport(
         rows:createProductsReport()
       };
 
+
     case "categories":
 
       return {
         title:"Categories Report",
         rows:createCategoriesReport()
       };
+
 
     case "sellerApplications":
 
@@ -10419,23 +4415,14 @@ function getExportReport(
           createSellerApplicationsReport()
       };
 
-    case "referrals":
+
+    case "orders":
 
       return {
-        title:
-          "Referral Management Report",
-        rows:
-          createReferralsReport()
+        title:"Orders Report",
+        rows:createOrdersReport()
       };
 
-    case "commissions":
-
-      return {
-        title:
-          "Commission Management Report",
-        rows:
-          createCommissionsReport()
-      };
 
     default:
 
@@ -10449,9 +4436,9 @@ function getExportReport(
 }
 
 
-/* ==========================================
+/* ------------------------------------------
    CSV EXPORT
-========================================== */
+------------------------------------------ */
 
 function exportCSV(
   reportType
@@ -10472,12 +4459,15 @@ function exportCSV(
 
   }
 
+
   const headers =
     Object.keys(
       report.rows[0]
     );
 
+
   const csvRows = [];
+
 
   csvRows.push(
     headers.map(
@@ -10489,6 +4479,7 @@ function exportCSV(
           )}"`
     ).join(",")
   );
+
 
   report.rows.forEach(
     row => {
@@ -10521,11 +4512,13 @@ function exportCSV(
     }
   );
 
+
   const csv =
     "\uFEFF" +
     csvRows.join(
       "\r\n"
     );
+
 
   const blob =
     new Blob(
@@ -10536,10 +4529,12 @@ function exportCSV(
       }
     );
 
+
   const url =
     URL.createObjectURL(
       blob
     );
+
 
   const link =
     document.createElement(
@@ -10567,9 +4562,9 @@ function exportCSV(
 }
 
 
-/* ==========================================
+/* ------------------------------------------
    EXCEL EXPORT
-========================================== */
+------------------------------------------ */
 
 async function exportExcel(
   reportType
@@ -10590,9 +4585,11 @@ async function exportExcel(
 
   }
 
+
   try{
 
     await loadExcelLibrary();
+
 
     if(!window.XLSX){
 
@@ -10602,15 +4599,18 @@ async function exportExcel(
 
     }
 
+
     const worksheet =
       XLSX.utils.json_to_sheet(
         report.rows
       );
 
+
     const headers =
       Object.keys(
         report.rows[0]
       );
+
 
     worksheet["!cols"] =
       headers.map(
@@ -10620,6 +4620,7 @@ async function exportExcel(
             String(header)
               .length + 4;
 
+
           report.rows.forEach(
             row => {
 
@@ -10628,6 +4629,7 @@ async function exportExcel(
                   row[header] ??
                   ""
                 ).length;
+
 
               if(
                 length + 2 >
@@ -10641,6 +4643,7 @@ async function exportExcel(
 
             }
           );
+
 
           return {
 
@@ -10658,8 +4661,10 @@ async function exportExcel(
         }
       );
 
+
     const workbook =
       XLSX.utils.book_new();
+
 
     XLSX.utils.book_append_sheet(
       workbook,
@@ -10670,10 +4675,12 @@ async function exportExcel(
       )
     );
 
+
     XLSX.writeFile(
       workbook,
       `arewa-market-${reportType}-${getFileDate()}.xlsx`
     );
+
 
   }catch(error){
 
@@ -10690,9 +4697,9 @@ async function exportExcel(
 }
 
 
-/* ==========================================
+/* ------------------------------------------
    PDF EXPORT
-========================================== */
+------------------------------------------ */
 
 async function exportPDF(
   reportType
@@ -10702,6 +4709,7 @@ async function exportPDF(
     getExportReport(
       reportType
     );
+
 
   if(!report.rows.length){
 
@@ -10713,9 +4721,11 @@ async function exportPDF(
 
   }
 
+
   try{
 
     await loadPDFLibraries();
+
 
     if(
       !window.jspdf ||
@@ -10728,10 +4738,12 @@ async function exportPDF(
 
     }
 
+
     const {
       jsPDF
     } =
       window.jspdf;
+
 
     const pdfDoc =
       new jsPDF({
@@ -10747,6 +4759,7 @@ async function exportPDF(
 
       });
 
+
     if(
       typeof pdfDoc.autoTable !==
       "function"
@@ -10758,10 +4771,12 @@ async function exportPDF(
 
     }
 
+
     const headers =
       Object.keys(
         report.rows[0]
       );
+
 
     const body =
       report.rows.map(
@@ -10773,6 +4788,7 @@ async function exportPDF(
               )
           )
       );
+
 
     const generatedDate =
       new Intl.DateTimeFormat(
@@ -10788,8 +4804,210 @@ async function exportPDF(
         new Date()
       );
 
-    const summaryText =
+
+    /* --------------------------------------
+       SUMMARY
+    -------------------------------------- */
+
+    let summaryText =
       `Total Records: ${report.rows.length}`;
+
+
+    if(
+      reportType ===
+      "users"
+    ){
+
+      const sellers =
+        allUsers.filter(
+          user =>
+            user.role === "seller" ||
+            user.role === "Seller" ||
+            user.isSeller === true ||
+            user.sellerStatus === "approved"
+        ).length;
+
+
+      const buyers =
+        allUsers.length -
+        sellers;
+
+
+      summaryText +=
+        `   |   Sellers: ${sellers}` +
+        `   |   Buyers: ${buyers}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "sellers"
+    ){
+
+      const active =
+        allUsers.filter(
+          user =>
+            (
+              user.role === "seller" ||
+              user.role === "Seller" ||
+              user.isSeller === true ||
+              user.sellerStatus === "approved"
+            ) &&
+            user.active !== false
+        ).length;
+
+
+      const inactive =
+        allUsers.filter(
+          user =>
+            (
+              user.role === "seller" ||
+              user.role === "Seller" ||
+              user.isSeller === true ||
+              user.sellerStatus === "approved"
+            ) &&
+            user.active === false
+        ).length;
+
+
+      summaryText +=
+        `   |   Active: ${active}` +
+        `   |   Inactive: ${inactive}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "products"
+    ){
+
+      const active =
+        allProducts.filter(
+          product =>
+            product.active !== false &&
+            product.status !== "inactive"
+        ).length;
+
+
+      const featured =
+        allProducts.filter(
+          product =>
+            product.featured === true
+        ).length;
+
+
+      summaryText +=
+        `   |   Active: ${active}` +
+        `   |   Featured: ${featured}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "categories"
+    ){
+
+      summaryText +=
+        `   |   Categories: ${allCategories.length}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "sellerApplications"
+    ){
+
+      const pending =
+        allSellerApplications.filter(
+          user =>
+            user.sellerStatus ===
+            "pending"
+        ).length;
+
+
+      summaryText +=
+        `   |   Pending: ${pending}`;
+
+    }
+
+
+    if(
+      reportType ===
+      "orders"
+    ){
+
+      const pending =
+        allOrders.filter(
+          order =>
+            String(
+              order.status ||
+              ""
+            ).toLowerCase() ===
+            "pending"
+        ).length;
+
+
+      const completed =
+        allOrders.filter(
+          order =>
+            String(
+              order.status ||
+              ""
+            ).toLowerCase() ===
+            "completed"
+        ).length;
+
+
+      const cancelled =
+        allOrders.filter(
+          order =>
+            String(
+              order.status ||
+              ""
+            ).toLowerCase() ===
+            "cancelled"
+        ).length;
+
+
+      const revenue =
+        allOrders
+          .filter(
+            order =>
+              String(
+                order.status ||
+                ""
+              ).toLowerCase() ===
+              "completed"
+          )
+          .reduce(
+            (
+              total,
+              order
+            ) =>
+              total +
+              getExportOrderTotal(
+                order
+              ),
+            0
+          );
+
+
+      summaryText +=
+        `   |   Pending: ${pending}` +
+        `   |   Completed: ${completed}` +
+        `   |   Cancelled: ${cancelled}` +
+        `   |   Revenue: ${formatExportMoney(revenue)}`;
+
+    }
+
+
+    /* --------------------------------------
+       TABLE
+    -------------------------------------- */
 
     pdfDoc.autoTable({
 
@@ -10842,8 +5060,15 @@ async function exportPDF(
 
       },
 
+      alternateRowStyles:{
+        overflow:
+          "linebreak"
+      },
+
       didDrawPage:
         function(){
+
+          /* HEADER */
 
           pdfDoc.setFontSize(
             18
@@ -10860,6 +5085,7 @@ async function exportPDF(
             14
           );
 
+
           pdfDoc.setFontSize(
             12
           );
@@ -10875,6 +5101,7 @@ async function exportPDF(
             22
           );
 
+
           pdfDoc.setFontSize(
             8
           );
@@ -10884,6 +5111,7 @@ async function exportPDF(
             14,
             28
           );
+
 
           pdfDoc.setFontSize(
             8
@@ -10904,9 +5132,15 @@ async function exportPDF(
 
     });
 
+
+    /* --------------------------------------
+       PAGE NUMBERS
+    -------------------------------------- */
+
     const pageCount =
       pdfDoc.internal
         .getNumberOfPages();
+
 
     for(
       let page = 1;
@@ -10918,6 +5152,7 @@ async function exportPDF(
         page
       );
 
+
       pdfDoc.setFontSize(
         8
       );
@@ -10927,11 +5162,13 @@ async function exportPDF(
         "normal"
       );
 
+
       pdfDoc.text(
         `Arewa Market • Page ${page} of ${pageCount}`,
         14,
         202
       );
+
 
       pdfDoc.text(
         "Kasuwar Arewa a Hannunka",
@@ -10945,9 +5182,15 @@ async function exportPDF(
 
     }
 
+
+    /* --------------------------------------
+       SAVE
+    -------------------------------------- */
+
     pdfDoc.save(
       `arewa-market-${reportType}-${getFileDate()}.pdf`
     );
+
 
   }catch(error){
 
@@ -10965,9 +5208,9 @@ async function exportPDF(
 }
 
 
-/* ==========================================
+/* ------------------------------------------
    FILE DATE
-========================================== */
+------------------------------------------ */
 
 function getFileDate(){
 
@@ -11000,9 +5243,9 @@ function getFileDate(){
 }
 
 
-/* ==========================================
+/* ------------------------------------------
    EXPORT MENU
-========================================== */
+------------------------------------------ */
 
 function showExportMenu(
   reportType
@@ -11013,10 +5256,12 @@ function showExportMenu(
       reportType
     );
 
+
   const overlay =
     document.createElement(
       "div"
     );
+
 
   overlay.style.cssText = `
 
@@ -11031,10 +5276,12 @@ function showExportMenu(
 
   `;
 
+
   const box =
     document.createElement(
       "div"
     );
+
 
   box.style.cssText = `
 
@@ -11048,6 +5295,7 @@ function showExportMenu(
 
   `;
 
+
   box.innerHTML = `
 
     <div style="
@@ -11059,7 +5307,7 @@ function showExportMenu(
 
     <h2 style="
       margin:0 0 8px;
-      color:#145536;
+      color:#166534;
     ">
       Export ${escapeHtml(
         report.title
@@ -11103,7 +5351,7 @@ function showExportMenu(
           border:0;
           border-radius:10px;
           cursor:pointer;
-          background:#186742;
+          background:#15803d;
           color:white;
           font-weight:bold;
         "
@@ -11119,7 +5367,7 @@ function showExportMenu(
           border:0;
           border-radius:10px;
           cursor:pointer;
-          background:#b78717;
+          background:#ca8a04;
           color:white;
           font-weight:bold;
         "
@@ -11136,9 +5384,9 @@ function showExportMenu(
         margin-top:15px;
         width:100%;
         padding:11px;
-        border:1px solid #e3dfd7;
+        border:1px solid #ddd;
         border-radius:9px;
-        background:#f8f6f2;
+        background:#f5f5f5;
         color:#333;
         cursor:pointer;
       "
@@ -11148,13 +5396,18 @@ function showExportMenu(
 
   `;
 
+
   overlay.appendChild(
     box
   );
 
+
   document.body.appendChild(
     overlay
   );
+
+
+  /* PDF */
 
   box
     .querySelector(
@@ -11173,6 +5426,9 @@ function showExportMenu(
       }
     );
 
+
+  /* EXCEL */
+
   box
     .querySelector(
       "#exportExcelChoice"
@@ -11189,6 +5445,9 @@ function showExportMenu(
 
       }
     );
+
+
+  /* CSV */
 
   box
     .querySelector(
@@ -11207,6 +5466,9 @@ function showExportMenu(
       }
     );
 
+
+  /* CANCEL */
+
   box
     .querySelector(
       "#closeExportChoice"
@@ -11219,6 +5481,9 @@ function showExportMenu(
 
       }
     );
+
+
+  /* OUTSIDE CLICK */
 
   overlay.addEventListener(
     "click",
@@ -11275,6 +5540,22 @@ document
   );
 
 
+document
+  .getElementById(
+    "exportOrdersBtn"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      showExportMenu(
+        "orders"
+      );
+
+    }
+  );
+
+
 /* ==========================================
    EXTRA EXPORT BUTTONS
 ========================================== */
@@ -11286,91 +5567,141 @@ function addExtraExportButtons(){
       ".dashboard-tools"
     );
 
+
   if(!tools){
 
     return;
 
   }
 
-  const buttons = [
 
-    {
-      id:"exportSellersBtn",
-      text:"📥 Export Sellers",
-      type:"sellers"
-    },
+  /* SELLERS */
 
-    {
-      id:"exportCategoriesBtn",
-      text:"📥 Export Categories",
-      type:"categories"
-    },
+  if(
+    !document.getElementById(
+      "exportSellersBtn"
+    )
+  ){
 
-    {
-      id:"exportApplicationsBtn",
-      text:"📥 Export Applications",
-      type:"sellerApplications"
-    },
-
-    {
-      id:"exportReferralsBtn",
-      text:"📥 Export Referrals",
-      type:"referrals"
-    },
-
-    {
-      id:"exportCommissionsBtn",
-      text:"📥 Export Commissions",
-      type:"commissions"
-    }
-
-  ];
+    const button =
+      document.createElement(
+        "button"
+      );
 
 
-  buttons.forEach(
-    config => {
+    button.id =
+      "exportSellersBtn";
 
-      if(
-        document.getElementById(
-          config.id
-        )
-      ){
+    button.className =
+      "warning";
 
-        return;
+    button.innerHTML =
+      "📥 Export Sellers";
 
-      }
 
-      const button =
-        document.createElement(
-          "button"
+    button.addEventListener(
+      "click",
+      () => {
+
+        showExportMenu(
+          "sellers"
         );
 
-      button.id =
-        config.id;
+      }
+    );
 
-      button.className =
-        "warning";
 
-      button.innerHTML =
-        config.text;
+    tools.appendChild(
+      button
+    );
 
-      button.addEventListener(
-        "click",
-        () => {
+  }
 
-          showExportMenu(
-            config.type
-          );
 
-        }
+  /* CATEGORIES */
+
+  if(
+    !document.getElementById(
+      "exportCategoriesBtn"
+    )
+  ){
+
+    const button =
+      document.createElement(
+        "button"
       );
 
-      tools.appendChild(
-        button
+
+    button.id =
+      "exportCategoriesBtn";
+
+    button.className =
+      "warning";
+
+    button.innerHTML =
+      "📥 Export Categories";
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        showExportMenu(
+          "categories"
+        );
+
+      }
+    );
+
+
+    tools.appendChild(
+      button
+    );
+
+  }
+
+
+  /* SELLER APPLICATIONS */
+
+  if(
+    !document.getElementById(
+      "exportApplicationsBtn"
+    )
+  ){
+
+    const button =
+      document.createElement(
+        "button"
       );
 
-    }
-  );
+
+    button.id =
+      "exportApplicationsBtn";
+
+    button.className =
+      "warning";
+
+    button.innerHTML =
+      "📥 Export Applications";
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        showExportMenu(
+          "sellerApplications"
+        );
+
+      }
+    );
+
+
+    tools.appendChild(
+      button
+    );
+
+  }
 
 }
 
@@ -11405,13 +5736,5 @@ logoutBtn.addEventListener(
 
 </script>
 
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
-  });
-}
-</script>
 </body>
-
 </html>

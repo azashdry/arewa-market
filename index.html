@@ -1,673 +1,1904 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b1020">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="DeepBuild">
-<title>DeepBuild.ai - Build your future with AI</title>
-<style>
-  :root{--bg:#0b1020;--panel:#121a30;--line:#243052;--text:#e8ecf7;--muted:#8b97b8;--blue:#2f6bff;--red:#ff6b6b;--green:#3ddc97}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-  html{scroll-behavior:smooth}
-  body{padding-bottom:84px}
-  .wrap{max-width:980px;margin:0 auto;padding:0 18px}
-  header{border-bottom:1px solid var(--line)}
-  header .wrap{display:flex;justify-content:space-between;align-items:center;height:62px}
-  .logo{font-weight:700;font-size:1.2rem} .logo span{color:var(--blue)}
-  button{padding:10px 16px;border:0;border-radius:8px;background:var(--blue);color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit}
-  button.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-  button:disabled{opacity:.6;cursor:wait}
-  input,select{width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:1rem;font-family:inherit}
-  input:focus,button:focus-visible,select:focus{outline:2px solid var(--blue);outline-offset:1px}
-  label{display:block;font-size:.85rem;color:var(--muted);margin:14px 0 6px}
-  .hero{padding:56px 0 40px}
-  .hero h1{font-size:clamp(2.2rem,8vw,3.6rem);line-height:1.08;margin:0 0 16px;max-width:14ch}
-  .hero h1 em{font-style:normal;color:var(--blue)}
-  .hero p{color:var(--muted);max-width:52ch;font-size:1.05rem;line-height:1.55;margin:0 0 26px}
-  .hero button{padding:14px 26px;font-size:1rem}
-  .bar{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 18px}
-  .bar input{flex:1;min-width:200px} .bar select{width:auto}
-  h2{font-size:1.4rem;margin:30px 0 14px}
-  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));padding-bottom:50px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--bg)}
-  .card .b{padding:16px}
-  .card h3{margin:0 0 4px;font-size:1.05rem}
-  .meta{color:var(--muted);font-size:.85rem}
-  .desc{color:var(--muted);font-size:.9rem;line-height:1.5;margin:10px 0 0}
-  .tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.78rem;border:1px solid var(--line);margin-top:12px;margin-right:6px}
-  .tag.free{color:var(--green);border-color:var(--green)}
-  .empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px;grid-column:1/-1}
-  .card[data-id]{cursor:pointer}
-  dialog.wide{width:min(720px,96vw);max-height:92vh;overflow:auto}
-  .lsn{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-  .lsn button{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:500}
-  .lsn button.on{border-color:var(--blue);color:var(--blue)}
-  .viewer{margin-top:14px}
-  .viewer iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:10px;background:#000}
-  .viewer .txt{white-space:pre-wrap;line-height:1.65;margin-top:14px}
-  .tag.beta{color:#f5b942;border-color:#f5b942}
-  .cta{display:inline-block;margin-top:14px;padding:12px 22px;border-radius:8px;background:#25d366;color:#04210f;font-weight:700;text-decoration:none}
-  .cta.off{background:var(--line);color:var(--muted)}
-  nav.bottom{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
-  nav.bottom a,nav.bottom button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 2px 9px;color:var(--muted);font-size:.68rem;font-weight:600;text-decoration:none;background:transparent;border:0;border-radius:0;font-family:inherit;cursor:pointer}
-  nav.bottom a[hidden]{display:none}
-  nav.bottom svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-  nav.bottom .on{color:var(--blue)}
-.pbar{height:8px;border-radius:99px;background:var(--bg);border:1px solid var(--line);overflow:hidden;margin-top:10px}
-  .pbar i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .3s}
-  .pbar.done i{background:var(--green)}
-  .prow{display:flex;justify-content:space-between;gap:10px;margin-top:12px;font-size:.85rem;color:var(--muted)}
-  .lsn button.done{color:var(--green)}
-  .lsn button.done.on{border-color:var(--green)}
-  #vProgress{margin-top:12px}
-  button.doneBtn{margin-top:16px}
-  button.doneBtn.isDone{background:transparent;border:1px solid var(--green);color:var(--green)}
-  #myGrid .card .b button{margin-top:14px;width:100%}
-  dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:14px;width:min(400px,94vw);padding:24px}
-  dialog::backdrop{background:rgba(0,0,0,.65)}
-  .tabs{display:flex;gap:8px;margin-bottom:6px}
-  .tabs button{flex:1;background:transparent;border:1px solid var(--line);color:var(--muted)}
-  .tabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}
-  .pw{position:relative}
-  .pw input{padding-right:70px}
-  .pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:6px 10px;background:transparent;color:var(--muted);font-size:.85rem}
-  .link{background:transparent;color:var(--blue);padding:0;margin-top:14px;font-size:.9rem}
-  #authMsg{min-height:1.2em;margin-top:12px;font-size:.88rem;color:var(--red)}
-  #authSubmit{width:100%;margin-top:18px;padding:13px}
-  .close{float:right;background:transparent;color:var(--muted);padding:0 4px;font-size:1.4rem}
-  #userBox{display:none;align-items:center;gap:10px}
-  #userBox span{color:var(--muted);font-size:.9rem;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Arewa Market - Kasuwar Arewa a Hannunka</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#f5f7f6;
+      color:#222;
+    }
+
+    /* ================= HEADER ================= */
+
+    header{
+      background:#0b6b3a;
+      color:white;
+      padding:15px 20px;
+      position:sticky;
+      top:0;
+      z-index:1000;
+      box-shadow:0 2px 8px rgba(0,0,0,.15);
+    }
+
+    .header-inner{
+      max-width:1200px;
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    .brand{
+      text-decoration:none;
+      color:white;
+    }
+
+    .brand h1{
+      font-size:23px;
+    }
+
+    .brand p{
+      font-size:12px;
+      opacity:.9;
+      margin-top:3px;
+    }
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    nav a,
+    nav button{
+      border:none;
+      text-decoration:none;
+      background:white;
+      color:#0b6b3a;
+      padding:9px 13px;
+      border-radius:6px;
+      font-size:13px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    nav a.seller-btn{
+      background:#d6a21d;
+      color:white;
+    }
+
+    nav a.messages-btn{
+      background:#198754;
+      color:white;
+      position:relative;
+    }
+
+    .message-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:20px;
+      height:20px;
+      padding:0 6px;
+      margin-left:5px;
+      border-radius:20px;
+      background:#dc3545;
+      color:white;
+      font-size:11px;
+      font-weight:bold;
+      vertical-align:middle;
+    }
+
+    nav button.logout{
+      background:#b42318;
+      color:white;
+    }
+
+    /* ================= HERO ================= */
+
+    .hero{
+      background:linear-gradient(
+        rgba(11,107,58,.93),
+        rgba(11,107,58,.93)
+      );
+      color:white;
+      padding:45px 20px;
+      text-align:center;
+    }
+
+    .hero h2{
+      font-size:30px;
+      margin-bottom:10px;
+    }
+
+    .hero p{
+      max-width:650px;
+      margin:0 auto 25px;
+      line-height:1.6;
+    }
+
+    .search-box{
+      max-width:700px;
+      margin:auto;
+      display:flex;
+      gap:8px;
+    }
+
+    .search-box input{
+      flex:1;
+      padding:14px;
+      border:none;
+      border-radius:7px;
+      font-size:15px;
+      outline:none;
+    }
+
+    .search-box button{
+      border:none;
+      background:#d6a21d;
+      color:white;
+      padding:0 20px;
+      border-radius:7px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+
+    /* ================= MAIN ================= */
+
+    main{
+      max-width:1200px;
+      margin:auto;
+      padding:25px 15px 50px;
+    }
+
+    .section-title{
+      margin-bottom:15px;
+      color:#0b6b3a;
+    }
+
+    /* ================= CATEGORIES ================= */
+
+    .categories{
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      padding-bottom:10px;
+      margin-bottom:25px;
+    }
+
+    .category-btn{
+      white-space:nowrap;
+      border:1px solid #0b6b3a;
+      background:white;
+      color:#0b6b3a;
+      padding:9px 15px;
+      border-radius:20px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .category-btn.active,
+    .category-btn:hover{
+      background:#0b6b3a;
+      color:white;
+    }
+
+    /* ================= FILTERS ================= */
+
+    .filters{
+      background:white;
+      padding:15px;
+      border-radius:10px;
+      margin-bottom:25px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .filters select{
+      width:100%;
+      padding:11px;
+      border:1px solid #ddd;
+      border-radius:6px;
+      background:white;
+      outline:none;
+    }
+
+    /* ================= PRODUCTS ================= */
+
+    .products-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:15px;
+      gap:10px;
+    }
+
+    #productCount{
+      color:#666;
+      font-size:14px;
+    }
+
+    .products-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(auto-fill,minmax(220px,1fr));
+      gap:18px;
+    }
+
+    .product-card{
+      background:white;
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 2px 10px rgba(0,0,0,.08);
+      transition:.2s;
+    }
+
+    .product-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 5px 15px rgba(0,0,0,.12);
+    }
+
+    .product-image{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+      background:#eee;
+    }
+
+    .product-body{
+      padding:14px;
+    }
+
+    .product-body h3{
+      color:#222;
+      font-size:17px;
+      margin-bottom:8px;
+    }
+
+    .price{
+      color:#0b6b3a;
+      font-size:19px;
+      font-weight:bold;
+      margin-bottom:8px;
+    }
+
+    .product-meta{
+      color:#666;
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .featured{
+      display:inline-block;
+      background:#d6a21d;
+      color:white;
+      padding:4px 7px;
+      border-radius:4px;
+      font-size:11px;
+      margin-bottom:8px;
+    }
+
+    .seller-link{
+      display:inline-block;
+      margin-top:10px;
+      color:#0b6b3a;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .seller-link:hover{
+      text-decoration:underline;
+    }
+
+    /* ================= VIEW PRODUCT ================= */
+
+    .view-product{
+      display:block;
+      margin-top:10px;
+      background:#0b6b3a;
+      color:white;
+      text-align:center;
+      padding:10px;
+      border-radius:6px;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .view-product:hover{
+      background:#07502b;
+    }
+
+    /* ================= EMPTY ================= */
+
+    .empty{
+      background:white;
+      padding:40px 20px;
+      text-align:center;
+      border-radius:10px;
+      color:#666;
+      grid-column:1/-1;
+    }
+
+    .empty h3{
+      color:#0b6b3a;
+      margin-bottom:8px;
+    }
+
+    /* ================= LOADING ================= */
+
+    .loading{
+      text-align:center;
+      padding:40px;
+      color:#0b6b3a;
+      grid-column:1/-1;
+    }
+
+    /* ================= MESSAGE ================= */
+
+    #message{
+      display:none;
+      position:fixed;
+      top:80px;
+      right:15px;
+      z-index:2000;
+      max-width:320px;
+      padding:13px 16px;
+      border-radius:7px;
+      color:white;
+      background:#0b6b3a;
+      box-shadow:0 3px 12px rgba(0,0,0,.2);
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer{
+      background:#073d24;
+      color:white;
+      padding:25px 15px;
+      text-align:center;
+      margin-top:30px;
+    }
+
+    footer p{
+      font-size:13px;
+      opacity:.9;
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media(max-width:700px){
+
+      .header-inner{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      nav{
+        width:100%;
+      }
+
+      nav a,
+      nav button{
+        flex:1;
+        text-align:center;
+      }
+
+      .hero{
+        padding:35px 15px;
+      }
+
+      .hero h2{
+        font-size:25px;
+      }
+
+      .search-box{
+        flex-direction:column;
+      }
+
+      .search-box button{
+        padding:12px;
+      }
+
+      .filters{
+        grid-template-columns:1fr;
+      }
+
+      .products-grid{
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
+        gap:10px;
+      }
+
+      .product-image{
+        height:145px;
+      }
+
+      .product-body{
+        padding:10px;
+      }
+
+      .product-body h3{
+        font-size:15px;
+      }
+
+      .price{
+        font-size:16px;
+      }
+
+      .product-meta{
+        font-size:12px;
+      }
+    }
+
+    @media(max-width:400px){
+
+      .products-grid{
+        grid-template-columns:1fr;
+      }
+
+      .product-image{
+        height:190px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header><div class="wrap">
-  <div class="logo">Deep<span>Build</span>.ai</div>
-  <div style="display:flex;align-items:center;gap:8px">
-    <button class="ghost langBtn" type="button">Hausa</button>
-    <button id="openAuth">Sign in</button>
-    <div id="userBox"><span id="userName"></span><button class="ghost" id="signOutBtn">Sign out</button></div>
-  </div>
-</div></header>
+  <!-- ================= HEADER ================= -->
 
-<main class="wrap">
-  <section class="hero" id="home">
-    <h1>Build your future with <em>AI</em></h1>
-    <p>World-class AI education and a community built for African youth ready to lead the future. Start free today.</p>
-    <button id="startBtn">Start learning free</button>
+  <header>
+
+    <div class="header-inner">
+
+      <a href="index.html" class="brand">
+        <h1>Arewa Market</h1>
+        <p>Kasuwar Arewa a Hannunka</p>
+      </a>
+
+      <nav id="navArea">
+
+        <a href="login.html">Login</a>
+
+        <a href="register.html">Register</a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= HERO ================= -->
+
+  <section class="hero">
+
+    <h2>Buy & Sell Across Northern Nigeria</h2>
+
+    <p>
+      Discover products from sellers across Northern Nigeria.
+      Search products, browse categories and find sellers easily.
+    </p>
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search for products..."
+      >
+
+      <button id="searchBtn">
+        Search
+      </button>
+
+    </div>
+
   </section>
 
-  <section id="mycourses" hidden>
-    <h2>My Courses</h2>
-    <div class="grid" id="myGrid"><div class="empty">Loading courses...</div></div>
-  </section>
 
-  <section id="courses">
-    <h2>Courses</h2>
-    <div class="bar">
-      <input id="search" placeholder="Search courses">
-      <select id="cat">
-        <option value="">All categories</option><option value="AI &amp; ML">AI &amp; ML</option>
-        <option value="Python">Python</option><option value="Data Science">Data Science</option><option value="General">General</option>
+  <!-- ================= MAIN ================= -->
+
+  <main>
+
+    <!-- Categories -->
+
+    <h2 class="section-title">
+      Categories
+    </h2>
+
+    <div
+      class="categories"
+      id="categories"
+    >
+
+      <button
+        class="category-btn active"
+        data-category="all"
+      >
+        All
+      </button>
+
+    </div>
+
+
+    <!-- Filters -->
+
+    <div class="filters">
+
+      <select id="stateFilter">
+
+        <option value="all">
+          All States
+        </option>
+
+        <option value="Adamawa">
+          Adamawa
+        </option>
+
+        <option value="Bauchi">
+          Bauchi
+        </option>
+
+        <option value="Borno">
+          Borno
+        </option>
+
+        <option value="Gombe">
+          Gombe
+        </option>
+
+        <option value="Jigawa">
+          Jigawa
+        </option>
+
+        <option value="Kaduna">
+          Kaduna
+        </option>
+
+        <option value="Kano">
+          Kano
+        </option>
+
+        <option value="Katsina">
+          Katsina
+        </option>
+
+        <option value="Kebbi">
+          Kebbi
+        </option>
+
+        <option value="Kogi">
+          Kogi
+        </option>
+
+        <option value="Kwara">
+          Kwara
+        </option>
+
+        <option value="Nasarawa">
+          Nasarawa
+        </option>
+
+        <option value="Niger">
+          Niger
+        </option>
+
+        <option value="Plateau">
+          Plateau
+        </option>
+
+        <option value="Sokoto">
+          Sokoto
+        </option>
+
+        <option value="Taraba">
+          Taraba
+        </option>
+
+        <option value="Yobe">
+          Yobe
+        </option>
+
+        <option value="Zamfara">
+          Zamfara
+        </option>
+
+        <option value="FCT">
+          FCT
+        </option>
+
       </select>
+
+
+      <select id="sortFilter">
+
+        <option value="featured">
+          Featured First
+        </option>
+
+        <option value="newest">
+          Newest First
+        </option>
+
+        <option value="priceLow">
+          Price: Low to High
+        </option>
+
+        <option value="priceHigh">
+          Price: High to Low
+        </option>
+
+        <option value="name">
+          Name A-Z
+        </option>
+
+      </select>
+
     </div>
-    <div class="grid" id="grid"><div class="empty">Loading courses...</div></div>
-  </section>
 
-  <section id="tools">
-    <h2>AI Tools</h2>
-    <div class="grid" id="toolGrid"><div class="empty">Loading tools...</div></div>
-  </section>
 
-  <section id="community" style="padding-bottom:40px">
-    <h2>Community</h2>
-    <div class="card"><div class="b">
-      <h3>WhatsApp Community</h3>
-      <div class="meta" id="commMembers"></div>
-      <p class="desc" id="commText">Connect, learn and grow together with other developers and creators. Instant updates, project sharing and direct mentor access.</p>
-      <a class="cta off" id="commBtn" href="#community">Coming soon</a>
-    </div></div>
-  </section>
-</main>
+    <!-- Products -->
 
-<nav class="bottom">
-  <a href="#home" class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg><span>Home</span></a>
-  <a href="#mycourses" id="navMy" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></svg><span>My Courses</span></a>
-  <a href="#courses"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h7a3 3 0 013 3v13a2 2 0 00-2-2H2z"/><path d="M22 4h-7a3 3 0 00-3 3v13a2 2 0 012-2h8z"/></svg><span>Courses</span></a>
-  <a href="#tools"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 005 5L21 12.6 12.6 21a2.1 2.1 0 01-3-3L18 9.6"/><path d="M14.7 6.3L9 12"/><path d="M9 3l3 3-3 3-3-3z"/></svg><span>Tools</span></a>
-  <a href="#community"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><path d="M16 4.6a3.5 3.5 0 010 6.8"/><path d="M18 14a6.5 6.5 0 013.5 6"/></svg><span>Community</span></a>
-  <button id="navAuth"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h5a1 1 0 011 1v14a1 1 0 01-1 1h-5"/><path d="M4 12h10"/><path d="M10 8l4 4-4 4"/></svg><span id="navAuthTxt">Sign in</span></button>
-</nav>
+    <div class="products-header">
 
-<dialog id="viewDialog" class="wide">
-  <button class="close" id="closeView" aria-label="Close">&times;</button>
-  <h2 id="vTitle" style="margin-top:0"></h2>
-  <div class="meta" id="vMeta"></div>
-  <p class="desc" id="vDesc"></p>
-  <div id="vAction" style="margin:14px 0"></div>
-  <div id="vProgress" hidden></div>
-  <div id="vLessons" class="lsn"></div>
-  <div id="vViewer" class="viewer"></div>
-</dialog>
+      <h2 class="section-title">
+        Products
+      </h2>
 
-<dialog id="authDialog">
-  <button class="close" id="closeAuth" aria-label="Close">&times;</button>
-  <div class="tabs">
-    <button class="on" data-mode="signup">Sign up</button>
-    <button data-mode="login">Log in</button>
-  </div>
-  <form id="authForm">
-    <div id="nameRow">
-      <label for="aName">Full name</label>
-      <input id="aName" autocomplete="name">
+      <span id="productCount">
+        Loading...
+      </span>
+
     </div>
-    <label for="aEmail">Email</label>
-    <input id="aEmail" type="email" autocomplete="email" required>
-    <label for="aPass">Password</label>
-    <div class="pw">
-      <input id="aPass" type="password" minlength="6" autocomplete="new-password" required>
-      <button type="button" class="pwtoggle" data-target="aPass" aria-label="Show or hide password">Show</button>
-    </div>
-    <button type="button" class="link" id="forgotBtn" hidden>Forgot password?</button>
-    <button type="submit" id="authSubmit">Create account</button>
-    <div id="authMsg" role="alert"></div>
-  </form>
-</dialog>
 
-<script type="module">
-import "./i18n.js";
-import { auth, db } from "./firebase.js";
-import { uploadToImgbb } from "./imgbb-upload.js";
-import { issueCertificate, downloadCertificate } from "./certificate.js";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, onAuthStateChanged, signOut }
-  from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import { collection, query, where, getDocs, getDoc, doc, setDoc, updateDoc, deleteField, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
-  ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+    <div
+      class="products-grid"
+      id="productsGrid"
+    >
 
-/* ---------- Courses (published only) ---------- */
-let courses = [];
-let CUR = "₦";
-getDoc(doc(db, "settings", "payment")).then(t => { if (t.exists() && t.data().currency) { CUR = t.data().currency; if (typeof render === "function" && courses.length) render(); } }).catch(() => {});
-async function loadCourses(){
-  try {
-    const snap = await getDocs(query(collection(db, "courses"), where("published", "==", true)));
-    courses = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    courses.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-    render();
-  } catch (err) {
-    console.error(err);
-    $("grid").innerHTML = '<div class="empty">Could not load courses. Please try again later.</div>';
-  }
-}
-function render(){
-  const q = $("search").value.trim().toLowerCase(), cat = $("cat").value;
-  const rows = courses.filter(c =>
-    (!cat || c.category === cat) &&
-    (!q || (c.title || "").toLowerCase().includes(q) || (c.instructor || "").toLowerCase().includes(q)));
-  $("grid").innerHTML = rows.length ? rows.map(c => `
-    <article class="card" data-id="${esc(c.id)}">
-      ${c.imageUrl ? `<img src="${esc(c.imageUrl)}" alt="" loading="lazy">` : ""}
-      <div class="b">
-        <h3>${esc(c.title)}</h3>
-        <div class="meta">${esc(c.instructor)}</div>
-        ${c.description ? `<p class="desc">${esc(c.description)}</p>` : ""}
-        <span class="tag">${esc(c.level)}</span>
-        <span class="tag ${c.free ? "free" : ""}">${c.free ? "Free" : CUR + esc(c.price)}</span>
-        <span class="tag" style="color:var(--blue);border-color:var(--blue)">View course</span>
+      <div class="loading">
+        Loading products...
       </div>
-    </article>`).join("")
-    : '<div class="empty">' + (courses.length ? "No courses match your search." : "No courses yet. Check back soon.") + '</div>';
-}
-$("search").addEventListener("input", render);
-$("cat").addEventListener("change", render);
-loadCourses();
 
-/* ---------- Course page, enroll, lessons ---------- */
-let current = null;
-let curEnr = null;   // enrollment data of the open course
-function drivePreview(u){
-  const m = String(u).match(/drive\.google\.com\/file\/d\/([\w-]+)/) || String(u).match(/drive\.google\.com\/open\?id=([\w-]+)/);
-  return m ? "https://drive.google.com/file/d/" + m[1] + "/preview" : "";
-}
-function ytId(u){
-  try {
-    u = String(u || "").trim(); if (!u) return "";
-    if (!/^https?:\/\//i.test(u)) u = "https://" + u;       // allow links pasted without https://
-    const x = new URL(u), h = x.hostname.replace(/^(www|m|music)\./, ""); let id = "";
-    if (h === "youtu.be") id = x.pathname.split("/")[1] || "";
-    else if (h.endsWith("youtube.com") || h.endsWith("youtube-nocookie.com")) {
-      id = x.searchParams.get("v") || (x.pathname.match(/\/(?:embed|shorts|live|v)\/([\w-]+)/) || [])[1] || "";
+    </div>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer>
+
+    <p>
+      © 2026 Arewa Market
+    </p>
+
+    <p style="margin-top:6px;">
+      Buy and sell products across Northern Nigeria.
+    </p>
+
+  </footer>
+
+
+  <!-- ================= MESSAGE ================= -->
+
+  <div id="message"></div>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script type="module">
+
+    import {
+      auth,
+      db
+    } from "./firebase.js";
+
+
+    import {
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+    import {
+      collection,
+      getDocs,
+      doc,
+      getDoc,
+      query,
+      where,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    // =================================================
+    // GLOBAL DATA
+    // =================================================
+
+    let allProducts = [];
+    let allCategories = [];
+
+    let currentCategory = "all";
+    let currentState = "all";
+    let currentSearch = "";
+    let currentSort = "featured";
+
+    let currentUser = null;
+    let currentUserData = null;
+
+    let messagesUnsubscribe = null;
+
+
+    // =================================================
+    // ELEMENTS
+    // =================================================
+
+    const productsGrid =
+      document.getElementById("productsGrid");
+
+    const productCount =
+      document.getElementById("productCount");
+
+    const categoriesContainer =
+      document.getElementById("categories");
+
+    const searchInput =
+      document.getElementById("searchInput");
+
+    const stateFilter =
+      document.getElementById("stateFilter");
+
+    const sortFilter =
+      document.getElementById("sortFilter");
+
+    const navArea =
+      document.getElementById("navArea");
+
+    const messageBox =
+      document.getElementById("message");
+
+
+    // =================================================
+    // MESSAGE
+    // =================================================
+
+    function showMessage(text){
+
+      messageBox.textContent = text;
+
+      messageBox.style.display = "block";
+
+      setTimeout(() => {
+
+        messageBox.style.display = "none";
+
+      },3000);
+
     }
-    return /^[\w-]{6,20}$/.test(id) ? id : "";
-  } catch { return ""; }
-}
-$("grid").addEventListener("click", e => {
-  const el = e.target.closest(".card[data-id]"); if (!el) return;
-  const c = courses.find(x => x.id === el.dataset.id); if (c) openCourse(c);
-});
-$("closeView").addEventListener("click", () => $("viewDialog").close());
-function openCourse(c){
-  current = c;
-  $("vTitle").textContent = c.title;
-  $("vMeta").textContent = [c.instructor, c.category, c.level, c.free ? "Free" : CUR + c.price].join(" · ");
-  $("vDesc").textContent = c.description || "";
-  $("vLessons").innerHTML = ""; $("vViewer").innerHTML = "";
-  $("viewDialog").showModal();
-  refreshAccess();
-}
-async function refreshAccess(){
-  const c = current, box = $("vAction");
-  $("vLessons").innerHTML = ""; $("vViewer").innerHTML = "";
-  $("vProgress").hidden = true; curEnr = null;
-  if (!me) {
-    box.innerHTML = '<button id="vSign">Sign in to enroll</button>';
-    $("vSign").onclick = () => open("signup");
-    return;
-  }
-  box.textContent = "Checking...";
-  try {
-    const enr = await getDoc(doc(db, "enrollments", me.uid + "_" + c.id));
-    if (enr.exists()) {
-      curEnr = enr.data();
-      box.innerHTML = '<span class="tag free" style="margin:0">Enrolled</span>';
-      loadLessons(c);
-    } else if (c.free) {
-      box.innerHTML = '<button id="vEnroll">Enroll for free</button>';
-      $("vEnroll").onclick = async () => {
-        $("vEnroll").disabled = true;
-        try {
-          await setDoc(doc(db, "enrollments", me.uid + "_" + c.id),
-            { uid: me.uid, courseId: c.id, courseTitle: c.title, completedLessons: [], progress: 0, createdAt: serverTimestamp() });
-          refreshAccess(); loadMyCourses();
-        } catch (err) { box.textContent = "Could not enroll: " + err.message; }
-      };
-    } else {
-      await showPayBox(c, box);
-    }
-  } catch (err) { box.textContent = "Could not check enrollment: " + err.message; }
-}
-/* ---------- Paid courses: manual payment with proof ---------- */
-async function compressImage(file){
-  const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => no(new Error("Could not read the image.")); i.src = URL.createObjectURL(file); });
-  const sc = Math.min(1, 1000 / Math.max(img.width, img.height)), cv = document.createElement("canvas");
-  cv.width = Math.round(img.width * sc); cv.height = Math.round(img.height * sc);
-  cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
-  for (let q = .7; q >= .3; q -= .1) { const d = cv.toDataURL("image/jpeg", q); if (d.length < 380000) return d; }
-  throw new Error("Image is too large. Please send a smaller screenshot.");
-}
-async function showPayBox(c, box){
-  let pay = null, cfg = {};
-  try { const p = await getDoc(doc(db, "payments", me.uid + "_" + c.id)); if (p.exists()) pay = p.data(); } catch (e) {}
-  try { const t = await getDoc(doc(db, "settings", "payment")); if (t.exists()) cfg = t.data(); } catch (e) {}
-  const cur = cfg.currency || CUR;
-  if (pay && pay.status === "pending") {
-    box.innerHTML = '<span class="tag" style="margin:0;color:var(--amber,#f5a524);border-color:currentColor">Payment under review</span>' +
-      '<div class="meta" style="margin-top:8px">The course will unlock as soon as your payment is confirmed. Reopen this page later.</div>';
-    return;
-  }
-  const hasBank = cfg.bankName || cfg.accountNumber;
-  const row = (l, v, id) => '<div style="display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)"><span class="meta">' + l + '</span><b' + (id ? ' id="' + id + '"' : "") + '>' + esc(v || "-") + '</b></div>';
-  box.innerHTML = '<div style="border:1px solid var(--line);border-radius:12px;padding:14px">' +
-    '<div style="font-weight:700;font-size:1.2rem">' + esc(cur) + esc(c.price) + '</div>' +
-    (pay && pay.status === "rejected" ? '<div class="meta" style="color:var(--red,#ff6b6b);margin-top:6px">Your last payment was rejected' + (pay.note ? ": " + esc(pay.note) : "") + '. Please send a correct proof.</div>' : "") +
-    '<div style="margin:10px 0">' + (hasBank
-      ? row("Bank", cfg.bankName) + row("Account name", cfg.accountName) + row("Account number", cfg.accountNumber, "payAccNo") +
-        '<button type="button" class="ghost" id="payCopy" style="margin-top:8px">Copy account number</button>'
-      : '<div class="meta">Payment details have not been added yet. Please contact support.</div>') + '</div>' +
-    (cfg.instructions ? '<div class="meta" style="white-space:pre-line;margin-bottom:10px">' + esc(cfg.instructions) + '</div>' : "") +
-    '<label for="payAmt">Amount you paid</label><input id="payAmt" type="number" min="0" step="0.01" value="' + esc(c.price) + '">' +
-    '<label for="payRef">Payment reference / sender name</label><input id="payRef" maxlength="80" required>' +
-    '<label for="payDate">Payment date</label><input id="payDate" type="date" value="' + new Date().toISOString().slice(0, 10) + '">' +
-    '<label for="payFile">Screenshot of your payment</label><input id="payFile" type="file" accept="image/*">' +
-    '<img id="payPrev" alt="Selected screenshot" hidden style="width:100%;max-height:220px;object-fit:contain;border-radius:8px;margin-top:8px;border:1px solid var(--line)">' +
-    '<button id="paySend" style="margin-top:10px">I have paid - send proof</button>' +
-    '<div id="payMsg" class="meta" style="margin-top:6px"></div></div>';
-  if ($("payCopy")) $("payCopy").onclick = async () => {
-    try { await navigator.clipboard.writeText(cfg.accountNumber || ""); $("payCopy").textContent = "Copied"; } catch (e) { $("payCopy").textContent = "Copy failed"; }
-  };
-  $("payFile").onchange = () => {
-    const f = $("payFile").files[0], m = $("payMsg"), pv = $("payPrev");
-    if (!f) { pv.hidden = true; m.textContent = ""; return; }
-    if (!f.type.startsWith("image/")) { $("payFile").value = ""; pv.hidden = true; m.textContent = "Please choose an image (JPG or PNG)."; return; }
-    pv.src = URL.createObjectURL(f); pv.hidden = false; m.textContent = "Selected: " + f.name;
-  };
-  $("paySend").onclick = async () => {
-    const f = $("payFile").files[0], msg = $("payMsg"), ref = $("payRef").value.trim(), amt = Number($("payAmt").value);
-    if (!amt || amt <= 0) { msg.textContent = "Please enter the amount you paid."; return; }
-    if (!ref) { msg.textContent = "Please enter the payment reference or sender name."; return; }
-    if (!f) { msg.textContent = "Please choose the screenshot of your payment."; return; }
-    $("paySend").disabled = true; msg.textContent = "Uploading...";
-    try {
-      let url = "", proofData = "";
-      try { url = await uploadToImgbb(f); }
-      catch (e1) { msg.textContent = "Upload service is busy, using backup..."; proofData = await compressImage(f); }
-      await setDoc(doc(db, "payments", me.uid + "_" + c.id), {
-        uid: me.uid, userName: me.displayName || "", email: me.email || "", courseId: c.id, courseTitle: c.title,
-        amount: c.price, amountPaid: amt, currency: cur, proofUrl: url, ...(proofData ? { proofData } : {}), reference: ref, paymentDate: $("payDate").value,
-        status: "pending", note: "", createdAt: serverTimestamp() });
-      showPayBox(c, box);
-    } catch (err) { msg.textContent = "Could not send: " + err.message; $("paySend").disabled = false; }
-  };
-}
-let lessonIds = [];
-const allDone = () => lessonIds.length > 0 && lessonIds.every(x => (curEnr.completedLessons || []).includes(x));
-function paintProgress(total){
-  const done = (curEnr.completedLessons || []).length, pct = curEnr.progress || 0, box = $("vProgress");
-  box.hidden = false;
-  box.innerHTML = `<div class="prow"><span>${pct}%</span><span>Lessons: ${done}/${total}</span></div>` +
-    `<div class="pbar ${pct === 100 ? "done" : ""}"><i style="width:${pct}%"></i></div>` +
-    (pct === 100 && allDone() ? '<div class="meta" style="margin-top:8px;color:var(--green)">Course completed</div><button id="certBtn" style="margin-top:10px">Get certificate</button><div id="certMsg" class="meta" style="color:var(--red);margin-top:6px"></div>' : "");
-  const cb = $("certBtn");
-  if (cb) cb.onclick = async () => {
-    cb.disabled = true; cb.textContent = "Preparing...";
-    try { await downloadCertificate(await issueCertificate(me, curEnr, current)); cb.textContent = "Download certificate again"; }
-    catch (err) { $("certMsg").textContent = "Could not create certificate: " + err.message; cb.textContent = "Get certificate"; }
-    cb.disabled = false;
-  };
-}
-async function saveProgress(patch){
-  await updateDoc(doc(db, "enrollments", me.uid + "_" + current.id), { ...patch, updatedAt: serverTimestamp() });
-  Object.assign(curEnr, patch);
-}
-async function loadLessons(c){
-  try {
-    const snap = await getDocs(collection(db, "courses", c.id, "lessons"));
-    const rows = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.order || 0) - (b.order || 0));
-    if (!rows.length) { $("vViewer").innerHTML = '<div class="empty">Lessons are coming soon.</div>'; return; }
-    const ids = rows.map(r => r.id), total = rows.length; lessonIds = ids;
-    const isDone = id => (curEnr.completedLessons || []).includes(id);
-    const paintList = i => {
-      $("vLessons").innerHTML = rows.map((l, n) =>
-        `<button data-i="${n}" class="${isDone(l.id) ? "done" : ""} ${n === i ? "on" : ""}">${isDone(l.id) ? "✓ " : ""}${esc(l.order)}. ${esc(l.title)}</button>`).join("");
-    };
-    let watchTimer = null;
-    const loadYT = () => window.YT && window.YT.Player ? Promise.resolve() : new Promise((ok, no) => {
-      window.onYouTubeIframeAPIReady = ok;
-      const t = document.createElement("script"); t.src = "https://www.youtube.com/iframe_api"; t.onerror = () => no(new Error("player blocked"));
-      document.head.appendChild(t);
-    });
-    // The button unlocks only after the learner really watched (>= 90% of distinct seconds) or read (20s) the lesson.
-    const gate = async (l, vid, done) => {
-      const btn = $("doneBtn"), msg = $("doneMsg"); if (done || !btn) return;
-      btn.disabled = true;
-      if (!vid) {
-        let left = 20; btn.textContent = "Read the lesson (" + left + "s)";
-        watchTimer = setInterval(() => {
-          if (!$("doneBtn")) { clearInterval(watchTimer); return; }
-          if (--left <= 0) { clearInterval(watchTimer); btn.disabled = false; btn.textContent = "Mark as complete"; }
-          else btn.textContent = "Read the lesson (" + left + "s)";
-        }, 1000);
+
+
+    // =================================================
+    // AUTH STATE
+    // =================================================
+
+    onAuthStateChanged(auth, async (user) => {
+
+      currentUser = user;
+
+      currentUserData = null;
+
+      if(!user){
+
+        if(messagesUnsubscribe){
+
+          messagesUnsubscribe();
+
+          messagesUnsubscribe = null;
+
+        }
+
+        renderLoggedOutNav();
+
         return;
+
       }
-      btn.textContent = "Watch the video to unlock";
-      const k = "dbwatch_" + me.uid + "_" + l.id; let seen = new Set(), last = null, ticks = 0;
-      try { seen = new Set(JSON.parse(localStorage.getItem(k) || "[]")); } catch (e) {}
-      let player;
-      try { await loadYT(); } catch (e) { msg.textContent = "The video player could not load. Turn off your ad blocker and reload the page."; return; }
-      if (!$("ytBox")) return;
-      player = new YT.Player("ytBox", { videoId: vid, playerVars: { rel: 0, modestbranding: 1, playsinline: 1, origin: location.origin },
-        events: { onError: code => { msg.textContent = [101, 150, 153].includes(code)
-          ? "The owner of this video turned off playing it on other sites. In YouTube Studio, open the video and switch on Allow embedding."
-          : "This video could not be played (error " + code + "). Check that the video is Public or Unlisted."; } } });
-      watchTimer = setInterval(() => {
-        if (!document.querySelector("#vViewer iframe:not(#pdfFrame)")) { if (!$("ytBox")) clearInterval(watchTimer); return; }
-        try {
-          const dur = Math.floor(player.getDuration() || 0); if (dur < 1) return;
-          if (player.getPlayerState() === 1) {
-            const t = Math.floor(player.getCurrentTime());
-            if (last !== null && t >= last && t - last <= 3) { for (let x = last; x <= t; x++) seen.add(x); } else seen.add(t);
-            last = t;
-          } else last = null;
-          const pct = Math.min(100, Math.round(seen.size / dur * 100));
-          if (++ticks % 10 === 0) try { localStorage.setItem(k, JSON.stringify([...seen])); } catch (e) {}
-          if (pct >= 90) { clearInterval(watchTimer); btn.disabled = false; btn.textContent = "Mark as complete"; }
-          else btn.textContent = "Watched " + pct + "% - finish the video to unlock";
-        } catch (e) {}
-      }, 500);
-    };
-    const show = i => {
-      clearInterval(watchTimer);
-      const l = rows[i], id = ytId(l.videoUrl), done = isDone(l.id);
-      paintList(i);
-      $("vViewer").innerHTML = `<h3>${esc(l.title)}</h3>` +
-        (id ? '<div id="ytBox"></div>' : (/^https?:\/\//i.test(String(l.videoUrl || "").trim())
-          ? '<div style="margin-top:12px"><a href="' + esc(String(l.videoUrl).trim()) + '" target="_blank" rel="noopener" style="display:inline-block;padding:10px 16px;border:1px solid var(--blue);border-radius:8px;color:var(--blue);text-decoration:none;font-weight:600">Open video</a></div>'
-          : "")) +
-        (String(l.pdfUrl || "").startsWith("https://")
-          ? '<div style="margin-top:12px"><a class="pdfBtn" href="' + esc(l.pdfUrl) + '" target="_blank" rel="noopener" style="display:inline-block;padding:10px 16px;border:1px solid var(--blue);border-radius:8px;color:var(--blue);text-decoration:none;font-weight:600">Open PDF</a></div>' +
-            (drivePreview(l.pdfUrl) ? '<iframe id="pdfFrame" src="' + esc(drivePreview(l.pdfUrl)) + '" loading="lazy" style="margin-top:12px;aspect-ratio:auto;height:70vh"></iframe>' : "")
-          : "") +
-        (l.pdfChunks > 0 ? '<div id="pdfBox" style="margin-top:12px"><button id="pdfLoad" class="ghost">View PDF' + (l.pdfName ? " - " + esc(l.pdfName) : "") + '</button></div>' : "") +
-        (l.content ? `<div class="txt">${esc(l.content)}</div>` : "") +
-        `<button class="doneBtn ${done ? "isDone" : ""}" id="doneBtn" ${done ? "disabled" : ""}>${done ? "Completed" : "Mark as complete"}</button>` +
-        '<div id="doneMsg" class="meta" style="color:var(--red);margin-top:8px"></div>';
-      $("doneBtn").onclick = async () => {
-        const btn = $("doneBtn"); btn.disabled = true;
-        const set = new Set(curEnr.completedLessons || []); set.add(l.id);
-        const valid = [...set].filter(x => ids.includes(x));   // ignore lessons that were deleted
-        const progress = Math.round(valid.length / total * 100);
-        const patch = { completedLessons: valid, progress, totalLessons: total, lastLessonId: l.id,
-          completedAt: progress === 100 ? (curEnr.completedAt || serverTimestamp()) : deleteField() };
-        try {
-          await saveProgress(patch);
-          if (progress !== 100) delete curEnr.completedAt;
-          paintProgress(total); show(i);
-        } catch (err) { btn.disabled = false; $("doneMsg").textContent = "Could not save progress: " + err.message; }
-      };
-      if ($("pdfLoad")) $("pdfLoad").onclick = async () => {
-        const b = $("pdfLoad"); b.disabled = true; b.textContent = "Loading PDF...";
-        try {
-          const snap = await getDocs(collection(db, "courses", c.id, "lessons", l.id, "pdf"));
-          const parts = snap.docs.map(d => d.data()).sort((x, y) => x.i - y.i).map(d => Uint8Array.from(atob(d.data), ch => ch.charCodeAt(0)));
-          const url = URL.createObjectURL(new Blob(parts, { type: "application/pdf" }));
-          $("pdfBox").innerHTML = '<a href="' + url + '" target="_blank" rel="noopener" download="' + esc(l.pdfName || "lesson.pdf") + '" style="display:inline-block;padding:10px 16px;border:1px solid var(--blue);border-radius:8px;color:var(--blue);text-decoration:none;font-weight:600">Open / download PDF</a>' +
-            '<iframe id="pdfFrame" src="' + url + '" style="margin-top:12px;aspect-ratio:auto;height:70vh"></iframe>';
-        } catch (err) { b.disabled = false; b.textContent = "View PDF"; $("doneMsg").textContent = "Could not load PDF: " + err.message; }
-      };
-      paintProgress(total);
-      gate(l, id, done);
-      if (curEnr.lastLessonId !== l.id) {          // remember where the learner stopped
-        saveProgress({ lastLessonId: l.id }).catch(console.error);
+
+      try{
+
+        const userSnap =
+          await getDoc(
+            doc(db,"users",user.uid)
+          );
+
+        if(userSnap.exists()){
+
+          currentUserData =
+            userSnap.data();
+
+        }
+
+      }catch(error){
+
+        console.error(
+          "User profile error:",
+          error
+        );
+
       }
-    };
-    $("vLessons").onclick = e => { const b = e.target.closest("button[data-i]"); if (b) show(Number(b.dataset.i)); };
-    const start = rows.findIndex(r => r.id === curEnr.lastLessonId);
-    show(start >= 0 ? start : 0);
-  } catch (err) { $("vViewer").innerHTML = '<div class="empty">Could not load lessons: ' + esc(err.message) + '</div>'; }
-}
 
-/* ---------- My Courses ---------- */
-async function loadMyCourses(){
-  const sec = $("mycourses"), grid = $("myGrid");
-  if (!me) { sec.hidden = true; $("navMy").hidden = true; grid.innerHTML = ""; return; }
-  sec.hidden = false; $("navMy").hidden = false;
-  try {
-    const snap = await getDocs(query(collection(db, "enrollments"), where("uid", "==", me.uid)));
-    const enrs = snap.docs.map(d => d.data())
-      .sort((a, b) => ((b.updatedAt || b.createdAt)?.seconds || 0) - ((a.updatedAt || a.createdAt)?.seconds || 0));
-    if (!enrs.length) {
-      grid.innerHTML = '<div class="empty">You have not enrolled in any course yet.<br><br><button type="button" id="browseBtn">Browse courses</button></div>';
-      $("browseBtn").onclick = () => $("courses").scrollIntoView();
-      return;
+      renderLoggedInNav();
+
+      startBuyerMessageListener();
+
+    });
+
+
+    // =================================================
+    // LOGGED OUT NAV
+    // =================================================
+
+    function renderLoggedOutNav(){
+
+      navArea.innerHTML = `
+
+        <a href="login.html">
+          Login
+        </a>
+
+        <a href="register.html">
+          Register
+        </a>
+
+      `;
+
     }
-    // one course document per enrollment; if it is unpublished/unreadable we fall back to the saved title
-    const list = await Promise.all(enrs.map(async e => {
-      let c = courses.find(x => x.id === e.courseId) || null;
-      if (!c) { try { const s = await getDoc(doc(db, "courses", e.courseId)); if (s.exists()) c = { id: s.id, ...s.data() }; } catch {} }
-      return { e, c };
-    }));
-    grid.innerHTML = list.map(({ e, c }) => {
-      const pct = e.progress || 0, n = (e.completedLessons || []).length;
-      const label = pct === 100 ? "Completed" : n || e.lastLessonId ? "Continue" : "Start";
-      return `<article class="card">
-        ${c?.imageUrl ? `<img src="${esc(c.imageUrl)}" alt="" loading="lazy">` : ""}
-        <div class="b">
-          <h3>${esc(c?.title || e.courseTitle)}</h3>
-          ${c?.instructor ? `<div class="meta">${esc(c.instructor)}</div>` : ""}
-          <div class="prow"><span>${pct}%</span>${e.totalLessons ? `<span>Lessons: ${n}/${esc(e.totalLessons)}</span>` : ""}</div>
-          <div class="pbar ${pct === 100 ? "done" : ""}"><i style="width:${pct}%"></i></div>
-          ${c ? `<button type="button" class="${pct === 100 ? "ghost" : ""}" data-open="${esc(c.id)}">${label}</button>` : ""}
-        </div></article>`;
-    }).join("");
-    grid._map = Object.fromEntries(list.filter(x => x.c).map(x => [x.c.id, x.c]));
-  } catch (err) {
-    console.error(err);
-    grid.innerHTML = '<div class="empty">Could not load your courses: ' + esc(err.message) + '</div>';
-  }
-}
-$("myGrid").addEventListener("click", e => {
-  const b = e.target.closest("button[data-open]"); if (!b) return;
-  const c = $("myGrid")._map?.[b.dataset.open]; if (c) openCourse(c);
-});
-$("viewDialog").addEventListener("close", () => { if (me) loadMyCourses(); });
 
-/* ---------- Tools ---------- */
-const safeUrl = u => (typeof u === "string" && u.startsWith("https://")) ? u : "";
-async function loadTools(){
-  try {
-    const snap = await getDocs(query(collection(db, "tools"), where("status", "in", ["live", "beta"])));
-    const rows = snap.docs.map(d => d.data()).sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-    $("toolGrid").innerHTML = rows.length ? rows.map(t => {
-      const link = safeUrl(t.url);
-      return `<article class="card"><div class="b">
-        <h3>${esc(t.name)}</h3>
-        ${t.description ? `<p class="desc">${esc(t.description)}</p>` : ""}
-        <span class="tag ${t.status === "live" ? "free" : "beta"}">${t.status === "live" ? "Live" : "Beta"}</span>
-        ${link ? `<a class="tag" href="${esc(link)}" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none">Open</a>` : ""}
-      </div></article>`;
-    }).join("") : '<div class="empty">AI tools are coming soon.</div>';
-  } catch (err) {
-    console.error(err);
-    $("toolGrid").innerHTML = '<div class="empty">Could not load tools.</div>';
-  }
-}
-loadTools();
 
-/* ---------- Community ---------- */
-(async () => {
-  try {
-    const snap = await getDoc(doc(db, "settings", "community"));
-    const d = snap.exists() ? snap.data() : {};
-    if (d.membersText) $("commMembers").textContent = d.membersText;
-    const link = safeUrl(d.whatsappUrl);
-    if (link) {
-      $("commBtn").href = link; $("commBtn").target = "_blank"; $("commBtn").rel = "noopener";
-      $("commBtn").textContent = "Join WhatsApp"; $("commBtn").classList.remove("off");
+    // =================================================
+    // LOGGED IN NAV
+    // =================================================
+
+    function renderLoggedInNav(){
+
+      let html = "";
+
+      const isApprovedSeller =
+        currentUserData &&
+        currentUserData.role === "seller" &&
+        currentUserData.isSeller === true &&
+        currentUserData.sellerStatus === "approved";
+
+
+      if(isApprovedSeller){
+
+        html += `
+
+          <a
+            href="seller-dashboard.html"
+            class="seller-btn"
+          >
+            Seller Dashboard
+          </a>
+
+        `;
+
+      }else{
+
+        const isBuyer =
+          !currentUserData ||
+          currentUserData.role === "buyer";
+
+        if(isBuyer){
+
+          html += `
+
+            <a
+              href="seller-apply.html"
+              class="seller-btn"
+            >
+              Become a Seller
+            </a>
+
+          `;
+
+        }
+
+      }
+
+
+      /* ================= MESSAGES ================= */
+
+      html += `
+
+        <a
+          href="messages.html"
+          class="messages-btn"
+        >
+          💬 Messages
+
+          <span
+            id="messageBadge"
+            class="message-badge"
+            style="display:none;"
+          >
+            0
+          </span>
+
+        </a>
+
+      `;
+
+
+      /* ================= LOGOUT ================= */
+
+      html += `
+
+        <button
+          class="logout"
+          id="logoutBtn"
+        >
+          Logout
+        </button>
+
+      `;
+
+
+      navArea.innerHTML = html;
+
+
+      const logoutBtn =
+        document.getElementById("logoutBtn");
+
+
+      if(logoutBtn){
+
+        logoutBtn.addEventListener(
+          "click",
+          async () => {
+
+            try{
+
+              if(messagesUnsubscribe){
+
+                messagesUnsubscribe();
+
+                messagesUnsubscribe = null;
+
+              }
+
+              await signOut(auth);
+
+              showMessage(
+                "You have been logged out."
+              );
+
+              setTimeout(() => {
+
+                window.location.reload();
+
+              },700);
+
+            }catch(error){
+
+              console.error(error);
+
+              showMessage(
+                "Logout failed."
+              );
+
+            }
+
+          }
+        );
+
+      }
+
     }
-  } catch (err) { console.error(err); }
-})();
 
-/* ---------- Auth ---------- */
-let mode = "signup";
-function setMode(m){
-  mode = m;
-  document.querySelectorAll(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.mode === m));
-  $("nameRow").hidden = m !== "signup";
-  $("authSubmit").textContent = m === "signup" ? "Create account" : "Log in";
-  $("aPass").autocomplete = m === "signup" ? "new-password" : "current-password";
-  $("authMsg").textContent = "";
-  $("authMsg").style.color = "";
-  $("forgotBtn").hidden = m !== "login";
-}
-document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
-const open = m => { setMode(m); $("authDialog").showModal(); };
-$("openAuth").addEventListener("click", () => open("login"));
-$("startBtn").addEventListener("click", () => open("signup"));
-$("closeAuth").addEventListener("click", () => $("authDialog").close());
 
-const errors = {
-  "auth/email-already-in-use": "This email already has an account. Try logging in.",
-  "auth/invalid-credential": "Incorrect email or password.",
-  "auth/invalid-email": "Enter a valid email address.",
-  "auth/weak-password": "Password must be at least 6 characters.",
-  "auth/too-many-requests": "Too many attempts. Please wait and try again.",
-  "auth/network-request-failed": "Network error. Check your connection."
-};
+    // =================================================
+    // BUYER MESSAGE LISTENER
+    // =================================================
 
-document.querySelectorAll(".pwtoggle").forEach(b => b.addEventListener("click", () => {
-  const i = $(b.dataset.target), show = i.type === "password";
-  i.type = show ? "text" : "password";
-  b.textContent = show ? "Hide" : "Show";
-}));
+    function startBuyerMessageListener(){
 
-$("forgotBtn").addEventListener("click", async () => {
-  const email = $("aEmail").value.trim(), m = $("authMsg");
-  m.style.color = "";
-  if (!email) { m.textContent = "Enter your email above first."; return; }
-  try {
-    await sendPasswordResetEmail(auth, email);
-    m.style.color = "var(--green)";
-    m.textContent = "If an account exists for this email, a reset link has been sent. Check your inbox and spam folder.";
-  } catch (err) {
-    m.textContent = err.code === "auth/invalid-email" ? "Enter a valid email address." : "Could not send the reset email. Try again.";
-  }
-});
+      if(!currentUser){
 
-$("authForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  $("authMsg").style.color = "";
-  $("authMsg").textContent = "";
-  $("authSubmit").disabled = true;
-  const email = $("aEmail").value.trim(), pass = $("aPass").value;
-  try {
-    if (mode === "signup") {
-      const name = $("aName").value.trim();
-      if (!name) throw { code: "x", message: "Enter your full name." };
-      const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      await updateProfile(cred.user, { displayName: name });
-      await setDoc(doc(db, "users", cred.user.uid), {
-        name, email: cred.user.email, role: "student", createdAt: serverTimestamp()
+        return;
+
+      }
+
+
+      if(messagesUnsubscribe){
+
+        messagesUnsubscribe();
+
+        messagesUnsubscribe = null;
+
+      }
+
+
+      const conversationsRef =
+        collection(
+          db,
+          "conversations"
+        );
+
+
+      const conversationsQuery =
+        query(
+          conversationsRef,
+          where(
+            "participantIds",
+            "array-contains",
+            currentUser.uid
+          )
+        );
+
+
+      messagesUnsubscribe =
+        onSnapshot(
+          conversationsQuery,
+          (snapshot) => {
+
+            let unreadTotal = 0;
+
+
+            snapshot.forEach(
+              conversationDoc => {
+
+                const data =
+                  conversationDoc.data();
+
+
+                const unreadCount =
+                  data.unreadCount || {};
+
+
+                const count =
+                  Number(
+                    unreadCount[
+                      currentUser.uid
+                    ] || 0
+                  );
+
+
+                unreadTotal += count;
+
+              }
+            );
+
+
+            updateMessageBadge(
+              unreadTotal
+            );
+
+          },
+          (error) => {
+
+            console.error(
+              "Message listener error:",
+              error
+            );
+
+          }
+        );
+
+    }
+
+
+    // =================================================
+    // UPDATE MESSAGE BADGE
+    // =================================================
+
+    function updateMessageBadge(
+      unreadTotal
+    ){
+
+      const badge =
+        document.getElementById(
+          "messageBadge"
+        );
+
+
+      if(!badge){
+
+        return;
+
+      }
+
+
+      if(unreadTotal > 0){
+
+        badge.textContent =
+          unreadTotal > 99
+            ? "99+"
+            : unreadTotal;
+
+
+        badge.style.display =
+          "inline-flex";
+
+      }else{
+
+        badge.textContent =
+          "0";
+
+        badge.style.display =
+          "none";
+
+      }
+
+    }
+
+
+    // =================================================
+    // LOAD CATEGORIES
+    // =================================================
+
+    async function loadCategories(){
+
+      try{
+
+        const snapshot =
+          await getDocs(
+            collection(db,"categories")
+          );
+
+        allCategories = [];
+
+        snapshot.forEach(item => {
+
+          allCategories.push({
+
+            id:item.id,
+
+            ...item.data()
+
+          });
+
+        });
+
+
+        renderCategories();
+
+      }catch(error){
+
+        console.error(
+          "Categories error:",
+          error
+        );
+
+        categoriesContainer.innerHTML = `
+
+          <button
+            class="category-btn active"
+            data-category="all"
+          >
+            All
+          </button>
+
+        `;
+
+      }
+
+    }
+
+
+    // =================================================
+    // RENDER CATEGORIES
+    // =================================================
+
+    function renderCategories(){
+
+      let html = `
+
+        <button
+          class="category-btn active"
+          data-category="all"
+        >
+          All
+        </button>
+
+      `;
+
+
+      allCategories.forEach(category => {
+
+        if(!category.name){
+
+          return;
+
+        }
+
+
+        html += `
+
+          <button
+            class="category-btn"
+            data-category="${escapeHtml(
+              category.name
+            )}"
+          >
+            ${escapeHtml(
+              category.name
+            )}
+          </button>
+
+        `;
+
       });
-    } else {
-      await signInWithEmailAndPassword(auth, email, pass);
-    }
-    $("authForm").reset();
-    $("authDialog").close();
-  } catch (err) {
-    $("authMsg").textContent = errors[err.code] || err.message;
-  }
-  $("authSubmit").disabled = false;
-});
 
-$("signOutBtn").addEventListener("click", () => signOut(auth));
-let me = null;
-document.querySelector("nav.bottom").addEventListener("click", e => {
-  const a = e.target.closest("a"); if (!a) return;
-  document.querySelectorAll("nav.bottom a").forEach(x => x.classList.toggle("on", x === a));
-});
-$("navAuth").addEventListener("click", () => { me ? signOut(auth) : open("login"); });
-onAuthStateChanged(auth, user => {
-  me = user;
-  loadMyCourses();
-  if ($("viewDialog").open && current) refreshAccess();
-  $("navAuthTxt").textContent = user ? "Sign out" : "Sign in";
-  $("openAuth").style.display = user ? "none" : "";
-  $("userBox").style.display = user ? "flex" : "none";
-  $("startBtn").style.display = user ? "none" : "";
-  $("userName").textContent = user ? (user.displayName || user.email) : "";
-});
-</script>
-<button id="installBtn" hidden style="position:fixed;right:14px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:6;width:auto;padding:10px 16px;border-radius:99px;box-shadow:0 6px 20px rgba(0,0,0,.4)">Install app</button>
-<script>
-if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(console.error));
-let dbInstall = null;
-addEventListener("beforeinstallprompt", e => { e.preventDefault(); dbInstall = e; document.getElementById("installBtn").hidden = false; });
-document.getElementById("installBtn").addEventListener("click", async () => {
-  if (!dbInstall) return; dbInstall.prompt(); await dbInstall.userChoice; dbInstall = null; document.getElementById("installBtn").hidden = true;
-});
-addEventListener("appinstalled", () => { document.getElementById("installBtn").hidden = true; });
-</script>
+
+      categoriesContainer.innerHTML = html;
+
+
+      document
+        .querySelectorAll(".category-btn")
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              document
+                .querySelectorAll(
+                  ".category-btn"
+                )
+                .forEach(btn =>
+                  btn.classList.remove(
+                    "active"
+                  )
+                );
+
+
+              button.classList.add(
+                "active"
+              );
+
+
+              currentCategory =
+                button.dataset.category;
+
+
+              renderProducts();
+
+            }
+          );
+
+        });
+
+    }
+
+
+    // =================================================
+    // LOAD PRODUCTS
+    // =================================================
+
+    async function loadProducts(){
+
+      productsGrid.innerHTML = `
+
+        <div class="loading">
+          Loading products...
+        </div>
+
+      `;
+
+
+      try{
+
+        const snapshot =
+          await getDocs(
+            collection(db,"products")
+          );
+
+
+        allProducts = [];
+
+
+        snapshot.forEach(item => {
+
+          const data = item.data();
+
+
+          if(data.status === "active"){
+
+            allProducts.push({
+
+              id:item.id,
+
+              ...data
+
+            });
+
+          }
+
+        });
+
+
+        renderProducts();
+
+      }catch(error){
+
+        console.error(
+          "Products error:",
+          error
+        );
+
+
+        productsGrid.innerHTML = `
+
+          <div class="empty">
+
+            <h3>
+              Unable to load products
+            </h3>
+
+            <p>
+              Please refresh the page and try again.
+            </p>
+
+          </div>
+
+        `;
+
+
+        productCount.textContent =
+          "0 products";
+
+      }
+
+    }
+
+
+    // =================================================
+    // FILTER + SORT PRODUCTS
+    // =================================================
+
+    function getFilteredProducts(){
+
+      let products =
+        [...allProducts];
+
+
+      // SEARCH
+
+      if(currentSearch){
+
+        const search =
+          currentSearch.toLowerCase();
+
+
+        products =
+          products.filter(product => {
+
+            const name =
+              String(
+                product.name || ""
+              ).toLowerCase();
+
+
+            const category =
+              String(
+                product.category || ""
+              ).toLowerCase();
+
+
+            const location =
+              String(
+                product.location || ""
+              ).toLowerCase();
+
+
+            const seller =
+              String(
+                product.sellerName || ""
+              ).toLowerCase();
+
+
+            const description =
+              String(
+                product.description || ""
+              ).toLowerCase();
+
+
+            return (
+
+              name.includes(search) ||
+
+              category.includes(search) ||
+
+              location.includes(search) ||
+
+              seller.includes(search) ||
+
+              description.includes(search)
+
+            );
+
+          });
+
+      }
+
+
+      // CATEGORY
+
+      if(
+        currentCategory &&
+        currentCategory !== "all"
+      ){
+
+        products =
+          products.filter(product =>
+
+            String(
+              product.category || ""
+            ).toLowerCase() ===
+            String(
+              currentCategory
+            ).toLowerCase()
+
+          );
+
+      }
+
+
+      // STATE
+
+      if(
+        currentState &&
+        currentState !== "all"
+      ){
+
+        products =
+          products.filter(product =>
+
+            String(
+              product.location || ""
+            ).toLowerCase() ===
+            String(
+              currentState
+            ).toLowerCase()
+
+          );
+
+      }
+
+
+      // SORT
+
+      if(currentSort === "featured"){
+
+        products.sort((a,b) => {
+
+          return Number(
+            !!b.featured
+          ) - Number(
+            !!a.featured
+          );
+
+        });
+
+      }
+
+
+      else if(currentSort === "newest"){
+
+        products.sort((a,b) => {
+
+          const aTime =
+            a.createdAt &&
+            a.createdAt.toMillis
+              ? a.createdAt.toMillis()
+              : 0;
+
+
+          const bTime =
+            b.createdAt &&
+            b.createdAt.toMillis
+              ? b.createdAt.toMillis()
+              : 0;
+
+
+          return bTime - aTime;
+
+        });
+
+      }
+
+
+      else if(currentSort === "priceLow"){
+
+        products.sort(
+          (a,b) =>
+            Number(a.price || 0) -
+            Number(b.price || 0)
+        );
+
+      }
+
+
+      else if(currentSort === "priceHigh"){
+
+        products.sort(
+          (a,b) =>
+            Number(b.price || 0) -
+            Number(a.price || 0)
+        );
+
+      }
+
+
+      else if(currentSort === "name"){
+
+        products.sort((a,b) =>
+
+          String(a.name || "")
+            .localeCompare(
+              String(b.name || "")
+            )
+
+        );
+
+      }
+
+
+      return products;
+
+    }
+
+
+    // =================================================
+    // RENDER PRODUCTS
+    // =================================================
+
+    function renderProducts(){
+
+      const products =
+        getFilteredProducts();
+
+
+      productCount.textContent =
+        `${products.length} product${
+          products.length === 1
+            ? ""
+            : "s"
+        }`;
+
+
+      if(!products.length){
+
+        productsGrid.innerHTML = `
+
+          <div class="empty">
+
+            <h3>
+              No products found
+            </h3>
+
+            <p>
+              Try another search, category or state.
+            </p>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      productsGrid.innerHTML =
+        products.map(
+          productCard
+        ).join("");
+
+    }
+
+
+    // =================================================
+    // PRODUCT CARD
+    // =================================================
+
+    function productCard(product){
+
+      const image =
+        product.imageUrl ||
+        "https://via.placeholder.com/500x350?text=Arewa+Market";
+
+
+      const price =
+        Number(
+          product.price || 0
+        ).toLocaleString(
+          "en-NG"
+        );
+
+
+      const category =
+        product.category ||
+        "Uncategorized";
+
+
+      const location =
+        product.location ||
+        "Northern Nigeria";
+
+
+      const sellerName =
+        product.sellerName ||
+        "Arewa Market";
+
+
+      const featured =
+        product.featured === true
+          ? `
+            <span class="featured">
+              Featured
+            </span>
+          `
+          : "";
+
+
+      let sellerLink = "";
+
+
+      if(
+        product.sellerId &&
+        product.sellerId !== "admin"
+      ){
+
+        sellerLink = `
+
+          <a
+            class="seller-link"
+            href="seller-profile.html?id=${encodeURIComponent(
+              product.sellerId
+            )}"
+          >
+            View Seller Profile →
+          </a>
+
+        `;
+
+      }else{
+
+        sellerLink = `
+
+          <span
+            class="seller-link"
+            style="cursor:default;"
+          >
+            Seller: Arewa Market
+          </span>
+
+        `;
+
+      }
+
+
+      return `
+
+        <article class="product-card">
+
+          <img
+            class="product-image"
+            src="${escapeHtml(image)}"
+            alt="${escapeHtml(
+              product.name || "Product"
+            )}"
+            onerror="
+              this.src='https://via.placeholder.com/500x350?text=Arewa+Market'
+            "
+          >
+
+
+          <div class="product-body">
+
+            ${featured}
+
+
+            <h3>
+              ${escapeHtml(
+                product.name ||
+                "Unnamed Product"
+              )}
+            </h3>
+
+
+            <div class="price">
+              ₦${price}
+            </div>
+
+
+            <div class="product-meta">
+
+              <div>
+                📂 ${escapeHtml(category)}
+              </div>
+
+              <div>
+                📍 ${escapeHtml(location)}
+              </div>
+
+              <div>
+                👤 ${escapeHtml(sellerName)}
+              </div>
+
+            </div>
+
+
+            ${
+              product.description
+                ? `
+                  <p
+                    style="
+                      margin-top:8px;
+                      color:#666;
+                      font-size:12px;
+                      line-height:1.5;
+                    "
+                  >
+                    ${escapeHtml(
+                      product.description
+                    )}
+                  </p>
+                `
+                : ""
+            }
+
+
+            ${sellerLink}
+
+
+            <!-- VIEW PRODUCT -->
+
+            <a
+              class="view-product"
+              href="product.html?id=${encodeURIComponent(
+                product.id
+              )}"
+            >
+              View Product →
+            </a>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    // =================================================
+    // SEARCH
+    // =================================================
+
+    searchInput.addEventListener(
+      "input",
+      () => {
+
+        currentSearch =
+          searchInput.value.trim();
+
+        renderProducts();
+
+      }
+    );
+
+
+    document
+      .getElementById("searchBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          currentSearch =
+            searchInput.value.trim();
+
+          renderProducts();
+
+        }
+      );
+
+
+    // =================================================
+    // STATE FILTER
+    // =================================================
+
+    stateFilter.addEventListener(
+      "change",
+      () => {
+
+        currentState =
+          stateFilter.value;
+
+        renderProducts();
+
+      }
+    );
+
+
+    // =================================================
+    // SORT
+    // =================================================
+
+    sortFilter.addEventListener(
+      "change",
+      () => {
+
+        currentSort =
+          sortFilter.value;
+
+        renderProducts();
+
+      }
+    );
+
+
+    // =================================================
+    // ESCAPE HTML
+    // =================================================
+
+    function escapeHtml(value){
+
+      return String(value ?? "")
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    // =================================================
+    // START
+    // =================================================
+
+    await loadCategories();
+
+    await loadProducts();
+
+  </script>
+
 </body>
 </html>

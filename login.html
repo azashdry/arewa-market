@@ -6,11 +6,6 @@
 
 <title>Arewa Market - Login</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-
 <style>
 *{
   box-sizing:border-box;
@@ -18,16 +13,9 @@
   padding:0;
 }
 
-
-h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
-  font-family:'Playfair Display',Georgia,serif;
-  letter-spacing:.2px;
-}
 body{
-  font-family:'Inter',Arial,sans-serif;
-  background:
-    linear-gradient(180deg,rgba(13,59,44,.96),rgba(10,46,34,.96)),
-    repeating-linear-gradient(45deg,rgba(201,162,39,.07) 0 2px,transparent 2px 18px);
+  font-family:Arial,sans-serif;
+  background:#f5f7f2;
   min-height:100vh;
   display:flex;
   align-items:center;
@@ -41,8 +29,7 @@ body{
   background:#fff;
   padding:30px 25px;
   border-radius:14px;
-  box-shadow:0 15px 45px rgba(0,0,0,.35);
-  border-top:4px solid #c9a227;
+  box-shadow:0 8px 30px rgba(0,0,0,.10);
 }
 
 .logo{
@@ -51,7 +38,7 @@ body{
 }
 
 .logo h1{
-  color:#0d3b2c;
+  color:#176b3a;
   font-size:28px;
   margin-bottom:6px;
 }
@@ -76,14 +63,14 @@ label{
 input{
   width:100%;
   padding:13px;
-  border:1px solid #d5cfc3;
+  border:1px solid #ccc;
   border-radius:8px;
   font-size:15px;
   outline:none;
 }
 
 input:focus{
-  border-color:#155a3a;
+  border-color:#176b3a;
 }
 
 .password-box{
@@ -109,7 +96,7 @@ button{
   padding:14px;
   border:none;
   border-radius:8px;
-  background:#155a3a;
+  background:#176b3a;
   color:white;
   font-size:16px;
   font-weight:bold;
@@ -117,7 +104,7 @@ button{
 }
 
 button:hover{
-  background:#11482e;
+  background:#12572f;
 }
 
 button:disabled{
@@ -131,7 +118,7 @@ button:disabled{
 }
 
 .forgot a{
-  color:#155a3a;
+  color:#176b3a;
   text-decoration:none;
   font-size:14px;
 }
@@ -144,7 +131,7 @@ button:disabled{
 }
 
 .register a{
-  color:#155a3a;
+  color:#176b3a;
   font-weight:bold;
   text-decoration:none;
 }
@@ -166,17 +153,10 @@ button:disabled{
 
 .message.success{
   display:block;
-  background:#f5f1ea;
-  color:#155a3a;
+  background:#e8f7ed;
+  color:#176b3a;
 }
 </style>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#10462d">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Arewa Market">
 </head>
 
 <body>
@@ -634,13 +614,5 @@ loginForm.addEventListener("submit",async(event)=>{
 
 </script>
 
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
-  });
-}
-</script>
 </body>
-
 </html>
