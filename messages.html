@@ -1348,6 +1348,16 @@ body:has(.messaging.chat-open){
 
           </div>
 
+          <button
+            id="reportChatBtn"
+            class="btn btn-light report-chat-btn"
+            type="button"
+            data-i18n-title="rp_title"
+            style="margin-left:auto;color:#c62828;font-weight:700;"
+          >
+            🚩
+          </button>
+
         </div>
 
         <!-- MESSAGES -->
@@ -1555,6 +1565,8 @@ import {
   auth,
   db
 } from "./firebase.js";
+
+import { openReportModal } from "./report.js";
 
 import {
   uploadToImgbb
@@ -1886,6 +1898,19 @@ let currentUserData = null;
 let currentConversationId = null;
 
 let currentOtherUserId = null;
+
+document.addEventListener("click", e => {
+  const btn = e.target.closest && e.target.closest("#reportChatBtn");
+  if(!btn) return;
+  if(!currentOtherUserId) return;
+  openReportModal({
+    reportedUserId: currentOtherUserId,
+    reportedName: (document.getElementById("chatName") || {}).textContent
+      ? document.getElementById("chatName").textContent.trim()
+      : "",
+    conversationId: currentConversationId || ""
+  });
+});
 
 let conversations = [];
 

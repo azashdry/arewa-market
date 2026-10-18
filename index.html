@@ -292,6 +292,24 @@ body{
       border-bottom:3px solid #c9a227;
     }
 
+    .feed-tab{padding:11px 6px;font-size:13px;white-space:nowrap}
+    .header-search{position:relative}
+    .voice-btn{
+      background:transparent;border:0;color:#fff;font-size:18px;
+      padding:0 8px;cursor:pointer;display:flex;align-items:center;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .voice-btn.listening{color:#ff6b6b;animation:vpulse 1s infinite}
+    @keyframes vpulse{50%{opacity:.4}}
+    .nearby-note{
+      background:#fff8e1;border:1px solid #e9d27a;color:#6b5400;
+      padding:10px 12px;border-radius:10px;font-size:13px;margin-bottom:14px;
+    }
+    .nearby-note button{
+      margin-left:6px;background:#0d3b2c;color:#fff;border:0;
+      padding:6px 12px;border-radius:8px;font-weight:bold;cursor:pointer;
+    }
+
     .following-tag{
       display:inline-block;
       margin-top:8px;
@@ -700,7 +718,7 @@ body.has-bottom-nav{
 
     <a href="index.html" class="brand">
       <h1>Arewa Market</h1>
-      <p>Kasuwar Arewa a Hannunka</p>
+      <p data-i18n="tagline">Kasuwar Arewa a Hannunka</p>
     </a>
 
     <div class="header-search">
@@ -709,15 +727,17 @@ body.has-bottom-nav{
         type="text"
         id="searchInput"
         placeholder="Search for products..."
+        data-i18n-ph="search_ph"
       >
+      <button type="button" id="voiceBtn" class="voice-btn" data-i18n-title="voice_title"><i class="ti ti-microphone"></i></button>
       <button id="searchBtn" aria-label="Search" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;">Search</button>
     </div>
 
     <nav id="navArea">
 
-      <a href="login.html">Login</a>
+      <a href="login.html" data-i18n="login">Login</a>
 
-      <a href="register.html">Register</a>
+      <a href="register.html" data-i18n="register">Register</a>
 
     </nav>
 
@@ -735,14 +755,14 @@ body.has-bottom-nav{
 
   <div class="eyebrow">SAUKI YAZO!</div>
 
-  <h2>Buy & Sell Across Northern Nigeria</h2>
+  <h2 data-i18n="hero_h">Buy & Sell Across Northern Nigeria</h2>
 
-  <p>
+  <p data-i18n="hero_p">
     Discover products from sellers across Northern Nigeria.
     Search products, browse categories and find sellers easily.
   </p>
 
-  <a href="#productsGrid" class="hero-cta">Shop Now →</a>
+  <a href="#productsGrid" class="hero-cta" data-i18n="hero_cta">Shop Now →</a>
 
 </section>
 
@@ -750,15 +770,19 @@ body.has-bottom-nav{
 <main>
 
   <div class="feed-tabs" id="feedTabs">
-    <button type="button" class="feed-tab active" id="tabAll">
+    <button type="button" class="feed-tab active" id="tabAll" data-i18n="tab_all">
       🛍️ All Products
     </button>
     <button type="button" class="feed-tab" id="tabFollowing">
       ★ Following
     </button>
+    <button type="button" class="feed-tab" id="tabNearby" data-i18n="tab_nearby">
+      📍 Kusa da kai
+    </button>
   </div>
+  <div class="nearby-note" id="nearbyNote" style="display:none"></div>
 
-  <h2 class="section-title">
+  <h2 class="section-title" data-i18n="categories">
     Categories
   </h2>
 
@@ -781,7 +805,7 @@ body.has-bottom-nav{
 
     <select id="stateFilter">
 
-      <option value="all">
+      <option value="all" data-i18n="all_states">
         All States
       </option>
 
@@ -790,7 +814,7 @@ body.has-bottom-nav{
 
     <select id="lgaFilter" disabled>
 
-      <option value="all">
+      <option value="all" data-i18n="all_lgas">
         All LGAs
       </option>
 
@@ -799,23 +823,23 @@ body.has-bottom-nav{
 
     <select id="sortFilter">
 
-      <option value="featured">
+      <option value="featured" data-i18n="sort_featured">
         Featured First
       </option>
 
-      <option value="newest">
+      <option value="newest" data-i18n="sort_newest">
         Newest First
       </option>
 
-      <option value="priceLow">
+      <option value="priceLow" data-i18n="sort_price_low">
         Price: Low to High
       </option>
 
-      <option value="priceHigh">
+      <option value="priceHigh" data-i18n="sort_price_high">
         Price: High to Low
       </option>
 
-      <option value="name">
+      <option value="name" data-i18n="sort_name">
         Name A-Z
       </option>
 
@@ -826,11 +850,11 @@ body.has-bottom-nav{
 
   <div class="products-header">
 
-    <h2 class="section-title">
+    <h2 class="section-title" data-i18n="products">
       Products
     </h2>
 
-    <span id="productCount">
+    <span id="productCount" data-i18n="loading">
       Loading...
     </span>
 
@@ -874,6 +898,8 @@ import {
   db
 } from "./firebase.js";
 
+import { t } from "./i18n.js";
+
 
 import {
   onAuthStateChanged,
@@ -888,7 +914,9 @@ import {
   getDoc,
   query,
   where,
-  onSnapshot
+  onSnapshot,
+  updateDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 import {
@@ -1012,6 +1040,8 @@ let messagesUnsubscribe = null;
 let premiumSellers = new Set();
 let followingIds = new Set();
 let followingOnly = false;
+let nearbyOnly = false;
+let nearbySellerIds = null; // Set na sellers da ke kusa
 
 
 /* =================================================
@@ -1092,7 +1122,7 @@ stateFilter.addEventListener(
     if(currentState === "all"){
 
       lgaFilter.innerHTML =
-        '<option value="all">All LGAs</option>';
+        '<option value="all" data-i18n="all_lgas">All LGAs</option>';
 
       lgaFilter.disabled = true;
 
@@ -1115,7 +1145,8 @@ stateFilter.addEventListener(
       if(placeholder){
 
         placeholder.value = "all";
-        placeholder.textContent = "All LGAs";
+        placeholder.textContent = t("all_lgas");
+        placeholder.setAttribute("data-i18n","all_lgas");
         placeholder.selected = true;
 
       }
@@ -1231,11 +1262,11 @@ function renderLoggedOutNav(){
 
   navArea.innerHTML = `
 
-    <a href="login.html">
+    <a href="login.html" data-i18n="login">
       Login
     </a>
 
-    <a href="register.html">
+    <a href="register.html" data-i18n="register">
       Register
     </a>
 
@@ -1926,6 +1957,15 @@ function getFilteredProducts(){
       );
   }
 
+  if(nearbyOnly && nearbySellerIds){
+    products =
+      products.filter(product =>
+        nearbySellerIds.has(
+          product.sellerId
+        )
+      );
+  }
+
 
   if(currentSearch){
 
@@ -2145,13 +2185,20 @@ function renderProducts(){
     getFilteredProducts();
 
 
+  productCount.removeAttribute("data-i18n");
   productCount.textContent =
-    `${products.length} product${
-      products.length === 1
-        ? ""
-        : "s"
-    }`;
+    t(products.length === 1 ? "count_one" : "count_many", { n: products.length });
 
+
+  if(!products.length && nearbyOnly){
+    productsGrid.innerHTML = `
+      <div class="empty">
+        <h3>${t("nb_empty_h")}</h3>
+        <p>${t("nb_empty_p")}</p>
+      </div>
+    `;
+    return;
+  }
 
   if(!products.length && followingOnly){
     productsGrid.innerHTML = `
@@ -2407,6 +2454,12 @@ const tabAll =
 const tabFollowing =
   document.getElementById("tabFollowing");
 
+const tabNearby =
+  document.getElementById("tabNearby");
+
+const nearbyNote =
+  document.getElementById("nearbyNote");
+
 
 function updateFollowingLabel(){
 
@@ -2418,31 +2471,141 @@ function updateFollowingLabel(){
 }
 
 
-function setFeedTab(onlyFollowing){
+function setFeedTab(mode){
 
-  followingOnly = onlyFollowing;
+  // Yana karɓar true/false (tsohon salo) ko "all" | "following" | "nearby"
+  if(mode === true) mode = "following";
+  if(mode === false || !mode) mode = "all";
 
-  tabAll.classList.toggle(
-    "active",
-    !onlyFollowing
-  );
+  followingOnly = mode === "following";
+  nearbyOnly = mode === "nearby";
 
-  tabFollowing.classList.toggle(
-    "active",
-    onlyFollowing
-  );
+  tabAll.classList.toggle("active", mode === "all");
+  tabFollowing.classList.toggle("active", followingOnly);
+  tabNearby.classList.toggle("active", nearbyOnly);
 
   /* A feed should show the newest products first */
-
-  currentSort =
-    onlyFollowing
-      ? "newest"
-      : "featured";
-
+  currentSort = followingOnly ? "newest" : "featured";
   sortFilter.value = currentSort;
+
+  if(nearbyOnly){
+    openNearby();
+  }else{
+    nearbyNote.style.display = "none";
+  }
 
   renderProducts();
 
+}
+
+
+/* =================================================
+   NEARBY (Kusa da kai)
+   Yana amfani da geoCell na users (daga Friends)
+================================================= */
+
+const NEARBY_CELL_SIZE = 0.05; // daidai da friends.html
+
+function nearbyCellOf(lat, lng){
+  return Math.floor(lat / NEARBY_CELL_SIZE) + "_" + Math.floor(lng / NEARBY_CELL_SIZE);
+}
+
+function showNearbyNote(html){
+  nearbyNote.innerHTML = html;
+  nearbyNote.style.display = "block";
+}
+
+async function openNearby(){
+
+  if(!currentUser){
+    showNearbyNote(t("nb_login"));
+    return;
+  }
+
+  const cell = currentUserData && currentUserData.geoCell;
+  const sharing = !currentUserData || currentUserData.locationSharing !== false;
+
+  if(!cell || !sharing){
+    nearbySellerIds = new Set();
+    showNearbyNote(
+      t("nb_enable") + ' ' +
+      '<button type="button" id="btnEnableNearby">' + t("nb_btn") + '</button>'
+    );
+    document.getElementById("btnEnableNearby")
+      .addEventListener("click", enableNearbyLocation);
+    renderProducts();
+    return;
+  }
+
+  await loadNearbySellers(cell);
+}
+
+async function enableNearbyLocation(){
+
+  if(!navigator.geolocation){
+    showNearbyNote(t("nb_unsupported"));
+    return;
+  }
+
+  showNearbyNote(t("nb_locating"));
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+    try{
+      const cell = nearbyCellOf(pos.coords.latitude, pos.coords.longitude);
+      await updateDoc(doc(db, "users", currentUser.uid), {
+        geoCell: cell,
+        locationSharing: true,
+        geoUpdatedAt: serverTimestamp()
+      });
+      currentUserData = { ...(currentUserData || {}), geoCell: cell, locationSharing: true };
+      await loadNearbySellers(cell);
+    }catch(e){
+      console.error("enable nearby", e);
+      showNearbyNote(t("nb_save_fail"));
+    }
+  }, err => {
+    showNearbyNote(
+      err && err.code === 1
+        ? t("nb_denied")
+        : t("nb_nogps")
+    );
+  }, { enableHighAccuracy:false, timeout:15000, maximumAge:300000 });
+}
+
+async function loadNearbySellers(cell){
+
+  const [i, j] = cell.split("_").map(Number);
+  const cells = [];
+  for(let a = -1; a <= 1; a++){
+    for(let b = -1; b <= 1; b++){
+      cells.push((i + a) + "_" + (j + b));
+    }
+  }
+
+  try{
+    const snap = await getDocs(query(
+      collection(db, "users"),
+      where("geoCell", "in", cells)
+    ));
+
+    nearbySellerIds = new Set(
+      snap.docs
+        .filter(d => {
+          const u = d.data();
+          return u.isSeller === true && u.active !== false && u.locationSharing !== false;
+        })
+        .map(d => d.id)
+    );
+
+    nearbyNote.style.display = "none";
+
+  }catch(e){
+    console.error("nearby sellers", e);
+    nearbySellerIds = new Set();
+    showNearbyNote(t("nb_load_fail"));
+  }
+
+  if(nearbyOnly) renderProducts();
 }
 
 
@@ -2452,7 +2615,9 @@ function clearFollowing(){
 
   feedTabs.style.display = "none";
 
-  if(followingOnly){
+  nearbySellerIds = null;
+
+  if(followingOnly || nearbyOnly){
     setFeedTab(false);
   }
 
@@ -2523,9 +2688,85 @@ tabAll.addEventListener(
 
 tabFollowing.addEventListener(
   "click",
-  () => setFeedTab(true)
+  () => setFeedTab("following")
 );
 
+tabNearby.addEventListener(
+  "click",
+  () => setFeedTab("nearby")
+);
+
+
+
+/* =================================================
+   VOICE SEARCH (Web Speech API)
+   Hausa ('ha-NG') ba duka browsers ke goyon bayansa ba;
+   idan bai samu ba, muna komawa Turanci na Najeriya.
+================================================= */
+
+const voiceBtn = document.getElementById("voiceBtn");
+
+(function setupVoice(){
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SR){
+    voiceBtn.style.display = "none";
+    return;
+  }
+
+  let listening = false;
+
+  function start(langCode, allowFallback){
+
+    const rec = new SR();
+    rec.lang = langCode;
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+
+    rec.onstart = () => {
+      listening = true;
+      voiceBtn.classList.add("listening");
+      searchInput.placeholder = t("voice_listening");
+    };
+
+    rec.onresult = e => {
+      const text = e.results[0][0].transcript.trim();
+      searchInput.value = text;
+      searchInput.dispatchEvent(new Event("input"));
+    };
+
+    rec.onerror = e => {
+      if(allowFallback && (e.error === "language-not-supported" || e.error === "service-not-allowed")){
+        listening = false;
+        start("en-NG", false);
+        return;
+      }
+      if(e.error !== "no-speech" && e.error !== "aborted"){
+        showMessage(t("voice_fail"));
+      }
+    };
+
+    rec.onend = () => {
+      listening = false;
+      voiceBtn.classList.remove("listening");
+      searchInput.setAttribute("placeholder", t("search_ph"));
+    };
+
+    try{ rec.start(); }catch(err){ console.error("voice", err); }
+  }
+
+  voiceBtn.addEventListener("click", () => {
+    if(listening) return;
+    start(window.getLang && window.getLang() === "ha" ? "ha-NG" : "en-NG", true);
+  });
+
+})();
+
+window.addEventListener("langchange", () => {
+  renderProducts();
+  if(nearbyOnly) openNearby();
+});
 
 
 /* =================================================

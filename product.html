@@ -182,6 +182,25 @@ body{
       margin-bottom:12px;
     }
 
+
+    .safe-tip{
+      margin:12px 0 0;padding:9px 11px;background:#fff8e1;border:1px solid #f0dc8a;
+      border-radius:8px;font-size:12.5px;color:#6b5400;
+    }
+    .report-btn{
+      display:block;width:100%;margin-top:10px;padding:10px;border:1.5px solid #c62828;
+      background:#fff;color:#c62828;border-radius:10px;font-weight:700;
+      font-size:13px;cursor:pointer;
+    }
+    .report-btn:active{background:#fdeaea}
+    .share-wa{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      width:100%;margin:14px 0 4px;padding:13px 16px;border:0;
+      border-radius:10px;background:#25d366;color:#fff;
+      font-size:15px;font-weight:700;cursor:pointer;
+    }
+    .share-wa:active{background:#1ebe5a}
+
     .price{
       color:#a9791a;
       font-size:27px;
@@ -579,6 +598,7 @@ body.has-bottom-nav{
 <meta name="apple-mobile-web-app-title" content="Arewa Market">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style id="no-top-nav">#navArea{display:none!important}</style>
+<script type="module" src="i18n.js"></script>
 </head>
 
 <body class="has-bottom-nav">
@@ -669,6 +689,8 @@ body.has-bottom-nav{
       auth,
       db
     } from "./firebase.js";
+
+    import { openReportModal } from "./report.js";
 
 
     import {
@@ -1272,6 +1294,19 @@ body.has-bottom-nav{
               🙋 Ina Sha'awa (I'm Interested)
             </a>
 
+            <p class="safe-tip" data-i18n="safe_tip">
+              ⚠️ Kada ka biya kafin ka ga kaya.
+            </p>
+
+            <button
+              type="button"
+              class="report-btn"
+              id="reportSellerBtn"
+              data-i18n="rp_btn"
+            >
+              🚩 Kai ƙara kan seller
+            </button>
+
           </div>
 
         `;
@@ -1369,6 +1404,11 @@ body.has-bottom-nav{
             </div>
 
 
+            <button type="button" class="share-wa" id="shareWaBtn">
+              <i class="ti ti-brand-whatsapp"></i> <span data-i18n="share_wa">Share zuwa WhatsApp</span>
+            </button>
+
+
             <h3 class="description-title">
               Product Description
             </h3>
@@ -1415,6 +1455,42 @@ body.has-bottom-nav{
         </article>
 
       `;
+
+
+      const reportBtn = document.getElementById("reportSellerBtn");
+      if(reportBtn){
+        reportBtn.addEventListener("click", () => {
+          openReportModal({
+            reportedUserId: product.sellerId,
+            reportedName: sellerName,
+            productId: productId,
+            productName: name
+          });
+        });
+      }
+
+      const shareBtn = document.getElementById("shareWaBtn");
+      if(shareBtn){
+        shareBtn.addEventListener("click", () => {
+          const link = new URL(
+            "product.html?id=" + encodeURIComponent(productId),
+            window.location.href
+          ).href;
+
+          const text =
+            "🛍️ *" + name + "*\n" +
+            "💰 ₦" + price + "\n" +
+            "📍 " + location + "\n\n" +
+            window.t("share_wa_text") + "\n" + link +
+            (/^https?:/.test(image) ? "\n\n🖼️ " + image : "");
+
+          window.open(
+            "https://wa.me/?text=" + encodeURIComponent(text),
+            "_blank",
+            "noopener"
+          );
+        });
+      }
 
 
       document.title =

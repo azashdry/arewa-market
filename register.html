@@ -424,15 +424,38 @@ async function findReferrer(code){
     );
 
 
-    if(snapshot.empty){
+    let referrerDoc = null;
 
-      return null;
+    if(!snapshot.empty){
+
+      referrerDoc = snapshot.docs[0];
+
+    }else{
+
+      /* Old links: seller changed their name, so their code
+         changed. Old codes are kept in previousReferralCodes. */
+
+      const oldSnap =
+      await getDocs(
+        query(
+          collection(db,"users"),
+          where(
+            "previousReferralCodes",
+            "array-contains",
+            code
+          )
+        )
+      );
+
+      if(oldSnap.empty){
+
+        return null;
+
+      }
+
+      referrerDoc = oldSnap.docs[0];
 
     }
-
-
-    const referrerDoc =
-    snapshot.docs[0];
 
 
     return {
@@ -622,6 +645,8 @@ form.addEventListener(
         {
 
           name:name,
+
+          nameLower:name.toLowerCase(),
 
           email:email,
 

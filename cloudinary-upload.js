@@ -12,8 +12,8 @@
    SABON ABU: An kara IYAKA (limits) domin kada Cloudinary
    FREE PLAN credits (25 kyauta/wata) su kare da sauri:
 
-     - Video:  max 20 MB   da max dakika 60
-     - Audio (voice note): max 5 MB  da max dakika 2 (120s)
+     - Video:  max 50 MB   da max minti 5 (300s)
+     - Audio (voice note): max 15 MB  da max minti 5 (300s)
 
    Idan file ya wuce wadannan, za a hana upload din kafin
    ma a tura shi zuwa Cloudinary - wannan yana ceton
@@ -30,12 +30,12 @@ const UPLOAD_ENDPOINT =
 // ---------- IYAKOKI (LIMITS) - GYARA ANAN IDAN KANA SO ----------
 const LIMITS = {
   video: {
-    maxSizeMB: 20,
-    maxDurationSeconds: 60
+    maxSizeMB: 50,
+    maxDurationSeconds: 300   // minti 5
   },
   audio: {
-    maxSizeMB: 5,
-    maxDurationSeconds: 120
+    maxSizeMB: 15,
+    maxDurationSeconds: 300   // minti 5
   }
 };
 // ------------------------------------------------------------------
@@ -117,11 +117,11 @@ export async function uploadToCloudinary(file) {
     const duration = await getMediaDuration(file, category);
 
     if (duration && duration > limit.maxDurationSeconds) {
-      const maxMinutes = (limit.maxDurationSeconds / 60).toFixed(1);
+      const maxMinutes = Math.round(limit.maxDurationSeconds / 60);
       throw new Error(
         `${category === "video" ? "Bidiyon" : "Saƙon sautin"} ya yi tsawo sosai ` +
-        `(dakika ${(duration / 60).toFixed(1)}). Iyakar da aka amince da ita shine ` +
-        `dakika ${maxMinutes}. Ka gajarta shi ka sake gwadawa.`
+        `(minti ${(duration / 60).toFixed(1)}). Iyakar da aka amince da ita shine ` +
+        `minti ${maxMinutes}. Ka gajarta shi ka sake gwadawa.`
       );
     }
   }

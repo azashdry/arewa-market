@@ -227,6 +227,11 @@ header{
    CONTACT
 ========================= */
 
+.btn-report{
+  background:#fff;
+  color:#c62828;
+  border:1.5px solid #c62828;
+}
 .btn-follow{
   background:#fff;
   color:#165d3c;
@@ -644,6 +649,8 @@ import {
   auth,
   db
 } from "./firebase.js";
+
+import { openReportModal } from "./report.js";
 
 
 import {
@@ -1119,6 +1126,24 @@ function renderSeller(seller){
 
 
   /* =========================
+     REPORT SELLER
+  ========================= */
+
+  contactButtons += `
+
+    <button
+      type="button"
+      class="btn btn-report"
+      id="reportSellerBtn"
+      data-i18n="rp_btn"
+    >
+      🚩 Kai ƙara kan seller
+    </button>
+
+  `;
+
+
+  /* =========================
      FOLLOW SELLER
   ========================= */
 
@@ -1330,6 +1355,24 @@ function renderSeller(seller){
     messageSellerBtn.addEventListener(
       "click",
       messageSeller
+    );
+
+  }
+
+
+  const reportSellerBtn =
+    document.getElementById(
+      "reportSellerBtn"
+    );
+
+  if(reportSellerBtn){
+
+    reportSellerBtn.addEventListener(
+      "click",
+      () => openReportModal({
+        reportedUserId: sellerId,
+        reportedName: name
+      })
     );
 
   }

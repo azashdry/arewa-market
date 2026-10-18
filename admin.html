@@ -637,6 +637,19 @@ h1{
     height:70px;
   }
 }
+
+.rp-flag{display:inline-block;background:#fdeaea;color:#a12622;font-weight:700;
+  font-size:12px;padding:3px 8px;border-radius:6px;margin:4px 4px 0 0}
+.rp-badge{display:inline-block;font-weight:700;font-size:12px;padding:3px 8px;
+  border-radius:6px;margin:4px 4px 0 0;background:#eee;color:#333}
+.rp-badge.pending{background:#fff3cd;color:#7a5b00}
+.rp-badge.confirmed{background:#fdeaea;color:#a12622}
+.rp-badge.warned{background:#e3f0ff;color:#0b4a8f}
+.rp-badge.dismissed{background:#e6f4ea;color:#17692f}
+.rp-evidence img{max-width:160px;max-height:120px;border-radius:8px;margin-top:6px;
+  border:1px solid #ddd;display:block}
+.rp-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.rp-filters select{padding:8px;border-radius:8px}
 </style>
 
 <link rel="manifest" href="manifest.json">
@@ -1725,6 +1738,48 @@ Messaging"
   </div>
 
 
+  <!-- REPORTS (yaudara / korafi) -->
+
+  <div class="section">
+
+    <div class="section-header">
+
+      <h2>🚩 Reports</h2>
+
+      <button id="refreshReportsBtn">
+        Refresh
+      </button>
+
+    </div>
+
+    <div class="rp-filters">
+      <select id="reportsStatusFilter">
+        <option value="pending">Pending</option>
+        <option value="all">All</option>
+        <option value="confirmed">Confirmed (user disabled)</option>
+        <option value="warned">Warned</option>
+        <option value="dismissed">Dismissed</option>
+      </select>
+    </div>
+
+    <input
+      class="search"
+      id="reportsSearch"
+      placeholder="Search by user, reporter, product or reason..."
+    >
+
+    <div
+      class="list"
+      id="reportsList"
+    >
+      <div class="loading">
+        Loading reports...
+      </div>
+    </div>
+
+  </div>
+
+
   <!-- FEATURED REQUESTS -->
 
   <div class="section">
@@ -1796,7 +1851,8 @@ import {
   deleteDoc,
   setDoc,
   serverTimestamp,
-  Timestamp
+  Timestamp,
+  increment
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -2401,6 +2457,340 @@ onAuthStateChanged(
 
 
 /* ==========================================
+   REPORTS (yaudara / korafi)
+   - reports/{id}: status = pending | confirmed | warned | dismissed
+   - Tabbatar = user.active:false + dalili + products su ɓoye
+========================================== */
+
+let allReports = [];
+
+const REPORT_REASON_LABELS = {
+  scam: "Scam (took money, no delivery)",
+  fake: "Fake / counterfeit goods",
+  offsite: "Asked to pay outside the app",
+  abuse: "Harassment / abuse",
+  other: "Other"
+};
+
+const REPORT_FLAG_THRESHOLD = 3;              // reporters daban-daban
+const REPORT_FLAG_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
+function reportMillis(r){
+  const ts = r.createdAt;
+  return ts && typeof ts.toMillis === "function" ? ts.toMillis() : 0;
+}
+
+async function setSellerProductsVisibility(userId, hide){
+
+  const snap = await getDocs(collection(db, "products"));
+  const jobs = [];
+
+  snap.forEach(d => {
+
+    const p = d.data();
+
+    if(p.sellerId !== userId) return;
+
+    if(hide && p.status === "active"){
+      jobs.push(updateDoc(d.ref, {
+        status: "suspended",
+        suspendedByModeration: true
+      }));
+    }
+
+    if(!hide && p.suspendedByModeration === true){
+      jobs.push(updateDoc(d.ref, {
+        status: "active",
+        suspendedByModeration: false
+      }));
+    }
+
+  });
+
+  await Promise.all(jobs);
+}
+
+async function loadReports(){
+
+  const list = document.getElementById("reportsList");
+
+  list.innerHTML = `<div class="loading">Loading reports...</div>`;
+
+  try{
+
+    const snap = await getDocs(collection(db, "reports"));
+
+    allReports = [];
+
+    snap.forEach(d => {
+      allReports.push({ id: d.id, ...d.data() });
+    });
+
+    allReports.sort((x, y) => reportMillis(y) - reportMillis(x));
+
+    renderReports();
+
+  }catch(error){
+
+    console.error(error);
+
+    list.innerHTML = `<div class="empty">Failed to load reports.<br>${escapeHtml(error.code || "")}</div>`;
+
+  }
+}
+
+function reportFlagCount(userId){
+
+  const now = Date.now();
+  const reporters = new Set();
+
+  allReports.forEach(r => {
+    if(
+      r.reportedUserId === userId &&
+      r.status === "pending" &&
+      now - reportMillis(r) <= REPORT_FLAG_WINDOW_MS
+    ){
+      reporters.add(r.reporterId);
+    }
+  });
+
+  return reporters.size;
+}
+
+function renderReports(){
+
+  const list = document.getElementById("reportsList");
+  const statusFilter = document.getElementById("reportsStatusFilter").value;
+  const q = document.getElementById("reportsSearch").value.trim().toLowerCase();
+
+  let rows = allReports.filter(r => {
+
+    const st = r.status || "pending";
+
+    if(statusFilter !== "all" && st !== statusFilter) return false;
+
+    if(!q) return true;
+
+    return [
+      r.reportedName, r.reporterName, r.productName,
+      r.reason, r.details, r.reportedUserId, r.reporterId
+    ].some(v => String(v || "").toLowerCase().includes(q));
+
+  });
+
+  // wadanda suka fi yawan reports a gaba (a cikin pending)
+  rows.sort((x, y) => {
+    const fx = reportFlagCount(x.reportedUserId);
+    const fy = reportFlagCount(y.reportedUserId);
+    return fy - fx || reportMillis(y) - reportMillis(x);
+  });
+
+  if(!rows.length){
+    list.innerHTML = `<div class="empty">No reports here.</div>`;
+    return;
+  }
+
+  list.innerHTML = "";
+
+  rows.forEach(r => {
+
+    const st = r.status || "pending";
+    const reported = getUserById(r.reportedUserId);
+    const reportedName =
+      r.reportedName ||
+      (reported && (reported.name || reported.fullName)) ||
+      r.reportedUserId;
+    const disabled = reported && reported.active === false;
+    const flagCount = reportFlagCount(r.reportedUserId);
+
+    const item = document.createElement("div");
+    item.className = "item request-card";
+
+    item.innerHTML = `
+      <div class="item-main">
+
+        <strong>🚩 ${escapeHtml(reportedName)}</strong>
+
+        <div>
+          <span class="rp-badge ${escapeHtml(st)}">${escapeHtml(st.toUpperCase())}</span>
+          ${disabled ? `<span class="rp-badge confirmed">USER DISABLED</span>` : ""}
+          ${flagCount >= REPORT_FLAG_THRESHOLD && st === "pending"
+            ? `<span class="rp-flag">⚠️ ${flagCount} different people reported this user (7 days)</span>`
+            : ""}
+        </div>
+
+        <small>Reason: <b>${escapeHtml(REPORT_REASON_LABELS[r.reason] || r.reason || "N/A")}</b></small>
+
+        <small style="white-space:pre-wrap">${escapeHtml(r.details || "")}</small>
+
+        ${r.evidenceUrl
+          ? `<a class="rp-evidence" href="${escapeHtml(r.evidenceUrl)}" target="_blank" rel="noopener">
+               <img src="${escapeHtml(r.evidenceUrl)}" alt="evidence">
+             </a>`
+          : ""}
+
+        <small>Reported by: ${escapeHtml(r.reporterName || r.reporterId || "N/A")}</small>
+
+        ${r.productId
+          ? `<small>Product: <a href="product.html?id=${encodeURIComponent(r.productId)}" target="_blank">${escapeHtml(r.productName || r.productId)}</a></small>`
+          : ""}
+
+        ${r.conversationId
+          ? `<small>Conversation ID: ${escapeHtml(r.conversationId)}</small>`
+          : ""}
+
+        <small>
+          <a href="seller-profile.html?id=${encodeURIComponent(r.reportedUserId)}" target="_blank">View profile</a>
+          · ${escapeHtml(formatDate(r.createdAt))}
+        </small>
+
+        ${r.adminNote
+          ? `<small>Admin note: <b>${escapeHtml(r.adminNote)}</b></small>`
+          : ""}
+
+      </div>
+
+      <div class="item-actions">
+        ${st === "pending"
+          ? `
+            ${disabled ? "" : `<button class="edit" data-rp-act="confirm" data-rp-id="${escapeHtml(r.id)}">Confirm &amp; Disable user</button>`}
+            <button data-rp-act="warn" data-rp-id="${escapeHtml(r.id)}">Warn</button>
+            <button data-rp-act="dismiss" data-rp-id="${escapeHtml(r.id)}">Dismiss</button>
+          `
+          : ""}
+      </div>
+    `;
+
+    list.appendChild(item);
+
+  });
+}
+
+async function resolveReport(reportId, status, note){
+
+  await updateDoc(doc(db, "reports", reportId), {
+    status,
+    adminNote: note || "",
+    reviewedBy: auth.currentUser ? auth.currentUser.uid : "",
+    reviewedAt: serverTimestamp()
+  });
+
+}
+
+async function reportConfirm(reportId){
+
+  const r = allReports.find(x => x.id === reportId);
+  if(!r) return;
+
+  const note = (prompt(
+    "Why are you disabling this user? (required, it will be saved)\n\nUser: " +
+    (r.reportedName || r.reportedUserId)
+  ) || "").trim();
+
+  if(!note) return;
+
+  if(!confirm("Disable this user and hide all their products?")) return;
+
+  try{
+
+    await updateDoc(doc(db, "users", r.reportedUserId), {
+      active: false,
+      deactivatedAt: serverTimestamp(),
+      deactivatedReason: note,
+      deactivatedBy: auth.currentUser ? auth.currentUser.uid : "",
+      deactivatedByReportId: reportId
+    });
+
+    await setSellerProductsVisibility(r.reportedUserId, true);
+
+    // dukan pending reports na wannan user sun zama confirmed
+    const pendings = allReports.filter(x =>
+      x.reportedUserId === r.reportedUserId &&
+      (x.status || "pending") === "pending"
+    );
+
+    await Promise.all(
+      pendings.map(x => resolveReport(x.id, "confirmed", note))
+    );
+
+    await loadUsers();
+    await loadProducts();
+    await loadReports();
+
+  }catch(error){
+
+    console.error(error);
+    alert("Failed: " + error.message);
+
+  }
+}
+
+async function reportWarn(reportId){
+
+  const r = allReports.find(x => x.id === reportId);
+  if(!r) return;
+
+  const note = (prompt("Warning note (required):") || "").trim();
+  if(!note) return;
+
+  try{
+
+    await updateDoc(doc(db, "users", r.reportedUserId), {
+      warningCount: increment(1),
+      lastWarningNote: note,
+      lastWarnedAt: serverTimestamp()
+    });
+
+    await resolveReport(reportId, "warned", note);
+
+    await loadReports();
+
+  }catch(error){
+
+    console.error(error);
+    alert("Failed: " + error.message);
+
+  }
+}
+
+async function reportDismiss(reportId){
+
+  const note = (prompt("Why dismiss this report? (optional)") || "").trim();
+
+  try{
+
+    await resolveReport(reportId, "dismissed", note);
+
+    await loadReports();
+
+  }catch(error){
+
+    console.error(error);
+    alert("Failed: " + error.message);
+
+  }
+}
+
+document.getElementById("reportsList").addEventListener("click", e => {
+
+  const btn = e.target.closest("[data-rp-act]");
+  if(!btn) return;
+
+  const id = btn.getAttribute("data-rp-id");
+  const act = btn.getAttribute("data-rp-act");
+
+  if(act === "confirm") reportConfirm(id);
+  if(act === "warn") reportWarn(id);
+  if(act === "dismiss") reportDismiss(id);
+
+});
+
+document.getElementById("refreshReportsBtn").addEventListener("click", loadReports);
+document.getElementById("reportsStatusFilter").addEventListener("change", renderReports);
+document.getElementById("reportsSearch").addEventListener("input", renderReports);
+
+
+/* ==========================================
    REFRESH ALL
 ========================================== */
 
@@ -2414,6 +2804,7 @@ async function refreshAll(){
     loadFeaturedSettings(),
     loadPremiumRequests(),
     loadFeaturedRequests(),
+    loadReports(),
     loadReferralSettings(),
     loadCommissions(),
     loadWithdrawalRequests()
@@ -2742,6 +3133,12 @@ window.toggleUserStatus =
           active:
             !currentStatus
         }
+      );
+
+      // Deactivate = ɓoye products; Activate = dawo da wadanda aka ɓoye
+      await setSellerProductsVisibility(
+        userId,
+        currentStatus === true
       );
 
       await loadUsers();

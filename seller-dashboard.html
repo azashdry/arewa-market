@@ -2326,7 +2326,9 @@ import {
   serverTimestamp,
   query,
   where,
-  onSnapshot
+  onSnapshot,
+  writeBatch,
+  arrayUnion
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -6748,6 +6750,148 @@ function closeProfileModal(){
    SAVE PROFILE
 ========================================================= */
 
+
+/* =========================================================
+   NAME CHANGE SYNC
+   - Duk products na seller ana sabunta sellerName
+   - Referral code yana canzawa zuwa sabon suna
+     (tsohon code ana ajiye shi a previousReferralCodes,
+      don links da aka riga aka raba su ci gaba da aiki)
+========================================================= */
+
+function referralNamePart(value){
+
+  return String(value || "USER")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g,"")
+    .substring(0,8);
+
+}
+
+
+async function makeUniqueReferralCode(name){
+
+  const namePart =
+    referralNamePart(name);
+
+  for(let attempt = 0; attempt < 5; attempt++){
+
+    const randomPart =
+      Math.random()
+        .toString(36)
+        .substring(2,7)
+        .toUpperCase();
+
+    const code =
+      "AREWA-" + namePart + "-" + randomPart;
+
+    const taken =
+      await getDocs(
+        query(
+          collection(db,"users"),
+          where("referralCode","==",code)
+        )
+      );
+
+    const takenOld =
+      await getDocs(
+        query(
+          collection(db,"users"),
+          where("previousReferralCodes","array-contains",code)
+        )
+      );
+
+    if(taken.empty && takenOld.empty){
+      return code;
+    }
+
+  }
+
+  throw new Error("Could not generate a unique referral code.");
+
+}
+
+
+async function syncNameEverywhere(newName){
+
+  /* 1) Products */
+
+  const productsSnap =
+    await getDocs(
+      query(
+        collection(db,"products"),
+        where("sellerId","==",currentUser.uid)
+      )
+    );
+
+  const productDocs =
+    productsSnap.docs.filter(
+      d => d.data().sellerName !== newName
+    );
+
+  for(let i = 0; i < productDocs.length; i += 400){
+
+    const batch =
+      writeBatch(db);
+
+    productDocs
+      .slice(i, i + 400)
+      .forEach(d => {
+        batch.update(
+          d.ref,
+          { sellerName:newName }
+        );
+      });
+
+    await batch.commit();
+
+  }
+
+
+  /* 2) Referral code (kawai idan yana da code mai tsari na AREWA-SUNA-XXXXX) */
+
+  const currentCode =
+    String(sellerData.referralCode || "");
+
+  const parts =
+    currentCode.split("-");
+
+  const hasStandardCode =
+    parts.length === 3 &&
+    parts[0] === "AREWA";
+
+  if(
+    hasStandardCode &&
+    parts[1] !== referralNamePart(newName)
+  ){
+
+    const newCode =
+      await makeUniqueReferralCode(newName);
+
+    await updateDoc(
+      doc(db,"users",currentUser.uid),
+      {
+        referralCode:newCode,
+        previousReferralCodes:arrayUnion(currentCode)
+      }
+    );
+
+    sellerData = {
+      ...sellerData,
+      referralCode:newCode,
+      previousReferralCodes:[
+        ...(sellerData.previousReferralCodes || []),
+        currentCode
+      ]
+    };
+
+    renderReferralLink();
+
+  }
+
+}
+
+
 async function saveProfile(){
 
   hideMessage(
@@ -6814,6 +6958,13 @@ async function saveProfile(){
 
   const button =
     $("saveProfileBtn");
+
+
+  const oldName =
+    sellerData.name ||
+    sellerData.fullName ||
+    sellerData.sellerName ||
+    "";
 
 
   button.disabled = true;
@@ -6900,10 +7051,38 @@ async function saveProfile(){
     renderSellerProfile();
 
 
+    /* Idan suna ya canza: sabunta products da referral link */
+
+    let syncFailed = false;
+
+    if(name !== oldName){
+
+      try{
+
+        await syncNameEverywhere(name);
+
+      }catch(syncError){
+
+        syncFailed = true;
+
+        console.error(
+          "Name sync error:",
+          syncError
+        );
+
+      }
+
+    }
+
+
     showMessage(
       $("profileMessage"),
-      "Profile updated successfully.",
-      "success"
+      syncFailed
+        ? "Profile saved, but some old products or your referral link could not be updated. Please try again."
+        : "Profile updated successfully.",
+      syncFailed
+        ? "error"
+        : "success"
     );
 
 

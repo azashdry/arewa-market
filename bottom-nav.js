@@ -6,7 +6,8 @@
 // =====================================================
 
 import { auth, db } from "./firebase.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { t } from "./i18n.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {
   collection, query, where, onSnapshot, doc, getDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -38,24 +39,60 @@ function setSellTab(mode){
   a.dataset.sell = "1";
   const label = a.querySelector(".bn-label");
   const icon = a.querySelector("i.ti");
+  const setLabel = key => {
+    if (!label) return;
+    label.setAttribute("data-i18n", key);
+    label.textContent = t(key);
+  };
   if (mode === "seller") {
     a.setAttribute("href", "seller-dashboard.html");
-    if (label) label.textContent = "Dashboard";
+    setLabel("nav_dashboard");
   } else if (mode === "guest") {
     a.setAttribute("href", "login.html");
-    if (label) label.textContent = "Sell";
+    setLabel("nav_sell");
   } else {
     a.setAttribute("href", "seller-apply.html");
-    if (label) label.textContent = mode === "pending" ? "Pending" : "Sell";
+    setLabel(mode === "pending" ? "nav_pending" : "nav_sell");
   }
   if (icon) icon.className = "ti ti-building-store";
+  updateActive(auth.currentUser);
 }
+
+// Alamar shafin da kake ciki (ba sai kowane page ya rubuta "active" da hannu ba)
+function updateActive(user){
+  const nav = document.querySelector(".bottom-nav");
+  if (!nav) return;
+
+  const file = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+  const items = nav.querySelectorAll("a.bn-item");
+  items.forEach(a => a.classList.remove("active"));
+
+  let target = null;
+  if (file === "index.html" || file === "product.html" || file === "status.html" || file === "") {
+    target = nav.querySelector('a[href="index.html"]');
+  } else if (file === "friends.html") {
+    target = nav.querySelector('a[href="friends.html"]');
+  } else if (file === "messages.html") {
+    target = nav.querySelector('a[href="messages.html"]');
+  } else if (file === "seller-dashboard.html" || file === "seller-apply.html") {
+    target = nav.querySelector("a[data-sell]");
+  } else if (file === "seller-profile.html") {
+    // Profile tab yana aiki ne kawai idan profile ɗinka ne ake kallo
+    const id = new URLSearchParams(location.search).get("id");
+    if (user && (!id || id === user.uid)) target = document.getElementById("navProfileLink");
+  }
+  if (target) target.classList.add("active");
+}
+
+updateActive(null);
 
 let unsubs = [];
 
 onAuthStateChanged(auth, user => {
   unsubs.forEach(u => u());
   unsubs = [];
+
+  updateActive(user);
 
   const profile = document.getElementById("navProfileLink");
   if (profile) {
@@ -69,12 +106,25 @@ onAuthStateChanged(auth, user => {
     return;
   }
 
-  getDoc(doc(db, "users", user.uid)).then(d => {
-    const u = d.exists() ? d.data() : {};
-    if (u.sellerStatus === "approved" && u.isSeller === true) setSellTab("seller");
-    else if (u.sellerStatus === "pending") setSellTab("pending");
-    else setSellTab("buyer");
-  }).catch(() => {});
+  // Ana sauraron user doc kai tsaye: idan admin ya kashe user, ana fitar da shi nan take
+  unsubs.push(onSnapshot(
+    doc(db, "users", user.uid),
+    d => {
+      const u = d.exists() ? d.data() : {};
+
+      if (u.active === false) {
+        signOut(auth).finally(() => {
+          window.location.href = "login.html?disabled=1";
+        });
+        return;
+      }
+
+      if (u.sellerStatus === "approved" && u.isSeller === true) setSellTab("seller");
+      else if (u.sellerStatus === "pending") setSellTab("pending");
+      else setSellTab("buyer");
+    },
+    () => {}
+  ));
 
   unsubs.push(onSnapshot(
     query(collection(db, "conversations"), where("participantIds", "array-contains", user.uid)),

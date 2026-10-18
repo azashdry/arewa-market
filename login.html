@@ -337,6 +337,14 @@ function showMessage(text,type="error"){
 }
 
 
+/* Idan an fitar da user saboda an kashe account ɗinsa */
+if(new URLSearchParams(window.location.search).get("disabled") === "1"){
+  setTimeout(() => showMessage(
+    "Your account has been deactivated. Please contact Arewa Market."
+  ), 0);
+}
+
+
 function hideMessage(){
 
   messageBox.textContent = "";

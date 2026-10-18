@@ -156,16 +156,16 @@ body{font-family:'Inter',Arial,sans-serif;background:#f8f6f3;color:#222;padding-
     </div>
 
     <div class="box">
-      <h3>📇 People from your contacts</h3>
+      <h3>🔎 Find people</h3>
       <p class="hint">Find friends who already use Arewa Market. Numbers are scrambled (hashed) on your phone and are never uploaded or stored.</p>
       <div class="row-btns">
         <button id="btnContacts" class="btn btn-gold">Find from contacts</button>
       </div>
       <div id="contactNote" class="note"></div>
 
-      <p class="hint" style="margin-top:14px">Or search by phone number:</p>
+      <p class="hint" style="margin-top:14px">Or search by name or phone number:</p>
       <div class="field">
-        <input id="searchPhone" type="tel" placeholder="e.g. 0803 123 4567">
+        <input id="searchPhone" type="search" autocomplete="off" placeholder="Name or phone, e.g. Aminu / 0803 123 4567">
         <button id="btnSearchPhone" class="btn btn-primary">Search</button>
       </div>
     </div>
@@ -418,7 +418,7 @@ function renderDiscover(){
     items.forEach(u => { seen.add(u.id); html += personCard(u, tagHtml); });
   };
 
-  add(state.searchResults, "Search results", `<span class="tag contact">Phone match</span>`);
+  add(state.searchResults, "Search results", `<span class="tag contact">Search result</span>`);
   add(state.contactMatches, "From your contacts", `<span class="tag contact">In your contacts</span>`);
   add(state.nearby, "Near you", `<span class="tag near">Near you</span>`);
 
@@ -631,19 +631,63 @@ async function findFromContacts(){
   }
 }
 
+function looksLikePhone(t){
+  const d = t.replace(/[\s+\-()]/g, "");
+  return /^\d{7,}$/.test(d);
+}
+
+function capitalizeWords(t){
+  return t.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+}
+
+async function searchByName(text){
+  const q = text.trim();
+  const lower = q.toLowerCase();
+  const col = collection(db, "users");
+  const prefix = (field, value) => getDocs(query(
+    col, where(field, ">=", value), where(field, "<=", value + "\uf8ff"), limit(20)
+  )).catch(e => { console.error("name search", field, e); return { docs: [] }; });
+
+  // nameLower = users saved with the new field (case-insensitive).
+  // name = older users (exact case, so also try Capitalized / UPPER).
+  const results = await Promise.all([
+    prefix("nameLower", lower),
+    prefix("name", q),
+    prefix("name", capitalizeWords(q)),
+    prefix("name", q.toUpperCase()),
+    prefix("businessName", capitalizeWords(q))
+  ]);
+
+  const found = new Map();
+  results.forEach(snap => snap.docs.forEach(d => {
+    if(d.id !== state.me.uid && d.data().active !== false) found.set(d.id, { id:d.id, ...d.data() });
+  }));
+  return Array.from(found.values()).slice(0, 25);
+}
+
 async function searchByPhone(){
   const raw = $("searchPhone").value.trim();
-  const h = await hashPhone(raw);
-  if(!h){ toast("Enter a valid phone number"); return; }
+  if(!raw){ toast("Type a name or phone number"); return; }
+
+  const btn = $("btnSearchPhone");
+  btn.disabled = true;
 
   try{
-    const snap = await getDocs(query(collection(db, "users"), where("phoneHash", "==", h), limit(5)));
-    state.searchResults = snap.docs
-      .map(d => ({ id:d.id, ...d.data() }))
-      .filter(u => u.id !== state.me.uid && u.active !== false);
+    if(looksLikePhone(raw)){
+      const h = await hashPhone(raw);
+      if(!h){ toast("Enter a valid phone number"); return; }
+      const snap = await getDocs(query(collection(db, "users"), where("phoneHash", "==", h), limit(5)));
+      state.searchResults = snap.docs
+        .map(d => ({ id:d.id, ...d.data() }))
+        .filter(u => u.id !== state.me.uid && u.active !== false);
+    }else{
+      if(raw.length < 2){ toast("Type at least 2 letters"); return; }
+      state.searchResults = await searchByName(raw);
+    }
     renderDiscover();
-    if(!state.searchResults.length) toast("No one found with that number");
+    if(!state.searchResults.length) toast("No one found. Check the spelling.");
   }catch(e){ console.error(e); toast("Search failed"); }
+  finally{ btn.disabled = false; }
 }
 
 /* ============================================================
@@ -746,6 +790,15 @@ onAuthStateChanged(auth, async user => {
     const snap = await getDoc(doc(db, "users", user.uid));
     state.myData = snap.exists() ? snap.data() : {};
   }catch(e){ console.error(e); }
+
+  // Make me searchable by name (older accounts don't have nameLower yet)
+  try{
+    const nm = (state.myData.name || state.myData.businessName || user.displayName || "").trim().toLowerCase();
+    if(nm && state.myData.nameLower !== nm){
+      await updateDoc(doc(db, "users", user.uid), { nameLower: nm });
+      state.myData.nameLower = nm;
+    }
+  }catch(e){ console.error("nameLower", e); }
 
   updateLocationUi();
   updatePhoneUi();

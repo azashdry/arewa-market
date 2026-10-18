@@ -1,5 +1,5 @@
 /*
-  Arewa Market — service worker (v3)
+  Arewa Market — service worker (v6)
 
   - Shafukan HTML: network-first (kullum sabon fayil yake zuwa),
     idan babu network sai a yi amfani da wanda aka adana.
@@ -9,7 +9,7 @@
     ya bar browser ya nuna ERR_FAILED.
 */
 
-const CACHE_NAME = "arewa-market-v3";
+const CACHE_NAME = "arewa-market-v6";
 
 const APP_SHELL = [
   "./index.html",
@@ -19,6 +19,9 @@ const APP_SHELL = [
   "./messages.html",
   "./status.html",
   "./manifest.json",
+  "./i18n.js",
+  "./bottom-nav.js",
+  "./report.js",
   "./icon-192.png",
   "./icon-512.png",
   "./icon-512-maskable.png",
