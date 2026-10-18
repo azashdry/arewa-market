@@ -11,6 +11,11 @@
 
 <title>Arewa Market - Messages</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
 <style>
 
 *{
@@ -19,14 +24,19 @@
   padding:0;
 }
 
+
+h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
+  font-family:'Playfair Display',Georgia,serif;
+  letter-spacing:.2px;
+}
 html{
   width:100%;
   min-height:100%;
 }
 
 body{
-  font-family:Arial,sans-serif;
-  background:#f4f7f5;
+  font-family:'Inter',Arial,sans-serif;
+  background:#f8f6f3;
   color:#222;
 }
 
@@ -35,7 +45,7 @@ body{
 ========================= */
 
 header{
-  background:#087f5b;
+  background:linear-gradient(135deg,#0d3b2c,#175e3f);
   color:white;
   padding:15px 20px;
 
@@ -47,6 +57,7 @@ header{
   flex-wrap:wrap;
 
   box-shadow:0 2px 8px rgba(0,0,0,.15);
+  border-bottom:3px solid #c9a227;
 }
 
 .logo{
@@ -79,11 +90,11 @@ header{
 
 .btn-light{
   background:white;
-  color:#087f5b;
+  color:#165d3c;
 }
 
 .btn-gold{
-  background:#d4a017;
+  background:#d19a1a;
   color:white;
 }
 
@@ -126,8 +137,8 @@ header{
 
 .notice.success{
   display:block;
-  background:#d4edda;
-  color:#155724;
+  background:#d4ede1;
+  color:#124a30;
 }
 
 /* =========================
@@ -153,7 +164,7 @@ header{
 ========================= */
 
 .inbox{
-  border-right:1px solid #ddd;
+  border-right:1px solid #e3dfd7;
 
   display:flex;
   flex-direction:column;
@@ -166,11 +177,11 @@ header{
   flex:0 0 auto;
 
   padding:18px;
-  border-bottom:1px solid #ddd;
+  border-bottom:1px solid #e3dfd7;
 }
 
 .inbox-header h2{
-  color:#087f5b;
+  color:#165d3c;
   font-size:20px;
   margin-bottom:12px;
 }
@@ -178,13 +189,13 @@ header{
 .search{
   width:100%;
   padding:11px;
-  border:1px solid #ddd;
+  border:1px solid #e3dfd7;
   border-radius:7px;
   outline:none;
 }
 
 .search:focus{
-  border-color:#087f5b;
+  border-color:#165d3c;
 }
 
 .conversations{
@@ -200,7 +211,7 @@ header{
 
 .conversation{
   padding:14px;
-  border-bottom:1px solid #eee;
+  border-bottom:1px solid #f3f0e9;
 
   cursor:pointer;
 
@@ -212,11 +223,11 @@ header{
 }
 
 .conversation:hover{
-  background:#f5f9f7;
+  background:#f9f8f5;
 }
 
 .conversation.active{
-  background:#e8f5ef;
+  background:#f4f0e9;
 }
 
 .avatar{
@@ -226,7 +237,7 @@ header{
 
   border-radius:50%;
 
-  background:#087f5b;
+  background:#165d3c;
   color:white;
 
   display:flex;
@@ -293,7 +304,7 @@ header{
 
   border-radius:20px;
 
-  background:#d4a017;
+  background:#d19a1a;
   color:white;
 
   font-size:11px;
@@ -333,7 +344,7 @@ header{
 }
 
 .chat-empty h3{
-  color:#087f5b;
+  color:#165d3c;
   margin-bottom:8px;
 }
 
@@ -342,7 +353,7 @@ header{
 
   padding:14px 18px;
 
-  border-bottom:1px solid #ddd;
+  border-bottom:1px solid #e3dfd7;
 
   display:flex;
   align-items:center;
@@ -361,7 +372,7 @@ header{
 }
 
 .chat-user h3{
-  color:#087f5b;
+  color:#165d3c;
 
   white-space:nowrap;
   overflow:hidden;
@@ -388,7 +399,7 @@ header{
   overflow-y:auto;
   overflow-x:hidden;
 
-  background:#f7faf8;
+  background:#faf9f7;
 
   -webkit-overflow-scrolling:touch;
 
@@ -428,7 +439,7 @@ header{
 }
 
 .mine .bubble{
-  background:#087f5b;
+  background:#165d3c;
   color:white;
 
   border-bottom-right-radius:3px;
@@ -438,7 +449,7 @@ header{
   background:white;
   color:#222;
 
-  border:1px solid #e3e3e3;
+  border:1px solid #e8e5de;
 
   border-bottom-left-radius:3px;
 }
@@ -462,7 +473,7 @@ header{
 .chat-input{
   flex:0 0 auto;
 
-  border-top:1px solid #ddd;
+  border-top:1px solid #e3dfd7;
 
   padding:12px;
 
@@ -488,19 +499,19 @@ header{
 
   padding:12px;
 
-  border:1px solid #ddd;
+  border:1px solid #e3dfd7;
 
   border-radius:8px;
 
   outline:none;
 
-  font-family:Arial,sans-serif;
+  font-family:'Inter',Arial,sans-serif;
 
   font-size:14px;
 }
 
 .chat-input textarea:focus{
-  border-color:#087f5b;
+  border-color:#165d3c;
 }
 
 .send-btn{
@@ -508,7 +519,7 @@ header{
 
   border:none;
 
-  background:#087f5b;
+  background:#165d3c;
 
   color:white;
 
@@ -522,12 +533,346 @@ header{
 }
 
 .send-btn:hover{
-  background:#075f43;
+  background:#10462d;
 }
 
 .send-btn:disabled{
   opacity:.6;
   cursor:not-allowed;
+}
+
+/* =========================
+   MESSAGE OPTIONS (delete)
+========================= */
+
+.msg-options-btn{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+
+  width:22px;
+  height:22px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:none;
+  border-radius:50%;
+
+  background:rgba(0,0,0,.15);
+  color:inherit;
+
+  font-size:14px;
+  line-height:1;
+
+  cursor:pointer;
+}
+
+.mine .msg-options-btn{
+  background:rgba(255,255,255,.35);
+}
+
+.msg-options-menu{
+  display:none;
+
+  position:absolute;
+  top:16px;
+  right:0;
+
+  z-index:5;
+
+  background:white;
+  color:#222;
+
+  border-radius:8px;
+
+  box-shadow:0 4px 14px rgba(0,0,0,.18);
+
+  overflow:hidden;
+
+  min-width:150px;
+}
+
+.msg-options-menu.show{
+  display:flex;
+  flex-direction:column;
+}
+
+.msg-options-menu button{
+  border:none;
+  background:none;
+
+  padding:10px 14px;
+
+  text-align:left;
+
+  font-size:13px;
+
+  color:#165d3c;
+
+  cursor:pointer;
+}
+
+.msg-options-menu button:hover{
+  background:#eaf3ee;
+}
+
+.msg-options-menu button.danger{
+  color:#dc3545;
+}
+
+.msg-options-menu button.danger:hover{
+  background:#fdeeee;
+}
+
+.deleted-message{
+  font-style:italic;
+  opacity:.7;
+  font-size:13px;
+}
+
+/* ================= BOTTOM NAV (mobile) ================= */
+.bottom-nav{
+  display:flex;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:999;
+  justify-content:space-around;
+  align-items:stretch;
+  background:#fff;
+  border-top:1px solid #e6e2da;
+  padding:0 0 env(safe-area-inset-bottom,0px);
+  box-shadow:0 -2px 12px rgba(0,0,0,.06);
+}
+.bottom-nav .bn-item{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  text-decoration:none;
+  color:#8a8f8c;
+  font-size:11px;
+  flex:1;
+  padding:12px 0 8px;
+  font-weight:500;
+  background:transparent;
+  border:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.bottom-nav .bn-item::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:25%;
+  right:25%;
+  height:3px;
+  border-radius:2px;
+  background:transparent;
+  transition:background .2s;
+}
+.bottom-nav .bn-item.active{
+  color:#075e36;
+  font-weight:700;
+  background:transparent;
+}
+.bottom-nav .bn-item.active::before{
+  background:#c9a227;
+}
+.bottom-nav .bn-icon{
+  font-size:22px;
+  line-height:1;
+  display:flex;
+}
+body.has-bottom-nav{
+  padding-bottom:70px;
+}
+
+/* Boye bottom-nav idan an bude wani chat, domin kada
+   ya rufe composer/input din sako */
+body:has(.messaging.chat-open) .bottom-nav{
+  display:none;
+}
+body:has(.messaging.chat-open){
+  padding-bottom:0;
+}
+
+/* =========================
+   MEDIA ATTACH BUTTONS
+   (photo / video / voice)
+========================= */
+
+.chat-media-btn{
+  flex:0 0 auto;
+
+  width:40px;
+  height:40px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:#eaf3ee;
+
+  color:#165d3c;
+
+  font-size:18px;
+
+  cursor:pointer;
+
+  transition:background .15s ease, transform .1s ease;
+}
+
+.chat-media-btn:hover{
+  background:#165d3c;
+  color:white;
+}
+
+.chat-media-btn:active{
+  transform:scale(.92);
+}
+
+.chat-media-btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.chat-media-btn.recording{
+  background:#dc3545;
+  color:white;
+  animation:chatMicPulse 1.2s infinite;
+}
+
+@keyframes chatMicPulse{
+  0%{ box-shadow:0 0 0 0 rgba(220,53,69,.45); }
+  70%{ box-shadow:0 0 0 10px rgba(220,53,69,0); }
+  100%{ box-shadow:0 0 0 0 rgba(220,53,69,0); }
+}
+
+/* =========================
+   MEDIA PREVIEW CARDS
+   (before sending)
+========================= */
+
+.chat-media-preview{
+  display:none;
+  align-items:center;
+  gap:10px;
+
+  padding:8px 10px;
+  margin:0 12px 8px 12px;
+
+  background:#fbf7ec;
+
+  border:1px solid #eadfc0;
+  border-left:3px solid #d19a1a;
+
+  border-radius:10px;
+
+  font-size:13px;
+
+  color:#5a4b1f;
+}
+
+.chat-media-preview.show{
+  display:flex;
+}
+
+.chat-media-preview img,
+.chat-media-preview video{
+  width:64px;
+  height:64px;
+
+  object-fit:cover;
+
+  border-radius:8px;
+
+  flex:0 0 auto;
+}
+
+.chat-media-preview audio{
+  height:36px;
+  max-width:190px;
+}
+
+.chat-media-status{
+  flex:1 1 auto;
+
+  font-weight:600;
+}
+
+.chat-media-remove{
+  flex:0 0 auto;
+
+  width:26px;
+  height:26px;
+
+  border:none;
+  border-radius:50%;
+
+  background:white;
+  color:#dc3545;
+
+  font-size:14px;
+
+  cursor:pointer;
+}
+
+/* =========================
+   RECORDING INDICATOR
+========================= */
+
+.chat-recording{
+  display:none;
+  align-items:center;
+  gap:8px;
+
+  padding:8px 12px;
+  margin:0 12px 8px 12px;
+
+  background:#fdeeee;
+
+  border:1px solid #f3c6c9;
+  border-left:3px solid #dc3545;
+
+  border-radius:10px;
+
+  font-size:13px;
+
+  color:#a71d2a;
+
+  font-weight:600;
+}
+
+.chat-recording.show{
+  display:flex;
+}
+
+.chat-recording-stop{
+  margin-left:auto;
+
+  background:#dc3545;
+  color:white;
+
+  border:none;
+  border-radius:8px;
+
+  padding:5px 14px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+}
+
+.chat-recording-stop:hover{
+  background:#a71d2a;
 }
 
 /* =========================
@@ -537,7 +882,7 @@ header{
 .loading{
   text-align:center;
   padding:30px;
-  color:#087f5b;
+  color:#165d3c;
   font-weight:bold;
 }
 
@@ -548,7 +893,7 @@ header{
 }
 
 .empty h3{
-  color:#087f5b;
+  color:#165d3c;
   margin-bottom:7px;
 }
 
@@ -832,9 +1177,18 @@ header{
 
 </style>
 
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10462d">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arewa Market">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style id="no-top-nav">header .header-actions{display:none!important}</style>
 </head>
 
-<body>
+<body class="has-bottom-nav">
 
 <!-- =========================
      HEADER
@@ -1006,10 +1360,166 @@ header{
 
         <!-- INPUT -->
 
+        <!-- IMAGE PREVIEW (before sending) -->
+
+        <div
+          id="chatImagePreviewBox"
+          class="chat-media-preview"
+        >
+
+          <img
+            id="chatImagePreview"
+            alt="Selected photo"
+          >
+
+          <span
+            id="chatImageStatus"
+            class="chat-media-status"
+          ></span>
+
+          <button
+            type="button"
+            id="chatImageRemoveBtn"
+            class="chat-media-remove"
+          >
+            ✕
+          </button>
+
+        </div>
+
+        <!-- VIDEO PREVIEW (before sending) -->
+
+        <div
+          id="chatVideoPreviewBox"
+          class="chat-media-preview"
+        >
+
+          <video
+            id="chatVideoPreview"
+            muted
+          ></video>
+
+          <span
+            id="chatVideoStatus"
+            class="chat-media-status"
+          ></span>
+
+          <button
+            type="button"
+            id="chatVideoRemoveBtn"
+            class="chat-media-remove"
+          >
+            ✕
+          </button>
+
+        </div>
+
+        <!-- VOICE NOTE PREVIEW (before sending) -->
+
+        <div
+          id="chatAudioPreviewBox"
+          class="chat-media-preview"
+        >
+
+          <audio
+            id="chatAudioPreview"
+            controls
+          ></audio>
+
+          <span
+            id="chatAudioStatus"
+            class="chat-media-status"
+          ></span>
+
+          <button
+            type="button"
+            id="chatAudioRemoveBtn"
+            class="chat-media-remove"
+          >
+            ✕
+          </button>
+
+        </div>
+
+        <!-- RECORDING INDICATOR -->
+
+        <div
+          id="chatRecordingBox"
+          class="chat-recording"
+        >
+          🔴 Recording... <span id="chatRecordingTimer">0:00</span>
+          <button
+            type="button"
+            id="chatRecordingStopBtn"
+            class="chat-recording-stop"
+          >
+            Stop
+          </button>
+        </div>
+
+        <!-- EDIT MODE INDICATOR -->
+
+        <div
+          id="editMessageBox"
+          class="chat-recording"
+          style="background:#fbf7ec;border-left-color:#d19a1a;color:#8a6d1f;"
+        >
+          ✏️ Editing message...
+          <button
+            type="button"
+            id="cancelEditBtn"
+            class="chat-recording-stop"
+            style="background:#8a6d1f;"
+          >
+            Cancel
+          </button>
+        </div>
+
         <form
           id="messageForm"
           class="chat-input"
         >
+
+          <button
+            type="button"
+            id="chatAttachBtn"
+            title="Attach photo"
+            class="chat-media-btn"
+          >
+            📷
+          </button>
+
+          <input
+            type="file"
+            id="chatImageFile"
+            accept="image/*"
+            style="display:none;"
+          >
+
+          <button
+            type="button"
+            id="chatVideoAttachBtn"
+            title="Attach video"
+            class="chat-media-btn"
+          >
+            🎥
+          </button>
+
+          <input
+            type="file"
+            id="chatVideoFile"
+            accept="video/*"
+            style="display:none;"
+          >
+
+          <button
+            type="button"
+            id="chatMicBtn"
+            title="Record voice note"
+            class="chat-media-btn"
+          >
+            🎤
+          </button>
 
           <textarea
             id="messageInput"
@@ -1047,6 +1557,14 @@ import {
 } from "./firebase.js";
 
 import {
+  uploadToImgbb
+} from "./imgbb-upload.js";
+
+import {
+  uploadToCloudinary
+} from "./cloudinary-upload.js";
+
+import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
@@ -1063,7 +1581,8 @@ import {
   where,
   orderBy,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  arrayUnion
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 /* =========================================
@@ -1125,10 +1644,216 @@ const messageInput =
     "messageInput"
   );
 
+const chatAttachBtn =
+  document.getElementById(
+    "chatAttachBtn"
+  );
+
+const chatImageFile =
+  document.getElementById(
+    "chatImageFile"
+  );
+
+const chatImagePreviewBox =
+  document.getElementById(
+    "chatImagePreviewBox"
+  );
+
+const chatImagePreview =
+  document.getElementById(
+    "chatImagePreview"
+  );
+
+const chatImageStatus =
+  document.getElementById(
+    "chatImageStatus"
+  );
+
+const chatImageRemoveBtn =
+  document.getElementById(
+    "chatImageRemoveBtn"
+  );
+
+/*
+  Holds the imgbb URL of a photo the user
+  has picked but not yet sent.
+*/
+let pendingImageUrl = null;
+
+const chatVideoAttachBtn =
+  document.getElementById(
+    "chatVideoAttachBtn"
+  );
+
+const chatVideoFile =
+  document.getElementById(
+    "chatVideoFile"
+  );
+
+const chatVideoPreviewBox =
+  document.getElementById(
+    "chatVideoPreviewBox"
+  );
+
+const chatVideoPreview =
+  document.getElementById(
+    "chatVideoPreview"
+  );
+
+const chatVideoStatus =
+  document.getElementById(
+    "chatVideoStatus"
+  );
+
+const chatVideoRemoveBtn =
+  document.getElementById(
+    "chatVideoRemoveBtn"
+  );
+
+let pendingVideoUrl = null;
+
+const chatMicBtn =
+  document.getElementById(
+    "chatMicBtn"
+  );
+
+const chatAudioPreviewBox =
+  document.getElementById(
+    "chatAudioPreviewBox"
+  );
+
+const chatAudioPreview =
+  document.getElementById(
+    "chatAudioPreview"
+  );
+
+const chatAudioStatus =
+  document.getElementById(
+    "chatAudioStatus"
+  );
+
+const chatAudioRemoveBtn =
+  document.getElementById(
+    "chatAudioRemoveBtn"
+  );
+
+let pendingAudioUrl = null;
+
+const chatRecordingBox =
+  document.getElementById(
+    "chatRecordingBox"
+  );
+
+const chatRecordingTimer =
+  document.getElementById(
+    "chatRecordingTimer"
+  );
+
+const chatRecordingStopBtn =
+  document.getElementById(
+    "chatRecordingStopBtn"
+  );
+
+let mediaRecorder = null;
+let recordedChunks = [];
+let recordingSeconds = 0;
+let recordingIntervalId = null;
+
+/*
+  Helper: hide all "pending attachment" previews.
+  Called whenever a new attachment type is picked,
+  so only ONE attachment goes out with a message
+  (kamar yadda WhatsApp da sauransu ke yi).
+*/
+function clearAllPendingMedia(){
+
+  pendingImageUrl = null;
+  pendingVideoUrl = null;
+  pendingAudioUrl = null;
+
+  chatImagePreviewBox.classList.remove(
+    "show"
+  );
+
+  chatImagePreview.src =
+    "";
+
+  chatVideoPreviewBox.classList.remove(
+    "show"
+  );
+
+  chatVideoPreview.src =
+    "";
+
+  chatAudioPreviewBox.classList.remove(
+    "show"
+  );
+
+  chatAudioPreview.src =
+    "";
+
+}
+
 const sendBtn =
   document.getElementById(
     "sendBtn"
   );
+
+const editMessageBox =
+  document.getElementById(
+    "editMessageBox"
+  );
+
+const cancelEditBtn =
+  document.getElementById(
+    "cancelEditBtn"
+  );
+
+let editingMessageId = null;
+
+function startEditingMessage(
+  messageId,
+  currentText
+){
+
+  editingMessageId =
+    messageId;
+
+  messageInput.value =
+    currentText || "";
+
+  messageInput.focus();
+
+  sendBtn.textContent =
+    "Update";
+
+  editMessageBox.classList.add(
+    "show"
+  );
+
+}
+
+function cancelEditingMessage(){
+
+  editingMessageId =
+    null;
+
+  messageInput.value =
+    "";
+
+  sendBtn.textContent =
+    "Send";
+
+  editMessageBox.classList.remove(
+    "show"
+  );
+
+}
+
+cancelEditBtn.addEventListener(
+  "click",
+  cancelEditingMessage
+);
 
 const notice =
   document.getElementById(
@@ -1180,6 +1905,17 @@ const params =
 const requestedSellerId =
   params.get("sellerId");
 
+const requestedProductId =
+  params.get("productId");
+
+const requestedProductName =
+  params.get("productName");
+
+const requestedProductPrice =
+  params.get("productPrice");
+
+let productPrefillDone = false;
+
 /* =========================================
    NOTICE
 ========================================= */
@@ -1216,11 +1952,13 @@ onAuthStateChanged(
 
     if(!user){
 
+      sessionStorage.setItem(
+        "arewaMarketRedirect",
+        window.location.href
+      );
+
       window.location.href =
-        "login.html?returnUrl=" +
-        encodeURIComponent(
-          window.location.href
-        );
+        "login.html";
 
       return;
 
@@ -1275,6 +2013,38 @@ onAuthStateChanged(
 
   }
 );
+
+/* =========================================
+   PREFILL "I'M INTERESTED" MESSAGE
+========================================= */
+
+function prefillInterestedMessage(){
+
+  if(productPrefillDone) return;
+
+  if(!requestedProductName) return;
+
+  if(!currentConversationId) return;
+
+  if(messageInput.value.trim()) return;
+
+  const priceText =
+    requestedProductPrice
+      ? " (₦" + requestedProductPrice + ")"
+      : "";
+
+  messageInput.value =
+    "Sannu, ina sha'awar: " +
+    requestedProductName +
+    priceText +
+    ". Har yanzu akwai?";
+
+  messageInput.focus();
+
+  productPrefillDone = true;
+
+}
+
 
 /* =========================================
    START CONVERSATIONS
@@ -1402,6 +2172,8 @@ function startConversations(){
           );
 
         }
+
+        prefillInterestedMessage();
 
       },
       (error) => {
@@ -2051,7 +2823,8 @@ function subscribeToMessages(
           messageDoc => {
 
             renderMessage(
-              messageDoc.data()
+              messageDoc.data(),
+              messageDoc.id
             );
 
           }
@@ -2088,12 +2861,141 @@ function subscribeToMessages(
 }
 
 /* =========================================
+   DELETE MESSAGE
+========================================= */
+
+function closeAllMessageMenus(){
+
+  document
+    .querySelectorAll(
+      ".msg-options-menu.show"
+    )
+    .forEach(
+      (menu) => {
+        menu.classList.remove(
+          "show"
+        );
+      }
+    );
+
+}
+
+document.addEventListener(
+  "click",
+  closeAllMessageMenus
+);
+
+async function deleteMessageForMe(
+  messageId
+){
+
+  if(
+    !currentConversationId ||
+    !messageId
+  ){
+    return;
+  }
+
+  try{
+
+    const messageRef =
+      doc(
+        db,
+        "conversations",
+        currentConversationId,
+        "messages",
+        messageId
+      );
+
+    await updateDoc(
+      messageRef,
+      {
+        deletedFor:
+          arrayUnion(
+            currentUser.uid
+          )
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Delete for me error:",
+      error
+    );
+
+    alert(
+      "Unable to delete message. Please try again."
+    );
+
+  }
+
+}
+
+async function deleteMessageForEveryone(
+  messageId
+){
+
+  if(
+    !currentConversationId ||
+    !messageId
+  ){
+    return;
+  }
+
+  try{
+
+    const messageRef =
+      doc(
+        db,
+        "conversations",
+        currentConversationId,
+        "messages",
+        messageId
+      );
+
+    await updateDoc(
+      messageRef,
+      {
+        deleted:true,
+        text:"",
+        imageUrl:null,
+        videoUrl:null,
+        audioUrl:null
+      }
+    );
+
+  }catch(error){
+
+    console.error(
+      "Delete for everyone error:",
+      error
+    );
+
+    alert(
+      "Unable to delete message. Please try again."
+    );
+
+  }
+
+}
+
+/* =========================================
    RENDER MESSAGE
 ========================================= */
 
 function renderMessage(
-  message
+  message,
+  messageId
 ){
+
+  // "Delete for me": kada a nuna wa wanda ya boye shi
+  if(
+    Array.isArray(message.deletedFor) &&
+    message.deletedFor.includes(currentUser.uid)
+  ){
+    return;
+  }
 
   const mine =
     message.senderId ===
@@ -2120,6 +3022,350 @@ function renderMessage(
   bubble.className =
     "bubble";
 
+  bubble.style.position =
+    "relative";
+
+  // "Delete for everyone": nuna sako a matsayin da aka goge
+  if(message.deleted === true){
+
+    const deletedText =
+      document.createElement(
+        "div"
+      );
+
+    deletedText.className =
+      "deleted-message";
+
+    deletedText.textContent =
+      "🚫 This message was deleted";
+
+    bubble.appendChild(
+      deletedText
+    );
+
+    const time =
+      document.createElement(
+        "span"
+      );
+
+    time.className =
+      "message-time";
+
+    time.textContent =
+      formatTime(
+        message.createdAt
+      );
+
+    bubble.appendChild(
+      time
+    );
+
+    row.appendChild(
+      bubble
+    );
+
+    messagesContainer.appendChild(
+      row
+    );
+
+    return;
+
+  }
+
+  const optionsBtn =
+    document.createElement(
+      "button"
+    );
+
+  optionsBtn.type =
+    "button";
+
+  optionsBtn.className =
+    "msg-options-btn";
+
+  optionsBtn.textContent =
+    "⋮";
+
+  optionsBtn.title =
+    "Message options";
+
+  const optionsMenu =
+    document.createElement(
+      "div"
+    );
+
+  optionsMenu.className =
+    "msg-options-menu";
+
+  const deleteForMeBtn =
+    document.createElement(
+      "button"
+    );
+
+  deleteForMeBtn.type =
+    "button";
+
+  deleteForMeBtn.textContent =
+    "Delete for me";
+
+  deleteForMeBtn.addEventListener(
+    "click",
+    async (e) => {
+
+      e.stopPropagation();
+
+      optionsMenu.classList.remove(
+        "show"
+      );
+
+      if(
+        !confirm(
+          "Delete this message for you only?"
+        )
+      ){
+        return;
+      }
+
+      await deleteMessageForMe(
+        messageId
+      );
+
+    }
+  );
+
+  optionsMenu.appendChild(
+    deleteForMeBtn
+  );
+
+  if(
+    mine &&
+    message.text &&
+    message.text.trim() !== ""
+  ){
+
+    const editBtn =
+      document.createElement(
+        "button"
+      );
+
+    editBtn.type =
+      "button";
+
+    editBtn.textContent =
+      "Edit";
+
+    editBtn.addEventListener(
+      "click",
+      (e) => {
+
+        e.stopPropagation();
+
+        optionsMenu.classList.remove(
+          "show"
+        );
+
+        startEditingMessage(
+          messageId,
+          message.text
+        );
+
+      }
+    );
+
+    optionsMenu.appendChild(
+      editBtn
+    );
+
+  }
+
+  if(mine){
+
+    const deleteForEveryoneBtn =
+      document.createElement(
+        "button"
+      );
+
+    deleteForEveryoneBtn.type =
+      "button";
+
+    deleteForEveryoneBtn.className =
+      "danger";
+
+    deleteForEveryoneBtn.textContent =
+      "Delete for everyone";
+
+    deleteForEveryoneBtn.addEventListener(
+      "click",
+      async (e) => {
+
+        e.stopPropagation();
+
+        optionsMenu.classList.remove(
+          "show"
+        );
+
+        if(
+          !confirm(
+            "Delete this message for everyone in this chat?"
+          )
+        ){
+          return;
+        }
+
+        await deleteMessageForEveryone(
+          messageId
+        );
+
+      }
+    );
+
+    optionsMenu.appendChild(
+      deleteForEveryoneBtn
+    );
+
+  }
+
+  optionsBtn.addEventListener(
+    "click",
+    (e) => {
+
+      e.stopPropagation();
+
+      const isOpen =
+        optionsMenu.classList.contains(
+          "show"
+        );
+
+      closeAllMessageMenus();
+
+      if(!isOpen){
+
+        optionsMenu.classList.add(
+          "show"
+        );
+
+      }
+
+    }
+  );
+
+  bubble.appendChild(
+    optionsBtn
+  );
+
+  bubble.appendChild(
+    optionsMenu
+  );
+
+  if(message.imageUrl){
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+    image.src =
+      message.imageUrl;
+
+    image.alt =
+      "Photo";
+
+    image.style.maxWidth =
+      "220px";
+
+    image.style.borderRadius =
+      "10px";
+
+    image.style.display =
+      "block";
+
+    image.style.marginBottom =
+      message.text
+        ? "6px"
+        : "0";
+
+    image.style.cursor =
+      "pointer";
+
+    image.addEventListener(
+      "click",
+      () => {
+        window.open(
+          message.imageUrl,
+          "_blank"
+        );
+      }
+    );
+
+    bubble.appendChild(
+      image
+    );
+
+  }
+
+  if(message.videoUrl){
+
+    const video =
+      document.createElement(
+        "video"
+      );
+
+    video.src =
+      message.videoUrl;
+
+    video.controls =
+      true;
+
+    video.style.maxWidth =
+      "240px";
+
+    video.style.borderRadius =
+      "10px";
+
+    video.style.display =
+      "block";
+
+    video.style.marginBottom =
+      message.text
+        ? "6px"
+        : "0";
+
+    bubble.appendChild(
+      video
+    );
+
+  }
+
+  if(message.audioUrl){
+
+    const audio =
+      document.createElement(
+        "audio"
+      );
+
+    audio.src =
+      message.audioUrl;
+
+    audio.controls =
+      true;
+
+    audio.style.maxWidth =
+      "220px";
+
+    audio.style.display =
+      "block";
+
+    audio.style.marginBottom =
+      message.text
+        ? "6px"
+        : "0";
+
+    bubble.appendChild(
+      audio
+    );
+
+  }
+
   const text =
     document.createElement(
       "div"
@@ -2139,11 +3385,20 @@ function renderMessage(
   time.textContent =
     formatTime(
       message.createdAt
+    ) +
+    (
+      message.edited === true
+        ? " · edited"
+        : ""
     );
 
-  bubble.appendChild(
-    text
-  );
+  if(message.text){
+
+    bubble.appendChild(
+      text
+    );
+
+  }
 
   bubble.appendChild(
     time
@@ -2160,6 +3415,426 @@ function renderMessage(
 }
 
 /* =========================================
+   PHOTO ATTACHMENT (imgbb)
+========================================= */
+
+chatAttachBtn.addEventListener(
+  "click",
+  () => {
+    chatImageFile.click();
+  }
+);
+
+chatImageFile.addEventListener(
+  "change",
+  async () => {
+
+    const file =
+      chatImageFile.files &&
+      chatImageFile.files[0];
+
+    if(!file){
+      return;
+    }
+
+    clearAllPendingMedia();
+
+    chatImagePreviewBox.classList.add(
+      "show"
+    );
+
+    chatImagePreview.src =
+      URL.createObjectURL(file);
+
+    chatImageStatus.textContent =
+      "⏳ Uploading...";
+
+    chatAttachBtn.disabled =
+      true;
+
+    try{
+
+      const url =
+        await uploadToImgbb(file);
+
+      pendingImageUrl =
+        url;
+
+      chatImageStatus.textContent =
+        "✅ Ready to send";
+
+    }catch(error){
+
+      console.error(
+        "Chat image upload error:",
+        error
+      );
+
+      chatImageStatus.textContent =
+        "❌ " + error.message;
+
+      pendingImageUrl =
+        null;
+
+    }
+
+    chatAttachBtn.disabled =
+      false;
+
+    chatImageFile.value =
+      "";
+
+  }
+);
+
+chatImageRemoveBtn.addEventListener(
+  "click",
+  () => {
+
+    pendingImageUrl =
+      null;
+
+    chatImagePreviewBox.classList.remove(
+      "show"
+    );
+
+    chatImagePreview.src =
+      "";
+
+  }
+);
+
+/* =========================================
+   VIDEO ATTACHMENT (Cloudinary)
+========================================= */
+
+chatVideoAttachBtn.addEventListener(
+  "click",
+  () => {
+    chatVideoFile.click();
+  }
+);
+
+chatVideoFile.addEventListener(
+  "change",
+  async () => {
+
+    const file =
+      chatVideoFile.files &&
+      chatVideoFile.files[0];
+
+    if(!file){
+      return;
+    }
+
+    clearAllPendingMedia();
+
+    chatVideoPreviewBox.classList.add(
+      "show"
+    );
+
+    chatVideoPreview.src =
+      URL.createObjectURL(file);
+
+    chatVideoStatus.textContent =
+      "⏳ Uploading...";
+
+    chatVideoAttachBtn.disabled =
+      true;
+
+    try{
+
+      const result =
+        await uploadToCloudinary(file);
+
+      pendingVideoUrl =
+        result.url;
+
+      chatVideoStatus.textContent =
+        "✅ Ready to send";
+
+    }catch(error){
+
+      console.error(
+        "Chat video upload error:",
+        error
+      );
+
+      chatVideoStatus.textContent =
+        "❌ " + error.message;
+
+      pendingVideoUrl =
+        null;
+
+    }
+
+    chatVideoAttachBtn.disabled =
+      false;
+
+    chatVideoFile.value =
+      "";
+
+  }
+);
+
+chatVideoRemoveBtn.addEventListener(
+  "click",
+  () => {
+
+    pendingVideoUrl =
+      null;
+
+    chatVideoPreviewBox.classList.remove(
+      "show"
+    );
+
+    chatVideoPreview.src =
+      "";
+
+  }
+);
+
+/* =========================================
+   VOICE NOTE RECORDING (Cloudinary)
+========================================= */
+
+chatMicBtn.addEventListener(
+  "click",
+  async () => {
+
+    if(mediaRecorder && mediaRecorder.state === "recording"){
+      return;
+    }
+
+    if(
+      !window.isSecureContext
+    ){
+
+      showNotice(
+        "Voice recording only works on HTTPS (or localhost). This page is loaded over an insecure connection."
+      );
+
+      return;
+
+    }
+
+    if(
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ){
+
+      showNotice(
+        "This browser/preview does not support microphone recording."
+      );
+
+      return;
+
+    }
+
+    let stream;
+
+    try{
+
+      stream =
+        await navigator.mediaDevices.getUserMedia(
+          { audio:true }
+        );
+
+    }catch(error){
+
+      console.error(
+        "Microphone permission error:",
+        error.name,
+        error.message
+      );
+
+      let msg =
+        "Microphone access is required to record a voice note.";
+
+      if(error.name === "NotAllowedError"){
+
+        msg =
+          "Microphone permission was blocked. Please allow microphone access for this site in your browser settings and try again.";
+
+      }else if(error.name === "NotFoundError"){
+
+        msg =
+          "No microphone was found on this device.";
+
+      }else if(error.name === "NotReadableError"){
+
+        msg =
+          "Another app is currently using the microphone.";
+
+      }
+
+      showNotice(
+        msg
+      );
+
+      return;
+
+    }
+
+    clearAllPendingMedia();
+
+    recordedChunks = [];
+
+    mediaRecorder =
+      new MediaRecorder(stream);
+
+    mediaRecorder.addEventListener(
+      "dataavailable",
+      (e) => {
+        if(e.data && e.data.size > 0){
+          recordedChunks.push(e.data);
+        }
+      }
+    );
+
+    mediaRecorder.addEventListener(
+      "stop",
+      async () => {
+
+        stream.getTracks().forEach(
+          (track) => track.stop()
+        );
+
+        clearInterval(
+          recordingIntervalId
+        );
+
+        chatRecordingBox.classList.remove(
+          "show"
+        );
+
+        chatMicBtn.classList.remove(
+          "recording"
+        );
+
+        const blob =
+          new Blob(
+            recordedChunks,
+            { type:"audio/webm" }
+          );
+
+        if(blob.size === 0){
+          return;
+        }
+
+        chatAudioPreviewBox.classList.add(
+          "show"
+        );
+
+        chatAudioPreview.src =
+          URL.createObjectURL(blob);
+
+        chatAudioStatus.textContent =
+          "⏳ Uploading...";
+
+        try{
+
+          const file =
+            new File(
+              [blob],
+              "voice-note.webm",
+              { type:"audio/webm" }
+            );
+
+          const result =
+            await uploadToCloudinary(file);
+
+          pendingAudioUrl =
+            result.url;
+
+          chatAudioStatus.textContent =
+            "✅ Ready to send";
+
+        }catch(error){
+
+          console.error(
+            "Voice note upload error:",
+            error
+          );
+
+          chatAudioStatus.textContent =
+            "❌ " + error.message;
+
+          pendingAudioUrl =
+            null;
+
+        }
+
+      }
+    );
+
+    mediaRecorder.start();
+
+    recordingSeconds = 0;
+
+    chatRecordingTimer.textContent =
+      "0:00";
+
+    chatRecordingBox.classList.add(
+      "show"
+    );
+
+    chatMicBtn.classList.add(
+      "recording"
+    );
+
+    recordingIntervalId =
+      setInterval(
+        () => {
+
+          recordingSeconds++;
+
+          const mins =
+            Math.floor(recordingSeconds / 60);
+
+          const secs =
+            recordingSeconds % 60;
+
+          chatRecordingTimer.textContent =
+            mins + ":" +
+            (secs < 10 ? "0" : "") + secs;
+
+        },
+        1000
+      );
+
+  }
+);
+
+chatRecordingStopBtn.addEventListener(
+  "click",
+  () => {
+
+    if(mediaRecorder && mediaRecorder.state === "recording"){
+      mediaRecorder.stop();
+    }
+
+  }
+);
+
+chatAudioRemoveBtn.addEventListener(
+  "click",
+  () => {
+
+    pendingAudioUrl =
+      null;
+
+    chatAudioPreviewBox.classList.remove(
+      "show"
+    );
+
+    chatAudioPreview.src =
+      "";
+
+  }
+);
+
+/* =========================================
    SEND MESSAGE
 ========================================= */
 
@@ -2169,10 +3844,79 @@ messageForm.addEventListener(
 
     event.preventDefault();
 
+    // ===== EDIT MODE =====
+    if(editingMessageId){
+
+      const updatedText =
+        messageInput.value.trim();
+
+      if(!updatedText){
+
+        showNotice(
+          "Message can't be empty."
+        );
+
+        return;
+
+      }
+
+      try{
+
+        const messageRef =
+          doc(
+            db,
+            "conversations",
+            currentConversationId,
+            "messages",
+            editingMessageId
+          );
+
+        await updateDoc(
+          messageRef,
+          {
+            text:
+              updatedText,
+            edited:
+              true,
+            editedAt:
+              serverTimestamp()
+          }
+        );
+
+      }catch(error){
+
+        console.error(
+          "Edit message error:",
+          error
+        );
+
+        showNotice(
+          "Unable to update message. Please try again."
+        );
+
+        return;
+
+      }
+
+      cancelEditingMessage();
+
+      return;
+
+    }
+
     const text =
       messageInput.value.trim();
 
-    if(!text){
+    const imageUrl =
+      pendingImageUrl;
+
+    const videoUrl =
+      pendingVideoUrl;
+
+    const audioUrl =
+      pendingAudioUrl;
+
+    if(!text && !imageUrl && !videoUrl && !audioUrl){
 
       return;
 
@@ -2218,6 +3962,15 @@ messageForm.addEventListener(
           text:
             text,
 
+          imageUrl:
+            imageUrl || null,
+
+          videoUrl:
+            videoUrl || null,
+
+          audioUrl:
+            audioUrl || null,
+
           createdAt:
             serverTimestamp(),
 
@@ -2225,6 +3978,18 @@ messageForm.addEventListener(
 
         }
       );
+
+      const lastMessagePreview =
+        text ||
+        (
+          imageUrl
+            ? "📷 Photo"
+            : videoUrl
+              ? "🎥 Video"
+              : audioUrl
+                ? "🎤 Voice message"
+                : ""
+        );
 
       const conversationRef =
         doc(
@@ -2264,7 +4029,7 @@ messageForm.addEventListener(
         {
 
           lastMessage:
-            text,
+            lastMessagePreview,
 
           lastMessageAt:
             serverTimestamp(),
@@ -2283,6 +4048,8 @@ messageForm.addEventListener(
 
       messageInput.value =
         "";
+
+      clearAllPendingMedia();
 
     }catch(error){
 
@@ -2467,5 +4234,60 @@ function escapeHtml(
 
 </script>
 
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+
+  <a href="index.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-home"></i></span>
+    <span class="bn-label">Home</span>
+  </a>
+
+  <a href="friends.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-users"></i></span>
+    <span class="bn-label">Friends</span>
+  </a>
+
+  <a href="messages.html" class="bn-item active">
+    <span class="bn-icon"><i class="ti ti-message-circle"></i></span>
+    <span class="bn-label">Messages</span>
+  </a>
+
+  <a href="seller-dashboard.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-building-store"></i></span>
+    <span class="bn-label">Dashboard</span>
+  </a>
+
+  <a href="login.html" id="navProfileLink" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-user"></i></span>
+    <span class="bn-label">Profile</span>
+  </a>
+
+</nav>
+
+
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  onAuthStateChanged(auth, (user) => {
+    const link = document.getElementById("navProfileLink");
+    if(link){
+      link.href = user
+        ? "seller-profile.html?id=" + user.uid
+        : "login.html";
+    }
+  });
+</script>
+
+<script type="module" src="bottom-nav.js"></script>
 </body>
+
 </html>

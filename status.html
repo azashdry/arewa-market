@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Arewa Market - Status</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif}
+body{font-family:'Inter',Arial,sans-serif;background:#f8f6f3;color:#222;padding-bottom:76px}
+
+.header{background:#075e36;color:#fff;padding:16px;border-bottom:3px solid #c9a227;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.header a{color:#fff;text-decoration:none;font-size:22px}
+.header h1{font-size:20px;flex:1}
+.wrap{max-width:720px;margin:0 auto;padding:14px}
+.section-title{font-size:13px;font-weight:700;color:#777;text-transform:uppercase;letter-spacing:.6px;margin:16px 2px 8px}
+
+.row{background:#fff;border-radius:14px;padding:12px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer}
+.ring{width:56px;height:56px;border-radius:50%;padding:3px;background:#c9a227;flex-shrink:0}
+.ring.seen{background:#cfd3d0}
+.ring.none{background:#e3e6e4}
+.ring .av{width:100%;height:100%;border-radius:50%;border:2px solid #fff;background:#075e36;color:#fff;display:flex;align-items:center;justify-content:center;font:700 20px 'Inter',sans-serif;overflow:hidden}
+.ring .av img{width:100%;height:100%;object-fit:cover}
+.row .info{flex:1;min-width:0}
+.row .name{font-weight:700;font-size:15px}
+.row .sub{font-size:12px;color:#777;margin-top:2px}
+.add-badge{width:56px;height:56px;border-radius:50%;background:#e3f2e9;color:#075e36;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+
+.btn{border:0;border-radius:9px;padding:10px 14px;font:600 13px 'Inter',sans-serif;cursor:pointer}
+.btn-primary{background:#075e36;color:#fff}
+.btn-ghost{background:#eef1ef;color:#333}
+.btn-danger{background:#fdecea;color:#b3261e}
+.btn:disabled{opacity:.55}
+.empty{text-align:center;color:#888;padding:24px 12px;font-size:14px;line-height:1.5}
+
+.my-item{display:flex;align-items:center;gap:10px;padding:10px 4px;border-top:1px solid #eee;font-size:13px}
+.my-item:first-child{border-top:0}
+.my-item .thumb{width:44px;height:44px;border-radius:8px;background:#075e36;color:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:11px;text-align:center;flex-shrink:0}
+.my-item .thumb img,.my-item .thumb video{width:100%;height:100%;object-fit:cover}
+.my-item .meta{flex:1;min-width:0}
+.my-item .meta small{color:#777}
+
+/* ============ OVERLAYS ============ */
+.overlay{position:fixed;inset:0;z-index:3000;display:none;background:#000}
+.overlay.open{display:flex}
+
+/* composer */
+#composer{background:#f8f6f3;flex-direction:column;overflow-y:auto}
+.comp-head{display:flex;align-items:center;gap:10px;padding:14px;background:#075e36;color:#fff;border-bottom:3px solid #c9a227}
+.comp-head h2{flex:1;font-size:18px}
+.comp-head button{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer}
+.comp-body{padding:14px;max-width:520px;margin:0 auto;width:100%}
+.seg{display:flex;gap:6px;background:#fff;border-radius:12px;padding:5px;margin-bottom:14px}
+.seg button{flex:1;border:0;background:transparent;padding:10px;border-radius:9px;font:600 13px 'Inter',sans-serif;color:#555}
+.seg button.active{background:#075e36;color:#fff}
+.canvas{border-radius:16px;min-height:300px;display:flex;align-items:center;justify-content:center;padding:20px;margin-bottom:12px;overflow:hidden;position:relative}
+.canvas textarea{width:100%;min-height:240px;background:transparent;border:0;outline:0;resize:none;color:#fff;text-align:center;font:600 24px 'Inter',sans-serif}
+.canvas textarea::placeholder{color:rgba(255,255,255,.7)}
+.canvas.media{background:#111;padding:0}
+.canvas img,.canvas video{max-width:100%;max-height:420px;display:block}
+.pick-media{display:flex;flex-direction:column;align-items:center;gap:8px;color:#fff;cursor:pointer;font-size:14px}
+.pick-media i{font-size:40px}
+.swatches{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.sw{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #ccc;cursor:pointer}
+.sw.on{box-shadow:0 0 0 2px #222}
+.fld{width:100%;padding:11px;border:1px solid #d5d9d6;border-radius:9px;font:14px 'Inter',sans-serif;margin-bottom:10px;background:#fff}
+.lbl{font-size:12px;font-weight:600;color:#666;margin:2px 2px 4px;display:block}
+.err{color:#b3261e;font-size:13px;margin:6px 2px;display:none}
+
+/* viewer */
+#viewer{flex-direction:column;background:#000;user-select:none;-webkit-user-select:none}
+.bars{display:flex;gap:4px;padding:10px 10px 6px;padding-top:calc(10px + env(safe-area-inset-top,0px));position:relative;z-index:5}
+.bar{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#fff}
+.v-top{display:flex;align-items:center;gap:10px;padding:4px 12px;color:#fff;position:relative;z-index:5}
+.v-top .av{width:38px;height:38px;border-radius:50%;background:#075e36;display:flex;align-items:center;justify-content:center;font-weight:700;overflow:hidden;flex-shrink:0}
+.v-top .av img{width:100%;height:100%;object-fit:cover}
+.v-top .who{flex:1;min-width:0;font-size:14px;font-weight:600}
+.v-top .who small{display:block;font-weight:400;opacity:.8;font-size:12px}
+.v-top button{background:transparent;border:0;color:#fff;font-size:24px;cursor:pointer;padding:4px}
+.stage{flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.stage .txt{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:28px;text-align:center;color:#fff;font:600 26px 'Inter',sans-serif;word-break:break-word}
+.stage img,.stage video{max-width:100%;max-height:100%;object-fit:contain}
+.tap{position:absolute;top:0;bottom:0;width:35%;z-index:4}
+.tap.l{left:0}.tap.r{right:0}
+.v-bottom{padding:10px 14px calc(14px + env(safe-area-inset-bottom,0px));color:#fff;position:relative;z-index:5;text-align:center}
+.v-bottom .cap{font-size:15px;margin-bottom:10px;word-break:break-word}
+.v-bottom .row-b{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:20px;padding:9px 16px;font:600 13px 'Inter',sans-serif;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip.gold{background:#c9a227;color:#1a1a1a}
+
+/* viewers sheet */
+#sheet{background:rgba(0,0,0,.55);align-items:flex-end;z-index:3100}
+.sheet-card{background:#fff;width:100%;max-height:70vh;overflow-y:auto;border-radius:18px 18px 0 0;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.sheet-card h3{font-size:16px;margin-bottom:10px;color:#075e36}
+.vrow{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px}
+.vrow .av2{width:36px;height:36px;border-radius:50%;background:#075e36;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;overflow:hidden}
+.vrow .av2 img{width:100%;height:100%;object-fit:cover}
+
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:4000;max-width:90%}
+#toast.show{opacity:1}
+
+.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:999;justify-content:space-around;align-items:stretch;background:#fff;border-top:1px solid #e6e2da;padding:0 0 env(safe-area-inset-bottom,0px);box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.bottom-nav .bn-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:#8a8f8c;font-size:11px;flex:1;padding:12px 0 8px;font-weight:500}
+.bottom-nav .bn-item::before{content:"";position:absolute;top:0;left:25%;right:25%;height:3px;border-radius:2px;background:transparent}
+.bottom-nav .bn-item.active{color:#075e36;font-weight:700}
+.bottom-nav .bn-item.active::before{background:#c9a227}
+.bottom-nav .bn-icon{font-size:22px;line-height:1;display:flex}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10462d">
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" aria-label="Back"><i class="ti ti-arrow-left"></i></a>
+  <h1>Status</h1>
+</div>
+
+<div class="wrap">
+  <div class="section-title">My status</div>
+  <div class="row" id="myRow">
+    <div class="add-badge"><i class="ti ti-plus"></i></div>
+    <div class="info"><div class="name">Add status</div><div class="sub">Disappears after 24 hours. Only your friends can see it.</div></div>
+  </div>
+  <div id="myList"></div>
+
+  <div class="section-title">Friends' updates</div>
+  <div id="friendList"><div class="empty">Loading...</div></div>
+</div>
+
+<!-- ================= COMPOSER ================= -->
+<div id="composer" class="overlay">
+  <div class="comp-head">
+    <button id="cClose" aria-label="Close"><i class="ti ti-x"></i></button>
+    <h2>New status</h2>
+  </div>
+  <div class="comp-body">
+    <div class="seg">
+      <button id="segText" class="active">Text</button>
+      <button id="segMedia">Photo / video</button>
+    </div>
+
+    <div id="textPane">
+      <div class="canvas" id="textCanvas" style="background:#075e36">
+        <textarea id="statusText" maxlength="300" placeholder="Type a status"></textarea>
+      </div>
+      <div class="swatches" id="swatches"></div>
+    </div>
+
+    <div id="mediaPane" style="display:none">
+      <div class="canvas media" id="mediaCanvas" style="background:#075e36">
+        <label class="pick-media" for="mediaFile"><i class="ti ti-photo-plus"></i><span>Choose photo or video</span></label>
+      </div>
+      <input type="file" id="mediaFile" accept="image/*,video/*" style="display:none">
+    </div>
+
+    <label class="lbl" for="caption">Caption (optional)</label>
+    <input class="fld" id="caption" maxlength="150" placeholder="Say something about it">
+
+    <div id="productBox" style="display:none">
+      <label class="lbl" for="productSel">Link a product (optional)</label>
+      <select class="fld" id="productSel"><option value="">No product</option></select>
+    </div>
+
+    <div class="err" id="cErr"></div>
+    <button class="btn btn-primary" id="postBtn" style="width:100%;padding:13px">Post status</button>
+  </div>
+</div>
+
+<!-- ================= VIEWER ================= -->
+<div id="viewer" class="overlay">
+  <div class="bars" id="bars"></div>
+  <div class="v-top">
+    <div class="av" id="vAv"></div>
+    <div class="who"><span id="vName"></span><small id="vTime"></small></div>
+    <button id="vClose" aria-label="Close"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="stage" id="stage">
+    <div class="tap l" id="tapL"></div>
+    <div class="tap r" id="tapR"></div>
+    <div id="stageContent" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center"></div>
+  </div>
+  <div class="v-bottom">
+    <div class="cap" id="vCap"></div>
+    <div class="row-b" id="vActions"></div>
+  </div>
+</div>
+
+<!-- ================= VIEWERS SHEET ================= -->
+<div id="sheet" class="overlay">
+  <div class="sheet-card"><h3 id="sheetTitle">Viewed by</h3><div id="sheetList"></div></div>
+</div>
+
+<div id="toast"></div>
+
+<nav class="bottom-nav">
+  <a href="index.html" class="bn-item active"><span class="bn-icon"><i class="ti ti-home"></i></span><span class="bn-label">Home</span></a>
+  <a href="friends.html" class="bn-item"><span class="bn-icon"><i class="ti ti-users"></i></span><span class="bn-label">Friends</span></a>
+  <a href="messages.html" class="bn-item"><span class="bn-icon"><i class="ti ti-message-circle"></i></span><span class="bn-label">Messages</span></a>
+  <a href="seller-dashboard.html" class="bn-item"><span class="bn-icon"><i class="ti ti-building-store"></i></span><span class="bn-label">Dashboard</span></a>
+  <a href="login.html" id="navProfileLink" class="bn-item"><span class="bn-icon"><i class="ti ti-user"></i></span><span class="bn-label">Profile</span></a>
+</nav>
+
+<script type="module" src="bottom-nav.js"></script>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { collection, doc, getDoc, getDocs, query, where, limit } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { uploadToCloudinary } from "./cloudinary-upload.js";
+import {
+  STATUS_COLORS, loadStatusGroups, createStatus, deleteStatus, markSeen,
+  userName, userPhoto, timeAgo
+} from "./status-core.js";
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),2600); }
+
+let me = null, myData = {}, groups = [];
+
+function avatar(name, photo){
+  return photo ? `<img src="${esc(photo)}" alt="">` : esc((name||"?").charAt(0).toUpperCase());
+}
+
+/* ================= LIST ================= */
+function render(){
+  const mine = groups.find(g => g.isMe);
+  $("myRow").innerHTML = `
+    <div class="add-badge"><i class="ti ti-plus"></i></div>
+    <div class="info"><div class="name">${mine ? "Add another status" : "Add status"}</div>
+    <div class="sub">Disappears after 24 hours. Only your friends can see it.</div></div>`;
+
+  $("myList").innerHTML = mine ? `<div class="row" style="cursor:default;flex-direction:column;align-items:stretch">` +
+    mine.items.slice().reverse().map(s => `
+      <div class="my-item">
+        <div class="thumb" data-view-mine="${esc(s.id)}" style="cursor:pointer;${s.type==='text'?`background:${esc(s.bg)}`:''}">
+          ${s.type==='image' ? `<img src="${esc(s.mediaUrl)}" alt="">` : s.type==='video' ? `<i class="ti ti-player-play" style="font-size:20px"></i>` : esc((s.text||"").slice(0,12))}
+        </div>
+        <div class="meta"><div>${esc(s.caption || s.text || (s.type==='image'?'Photo':'Video')).slice(0,40)}</div>
+        <small>${timeAgo(s.createdAtMs)} · ${(s.seenBy||[]).length} view${(s.seenBy||[]).length===1?'':'s'}</small></div>
+        <button class="btn btn-danger" data-del="${esc(s.id)}" aria-label="Delete"><i class="ti ti-trash"></i></button>
+      </div>`).join("") + `</div>` : "";
+
+  const others = groups.filter(g => !g.isMe);
+  $("friendList").innerHTML = others.length ? others.map(g => `
+    <div class="row" data-owner="${esc(g.ownerId)}">
+      <div class="ring ${g.unseen ? "" : "seen"}"><div class="av">${avatar(g.name, g.photo)}</div></div>
+      <div class="info"><div class="name">${esc(g.name)}</div><div class="sub">${timeAgo(g.latest)} · ${g.items.length} update${g.items.length===1?"":"s"}</div></div>
+    </div>`).join("") :
+    `<div class="empty">No updates from friends right now.<br>Add friends from the Friends tab to see their status.</div>`;
+}
+
+async function refresh(){
+  try { groups = await loadStatusGroups(me.uid); } catch(e){ console.error(e); groups = []; toast("Could not load statuses"); }
+  render();
+}
+
+/* ================= COMPOSER ================= */
+let mode = "text", bg = STATUS_COLORS[0], file = null;
+
+function setMode(m){
+  mode = m;
+  $("segText").classList.toggle("active", m==="text");
+  $("segMedia").classList.toggle("active", m==="media");
+  $("textPane").style.display = m==="text" ? "block" : "none";
+  $("mediaPane").style.display = m==="media" ? "block" : "none";
+}
+
+function drawSwatches(){
+  $("swatches").innerHTML = STATUS_COLORS.map(c => `<div class="sw ${c===bg?"on":""}" data-c="${c}" style="background:${c}"></div>`).join("");
+  $("textCanvas").style.background = bg;
+}
+
+function resetComposer(){
+  file = null; $("statusText").value = ""; $("caption").value = ""; $("productSel").value = "";
+  $("mediaFile").value = ""; $("cErr").style.display = "none";
+  $("mediaCanvas").innerHTML = `<label class="pick-media" for="mediaFile"><i class="ti ti-photo-plus"></i><span>Choose photo or video</span></label>`;
+  setMode("text"); drawSwatches();
+}
+
+async function openComposer(){
+  resetComposer();
+  $("composer").classList.add("open");
+  if (myData.isSeller === true && myData.sellerStatus === "approved") {
+    try {
+      const snap = await getDocs(query(collection(db, "products"), where("sellerId","==",me.uid), limit(40)));
+      const opts = snap.docs.map(d => `<option value="${esc(d.id)}" data-name="${esc(d.data().name || d.data().title || "Product")}">${esc(d.data().name || d.data().title || "Product")}</option>`);
+      $("productSel").innerHTML = `<option value="">No product</option>` + opts.join("");
+      $("productBox").style.display = opts.length ? "block" : "none";
+    } catch(e){ console.error(e); }
+  }
+}
+
+$("segText").onclick = () => setMode("text");
+$("segMedia").onclick = () => setMode("media");
+$("cClose").onclick = () => $("composer").classList.remove("open");
+$("swatches").addEventListener("click", e => { const s = e.target.closest(".sw"); if(s){ bg = s.dataset.c; drawSwatches(); } });
+
+$("mediaFile").addEventListener("change", e => {
+  const f = e.target.files[0]; if(!f) return;
+  file = f;
+  const url = URL.createObjectURL(f);
+  $("mediaCanvas").innerHTML = f.type.startsWith("video/")
+    ? `<video src="${url}" controls playsinline></video>`
+    : `<img src="${url}" alt="">`;
+});
+
+$("postBtn").onclick = async () => {
+  const err = $("cErr"); err.style.display = "none";
+  const btn = $("postBtn");
+  const caption = $("caption").value.trim();
+  const sel = $("productSel");
+  const productId = sel.value;
+  const productName = productId ? sel.options[sel.selectedIndex].dataset.name : "";
+
+  try {
+    btn.disabled = true;
+    let data;
+    if (mode === "text") {
+      const text = $("statusText").value.trim();
+      if (!text) throw new Error("Type something first.");
+      data = { type:"text", text, bg, caption, productId, productName };
+    } else {
+      if (!file) throw new Error("Choose a photo or video first.");
+      btn.textContent = "Uploading...";
+      const up = await uploadToCloudinary(file);
+      data = { type: up.resourceType === "video" ? "video" : "image", mediaUrl: up.url, caption, productId, productName };
+    }
+    btn.textContent = "Posting...";
+    await createStatus(me.uid, data);
+    $("composer").classList.remove("open");
+    toast("Status posted");
+    await refresh();
+  } catch(e) {
+    console.error(e);
+    err.textContent = e.message || "Could not post. Try again.";
+    err.style.display = "block";
+  } finally {
+    btn.disabled = false; btn.textContent = "Post status";
+  }
+};
+
+/* ================= VIEWER ================= */
+let vg = null, vi = 0, timer = null, startedAt = 0, dur = 5000;
+
+function openViewer(group, startId){
+  vg = group;
+  vi = startId ? Math.max(0, group.items.findIndex(s => s.id === startId)) : 0;
+  if (!startId && !group.isMe) {
+    const firstUnseen = group.items.findIndex(s => !(s.seenBy||[]).includes(me.uid));
+    if (firstUnseen > 0) vi = firstUnseen;
+  }
+  $("viewer").classList.add("open");
+  $("vName").textContent = group.isMe ? "My status" : group.name;
+  $("vAv").innerHTML = avatar(group.name, group.photo);
+  showItem();
+}
+
+function closeViewer(){
+  clearTimeout(timer); cancelAnimationFrame(closeViewer._raf);
+  $("viewer").classList.remove("open");
+  $("stageContent").innerHTML = "";
+  vg = null;
+  refresh();
+}
+
+function drawBars(){
+  $("bars").innerHTML = vg.items.map((_, i) => `<div class="bar"><i style="width:${i < vi ? "100%" : "0"}"></i></div>`).join("");
+}
+
+function next(){ if (vi < vg.items.length - 1) { vi++; showItem(); } else closeViewer(); }
+function prev(){ if (vi > 0) { vi--; showItem(); } else showItem(); }
+
+function animateBar(ms){
+  clearTimeout(timer); cancelAnimationFrame(closeViewer._raf);
+  const fill = $("bars").children[vi] && $("bars").children[vi].firstElementChild;
+  startedAt = performance.now(); dur = ms;
+  const tick = now => {
+    const p = Math.min(1, (now - startedAt) / dur);
+    if (fill) fill.style.width = (p * 100) + "%";
+    if (p < 1) closeViewer._raf = requestAnimationFrame(tick); else next();
+  };
+  closeViewer._raf = requestAnimationFrame(tick);
+}
+
+function showItem(){
+  if (!vg) return;
+  clearTimeout(timer); cancelAnimationFrame(closeViewer._raf);
+  const s = vg.items[vi];
+  drawBars();
+  $("vTime").textContent = timeAgo(s.createdAtMs);
+  const stage = $("stageContent");
+
+  if (s.type === "text") {
+    stage.innerHTML = `<div class="txt" style="background:${esc(s.bg)}">${esc(s.text)}</div>`;
+    animateBar(6000);
+  } else if (s.type === "image") {
+    stage.innerHTML = `<img src="${esc(s.mediaUrl)}" alt="">`;
+    animateBar(6000);
+  } else {
+    stage.innerHTML = `<video src="${esc(s.mediaUrl)}" autoplay playsinline></video>`;
+    const v = stage.firstElementChild;
+    const fill = $("bars").children[vi].firstElementChild;
+    v.ontimeupdate = () => { if (v.duration) fill.style.width = (v.currentTime / v.duration * 100) + "%"; };
+    v.onended = next;
+    v.onerror = () => animateBar(4000);
+  }
+
+  $("vCap").textContent = s.caption || "";
+
+  let actions = "";
+  if (s.productId) actions += `<a class="chip gold" href="product.html?id=${esc(s.productId)}"><i class="ti ti-shopping-bag"></i>${esc(s.productName || "View product")}</a>`;
+  if (vg.isMe) {
+    actions += `<button class="chip" id="seenBtn"><i class="ti ti-eye"></i>${(s.seenBy||[]).length} view${(s.seenBy||[]).length===1?"":"s"}</button>`;
+    actions += `<button class="chip" id="delBtn"><i class="ti ti-trash"></i>Delete</button>`;
+  } else {
+    actions += `<a class="chip" href="messages.html?sellerId=${esc(vg.ownerId)}"><i class="ti ti-message-circle"></i>Reply</a>`;
+    if (!(s.seenBy||[]).includes(me.uid)) {
+      s.seenBy = [...(s.seenBy||[]), me.uid];
+      markSeen(s.id).catch(e => console.error("markSeen", e));
+    }
+  }
+  $("vActions").innerHTML = actions;
+
+  const seenBtn = $("seenBtn"), delBtn = $("delBtn");
+  if (seenBtn) seenBtn.onclick = () => openSheet(s);
+  if (delBtn) delBtn.onclick = async () => {
+    if (!confirm("Delete this status?")) return;
+    try {
+      await deleteStatus(s.id);
+      vg.items.splice(vi, 1);
+      toast("Status deleted");
+      if (!vg.items.length) closeViewer(); else { if (vi >= vg.items.length) vi = vg.items.length - 1; showItem(); }
+    } catch(e){ console.error(e); toast("Could not delete"); }
+  };
+}
+
+async function openSheet(s){
+  clearTimeout(timer); cancelAnimationFrame(closeViewer._raf);
+  const ids = s.seenBy || [];
+  $("sheetTitle").textContent = "Viewed by " + ids.length;
+  $("sheetList").innerHTML = ids.length ? "Loading..." : `<div class="empty">No views yet.</div>`;
+  $("sheet").classList.add("open");
+  if (!ids.length) return;
+  const users = await Promise.all(ids.map(async id => { try { const d = await getDoc(doc(db,"users",id)); return d.exists() ? d.data() : {}; } catch(e){ return {}; } }));
+  $("sheetList").innerHTML = users.map(u => `<div class="vrow"><div class="av2">${avatar(userName(u), userPhoto(u))}</div><span>${esc(userName(u))}</span></div>`).join("");
+}
+
+$("sheet").addEventListener("click", e => {
+  if (e.target.id === "sheet") { $("sheet").classList.remove("open"); if (vg) showItem(); }
+});
+$("vClose").onclick = closeViewer;
+$("tapR").onclick = next;
+$("tapL").onclick = prev;
+
+/* ================= EVENTS ================= */
+$("myRow").onclick = () => openComposer();
+
+document.addEventListener("click", e => {
+  const own = e.target.closest("[data-owner]");
+  if (own) { const g = groups.find(x => x.ownerId === own.dataset.owner); if (g) openViewer(g); return; }
+
+  const vm = e.target.closest("[data-view-mine]");
+  if (vm) { const g = groups.find(x => x.isMe); if (g) openViewer(g, vm.dataset.viewMine); return; }
+
+  const del = e.target.closest("[data-del]");
+  if (del) {
+    if (!confirm("Delete this status?")) return;
+    deleteStatus(del.dataset.del).then(() => { toast("Status deleted"); refresh(); }).catch(() => toast("Could not delete"));
+  }
+});
+
+/* ================= START ================= */
+onAuthStateChanged(auth, async user => {
+  if (!user) { window.location.replace("login.html"); return; }
+  me = user;
+  try { const d = await getDoc(doc(db, "users", user.uid)); myData = d.exists() ? d.data() : {}; } catch(e){}
+  await refresh();
+
+  const p = new URLSearchParams(location.search);
+  if (p.get("new") === "1") openComposer();
+  const v = p.get("view");
+  if (v) { const g = groups.find(x => x.ownerId === v); if (g) openViewer(g); }
+});
+
+if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script>
+</body>
+</html>

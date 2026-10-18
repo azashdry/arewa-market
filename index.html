@@ -6,29 +6,38 @@
 
   <title>Arewa Market - Kasuwar Arewa a Hannunka</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
   <style>
     *{
       box-sizing:border-box;
       margin:0;
       padding:0;
-      font-family:Arial, sans-serif;
+      font-family:'Inter',Arial,sans-serif;
     }
 
-    body{
-      background:#f5f7f6;
+    
+h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
+  font-family:'Playfair Display',Georgia,serif;
+  letter-spacing:.2px;
+}
+body{
+      background:#f8f7f4;
       color:#222;
     }
 
-    /* ================= HEADER ================= */
-
     header{
-      background:#0b6b3a;
+      background:linear-gradient(135deg,#0d3b2c,#175e3f);
       color:white;
       padding:15px 20px;
       position:sticky;
       top:0;
       z-index:1000;
       box-shadow:0 2px 8px rgba(0,0,0,.15);
+      border-bottom:3px solid #c9a227;
     }
 
     .header-inner{
@@ -37,7 +46,41 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:15px;
+      gap:20px;
+    }
+
+    .header-search{
+      flex:1;
+      max-width:420px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.3);
+      border-radius:30px;
+      padding:8px 16px;
+    }
+
+    .header-search input{
+      flex:1;
+      border:none;
+      background:transparent;
+      outline:none;
+      color:white;
+      font-size:13px;
+    }
+
+    .header-search input::placeholder{
+      color:rgba(255,255,255,.7);
+    }
+
+    .header-search svg{
+      flex-shrink:0;
+      opacity:.85;
+    }
+
+    @media(max-width:900px){
+      .header-search{display:none;}
     }
 
     .brand{
@@ -47,6 +90,7 @@
 
     .brand h1{
       font-size:23px;
+      letter-spacing:.5px;
     }
 
     .brand p{
@@ -67,23 +111,30 @@
       border:none;
       text-decoration:none;
       background:white;
-      color:#0b6b3a;
+      color:#175e3f;
       padding:9px 13px;
-      border-radius:6px;
+      border-radius:8px;
       font-size:13px;
       font-weight:bold;
       cursor:pointer;
+      transition:transform .15s ease;
+    }
+
+    nav a:hover,
+    nav button:hover{
+      transform:translateY(-1px);
     }
 
     nav a.seller-btn{
-      background:#d6a21d;
-      color:white;
+      background:#c9a227;
+      color:#0d3b2c;
     }
 
     nav a.messages-btn{
-      background:#198754;
+      background:rgba(255,255,255,.15);
       color:white;
       position:relative;
+      border:1px solid rgba(255,255,255,.35);
     }
 
     .message-badge{
@@ -107,27 +158,50 @@
       color:white;
     }
 
-    /* ================= HERO ================= */
-
     .hero{
-      background:linear-gradient(
-        rgba(11,107,58,.93),
-        rgba(11,107,58,.93)
-      );
+      max-width:1200px;
+      margin:25px auto 0;
+      background:
+        linear-gradient(120deg,#0d3b2c,#175e3f 60%,#1f7a4d),
+        repeating-linear-gradient(45deg,rgba(201,162,39,.10) 0 2px,transparent 2px 18px);
       color:white;
-      padding:45px 20px;
+      padding:42px 25px;
       text-align:center;
+      border-radius:16px;
+      border:1px solid rgba(201,162,39,.5);
+      box-shadow:0 10px 30px rgba(13,59,44,.25);
+    }
+
+    .hero .eyebrow{
+      color:#e8c766;
+      font-weight:700;
+      font-size:13px;
+      letter-spacing:1px;
+      margin-bottom:8px;
     }
 
     .hero h2{
-      font-size:30px;
+      font-size:32px;
       margin-bottom:10px;
+      color:#fff;
     }
 
     .hero p{
-      max-width:650px;
-      margin:0 auto 25px;
+      max-width:600px;
+      margin:0 auto 22px;
       line-height:1.6;
+      color:#e7ece8;
+    }
+
+    .hero-cta{
+      display:inline-block;
+      background:#c9a227;
+      color:#0d3b2c;
+      padding:11px 26px;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:14px;
     }
 
     .search-box{
@@ -148,15 +222,13 @@
 
     .search-box button{
       border:none;
-      background:#d6a21d;
-      color:white;
+      background:#c9a227;
+      color:#0d3b2c;
       padding:0 20px;
       border-radius:7px;
       font-weight:bold;
       cursor:pointer;
     }
-
-    /* ================= MAIN ================= */
 
     main{
       max-width:1200px;
@@ -165,11 +237,27 @@
     }
 
     .section-title{
-      margin-bottom:15px;
-      color:#0b6b3a;
+      margin-bottom:6px;
+      color:#0d3b2c;
+      position:relative;
+      display:inline-block;
+      padding-bottom:8px;
     }
 
-    /* ================= CATEGORIES ================= */
+    .section-title::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:46px;
+      height:3px;
+      background:#c9a227;
+      border-radius:3px;
+    }
+
+    .section-block{
+      margin-bottom:25px;
+    }
 
     .categories{
       display:flex;
@@ -179,24 +267,60 @@
       margin-bottom:25px;
     }
 
+    .feed-tabs{
+      display:none;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .feed-tab{
+      flex:1;
+      border:2px solid #0d3b2c;
+      background:white;
+      color:#0d3b2c;
+      padding:11px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+      font-size:14px;
+    }
+
+    .feed-tab.active{
+      background:#0d3b2c;
+      color:white;
+      border-color:#0d3b2c;
+      border-bottom:3px solid #c9a227;
+    }
+
+    .following-tag{
+      display:inline-block;
+      margin-top:8px;
+      background:#e8f5ee;
+      color:#155a3a;
+      font-size:11px;
+      font-weight:bold;
+      padding:3px 9px;
+      border-radius:12px;
+    }
+
     .category-btn{
       white-space:nowrap;
-      border:1px solid #0b6b3a;
+      border:1px solid #d8cba3;
       background:white;
-      color:#0b6b3a;
-      padding:9px 15px;
+      color:#0d3b2c;
+      padding:9px 16px;
       border-radius:20px;
       cursor:pointer;
       font-weight:bold;
+      font-size:13px;
     }
 
     .category-btn.active,
     .category-btn:hover{
-      background:#0b6b3a;
-      color:white;
+      background:#c9a227;
+      border-color:#c9a227;
+      color:#0d3b2c;
     }
-
-    /* ================= FILTERS ================= */
 
     .filters{
       background:white;
@@ -204,7 +328,7 @@
       border-radius:10px;
       margin-bottom:25px;
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:1fr 1fr 1fr;
       gap:12px;
       box-shadow:0 2px 8px rgba(0,0,0,.06);
     }
@@ -212,13 +336,17 @@
     .filters select{
       width:100%;
       padding:11px;
-      border:1px solid #ddd;
+      border:1px solid #e3dfd7;
       border-radius:6px;
       background:white;
       outline:none;
     }
 
-    /* ================= PRODUCTS ================= */
+    .filters select:disabled{
+      background:#f6f3ee;
+      color:#999;
+      cursor:not-allowed;
+    }
 
     .products-header{
       display:flex;
@@ -242,22 +370,24 @@
 
     .product-card{
       background:white;
-      border-radius:10px;
+      border-radius:12px;
       overflow:hidden;
-      box-shadow:0 2px 10px rgba(0,0,0,.08);
+      border:1px solid #ede4c8;
+      box-shadow:0 2px 10px rgba(13,59,44,.06);
       transition:.2s;
     }
 
     .product-card:hover{
       transform:translateY(-3px);
-      box-shadow:0 5px 15px rgba(0,0,0,.12);
+      box-shadow:0 8px 22px rgba(13,59,44,.14);
+      border-color:#c9a227;
     }
 
     .product-image{
       width:100%;
       height:180px;
       object-fit:cover;
-      background:#eee;
+      background:#f3f0e9;
     }
 
     .product-body{
@@ -271,7 +401,7 @@
     }
 
     .price{
-      color:#0b6b3a;
+      color:#a9791a;
       font-size:19px;
       font-weight:bold;
       margin-bottom:8px;
@@ -283,9 +413,21 @@
       line-height:1.7;
     }
 
+    .category-tag{
+      display:inline-block;
+      background:#f7ecc9;
+      color:#a9791a;
+      border:1px solid #e0c15c;
+      padding:3px 10px;
+      border-radius:20px;
+      font-size:11px;
+      font-weight:bold;
+      margin-top:6px;
+    }
+
     .featured{
       display:inline-block;
-      background:#d6a21d;
+      background:#d69e1d;
       color:white;
       padding:4px 7px;
       border-radius:4px;
@@ -293,10 +435,23 @@
       margin-bottom:8px;
     }
 
+    .premium-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      background:#d69e1d;
+      color:white;
+      padding:5px 8px;
+      border-radius:5px;
+      font-size:11px;
+      font-weight:bold;
+      margin-bottom:8px;
+    }
+
     .seller-link{
       display:inline-block;
       margin-top:10px;
-      color:#0b6b3a;
+      color:#135134;
       text-decoration:none;
       font-size:13px;
       font-weight:bold;
@@ -306,12 +461,10 @@
       text-decoration:underline;
     }
 
-    /* ================= VIEW PRODUCT ================= */
-
     .view-product{
       display:block;
       margin-top:10px;
-      background:#0b6b3a;
+      background:#135134;
       color:white;
       text-align:center;
       padding:10px;
@@ -322,10 +475,8 @@
     }
 
     .view-product:hover{
-      background:#07502b;
+      background:#0e3c27;
     }
-
-    /* ================= EMPTY ================= */
 
     .empty{
       background:white;
@@ -337,20 +488,16 @@
     }
 
     .empty h3{
-      color:#0b6b3a;
+      color:#135134;
       margin-bottom:8px;
     }
-
-    /* ================= LOADING ================= */
 
     .loading{
       text-align:center;
       padding:40px;
-      color:#0b6b3a;
+      color:#135134;
       grid-column:1/-1;
     }
-
-    /* ================= MESSAGE ================= */
 
     #message{
       display:none;
@@ -362,14 +509,12 @@
       padding:13px 16px;
       border-radius:7px;
       color:white;
-      background:#0b6b3a;
+      background:#135134;
       box-shadow:0 3px 12px rgba(0,0,0,.2);
     }
 
-    /* ================= FOOTER ================= */
-
     footer{
-      background:#073d24;
+      background:#0b2f1e;
       color:white;
       padding:25px 15px;
       text-align:center;
@@ -380,8 +525,6 @@
       font-size:13px;
       opacity:.9;
     }
-
-    /* ================= MOBILE ================= */
 
     @media(max-width:700px){
 
@@ -457,77 +600,969 @@
         height:190px;
       }
     }
-  </style>
+  
+/* ================= BOTTOM NAV (mobile) ================= */
+.bottom-nav{
+  display:flex;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:999;
+  justify-content:space-around;
+  align-items:stretch;
+  background:#fff;
+  border-top:1px solid #e6e2da;
+  padding:0 0 env(safe-area-inset-bottom,0px);
+  box-shadow:0 -2px 12px rgba(0,0,0,.06);
+}
+.bottom-nav .bn-item{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  text-decoration:none;
+  color:#8a8f8c;
+  font-size:11px;
+  flex:1;
+  padding:12px 0 8px;
+  font-weight:500;
+  background:transparent;
+  border:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.bottom-nav .bn-item::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:25%;
+  right:25%;
+  height:3px;
+  border-radius:2px;
+  background:transparent;
+  transition:background .2s;
+}
+.bottom-nav .bn-item.active{
+  color:#075e36;
+  font-weight:700;
+  background:transparent;
+}
+.bottom-nav .bn-item.active::before{
+  background:#c9a227;
+}
+.bottom-nav .bn-icon{
+  font-size:22px;
+  line-height:1;
+  display:flex;
+}
+body.has-bottom-nav{
+  padding-bottom:70px;
+}
+
+</style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10462d">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arewa Market">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style id="no-top-nav">#navArea{display:none!important}</style>
+<style>
+/* ===== STATUS STRIP ===== */
+.status-strip{display:none;gap:14px;overflow-x:auto;padding:12px 14px;background:#fff;border-bottom:1px solid #eee;-webkit-overflow-scrolling:touch}
+.status-strip.show{display:flex}
+.st-item{flex:0 0 auto;width:66px;text-align:center;text-decoration:none;color:#333;font-size:12px}
+.st-ring{width:62px;height:62px;border-radius:50%;padding:3px;background:#c9a227;margin:0 auto 4px}
+.st-ring.seen{background:#cfd3d0}
+.st-ring.mine{background:#e3e6e4}
+.st-av{width:100%;height:100%;border-radius:50%;border:2px solid #fff;background:#075e36;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;overflow:hidden;position:relative}
+.st-av img{width:100%;height:100%;object-fit:cover}
+.st-plus{position:absolute;right:-2px;bottom:-2px;width:20px;height:20px;border-radius:50%;background:#075e36;color:#fff;border:2px solid #fff;font-size:13px;display:flex;align-items:center;justify-content:center}
+.st-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+<style id="seller-banner-css">
+.seller-banner{display:none;align-items:center;gap:12px;margin:0;padding:12px 14px;background:#075e36;color:#fff;border-bottom:3px solid #c9a227}
+.seller-banner.show{display:flex}
+.seller-banner .sb-text{flex:1;font-size:13px;line-height:1.35}
+.seller-banner .sb-text b{display:block;font-size:14px}
+.seller-banner a{background:#c9a227;color:#1a1a1a;text-decoration:none;font-weight:700;font-size:13px;padding:9px 14px;border-radius:9px;white-space:nowrap}
+</style>
 </head>
 
-<body>
+<body class="has-bottom-nav">
 
-  <!-- ================= HEADER ================= -->
+<header>
 
-  <header>
+  <div class="header-inner">
 
-    <div class="header-inner">
+    <a href="index.html" class="brand">
+      <h1>Arewa Market</h1>
+      <p>Kasuwar Arewa a Hannunka</p>
+    </a>
 
-      <a href="index.html" class="brand">
-        <h1>Arewa Market</h1>
-        <p>Kasuwar Arewa a Hannunka</p>
-      </a>
-
-      <nav id="navArea">
-
-        <a href="login.html">Login</a>
-
-        <a href="register.html">Register</a>
-
-      </nav>
-
-    </div>
-
-  </header>
-
-
-  <!-- ================= HERO ================= -->
-
-  <section class="hero">
-
-    <h2>Buy & Sell Across Northern Nigeria</h2>
-
-    <p>
-      Discover products from sellers across Northern Nigeria.
-      Search products, browse categories and find sellers easily.
-    </p>
-
-    <div class="search-box">
-
+    <div class="header-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input
         type="text"
         id="searchInput"
         placeholder="Search for products..."
       >
-
-      <button id="searchBtn">
-        Search
-      </button>
-
+      <button id="searchBtn" aria-label="Search" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;">Search</button>
     </div>
 
-  </section>
+    <nav id="navArea">
+
+      <a href="login.html">Login</a>
+
+      <a href="register.html">Register</a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+<!-- STATUS STRIP -->
+<div id="sellerBanner" class="seller-banner"></div>
+<div id="statusStrip" class="status-strip"></div>
 
 
-  <!-- ================= MAIN ================= -->
 
-  <main>
+<section class="hero">
 
-    <!-- Categories -->
+  <div class="eyebrow">SAUKI YAZO!</div>
+
+  <h2>Buy & Sell Across Northern Nigeria</h2>
+
+  <p>
+    Discover products from sellers across Northern Nigeria.
+    Search products, browse categories and find sellers easily.
+  </p>
+
+  <a href="#productsGrid" class="hero-cta">Shop Now →</a>
+
+</section>
+
+
+<main>
+
+  <div class="feed-tabs" id="feedTabs">
+    <button type="button" class="feed-tab active" id="tabAll">
+      🛍️ All Products
+    </button>
+    <button type="button" class="feed-tab" id="tabFollowing">
+      ★ Following
+    </button>
+  </div>
+
+  <h2 class="section-title">
+    Categories
+  </h2>
+
+  <div
+    class="categories"
+    id="categories"
+  >
+
+    <button
+      class="category-btn active"
+      data-category="all"
+    >
+      All
+    </button>
+
+  </div>
+
+
+  <div class="filters">
+
+    <select id="stateFilter">
+
+      <option value="all">
+        All States
+      </option>
+
+    </select>
+
+
+    <select id="lgaFilter" disabled>
+
+      <option value="all">
+        All LGAs
+      </option>
+
+    </select>
+
+
+    <select id="sortFilter">
+
+      <option value="featured">
+        Featured First
+      </option>
+
+      <option value="newest">
+        Newest First
+      </option>
+
+      <option value="priceLow">
+        Price: Low to High
+      </option>
+
+      <option value="priceHigh">
+        Price: High to Low
+      </option>
+
+      <option value="name">
+        Name A-Z
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <div class="products-header">
 
     <h2 class="section-title">
-      Categories
+      Products
     </h2>
 
-    <div
-      class="categories"
-      id="categories"
+    <span id="productCount">
+      Loading...
+    </span>
+
+  </div>
+
+
+  <div
+    class="products-grid"
+    id="productsGrid"
+  >
+
+    <div class="loading">
+      Loading products...
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <p>
+    © 2026 Arewa Market
+  </p>
+
+  <p style="margin-top:6px;">
+    Buy and sell products across Northern Nigeria.
+  </p>
+
+</footer>
+
+
+<div id="message"></div>
+
+
+<script type="module">
+
+import {
+  auth,
+  db
+} from "./firebase.js";
+
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import {
+  NIGERIA_STATES,
+  populateLgaSelect
+} from "./states-lga.js";
+
+import {
+  isPremiumActive,
+  getVisibleProductIds
+} from "./premium-utils.js";
+
+
+/* =================================================
+   REFERRAL TRACKING
+================================================= */
+
+function captureReferral(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const ref =
+    params.get("ref");
+
+
+  if(ref){
+
+    const cleanRef =
+      String(ref)
+        .trim()
+        .toUpperCase();
+
+
+    if(cleanRef){
+
+      localStorage.setItem(
+        "arewaReferralCode",
+        cleanRef
+      );
+
+    }
+
+  }
+
+}
+
+
+function getStoredReferral(){
+
+  return localStorage.getItem(
+    "arewaReferralCode"
+  ) || "";
+
+}
+
+
+/* =================================================
+   REGISTER LINK WITH REFERRAL
+================================================= */
+
+function updateRegisterLinks(){
+
+  const referralCode =
+    getStoredReferral();
+
+
+  const registerLinks =
+    document.querySelectorAll(
+      'a[href="register.html"]'
+    );
+
+
+  registerLinks.forEach(link => {
+
+    if(referralCode){
+
+      link.href =
+        "register.html?ref=" +
+        encodeURIComponent(
+          referralCode
+        );
+
+    }else{
+
+      link.href =
+        "register.html";
+
+    }
+
+  });
+
+}
+
+
+/* Capture referral as soon as page loads */
+
+captureReferral();
+
+
+/* =================================================
+   GLOBAL DATA
+================================================= */
+
+let allProducts = [];
+let allCategories = [];
+
+let currentCategory = "all";
+let currentState = "all";
+let currentLga = "all";
+let currentSearch = "";
+let currentSort = "featured";
+
+let currentUser = null;
+let currentUserData = null;
+
+let messagesUnsubscribe = null;
+
+let premiumSellers = new Set();
+let followingIds = new Set();
+let followingOnly = false;
+
+
+/* =================================================
+   ELEMENTS
+================================================= */
+
+const productsGrid =
+  document.getElementById(
+    "productsGrid"
+  );
+
+const productCount =
+  document.getElementById(
+    "productCount"
+  );
+
+const categoriesContainer =
+  document.getElementById(
+    "categories"
+  );
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+const stateFilter =
+  document.getElementById(
+    "stateFilter"
+  );
+
+const lgaFilter =
+  document.getElementById(
+    "lgaFilter"
+  );
+
+const sortFilter =
+  document.getElementById(
+    "sortFilter"
+  );
+
+const navArea =
+  document.getElementById(
+    "navArea"
+  );
+
+const messageBox =
+  document.getElementById(
+    "message"
+  );
+
+
+/* =================================================
+   STATE / LGA FILTER SETUP
+================================================= */
+
+NIGERIA_STATES.forEach(state => {
+
+  const option =
+    document.createElement("option");
+
+  option.value = state;
+  option.textContent = state;
+
+  stateFilter.appendChild(option);
+
+});
+
+stateFilter.addEventListener(
+  "change",
+  () => {
+
+    currentState =
+      stateFilter.value;
+
+    currentLga = "all";
+
+    if(currentState === "all"){
+
+      lgaFilter.innerHTML =
+        '<option value="all">All LGAs</option>';
+
+      lgaFilter.disabled = true;
+
+    }else{
+
+      populateLgaSelect(
+        stateFilter,
+        lgaFilter
+      );
+
+      // populateLgaSelect adds a blank
+      // "Select LGA" placeholder — replace
+      // it with an "All LGAs" option instead,
+      // since this is a filter, not a form
+      const placeholder =
+        lgaFilter.querySelector(
+          'option[value=""]'
+        );
+
+      if(placeholder){
+
+        placeholder.value = "all";
+        placeholder.textContent = "All LGAs";
+        placeholder.selected = true;
+
+      }
+
+    }
+
+    renderProducts();
+
+  }
+);
+
+lgaFilter.addEventListener(
+  "change",
+  () => {
+
+    currentLga =
+      lgaFilter.value;
+
+    renderProducts();
+
+  }
+);
+
+
+/* =================================================
+   MESSAGE
+================================================= */
+
+function showMessage(text){
+
+  messageBox.textContent = text;
+
+  messageBox.style.display = "block";
+
+  setTimeout(() => {
+
+    messageBox.style.display = "none";
+
+  },3000);
+
+}
+
+
+/* =================================================
+   AUTH STATE
+================================================= */
+
+onAuthStateChanged(auth, async (user) => {
+
+  currentUser = user;
+
+  currentUserData = null;
+
+  if(!user){
+
+    if(messagesUnsubscribe){
+
+      messagesUnsubscribe();
+
+      messagesUnsubscribe = null;
+
+    }
+
+    clearFollowing();
+
+    renderLoggedOutNav();
+
+    return;
+
+  }
+
+  try{
+
+    const userSnap =
+      await getDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        )
+      );
+
+    if(userSnap.exists()){
+
+      currentUserData =
+        userSnap.data();
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "User profile error:",
+      error
+    );
+
+  }
+
+  renderLoggedInNav();
+
+  startBuyerMessageListener();
+
+  loadFollowing();
+
+});
+
+
+/* =================================================
+   LOGGED OUT NAV
+================================================= */
+
+function renderLoggedOutNav(){
+
+  navArea.innerHTML = `
+
+    <a href="login.html">
+      Login
+    </a>
+
+    <a href="register.html">
+      Register
+    </a>
+
+  `;
+
+  updateRegisterLinks();
+
+}
+
+
+/* =================================================
+   LOGGED IN NAV
+================================================= */
+
+function renderLoggedInNav(){
+
+  let html = "";
+
+  const isApprovedSeller =
+    currentUserData &&
+    currentUserData.role === "seller" &&
+    currentUserData.isSeller === true &&
+    currentUserData.sellerStatus === "approved";
+
+
+  if(isApprovedSeller){
+
+    html += `
+
+      <a
+        href="seller-dashboard.html"
+        class="seller-btn"
+      >
+        Seller Dashboard
+      </a>
+
+    `;
+
+  }else{
+
+    const isBuyer =
+      !currentUserData ||
+      currentUserData.role === "buyer";
+
+    if(isBuyer){
+
+      html += `
+
+        <a
+          href="seller-apply.html"
+          class="seller-btn"
+        >
+          Become a Seller
+        </a>
+
+      `;
+
+    }
+
+  }
+
+
+  html += `
+
+    <a
+      href="messages.html"
+      class="messages-btn"
     >
+      💬 Messages
+
+      <span
+        id="messageBadge"
+        class="message-badge"
+        style="display:none;"
+      >
+        0
+      </span>
+
+    </a>
+
+  `;
+
+
+  html += `
+
+    <button
+      class="logout"
+      id="logoutBtn"
+    >
+      Logout
+    </button>
+
+  `;
+
+
+  navArea.innerHTML = html;
+
+
+  const logoutBtn =
+    document.getElementById(
+      "logoutBtn"
+    );
+
+
+  if(logoutBtn){
+
+    logoutBtn.addEventListener(
+      "click",
+      async () => {
+
+        try{
+
+          if(messagesUnsubscribe){
+
+            messagesUnsubscribe();
+
+            messagesUnsubscribe = null;
+
+          }
+
+          await signOut(auth);
+
+          showMessage(
+            "You have been logged out."
+          );
+
+          setTimeout(() => {
+
+            window.location.reload();
+
+          },700);
+
+        }catch(error){
+
+          console.error(error);
+
+          showMessage(
+            "Logout failed."
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =================================================
+   BUYER MESSAGE LISTENER
+================================================= */
+
+function startBuyerMessageListener(){
+
+  if(!currentUser){
+
+    return;
+
+  }
+
+
+  if(messagesUnsubscribe){
+
+    messagesUnsubscribe();
+
+    messagesUnsubscribe = null;
+
+  }
+
+
+  const conversationsRef =
+    collection(
+      db,
+      "conversations"
+    );
+
+
+  const conversationsQuery =
+    query(
+      conversationsRef,
+      where(
+        "participantIds",
+        "array-contains",
+        currentUser.uid
+      )
+    );
+
+
+  messagesUnsubscribe =
+    onSnapshot(
+      conversationsQuery,
+      (snapshot) => {
+
+        let unreadTotal = 0;
+
+
+        snapshot.forEach(
+          conversationDoc => {
+
+            const data =
+              conversationDoc.data();
+
+
+            const unreadCount =
+              data.unreadCount || {};
+
+
+            const count =
+              Number(
+                unreadCount[
+                  currentUser.uid
+                ] || 0
+              );
+
+
+            unreadTotal += count;
+
+          }
+        );
+
+
+        updateMessageBadge(
+          unreadTotal
+        );
+
+      },
+      (error) => {
+
+        console.error(
+          "Message listener error:",
+          error
+        );
+
+      }
+    );
+
+}
+
+
+/* =================================================
+   UPDATE MESSAGE BADGE
+================================================= */
+
+function updateMessageBadge(
+  unreadTotal
+){
+
+  const badge =
+    document.getElementById(
+      "messageBadge"
+    );
+
+
+  if(!badge){
+
+    return;
+
+  }
+
+
+  if(unreadTotal > 0){
+
+    badge.textContent =
+      unreadTotal > 99
+        ? "99+"
+        : unreadTotal;
+
+
+    badge.style.display =
+      "inline-flex";
+
+  }else{
+
+    badge.textContent =
+      "0";
+
+    badge.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =================================================
+   LOAD CATEGORIES
+================================================= */
+
+async function loadCategories(){
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "categories"
+        )
+      );
+
+    allCategories = [];
+
+    snapshot.forEach(item => {
+
+      allCategories.push({
+
+        id:item.id,
+
+        ...item.data()
+
+      });
+
+    });
+
+
+    renderCategories();
+
+  }catch(error){
+
+    console.error(
+      "Categories error:",
+      error
+    );
+
+    categoriesContainer.innerHTML = `
 
       <button
         class="category-btn active"
@@ -536,1369 +1571,1204 @@
         All
       </button>
 
-    </div>
+    `;
+
+  }
+
+}
 
 
-    <!-- Filters -->
+/* =================================================
+   RENDER CATEGORIES
+================================================= */
 
-    <div class="filters">
+function renderCategories(){
 
-      <select id="stateFilter">
+  let html = `
 
-        <option value="all">
-          All States
-        </option>
-
-        <option value="Adamawa">
-          Adamawa
-        </option>
-
-        <option value="Bauchi">
-          Bauchi
-        </option>
-
-        <option value="Borno">
-          Borno
-        </option>
-
-        <option value="Gombe">
-          Gombe
-        </option>
-
-        <option value="Jigawa">
-          Jigawa
-        </option>
-
-        <option value="Kaduna">
-          Kaduna
-        </option>
-
-        <option value="Kano">
-          Kano
-        </option>
-
-        <option value="Katsina">
-          Katsina
-        </option>
-
-        <option value="Kebbi">
-          Kebbi
-        </option>
-
-        <option value="Kogi">
-          Kogi
-        </option>
-
-        <option value="Kwara">
-          Kwara
-        </option>
-
-        <option value="Nasarawa">
-          Nasarawa
-        </option>
-
-        <option value="Niger">
-          Niger
-        </option>
-
-        <option value="Plateau">
-          Plateau
-        </option>
-
-        <option value="Sokoto">
-          Sokoto
-        </option>
-
-        <option value="Taraba">
-          Taraba
-        </option>
-
-        <option value="Yobe">
-          Yobe
-        </option>
-
-        <option value="Zamfara">
-          Zamfara
-        </option>
-
-        <option value="FCT">
-          FCT
-        </option>
-
-      </select>
-
-
-      <select id="sortFilter">
-
-        <option value="featured">
-          Featured First
-        </option>
-
-        <option value="newest">
-          Newest First
-        </option>
-
-        <option value="priceLow">
-          Price: Low to High
-        </option>
-
-        <option value="priceHigh">
-          Price: High to Low
-        </option>
-
-        <option value="name">
-          Name A-Z
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <!-- Products -->
-
-    <div class="products-header">
-
-      <h2 class="section-title">
-        Products
-      </h2>
-
-      <span id="productCount">
-        Loading...
-      </span>
-
-    </div>
-
-
-    <div
-      class="products-grid"
-      id="productsGrid"
+    <button
+      class="category-btn active"
+      data-category="all"
     >
+      All
+    </button>
 
-      <div class="loading">
-        Loading products...
-      </div>
-
-    </div>
-
-  </main>
+  `;
 
 
-  <!-- ================= FOOTER ================= -->
+  allCategories.forEach(category => {
 
-  <footer>
+    if(!category.name){
 
-    <p>
-      © 2026 Arewa Market
-    </p>
-
-    <p style="margin-top:6px;">
-      Buy and sell products across Northern Nigeria.
-    </p>
-
-  </footer>
-
-
-  <!-- ================= MESSAGE ================= -->
-
-  <div id="message"></div>
-
-
-  <!-- ================= JAVASCRIPT ================= -->
-
-  <script type="module">
-
-    import {
-      auth,
-      db
-    } from "./firebase.js";
-
-
-    import {
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-
-    import {
-      collection,
-      getDocs,
-      doc,
-      getDoc,
-      query,
-      where,
-      onSnapshot
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-
-    // =================================================
-    // GLOBAL DATA
-    // =================================================
-
-    let allProducts = [];
-    let allCategories = [];
-
-    let currentCategory = "all";
-    let currentState = "all";
-    let currentSearch = "";
-    let currentSort = "featured";
-
-    let currentUser = null;
-    let currentUserData = null;
-
-    let messagesUnsubscribe = null;
-
-
-    // =================================================
-    // ELEMENTS
-    // =================================================
-
-    const productsGrid =
-      document.getElementById("productsGrid");
-
-    const productCount =
-      document.getElementById("productCount");
-
-    const categoriesContainer =
-      document.getElementById("categories");
-
-    const searchInput =
-      document.getElementById("searchInput");
-
-    const stateFilter =
-      document.getElementById("stateFilter");
-
-    const sortFilter =
-      document.getElementById("sortFilter");
-
-    const navArea =
-      document.getElementById("navArea");
-
-    const messageBox =
-      document.getElementById("message");
-
-
-    // =================================================
-    // MESSAGE
-    // =================================================
-
-    function showMessage(text){
-
-      messageBox.textContent = text;
-
-      messageBox.style.display = "block";
-
-      setTimeout(() => {
-
-        messageBox.style.display = "none";
-
-      },3000);
+      return;
 
     }
 
 
-    // =================================================
-    // AUTH STATE
-    // =================================================
+    html += `
 
-    onAuthStateChanged(auth, async (user) => {
+      <button
+        class="category-btn"
+        data-category="${escapeHtml(
+          category.name
+        )}"
+      >
+        ${escapeHtml(
+          category.name
+        )}
+      </button>
 
-      currentUser = user;
+    `;
 
-      currentUserData = null;
+  });
 
-      if(!user){
 
-        if(messagesUnsubscribe){
+  categoriesContainer.innerHTML = html;
 
-          messagesUnsubscribe();
 
-          messagesUnsubscribe = null;
+  document
+    .querySelectorAll(".category-btn")
+    .forEach(button => {
 
-        }
-
-        renderLoggedOutNav();
-
-        return;
-
-      }
-
-      try{
-
-        const userSnap =
-          await getDoc(
-            doc(db,"users",user.uid)
-          );
-
-        if(userSnap.exists()){
-
-          currentUserData =
-            userSnap.data();
-
-        }
-
-      }catch(error){
-
-        console.error(
-          "User profile error:",
-          error
-        );
-
-      }
-
-      renderLoggedInNav();
-
-      startBuyerMessageListener();
-
-    });
-
-
-    // =================================================
-    // LOGGED OUT NAV
-    // =================================================
-
-    function renderLoggedOutNav(){
-
-      navArea.innerHTML = `
-
-        <a href="login.html">
-          Login
-        </a>
-
-        <a href="register.html">
-          Register
-        </a>
-
-      `;
-
-    }
-
-
-    // =================================================
-    // LOGGED IN NAV
-    // =================================================
-
-    function renderLoggedInNav(){
-
-      let html = "";
-
-      const isApprovedSeller =
-        currentUserData &&
-        currentUserData.role === "seller" &&
-        currentUserData.isSeller === true &&
-        currentUserData.sellerStatus === "approved";
-
-
-      if(isApprovedSeller){
-
-        html += `
-
-          <a
-            href="seller-dashboard.html"
-            class="seller-btn"
-          >
-            Seller Dashboard
-          </a>
-
-        `;
-
-      }else{
-
-        const isBuyer =
-          !currentUserData ||
-          currentUserData.role === "buyer";
-
-        if(isBuyer){
-
-          html += `
-
-            <a
-              href="seller-apply.html"
-              class="seller-btn"
-            >
-              Become a Seller
-            </a>
-
-          `;
-
-        }
-
-      }
-
-
-      /* ================= MESSAGES ================= */
-
-      html += `
-
-        <a
-          href="messages.html"
-          class="messages-btn"
-        >
-          💬 Messages
-
-          <span
-            id="messageBadge"
-            class="message-badge"
-            style="display:none;"
-          >
-            0
-          </span>
-
-        </a>
-
-      `;
-
-
-      /* ================= LOGOUT ================= */
-
-      html += `
-
-        <button
-          class="logout"
-          id="logoutBtn"
-        >
-          Logout
-        </button>
-
-      `;
-
-
-      navArea.innerHTML = html;
-
-
-      const logoutBtn =
-        document.getElementById("logoutBtn");
-
-
-      if(logoutBtn){
-
-        logoutBtn.addEventListener(
-          "click",
-          async () => {
-
-            try{
-
-              if(messagesUnsubscribe){
-
-                messagesUnsubscribe();
-
-                messagesUnsubscribe = null;
-
-              }
-
-              await signOut(auth);
-
-              showMessage(
-                "You have been logged out."
-              );
-
-              setTimeout(() => {
-
-                window.location.reload();
-
-              },700);
-
-            }catch(error){
-
-              console.error(error);
-
-              showMessage(
-                "Logout failed."
-              );
-
-            }
-
-          }
-        );
-
-      }
-
-    }
-
-
-    // =================================================
-    // BUYER MESSAGE LISTENER
-    // =================================================
-
-    function startBuyerMessageListener(){
-
-      if(!currentUser){
-
-        return;
-
-      }
-
-
-      if(messagesUnsubscribe){
-
-        messagesUnsubscribe();
-
-        messagesUnsubscribe = null;
-
-      }
-
-
-      const conversationsRef =
-        collection(
-          db,
-          "conversations"
-        );
-
-
-      const conversationsQuery =
-        query(
-          conversationsRef,
-          where(
-            "participantIds",
-            "array-contains",
-            currentUser.uid
-          )
-        );
-
-
-      messagesUnsubscribe =
-        onSnapshot(
-          conversationsQuery,
-          (snapshot) => {
-
-            let unreadTotal = 0;
-
-
-            snapshot.forEach(
-              conversationDoc => {
-
-                const data =
-                  conversationDoc.data();
-
-
-                const unreadCount =
-                  data.unreadCount || {};
-
-
-                const count =
-                  Number(
-                    unreadCount[
-                      currentUser.uid
-                    ] || 0
-                  );
-
-
-                unreadTotal += count;
-
-              }
-            );
-
-
-            updateMessageBadge(
-              unreadTotal
-            );
-
-          },
-          (error) => {
-
-            console.error(
-              "Message listener error:",
-              error
-            );
-
-          }
-        );
-
-    }
-
-
-    // =================================================
-    // UPDATE MESSAGE BADGE
-    // =================================================
-
-    function updateMessageBadge(
-      unreadTotal
-    ){
-
-      const badge =
-        document.getElementById(
-          "messageBadge"
-        );
-
-
-      if(!badge){
-
-        return;
-
-      }
-
-
-      if(unreadTotal > 0){
-
-        badge.textContent =
-          unreadTotal > 99
-            ? "99+"
-            : unreadTotal;
-
-
-        badge.style.display =
-          "inline-flex";
-
-      }else{
-
-        badge.textContent =
-          "0";
-
-        badge.style.display =
-          "none";
-
-      }
-
-    }
-
-
-    // =================================================
-    // LOAD CATEGORIES
-    // =================================================
-
-    async function loadCategories(){
-
-      try{
-
-        const snapshot =
-          await getDocs(
-            collection(db,"categories")
-          );
-
-        allCategories = [];
-
-        snapshot.forEach(item => {
-
-          allCategories.push({
-
-            id:item.id,
-
-            ...item.data()
-
-          });
-
-        });
-
-
-        renderCategories();
-
-      }catch(error){
-
-        console.error(
-          "Categories error:",
-          error
-        );
-
-        categoriesContainer.innerHTML = `
-
-          <button
-            class="category-btn active"
-            data-category="all"
-          >
-            All
-          </button>
-
-        `;
-
-      }
-
-    }
-
-
-    // =================================================
-    // RENDER CATEGORIES
-    // =================================================
-
-    function renderCategories(){
-
-      let html = `
-
-        <button
-          class="category-btn active"
-          data-category="all"
-        >
-          All
-        </button>
-
-      `;
-
-
-      allCategories.forEach(category => {
-
-        if(!category.name){
-
-          return;
-
-        }
-
-
-        html += `
-
-          <button
-            class="category-btn"
-            data-category="${escapeHtml(
-              category.name
-            )}"
-          >
-            ${escapeHtml(
-              category.name
-            )}
-          </button>
-
-        `;
-
-      });
-
-
-      categoriesContainer.innerHTML = html;
-
-
-      document
-        .querySelectorAll(".category-btn")
-        .forEach(button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              document
-                .querySelectorAll(
-                  ".category-btn"
-                )
-                .forEach(btn =>
-                  btn.classList.remove(
-                    "active"
-                  )
-                );
-
-
-              button.classList.add(
-                "active"
-              );
-
-
-              currentCategory =
-                button.dataset.category;
-
-
-              renderProducts();
-
-            }
-          );
-
-        });
-
-    }
-
-
-    // =================================================
-    // LOAD PRODUCTS
-    // =================================================
-
-    async function loadProducts(){
-
-      productsGrid.innerHTML = `
-
-        <div class="loading">
-          Loading products...
-        </div>
-
-      `;
-
-
-      try{
-
-        const snapshot =
-          await getDocs(
-            collection(db,"products")
-          );
-
-
-        allProducts = [];
-
-
-        snapshot.forEach(item => {
-
-          const data = item.data();
-
-
-          if(data.status === "active"){
-
-            allProducts.push({
-
-              id:item.id,
-
-              ...data
-
-            });
-
-          }
-
-        });
-
-
-        renderProducts();
-
-      }catch(error){
-
-        console.error(
-          "Products error:",
-          error
-        );
-
-
-        productsGrid.innerHTML = `
-
-          <div class="empty">
-
-            <h3>
-              Unable to load products
-            </h3>
-
-            <p>
-              Please refresh the page and try again.
-            </p>
-
-          </div>
-
-        `;
-
-
-        productCount.textContent =
-          "0 products";
-
-      }
-
-    }
-
-
-    // =================================================
-    // FILTER + SORT PRODUCTS
-    // =================================================
-
-    function getFilteredProducts(){
-
-      let products =
-        [...allProducts];
-
-
-      // SEARCH
-
-      if(currentSearch){
-
-        const search =
-          currentSearch.toLowerCase();
-
-
-        products =
-          products.filter(product => {
-
-            const name =
-              String(
-                product.name || ""
-              ).toLowerCase();
-
-
-            const category =
-              String(
-                product.category || ""
-              ).toLowerCase();
-
-
-            const location =
-              String(
-                product.location || ""
-              ).toLowerCase();
-
-
-            const seller =
-              String(
-                product.sellerName || ""
-              ).toLowerCase();
-
-
-            const description =
-              String(
-                product.description || ""
-              ).toLowerCase();
-
-
-            return (
-
-              name.includes(search) ||
-
-              category.includes(search) ||
-
-              location.includes(search) ||
-
-              seller.includes(search) ||
-
-              description.includes(search)
-
-            );
-
-          });
-
-      }
-
-
-      // CATEGORY
-
-      if(
-        currentCategory &&
-        currentCategory !== "all"
-      ){
-
-        products =
-          products.filter(product =>
-
-            String(
-              product.category || ""
-            ).toLowerCase() ===
-            String(
-              currentCategory
-            ).toLowerCase()
-
-          );
-
-      }
-
-
-      // STATE
-
-      if(
-        currentState &&
-        currentState !== "all"
-      ){
-
-        products =
-          products.filter(product =>
-
-            String(
-              product.location || ""
-            ).toLowerCase() ===
-            String(
-              currentState
-            ).toLowerCase()
-
-          );
-
-      }
-
-
-      // SORT
-
-      if(currentSort === "featured"){
-
-        products.sort((a,b) => {
-
-          return Number(
-            !!b.featured
-          ) - Number(
-            !!a.featured
-          );
-
-        });
-
-      }
-
-
-      else if(currentSort === "newest"){
-
-        products.sort((a,b) => {
-
-          const aTime =
-            a.createdAt &&
-            a.createdAt.toMillis
-              ? a.createdAt.toMillis()
-              : 0;
-
-
-          const bTime =
-            b.createdAt &&
-            b.createdAt.toMillis
-              ? b.createdAt.toMillis()
-              : 0;
-
-
-          return bTime - aTime;
-
-        });
-
-      }
-
-
-      else if(currentSort === "priceLow"){
-
-        products.sort(
-          (a,b) =>
-            Number(a.price || 0) -
-            Number(b.price || 0)
-        );
-
-      }
-
-
-      else if(currentSort === "priceHigh"){
-
-        products.sort(
-          (a,b) =>
-            Number(b.price || 0) -
-            Number(a.price || 0)
-        );
-
-      }
-
-
-      else if(currentSort === "name"){
-
-        products.sort((a,b) =>
-
-          String(a.name || "")
-            .localeCompare(
-              String(b.name || "")
-            )
-
-        );
-
-      }
-
-
-      return products;
-
-    }
-
-
-    // =================================================
-    // RENDER PRODUCTS
-    // =================================================
-
-    function renderProducts(){
-
-      const products =
-        getFilteredProducts();
-
-
-      productCount.textContent =
-        `${products.length} product${
-          products.length === 1
-            ? ""
-            : "s"
-        }`;
-
-
-      if(!products.length){
-
-        productsGrid.innerHTML = `
-
-          <div class="empty">
-
-            <h3>
-              No products found
-            </h3>
-
-            <p>
-              Try another search, category or state.
-            </p>
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      productsGrid.innerHTML =
-        products.map(
-          productCard
-        ).join("");
-
-    }
-
-
-    // =================================================
-    // PRODUCT CARD
-    // =================================================
-
-    function productCard(product){
-
-      const image =
-        product.imageUrl ||
-        "https://via.placeholder.com/500x350?text=Arewa+Market";
-
-
-      const price =
-        Number(
-          product.price || 0
-        ).toLocaleString(
-          "en-NG"
-        );
-
-
-      const category =
-        product.category ||
-        "Uncategorized";
-
-
-      const location =
-        product.location ||
-        "Northern Nigeria";
-
-
-      const sellerName =
-        product.sellerName ||
-        "Arewa Market";
-
-
-      const featured =
-        product.featured === true
-          ? `
-            <span class="featured">
-              Featured
-            </span>
-          `
-          : "";
-
-
-      let sellerLink = "";
-
-
-      if(
-        product.sellerId &&
-        product.sellerId !== "admin"
-      ){
-
-        sellerLink = `
-
-          <a
-            class="seller-link"
-            href="seller-profile.html?id=${encodeURIComponent(
-              product.sellerId
-            )}"
-          >
-            View Seller Profile →
-          </a>
-
-        `;
-
-      }else{
-
-        sellerLink = `
-
-          <span
-            class="seller-link"
-            style="cursor:default;"
-          >
-            Seller: Arewa Market
-          </span>
-
-        `;
-
-      }
-
-
-      return `
-
-        <article class="product-card">
-
-          <img
-            class="product-image"
-            src="${escapeHtml(image)}"
-            alt="${escapeHtml(
-              product.name || "Product"
-            )}"
-            onerror="
-              this.src='https://via.placeholder.com/500x350?text=Arewa+Market'
-            "
-          >
-
-
-          <div class="product-body">
-
-            ${featured}
-
-
-            <h3>
-              ${escapeHtml(
-                product.name ||
-                "Unnamed Product"
-              )}
-            </h3>
-
-
-            <div class="price">
-              ₦${price}
-            </div>
-
-
-            <div class="product-meta">
-
-              <div>
-                📂 ${escapeHtml(category)}
-              </div>
-
-              <div>
-                📍 ${escapeHtml(location)}
-              </div>
-
-              <div>
-                👤 ${escapeHtml(sellerName)}
-              </div>
-
-            </div>
-
-
-            ${
-              product.description
-                ? `
-                  <p
-                    style="
-                      margin-top:8px;
-                      color:#666;
-                      font-size:12px;
-                      line-height:1.5;
-                    "
-                  >
-                    ${escapeHtml(
-                      product.description
-                    )}
-                  </p>
-                `
-                : ""
-            }
-
-
-            ${sellerLink}
-
-
-            <!-- VIEW PRODUCT -->
-
-            <a
-              class="view-product"
-              href="product.html?id=${encodeURIComponent(
-                product.id
-              )}"
-            >
-              View Product →
-            </a>
-
-          </div>
-
-        </article>
-
-      `;
-
-    }
-
-
-    // =================================================
-    // SEARCH
-    // =================================================
-
-    searchInput.addEventListener(
-      "input",
-      () => {
-
-        currentSearch =
-          searchInput.value.trim();
-
-        renderProducts();
-
-      }
-    );
-
-
-    document
-      .getElementById("searchBtn")
-      .addEventListener(
+      button.addEventListener(
         "click",
         () => {
 
-          currentSearch =
-            searchInput.value.trim();
+          document
+            .querySelectorAll(
+              ".category-btn"
+            )
+            .forEach(btn =>
+              btn.classList.remove(
+                "active"
+              )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          currentCategory =
+            button.dataset.category;
+
 
           renderProducts();
 
         }
       );
 
+    });
 
-    // =================================================
-    // STATE FILTER
-    // =================================================
+}
 
-    stateFilter.addEventListener(
-      "change",
-      () => {
 
-        currentState =
-          stateFilter.value;
+/* =================================================
+   LOAD PREMIUM SELLERS
+================================================= */
 
-        renderProducts();
+async function loadPremiumSellers(){
+
+  premiumSellers = new Set();
+
+  const sellerIds = [
+    ...new Set(
+      allProducts
+        .map(product => product.sellerId)
+        .filter(
+          sellerId =>
+            sellerId &&
+            sellerId !== "admin"
+        )
+    )
+  ];
+
+
+  if(!sellerIds.length){
+
+    return;
+
+  }
+
+
+  await Promise.all(
+
+    sellerIds.map(
+      async sellerId => {
+
+        try{
+
+          const sellerSnap =
+            await getDoc(
+              doc(
+                db,
+                "users",
+                sellerId
+              )
+            );
+
+
+          if(!sellerSnap.exists()){
+
+            return;
+
+          }
+
+
+          const seller =
+            sellerSnap.data();
+
+
+          const isPremium =
+            isPremiumActive(seller);
+
+
+          if(isPremium){
+
+            premiumSellers.add(
+              sellerId
+            );
+
+          }
+
+        }catch(error){
+
+          console.error(
+            "Premium seller check error:",
+            sellerId,
+            error
+          );
+
+        }
 
       }
-    );
+    )
+
+  );
+
+}
 
 
-    // =================================================
-    // SORT
-    // =================================================
+/* =================================================
+   HIDE PRODUCTS OVER THE FREE PLAN LIMIT
+   ---------------------------------------------------
+   Runs after loadPremiumSellers(). For every seller who
+   is NOT currently Premium, only their oldest
+   FREE_MAX_PRODUCTS products stay visible on the public
+   marketplace. Nothing is deleted - the rest just won't
+   show here until the seller renews Premium or removes
+   some products to get back under the limit.
+================================================= */
 
-    sortFilter.addEventListener(
-      "change",
-      () => {
+function hideProductsOverFreeLimit(){
 
-        currentSort =
-          sortFilter.value;
+  const bySeller = {};
 
-        renderProducts();
+  allProducts.forEach(product => {
 
-      }
-    );
+    const sellerId = product.sellerId;
 
-
-    // =================================================
-    // ESCAPE HTML
-    // =================================================
-
-    function escapeHtml(value){
-
-      return String(value ?? "")
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
+    if(!sellerId || sellerId === "admin"){
+      return;
     }
 
+    if(!bySeller[sellerId]){
+      bySeller[sellerId] = [];
+    }
 
-    // =================================================
-    // START
-    // =================================================
+    bySeller[sellerId].push(product);
 
-    await loadCategories();
+  });
 
-    await loadProducts();
 
-  </script>
+  const hiddenProductIds = new Set();
 
+  Object.keys(bySeller).forEach(sellerId => {
+
+    const sellerIsPremium =
+      premiumSellers.has(sellerId);
+
+    const visibleIds =
+      getVisibleProductIds(
+        bySeller[sellerId],
+        sellerIsPremium
+      );
+
+    bySeller[sellerId].forEach(product => {
+
+      if(!visibleIds.has(product.id)){
+        hiddenProductIds.add(product.id);
+      }
+
+    });
+
+  });
+
+
+  if(hiddenProductIds.size){
+
+    allProducts =
+      allProducts.filter(
+        product => !hiddenProductIds.has(product.id)
+      );
+
+  }
+
+}
+
+
+/* =================================================
+   LOAD PRODUCTS
+================================================= */
+
+async function loadProducts(){
+
+  productsGrid.innerHTML = `
+
+    <div class="loading">
+      Loading products...
+    </div>
+
+  `;
+
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "products"
+        )
+      );
+
+
+    allProducts = [];
+
+
+    snapshot.forEach(item => {
+
+      const data =
+        item.data();
+
+
+      if(data.status === "active"){
+
+        allProducts.push({
+
+          id:item.id,
+
+          ...data
+
+        });
+
+      }
+
+    });
+
+
+    await loadPremiumSellers();
+
+    hideProductsOverFreeLimit();
+
+
+    renderProducts();
+
+  }catch(error){
+
+    console.error(
+      "Products error:",
+      error
+    );
+
+
+    productsGrid.innerHTML = `
+
+      <div class="empty">
+
+        <h3>
+          Unable to load products
+        </h3>
+
+        <p>
+          Please refresh the page and try again.
+        </p>
+
+      </div>
+
+    `;
+
+
+    productCount.textContent =
+      "0 products";
+
+  }
+
+}
+
+
+/* =================================================
+   FILTER + SORT PRODUCTS
+================================================= */
+
+function getFilteredProducts(){
+
+  let products =
+    [...allProducts];
+
+  if(followingOnly){
+    products =
+      products.filter(product =>
+        followingIds.has(
+          product.sellerId
+        )
+      );
+  }
+
+
+  if(currentSearch){
+
+    const search =
+      currentSearch.toLowerCase();
+
+
+    products =
+      products.filter(product => {
+
+        const name =
+          String(
+            product.name || ""
+          ).toLowerCase();
+
+
+        const category =
+          String(
+            product.category || ""
+          ).toLowerCase();
+
+
+        const location =
+          String(
+            product.location || ""
+          ).toLowerCase();
+
+
+        const seller =
+          String(
+            product.sellerName || ""
+          ).toLowerCase();
+
+
+        const description =
+          String(
+            product.description || ""
+          ).toLowerCase();
+
+
+        return (
+
+          name.includes(search) ||
+
+          category.includes(search) ||
+
+          location.includes(search) ||
+
+          seller.includes(search) ||
+
+          description.includes(search)
+
+        );
+
+      });
+
+  }
+
+
+  if(
+    currentCategory &&
+    currentCategory !== "all"
+  ){
+
+    products =
+      products.filter(product =>
+
+        String(
+          product.category || ""
+        ).toLowerCase() ===
+        String(
+          currentCategory
+        ).toLowerCase()
+
+      );
+
+  }
+
+
+  if(
+    currentState &&
+    currentState !== "all"
+  ){
+
+    products =
+      products.filter(product => {
+
+        // Prefer the new "state" field; fall
+        // back to the old free-text "location"
+        // for products saved before the
+        // State + LGA system existed.
+        const productState =
+          product.state ||
+          product.location ||
+          "";
+
+        return (
+          String(productState)
+            .toLowerCase() ===
+          String(currentState)
+            .toLowerCase()
+        );
+
+      });
+
+  }
+
+
+  if(
+    currentLga &&
+    currentLga !== "all"
+  ){
+
+    products =
+      products.filter(product =>
+
+        String(
+          product.lga || ""
+        ).toLowerCase() ===
+        String(
+          currentLga
+        ).toLowerCase()
+
+      );
+
+  }
+
+
+  if(currentSort === "featured"){
+
+    products.sort((a,b) => {
+
+      return Number(
+        isActivelyFeatured(b)
+      ) - Number(
+        isActivelyFeatured(a)
+      );
+
+    });
+
+  }
+
+
+  else if(currentSort === "newest"){
+
+    products.sort((a,b) => {
+
+      const aTime =
+        a.createdAt &&
+        a.createdAt.toMillis
+          ? a.createdAt.toMillis()
+          : 0;
+
+
+      const bTime =
+        b.createdAt &&
+        b.createdAt.toMillis
+          ? b.createdAt.toMillis()
+          : 0;
+
+
+      return bTime - aTime;
+
+    });
+
+  }
+
+
+  else if(currentSort === "priceLow"){
+
+    products.sort(
+      (a,b) =>
+        Number(a.price || 0) -
+        Number(b.price || 0)
+    );
+
+  }
+
+
+  else if(currentSort === "priceHigh"){
+
+    products.sort(
+      (a,b) =>
+        Number(b.price || 0) -
+        Number(a.price || 0)
+    );
+
+  }
+
+
+  else if(currentSort === "name"){
+
+    products.sort((a,b) =>
+
+      String(a.name || "")
+        .localeCompare(
+          String(b.name || "")
+        )
+
+    );
+
+  }
+
+
+  return products;
+
+}
+
+
+/* =================================================
+   RENDER PRODUCTS
+================================================= */
+
+function renderProducts(){
+
+  const products =
+    getFilteredProducts();
+
+
+  productCount.textContent =
+    `${products.length} product${
+      products.length === 1
+        ? ""
+        : "s"
+    }`;
+
+
+  if(!products.length && followingOnly){
+    productsGrid.innerHTML = `
+      <div class="empty">
+        <h3>
+          ${
+            followingIds.size === 0
+              ? "You are not following any seller yet"
+              : "No products from sellers you follow"
+          }
+        </h3>
+        <p>
+          ${
+            followingIds.size === 0
+              ? "Open a seller profile and tap Follow to see their new products here."
+              : "Check again later, or try another category or state."
+          }
+        </p>
+      </div>
+    `;
+    return;
+  }
+
+  if(!products.length){
+    productsGrid.innerHTML = `
+      <div class="empty">
+        <h3>
+          No products found
+        </h3>
+
+        <p>
+          Try another search, category or state.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  productsGrid.innerHTML =
+    products.map(
+      productCard
+    ).join("");
+
+}
+
+
+/* =================================================
+   PRODUCT CARD
+================================================= */
+
+function productCard(product){
+
+  const image =
+    product.imageUrl ||
+    "https://via.placeholder.com/500x350?text=Arewa+Market";
+
+
+  const price =
+    Number(
+      product.price || 0
+    ).toLocaleString(
+      "en-NG"
+    );
+
+
+  const category =
+    product.category ||
+    "Uncategorized";
+
+
+  const location =
+    product.location ||
+    "Northern Nigeria";
+
+
+  const sellerName =
+    product.sellerName ||
+    "Arewa Market";
+
+
+  const featured =
+    isActivelyFeatured(product)
+      ? `
+        <span class="featured">
+          Featured
+        </span>
+      `
+      : "";
+
+
+  const premiumBadge =
+    product.sellerId &&
+    premiumSellers.has(
+      product.sellerId
+    )
+      ? `
+        <div class="premium-badge">
+          ★ PREMIUM SELLER
+        </div>
+      `
+      : "";
+
+
+  let sellerLink = "";
+
+
+  if(
+    product.sellerId &&
+    product.sellerId !== "admin"
+  ){
+
+    sellerLink = `
+
+      <a
+        class="seller-link"
+        href="seller-profile.html?id=${encodeURIComponent(
+          product.sellerId
+        )}"
+      >
+        View Seller Profile →
+      </a>
+
+    `;
+
+  }else{
+
+    sellerLink = `
+
+      <span
+        class="seller-link"
+        style="cursor:default;"
+      >
+        Seller: Arewa Market
+      </span>
+
+    `;
+
+  }
+
+
+  return `
+
+    <article class="product-card">
+
+      <img
+        class="product-image"
+        src="${escapeHtml(image)}"
+        alt="${escapeHtml(
+          product.name || "Product"
+        )}"
+        onerror="
+          this.src='https://via.placeholder.com/500x350?text=Arewa+Market'
+        "
+      >
+
+
+      <div class="product-body">
+
+        ${featured}
+
+        ${premiumBadge}
+
+
+        <h3>
+          ${escapeHtml(
+            product.name ||
+            "Unnamed Product"
+          )}
+        </h3>
+
+
+        <div class="price">
+          ₦${price}
+        </div>
+
+
+        <div class="product-meta">
+
+          <div>
+            📍 ${escapeHtml(location)}
+          </div>
+
+          <div>
+            👤 ${escapeHtml(sellerName)}
+          </div>
+
+        </div>
+
+        <span class="category-tag">${escapeHtml(category)}</span>
+
+
+        ${
+          product.description
+            ? `
+              <p
+                style="
+                  margin-top:8px;
+                  color:#666;
+                  font-size:12px;
+                  line-height:1.5;
+                "
+              >
+                ${escapeHtml(
+                  product.description
+                )}
+              </p>
+            `
+            : ""
+        }
+
+
+        ${
+          product.sellerId &&
+          followingIds.has(product.sellerId)
+            ? '<span class="following-tag">✓ Following</span><br>'
+            : ""
+        }
+        ${sellerLink}
+        <a
+          class="view-product"
+          href="product.html?id=${encodeURIComponent(
+            product.id
+          )}"
+        >
+          View Product →
+        </a>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =================================================
+   FOLLOWING FEED
+   follows/{followerId_sellerId}
+================================================= */
+
+const feedTabs =
+  document.getElementById("feedTabs");
+
+const tabAll =
+  document.getElementById("tabAll");
+
+const tabFollowing =
+  document.getElementById("tabFollowing");
+
+
+function updateFollowingLabel(){
+
+  tabFollowing.textContent =
+    followingIds.size > 0
+      ? `★ Following (${followingIds.size})`
+      : "★ Following";
+
+}
+
+
+function setFeedTab(onlyFollowing){
+
+  followingOnly = onlyFollowing;
+
+  tabAll.classList.toggle(
+    "active",
+    !onlyFollowing
+  );
+
+  tabFollowing.classList.toggle(
+    "active",
+    onlyFollowing
+  );
+
+  /* A feed should show the newest products first */
+
+  currentSort =
+    onlyFollowing
+      ? "newest"
+      : "featured";
+
+  sortFilter.value = currentSort;
+
+  renderProducts();
+
+}
+
+
+function clearFollowing(){
+
+  followingIds = new Set();
+
+  feedTabs.style.display = "none";
+
+  if(followingOnly){
+    setFeedTab(false);
+  }
+
+}
+
+
+async function loadFollowing(){
+
+  if(!currentUser){
+    return;
+  }
+
+  const uid = currentUser.uid;
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        query(
+          collection(db, "follows"),
+          where("followerId", "==", uid)
+        )
+      );
+
+    /* User logged out or changed while loading */
+
+    if(!currentUser || currentUser.uid !== uid){
+      return;
+    }
+
+    const ids = new Set();
+
+    snapshot.forEach(item => {
+
+      const sellerId =
+        item.data().followingId;
+
+      if(sellerId){
+        ids.add(sellerId);
+      }
+
+    });
+
+    followingIds = ids;
+
+    updateFollowingLabel();
+
+    feedTabs.style.display = "flex";
+
+    renderProducts();
+
+  }catch(error){
+
+    console.error(
+      "Following error:",
+      error
+    );
+
+  }
+
+}
+
+
+tabAll.addEventListener(
+  "click",
+  () => setFeedTab(false)
+);
+
+tabFollowing.addEventListener(
+  "click",
+  () => setFeedTab(true)
+);
+
+
+
+/* =================================================
+   SEARCH
+================================================= */
+
+searchInput.addEventListener(
+  "input",
+  () => {
+
+    currentSearch =
+      searchInput.value.trim();
+
+    renderProducts();
+
+  }
+);
+
+
+document
+  .getElementById("searchBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      currentSearch =
+        searchInput.value.trim();
+
+      renderProducts();
+
+    }
+  );
+
+
+/* =================================================
+   STATE FILTER
+================================================= */
+
+stateFilter.addEventListener(
+  "change",
+  () => {
+
+    currentState =
+      stateFilter.value;
+
+    renderProducts();
+
+  }
+);
+
+
+/* =================================================
+   SORT
+================================================= */
+
+sortFilter.addEventListener(
+  "change",
+  () => {
+
+    currentSort =
+      sortFilter.value;
+
+    renderProducts();
+
+  }
+);
+
+
+/* =================================================
+   FEATURED HELPER
+   A product only counts as Featured while its paid
+   period (featuredUntil) has not passed yet. This is
+   a client-side safety net in case the admin panel
+   hasn't run its auto-expire check recently.
+================================================= */
+
+function isActivelyFeatured(product){
+
+  if(product.featured !== true){
+    return false;
+  }
+
+  if(
+    product.featuredUntil &&
+    product.featuredUntil.toMillis
+  ){
+    return product.featuredUntil.toMillis() > Date.now();
+  }
+
+  // No expiry set: treat as still featured
+  return true;
+
+}
+
+
+/* =================================================
+   ESCAPE HTML
+================================================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =================================================
+   START
+================================================= */
+
+updateRegisterLinks();
+
+await loadCategories();
+
+await loadProducts();
+
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+
+  <a href="index.html" class="bn-item active">
+    <span class="bn-icon"><i class="ti ti-home"></i></span>
+    <span class="bn-label">Home</span>
+  </a>
+
+  <a href="friends.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-users"></i></span>
+    <span class="bn-label">Friends</span>
+  </a>
+
+  <a href="messages.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-message-circle"></i></span>
+    <span class="bn-label">Messages</span>
+  </a>
+
+  <a href="seller-dashboard.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-building-store"></i></span>
+    <span class="bn-label">Dashboard</span>
+  </a>
+
+  <a href="login.html" id="navProfileLink" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-user"></i></span>
+    <span class="bn-label">Profile</span>
+  </a>
+
+</nav>
+
+
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  onAuthStateChanged(auth, (user) => {
+    const link = document.getElementById("navProfileLink");
+    if(link){
+      link.href = user
+        ? "seller-profile.html?id=" + user.uid
+        : "login.html";
+    }
+  });
+</script>
+
+
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+  import { loadStatusGroups } from "./status-core.js";
+  import { db } from "./firebase.js";
+  import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+  const banner = document.getElementById("sellerBanner");
+
+  async function showSellerBanner(user){
+    banner.classList.remove("show");
+    if (!user) return;
+    try {
+      const d = await getDoc(doc(db, "users", user.uid));
+      const u = d.exists() ? d.data() : {};
+      if (u.sellerStatus === "approved" && u.isSeller === true) return;
+      if (u.sellerStatus === "pending") {
+        banner.innerHTML = '<div class="sb-text"><b>Seller application pending</b>We are reviewing your application.</div><a href="seller-apply.html">View</a>';
+      } else {
+        banner.innerHTML = '<div class="sb-text"><b>Want to sell on Arewa Market?</b>Open your shop and reach buyers across Arewa.</div><a href="seller-apply.html">Become a Seller</a>';
+      }
+      banner.classList.add("show");
+    } catch (e) { console.error("seller banner", e); }
+  }
+
+  const strip = document.getElementById("statusStrip");
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const av = (n, p) => p ? '<img src="' + esc(p) + '" alt="">' : esc((n || "?").charAt(0).toUpperCase());
+
+  onAuthStateChanged(auth, async user => {
+    showSellerBanner(user);
+    if (!user) { strip.classList.remove("show"); return; }
+    let groups = [];
+    try { groups = await loadStatusGroups(user.uid); } catch (e) { console.error("status strip", e); }
+
+    const mine = groups.find(g => g.isMe);
+    let html = '<a class="st-item" href="' + (mine ? "status.html?view=" + user.uid : "status.html?new=1") + '">' +
+      '<div class="st-ring ' + (mine ? "seen" : "mine") + '"><div class="st-av">' + av("Me", mine ? mine.photo : "") +
+      '<span class="st-plus">+</span></div></div><div class="st-name">My status</div></a>';
+
+    groups.filter(g => !g.isMe).forEach(g => {
+      html += '<a class="st-item" href="status.html?view=' + esc(g.ownerId) + '">' +
+        '<div class="st-ring ' + (g.unseen ? "" : "seen") + '"><div class="st-av">' + av(g.name, g.photo) + '</div></div>' +
+        '<div class="st-name">' + esc(g.name) + '</div></a>';
+    });
+
+    strip.innerHTML = html;
+    strip.classList.add("show");
+  });
+</script>
+<script type="module" src="bottom-nav.js"></script>
 </body>
+
 </html>

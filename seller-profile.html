@@ -11,6 +11,11 @@
 
 <title>Arewa Market - Seller Profile</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
 <style>
 
 *{
@@ -19,9 +24,14 @@
   padding:0;
 }
 
+
+h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
+  font-family:'Playfair Display',Georgia,serif;
+  letter-spacing:.2px;
+}
 body{
-  font-family:Arial,sans-serif;
-  background:#f4f7f5;
+  font-family:'Inter',Arial,sans-serif;
+  background:#f8f6f3;
   color:#222;
 }
 
@@ -30,7 +40,7 @@ body{
 ========================= */
 
 header{
-  background:#087f5b;
+  background:linear-gradient(135deg,#0d3b2c,#175e3f);
   color:white;
   padding:15px 20px;
 
@@ -40,6 +50,7 @@ header{
 
   gap:15px;
   flex-wrap:wrap;
+  border-bottom:3px solid #c9a227;
 }
 
 .logo{
@@ -72,11 +83,11 @@ header{
 
 .btn-light{
   background:white;
-  color:#087f5b;
+  color:#165d3c;
 }
 
 .btn-gold{
-  background:#d4a017;
+  background:#d19a1a;
   color:white;
 }
 
@@ -86,7 +97,7 @@ header{
 }
 
 .btn-green{
-  background:#087f5b;
+  background:#165d3c;
   color:white;
 }
 
@@ -145,8 +156,8 @@ header{
   height:150px;
   border-radius:50%;
   object-fit:cover;
-  background:#ddd;
-  border:4px solid #087f5b;
+  background:#e3dfd7;
+  border:4px solid #165d3c;
 }
 
 .profile-info{
@@ -155,7 +166,7 @@ header{
 }
 
 .profile-info h1{
-  color:#087f5b;
+  color:#165d3c;
   margin-bottom:6px;
   font-size:30px;
 }
@@ -164,6 +175,24 @@ header{
   font-size:18px;
   color:#555;
   margin-bottom:12px;
+}
+
+/* =========================
+   PREMIUM BADGE
+========================= */
+
+.premium-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:#d69e1d;
+  color:white;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,.12);
 }
 
 .profile-detail{
@@ -184,8 +213,8 @@ header{
 }
 
 .status-approved{
-  background:#d4edda;
-  color:#155724;
+  background:#d4ede1;
+  color:#124a30;
 }
 
 .description{
@@ -197,6 +226,23 @@ header{
 /* =========================
    CONTACT
 ========================= */
+
+.btn-follow{
+  background:#fff;
+  color:#165d3c;
+  border:2px solid #165d3c;
+  padding:8px 13px;
+}
+
+.btn-follow.following{
+  background:#165d3c;
+  color:#fff;
+}
+
+.btn-follow:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
 
 .contact-actions{
   margin-top:18px;
@@ -230,7 +276,7 @@ header{
 }
 
 .products-header h2{
-  color:#087f5b;
+  color:#165d3c;
 }
 
 .products-count{
@@ -245,7 +291,7 @@ header{
 }
 
 .product-card{
-  border:1px solid #ddd;
+  border:1px solid #e3dfd7;
   border-radius:10px;
   overflow:hidden;
   background:white;
@@ -255,7 +301,7 @@ header{
   width:100%;
   height:190px;
   object-fit:cover;
-  background:#eee;
+  background:#f3f0e9;
 }
 
 .product-body{
@@ -263,12 +309,12 @@ header{
 }
 
 .product-body h3{
-  color:#087f5b;
+  color:#165d3c;
   margin-bottom:8px;
 }
 
 .price{
-  color:#d4a017;
+  color:#d19a1a;
   font-size:18px;
   font-weight:bold;
   margin-bottom:8px;
@@ -290,7 +336,7 @@ header{
 .view-product{
   display:block;
   margin-top:14px;
-  background:#087f5b;
+  background:#165d3c;
   color:white;
   text-align:center;
   padding:10px;
@@ -311,7 +357,7 @@ header{
 .loading{
   text-align:center;
   padding:35px;
-  color:#087f5b;
+  color:#165d3c;
   font-weight:bold;
 }
 
@@ -390,12 +436,81 @@ footer{
 
 }
 
+
+/* ================= BOTTOM NAV (mobile) ================= */
+.bottom-nav{
+  display:flex;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:999;
+  justify-content:space-around;
+  align-items:stretch;
+  background:#fff;
+  border-top:1px solid #e6e2da;
+  padding:0 0 env(safe-area-inset-bottom,0px);
+  box-shadow:0 -2px 12px rgba(0,0,0,.06);
+}
+.bottom-nav .bn-item{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  text-decoration:none;
+  color:#8a8f8c;
+  font-size:11px;
+  flex:1;
+  padding:12px 0 8px;
+  font-weight:500;
+  background:transparent;
+  border:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.bottom-nav .bn-item::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:25%;
+  right:25%;
+  height:3px;
+  border-radius:2px;
+  background:transparent;
+  transition:background .2s;
+}
+.bottom-nav .bn-item.active{
+  color:#075e36;
+  font-weight:700;
+  background:transparent;
+}
+.bottom-nav .bn-item.active::before{
+  background:#c9a227;
+}
+.bottom-nav .bn-icon{
+  font-size:22px;
+  line-height:1;
+  display:flex;
+}
+body.has-bottom-nav{
+  padding-bottom:70px;
+}
+
 </style>
 
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10462d">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arewa Market">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style id="no-top-nav">header .header-actions a.btn-light,header .header-actions #dashboardBtn{display:none!important}</style>
 </head>
 
 
-<body>
+<body class="has-bottom-nav">
 
 
 <header>
@@ -541,8 +656,19 @@ import {
   doc,
   getDoc,
   collection,
-  getDocs
+  getDocs,
+  setDoc,
+  deleteDoc,
+  query,
+  where,
+  serverTimestamp,
+  getCountFromServer
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import {
+  isPremiumActive,
+  getVisibleProductIds
+} from "./premium-utils.js";
 
 
 
@@ -613,6 +739,7 @@ const sellerId =
 ========================================= */
 
 let currentUser = null;
+let currentSellerData = null;
 
 
 
@@ -625,6 +752,8 @@ onAuthStateChanged(
   (user) => {
 
     currentUser = user;
+
+    refreshFollowState();
 
     if(user){
 
@@ -880,6 +1009,8 @@ async function loadSeller(){
     }
 
 
+    currentSellerData = seller;
+
     renderSeller(seller);
 
 
@@ -917,6 +1048,8 @@ function renderSeller(seller){
 
 
   const profileImage =
+    seller.profileImage ||
+    seller.sellerProfileImage ||
     seller.profileImageUrl ||
     "https://via.placeholder.com/150?text=Seller";
 
@@ -941,6 +1074,30 @@ function renderSeller(seller){
     "This seller has not added a business description yet.";
 
 
+  /*
+    PREMIUM SELLER CHECK
+    ====================
+
+    Only show the badge when the seller
+    currently has an active Premium plan.
+  */
+
+  const isPremium =
+    isPremiumActive(seller);
+
+
+  const premiumBadge =
+    isPremium
+      ?
+        `
+        <div class="premium-badge">
+          ★ PREMIUM SELLER
+        </div>
+        `
+      :
+        "";
+
+
   let contactButtons = "";
 
 
@@ -956,6 +1113,23 @@ function renderSeller(seller){
       id="messageSellerBtn"
     >
       💬 Message Seller
+    </button>
+
+  `;
+
+
+  /* =========================
+     FOLLOW SELLER
+  ========================= */
+
+  contactButtons += `
+
+    <button
+      type="button"
+      class="btn btn-follow"
+      id="followBtn"
+    >
+      ➕ Follow
     </button>
 
   `;
@@ -1044,6 +1218,8 @@ function renderSeller(seller){
 
       <div class="profile-info">
 
+        ${premiumBadge}
+
         <h1>
           ${escapeHtml(name)}
         </h1>
@@ -1051,6 +1227,17 @@ function renderSeller(seller){
 
         <div class="business-name">
           ${escapeHtml(business)}
+        </div>
+
+
+        <div class="profile-detail">
+
+          <strong>
+            👥 Followers:
+          </strong>
+
+          <span id="followersCount">-</span>
+
         </div>
 
 
@@ -1147,6 +1334,242 @@ function renderSeller(seller){
 
   }
 
+
+  const followBtn =
+    document.getElementById(
+      "followBtn"
+    );
+
+  if(followBtn){
+
+    followBtn.addEventListener(
+      "click",
+      toggleFollow
+    );
+
+  }
+
+  refreshFollowState();
+
+}
+
+
+
+/* =========================================
+   FOLLOW SYSTEM
+   follows/{followerId_sellerId}
+========================================= */
+
+let isFollowing = false;
+let followBusy = false;
+let followersTotal = null;
+let followRefreshId = 0;
+
+
+function followDocRef(){
+
+  return doc(
+    db,
+    "follows",
+    currentUser.uid + "_" + sellerId
+  );
+
+}
+
+
+function paintFollow(){
+
+  const btn =
+    document.getElementById("followBtn");
+
+  const countEl =
+    document.getElementById("followersCount");
+
+  if(btn){
+
+    btn.textContent =
+      isFollowing
+        ? "✓ Following"
+        : "➕ Follow";
+
+    btn.classList.toggle(
+      "following",
+      isFollowing
+    );
+
+  }
+
+  if(countEl){
+
+    countEl.textContent =
+      followersTotal === null
+        ? "-"
+        : String(followersTotal);
+
+  }
+
+}
+
+
+async function refreshFollowState(){
+
+  const btn =
+    document.getElementById("followBtn");
+
+  if(!btn || !sellerId){
+    return;
+  }
+
+  const myRefresh = ++followRefreshId;
+
+  /* Seller cannot follow himself/herself */
+
+  btn.style.display =
+    (currentUser && currentUser.uid === sellerId)
+      ? "none"
+      : "";
+
+
+  let total = null;
+
+  try{
+
+    const countSnap =
+      await getCountFromServer(
+        query(
+          collection(db, "follows"),
+          where("followingId", "==", sellerId)
+        )
+      );
+
+    total = countSnap.data().count;
+
+  }catch(error){
+
+    console.error("Followers count error:", error);
+
+  }
+
+
+  let following = false;
+
+  if(currentUser && currentUser.uid !== sellerId){
+
+    try{
+
+      const followSnap =
+        await getDoc(followDocRef());
+
+      following = followSnap.exists();
+
+    }catch(error){
+
+      console.error("Follow state error:", error);
+
+    }
+
+  }
+
+  /* A newer refresh started, so skip this stale one */
+
+  if(myRefresh !== followRefreshId){
+    return;
+  }
+
+  followersTotal = total;
+  isFollowing = following;
+
+  paintFollow();
+
+}
+
+
+async function toggleFollow(){
+
+  if(followBusy || !sellerId){
+    return;
+  }
+
+  /* Not logged in: go to login, then come back here */
+
+  if(!currentUser){
+
+    sessionStorage.setItem(
+      "arewaMarketRedirect",
+      "seller-profile.html?id=" +
+      encodeURIComponent(sellerId)
+    );
+
+    window.location.href = "login.html";
+
+    return;
+
+  }
+
+  if(currentUser.uid === sellerId){
+    return;
+  }
+
+  const btn =
+    document.getElementById("followBtn");
+
+  followBusy = true;
+
+  if(btn){
+    btn.disabled = true;
+  }
+
+  try{
+
+    if(isFollowing){
+
+      await deleteDoc(followDocRef());
+
+      isFollowing = false;
+
+      if(followersTotal !== null){
+        followersTotal = Math.max(0, followersTotal - 1);
+      }
+
+    }else{
+
+      await setDoc(
+        followDocRef(),
+        {
+          followerId: currentUser.uid,
+          followingId: sellerId,
+          createdAt: serverTimestamp()
+        }
+      );
+
+      isFollowing = true;
+
+      if(followersTotal !== null){
+        followersTotal = followersTotal + 1;
+      }
+
+    }
+
+  }catch(error){
+
+    console.error("Follow error:", error);
+
+    showError(
+      "Could not update follow. Please try again."
+    );
+
+  }finally{
+
+    followBusy = false;
+
+    if(btn){
+      btn.disabled = false;
+    }
+
+    paintFollow();
+
+  }
+
 }
 
 
@@ -1206,16 +1629,40 @@ async function loadSellerProducts(){
     );
 
 
+    /*
+      FREE PLAN LIMIT
+      =================================================
+      If this seller is not currently Premium, only their
+      oldest FREE_MAX_PRODUCTS products stay visible here.
+      Nothing is deleted - the rest reappear automatically
+      once they renew Premium or remove older products.
+    */
+
+    const sellerIsPremium =
+      isPremiumActive(currentSellerData);
+
+    const visibleIds =
+      getVisibleProductIds(
+        products,
+        sellerIsPremium
+      );
+
+    const visibleProducts =
+      products.filter(
+        product => visibleIds.has(product.id)
+      );
+
+
     productsCount.textContent =
-      products.length +
+      visibleProducts.length +
       (
-        products.length === 1
+        visibleProducts.length === 1
           ? " product"
           : " products"
       );
 
 
-    if(products.length === 0){
+    if(visibleProducts.length === 0){
 
       productsContainer.innerHTML =
         `
@@ -1242,7 +1689,7 @@ async function loadSellerProducts(){
       `
       <div class="products-grid">
 
-        ${products
+        ${visibleProducts
           .map(productCard)
           .join("")
         }
@@ -1467,5 +1914,60 @@ loadSeller();
 
 </script>
 
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+
+  <a href="index.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-home"></i></span>
+    <span class="bn-label">Home</span>
+  </a>
+
+  <a href="friends.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-users"></i></span>
+    <span class="bn-label">Friends</span>
+  </a>
+
+  <a href="messages.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-message-circle"></i></span>
+    <span class="bn-label">Messages</span>
+  </a>
+
+  <a href="seller-dashboard.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-building-store"></i></span>
+    <span class="bn-label">Dashboard</span>
+  </a>
+
+  <a href="login.html" id="navProfileLink" class="bn-item active">
+    <span class="bn-icon"><i class="ti ti-user"></i></span>
+    <span class="bn-label">Profile</span>
+  </a>
+
+</nav>
+
+
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  onAuthStateChanged(auth, (user) => {
+    const link = document.getElementById("navProfileLink");
+    if(link){
+      link.href = user
+        ? "seller-profile.html?id=" + user.uid
+        : "login.html";
+    }
+  });
+</script>
+
+<script type="module" src="bottom-nav.js"></script>
 </body>
+
 </html>

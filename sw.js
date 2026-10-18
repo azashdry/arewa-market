@@ -1,22 +1,23 @@
 /*
-  Arewa Market — minimal service worker.
+  Arewa Market — service worker (v3)
 
-  This exists mainly to satisfy PWA installability
-  requirements (so browsers show "Add to Home Screen" /
-  "Install app"). It also gives basic offline caching
-  for the app's own static files.
-
-  It does NOT cache Firebase/Firestore data, so the app's
-  live data (products, users, messages, etc.) always comes
-  fresh from the network as normal.
+  - Shafukan HTML: network-first (kullum sabon fayil yake zuwa),
+    idan babu network sai a yi amfani da wanda aka adana.
+  - Sauran fayiloli (css/js/hotuna): adanawa da sabuntawa a baya.
+  - Ba ya taba Firebase/Firestore ko wasu shafukan waje.
+  - Idan komai ya gaza, yana mayar da sako mai sauki maimakon
+    ya bar browser ya nuna ERR_FAILED.
 */
 
-const CACHE_NAME = "arewa-market-v2";
+const CACHE_NAME = "arewa-market-v3";
 
 const APP_SHELL = [
   "./index.html",
   "./login.html",
   "./register.html",
+  "./friends.html",
+  "./messages.html",
+  "./status.html",
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png",
@@ -25,82 +26,77 @@ const APP_SHELL = [
 ];
 
 self.addEventListener("install", event => {
-
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache =>
-      cache.addAll(APP_SHELL).catch(() => {
-        /* Ignore individual file failures during install */
-      })
+      Promise.all(APP_SHELL.map(url => cache.add(url).catch(() => {})))
     )
   );
-
   self.skipWaiting();
-
 });
 
-
 self.addEventListener("activate", event => {
-
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
       )
     )
   );
-
   self.clients.claim();
-
 });
 
+function offlineResponse() {
+  return new Response("Offline - ba a samu haɗin intanet ko server ba.", {
+    status: 503,
+    headers: { "Content-Type": "text/plain; charset=utf-8" }
+  });
+}
 
 self.addEventListener("fetch", event => {
-
   const request = event.request;
 
-  /*
-    Only handle simple same-origin GET requests for our own
-    static files. Everything else (Firebase Auth, Firestore,
-    external images, etc.) is left completely untouched and
-    goes straight to the network as normal.
-  */
-
-  if (request.method !== "GET") {
-    return;
-  }
+  if (request.method !== "GET") return;
 
   const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
 
-  if (url.origin !== self.location.origin) {
+  const isPage =
+    request.mode === "navigate" ||
+    url.pathname.endsWith(".html") ||
+    url.pathname.endsWith("/");
+
+  if (isPage) {
+    event.respondWith(
+      fetch(request)
+        .then(response => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(c => c.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() =>
+          caches.match(request, { ignoreSearch: true })
+            .then(cached => cached || caches.match("./index.html"))
+            .then(cached => cached || offlineResponse())
+        )
+    );
     return;
   }
 
   event.respondWith(
     caches.match(request).then(cached => {
-
-      const networkFetch = fetch(request)
+      const network = fetch(request)
         .then(response => {
-
           if (response && response.ok) {
-
-            const responseClone = response.clone();
-
-            caches.open(CACHE_NAME).then(cache =>
-              cache.put(request, responseClone)
-            );
-
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(c => c.put(request, copy));
           }
-
           return response;
-
         })
-        .catch(() => cached);
+        .catch(() => cached || offlineResponse());
 
-      return cached || networkFetch;
-
+      return cached || network;
     })
   );
-
 });

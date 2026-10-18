@@ -6,10 +6,22 @@
 
 <title>Arewa Market - Register</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
 <style>
+
+h1,h2,h3,.brand h1,.brand-name,.logo,.hero h2,.page-title,.auth-title,.box h2,.modal h2,.modal-title{
+  font-family:'Playfair Display',Georgia,serif;
+  letter-spacing:.2px;
+}
 body{
-  font-family:Arial,sans-serif;
-  background:#f5f7f2;
+  font-family:'Inter',Arial,sans-serif;
+  background:
+    linear-gradient(180deg,rgba(13,59,44,.96),rgba(10,46,34,.96)),
+    repeating-linear-gradient(45deg,rgba(201,162,39,.07) 0 2px,transparent 2px 18px);
   margin:0;
   padding:20px;
 }
@@ -20,12 +32,13 @@ body{
   background:white;
   padding:25px;
   border-radius:12px;
-  box-shadow:0 5px 20px rgba(0,0,0,.1);
+  box-shadow:0 15px 45px rgba(0,0,0,.35);
+  border-top:4px solid #c9a227;
 }
 
 h1{
   text-align:center;
-  color:#176b3a;
+  color:#0d3b2c;
 }
 
 p{
@@ -38,7 +51,7 @@ input{
   padding:13px;
   margin:8px 0 15px;
   box-sizing:border-box;
-  border:1px solid #ccc;
+  border:1px solid #d5cfc3;
   border-radius:7px;
 }
 
@@ -60,7 +73,7 @@ input{
   width:auto;
   padding:5px;
   background:none;
-  color:#176b3a;
+  color:#155a3a;
   border:0;
   font-size:14px;
   font-weight:bold;
@@ -70,7 +83,7 @@ input{
 button{
   width:100%;
   padding:14px;
-  background:#176b3a;
+  background:#155a3a;
   color:white;
   border:0;
   border-radius:7px;
@@ -90,6 +103,13 @@ button{
   border-radius:7px;
 }
 </style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10462d">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arewa Market">
 </head>
 
 <body>
@@ -97,6 +117,7 @@ button{
 <div class="box">
 
 <h1>Arewa Market</h1>
+
 <p>Create your account</p>
 
 <div id="message"></div>
@@ -115,6 +136,12 @@ button{
   id="email"
   placeholder="Email"
   required
+>
+
+<input
+  type="tel"
+  id="phone"
+  placeholder="Phone number (optional - helps friends find you)"
 >
 
 <div class="password-box">
@@ -162,9 +189,24 @@ import {
 import {
   doc,
   setDoc,
-  serverTimestamp
+  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+
+/* PHONE HASH (only a scrambled version is stored) */
+async function hashPhone(raw){
+  let d = String(raw || "").replace(/\D/g, "");
+  if(d.startsWith("00")) d = d.slice(2);
+  if(d.startsWith("0") && d.length === 11) d = "234" + d.slice(1);
+  else if(d.length === 10) d = "234" + d;
+  if(d.length < 10) return "";
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(d));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+}
 
 const form =
 document.getElementById("registerForm");
@@ -223,113 +265,497 @@ function showMessage(text){
 
 
 /* =========================================
-   REGISTER
+   GET REFERRAL CODE
 ========================================= */
 
-form.addEventListener("submit", async function(e){
+const urlParams =
+new URLSearchParams(
+  window.location.search
+);
 
-  e.preventDefault();
-
-  const name =
-  document.getElementById("name").value.trim();
-
-  const email =
-  document.getElementById("email").value.trim();
-
-  const password =
-  document.getElementById("password").value;
+let referralCode =
+urlParams.get("ref");
 
 
-  btn.disabled = true;
+/*
+  Referral can come from:
 
-  btn.textContent = "Creating Account...";
+  1. register.html?ref=CODE
+  2. Previously saved referral code
+*/
+
+if(referralCode){
+
+  referralCode =
+  referralCode
+    .trim()
+    .toUpperCase();
+
+  localStorage.setItem(
+    "arewaReferralCode",
+    referralCode
+  );
+
+}else{
+
+  referralCode =
+  localStorage.getItem(
+    "arewaReferralCode"
+  );
+
+}
+
+
+if(referralCode){
+
+  referralCode =
+  String(referralCode)
+    .trim()
+    .toUpperCase();
+
+}
+
+
+/* =========================================
+   GENERATE REFERRAL CODE
+========================================= */
+
+function createReferralCode(name){
+
+  const cleanName =
+  String(name || "USER")
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9]/g,
+      ""
+    )
+    .substring(0,8);
+
+
+  const randomPart =
+  Math.random()
+    .toString(36)
+    .substring(2,7)
+    .toUpperCase();
+
+
+  return `AREWA-${cleanName}-${randomPart}`;
+
+}
+
+
+/* =========================================
+   CREATE UNIQUE REFERRAL CODE
+========================================= */
+
+async function generateUniqueReferralCode(name){
+
+  let attempts = 0;
+
+  while(attempts < 5){
+
+    const code =
+    createReferralCode(name);
+
+
+    const codeQuery =
+    query(
+      collection(db,"users"),
+      where(
+        "referralCode",
+        "==",
+        code
+      )
+    );
+
+
+    const snapshot =
+    await getDocs(codeQuery);
+
+
+    if(snapshot.empty){
+
+      return code;
+
+    }
+
+
+    attempts++;
+
+  }
+
+
+  throw new Error(
+    "Unable to generate a unique referral code. Please try again."
+  );
+
+}
+
+
+/* =========================================
+   FIND REFERRER
+========================================= */
+
+async function findReferrer(code){
+
+  if(!code){
+
+    return null;
+
+  }
 
 
   try{
 
-    console.log("Starting Firebase registration...");
-
-
-    const credential =
-    await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
+    const referrerQuery =
+    query(
+      collection(db,"users"),
+      where(
+        "referralCode",
+        "==",
+        code
+      )
     );
 
 
-    const user =
-    credential.user;
-
-
-    console.log("AUTH SUCCESS:", user.uid);
-
-
-    await updateProfile(user,{
-      displayName:name
-    });
-
-
-    await setDoc(
-      doc(db,"users",user.uid),
-      {
-        name:name,
-        email:email,
-        role:"buyer",
-        isSeller:false,
-        sellerStatus:"none",
-        active:true,
-        createdAt:serverTimestamp(),
-        updatedAt:serverTimestamp()
-      }
+    const snapshot =
+    await getDocs(
+      referrerQuery
     );
 
 
-    console.log("FIRESTORE USER CREATED");
+    if(snapshot.empty){
+
+      return null;
+
+    }
 
 
-    alert("Account created successfully!");
+    const referrerDoc =
+    snapshot.docs[0];
 
-    window.location.replace("index.html");
 
+    return {
+      uid:referrerDoc.id,
+      ...referrerDoc.data()
+    };
 
   }catch(error){
 
     console.error(
-      "REGISTER ERROR CODE:",
-      error.code
+      "REFERRER LOOKUP ERROR:",
+      error
     );
 
-    console.error(
-      "REGISTER ERROR MESSAGE:",
-      error.message
-    );
-
-
-    alert(
-      "Firebase Error:\n\n" +
-      error.code +
-      "\n\n" +
-      error.message
-    );
-
-
-    showMessage(
-      error.code + ": " + error.message
-    );
-
-
-  }finally{
-
-    btn.disabled = false;
-
-    btn.textContent = "Create Account";
+    return null;
 
   }
+
+}
+
+
+/* =========================================
+   REGISTER
+========================================= */
+
+form.addEventListener(
+  "submit",
+  async function(e){
+
+    e.preventDefault();
+
+
+    const name =
+    document
+      .getElementById("name")
+      .value
+      .trim();
+
+
+    const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
+
+
+    const password =
+    document
+      .getElementById("password")
+      .value;
+
+
+    btn.disabled = true;
+
+    btn.textContent =
+      "Creating Account...";
+
+
+    try{
+
+      console.log(
+        "Starting Firebase registration..."
+      );
+
+
+      /* =================================
+         CREATE OWN REFERRAL CODE
+      ================================= */
+
+      const ownReferralCode =
+      await generateUniqueReferralCode(
+        name
+      );
+
+
+      /* =================================
+         FIND REFERRER
+      ================================= */
+
+      let referredBy = "";
+
+      let referredByUserId = "";
+
+
+      if(
+        referralCode &&
+        referralCode.length > 0
+      ){
+
+        const referrer =
+        await findReferrer(
+          referralCode
+        );
+
+
+        if(
+          referrer &&
+          referrer.uid
+        ){
+
+          referredBy =
+            referralCode;
+
+          referredByUserId =
+            referrer.uid;
+
+        }
+
+      }
+
+
+      /* =================================
+         CREATE FIREBASE AUTH ACCOUNT
+      ================================= */
+
+      const credential =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+      const user =
+      credential.user;
+
+
+      console.log(
+        "AUTH SUCCESS:",
+        user.uid
+      );
+
+
+      /* =================================
+         UPDATE AUTH PROFILE
+      ================================= */
+
+      await updateProfile(
+        user,
+        {
+          displayName:name
+        }
+      );
+
+
+      /* =================================
+         SELF REFERRAL PROTECTION
+      ================================= */
+
+      if(
+        referredByUserId === user.uid
+      ){
+
+        referredBy = "";
+
+        referredByUserId = "";
+
+      }
+
+
+      /* =================================
+         REFERRAL STATUS
+      ================================= */
+
+      const hasReferrer =
+        Boolean(
+          referredByUserId
+        );
+
+
+      const referralStatus =
+        hasReferrer
+          ? "registered"
+          : "";
+
+
+      /* =================================
+         CREATE USER DOCUMENT
+      ================================= */
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          user.uid
+        ),
+        {
+
+          name:name,
+
+          email:email,
+
+          role:"buyer",
+
+          isSeller:false,
+
+          sellerStatus:"none",
+
+          active:true,
+
+          phoneHash:
+            await hashPhone(
+              document.getElementById("phone").value
+            ),
+
+
+          /* ============================
+             OWN REFERRAL INFORMATION
+          ============================ */
+
+          referralCode:
+            ownReferralCode,
+
+
+          /* ============================
+             REFERRER INFORMATION
+          ============================ */
+
+          referredBy:
+            referredBy,
+
+
+          referredByUserId:
+            referredByUserId,
+
+
+          referralStatus:
+            referralStatus,
+
+
+          referralJoinedAt:
+            hasReferrer
+              ? serverTimestamp()
+              : null,
+
+
+          /* ============================
+             NORMAL USER DATES
+          ============================ */
+
+          createdAt:
+            serverTimestamp(),
+
+          updatedAt:
+            serverTimestamp()
+
+        }
+      );
+
+
+      console.log(
+        "FIRESTORE USER CREATED"
+      );
+
+
+      /* =================================
+         REMOVE USED REFERRAL CODE
+      ================================= */
+
+      localStorage.removeItem(
+        "arewaReferralCode"
+      );
+
+
+      alert(
+        "Account created successfully!"
+      );
+
+
+      window.location.replace(
+        "index.html"
+      );
+
+
+    }catch(error){
+
+      console.error(
+        "REGISTER ERROR CODE:",
+        error.code
+      );
+
+
+      console.error(
+        "REGISTER ERROR MESSAGE:",
+        error.message
+      );
+
+
+      alert(
+        "Firebase Error:\n\n" +
+        error.code +
+        "\n\n" +
+        error.message
+      );
+
+
+      showMessage(
+        error.code +
+        ": " +
+        error.message
+      );
+
+
+    }finally{
+
+      btn.disabled = false;
+
+      btn.textContent =
+        "Create Account";
+
+    }
 
 });
 
 </script>
 
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
 </body>
+
 </html>
