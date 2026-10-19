@@ -33,8 +33,19 @@ const UPLOAD_PRESET = "Arewa market";
 const UPLOAD_ENDPOINT =
   `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
 
+// Takardu (PDF, Word, Excel, ZIP...) ana tura su a "raw" - hakan
+// yana kauce wa takaitawar PDF ta Cloudinary a free plan.
+const RAW_ENDPOINT =
+  `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`;
+
 // ---------- IYAKOKI (LIMITS) - GYARA ANAN IDAN KANA SO ----------
 const LIMITS = {
+  image: {
+    maxSizeMB: 10
+  },
+  document: {
+    maxSizeMB: 20
+  },
   video: {
     maxSizeMB: 50,
     maxDurationSeconds: 300   // minti 5
@@ -52,7 +63,8 @@ const LIMITS = {
 function getMediaCategory(file) {
   if (file.type && file.type.startsWith("video/")) return "video";
   if (file.type && file.type.startsWith("audio/")) return "audio";
-  return "other";
+  if (file.type && file.type.startsWith("image/")) return "image";
+  return "document";
 }
 
 /**
@@ -131,7 +143,7 @@ export async function uploadToCloudinary(file) {
 
     if (sizeMB > limit.maxSizeMB) {
       throw new Error(
-        `File ${category === "video" ? "bidiyo" : "sauti"} din ya yi girma sosai ` +
+        `File ${{ video: "bidiyo", audio: "sauti", image: "hoton", document: "takardar" }[category]} din ya yi girma sosai ` +
         `(${sizeMB.toFixed(1)}MB). Iyakar da aka amince da ita shine ${limit.maxSizeMB}MB. ` +
         `Ka rage girman file din ka sake gwadawa.`
       );
@@ -163,7 +175,9 @@ export async function uploadToCloudinary(file) {
   formData.append("file", file);
   formData.append("upload_preset", UPLOAD_PRESET);
 
-  const response = await fetch(UPLOAD_ENDPOINT, {
+  const endpoint = category === "document" ? RAW_ENDPOINT : UPLOAD_ENDPOINT;
+
+  const response = await fetch(endpoint, {
     method: "POST",
     body: formData
   });
@@ -181,7 +195,9 @@ export async function uploadToCloudinary(file) {
   return {
     url: data.secure_url,
     resourceType: data.resource_type,
-    duration: data.duration || null
+    duration: data.duration || null,
+    bytes: data.bytes || file.size || null,
+    name: file.name || null
   };
 
 }
