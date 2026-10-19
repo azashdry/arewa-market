@@ -64,6 +64,24 @@ textarea{min-height:70px}#fd{margin-top:8px;min-height:70px}
 .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 6px;margin-top:14px}
 .sb{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--ink);text-decoration:none;cursor:pointer}
 .sb span{width:48px;height:48px;border-radius:50%;background:#e8f4ec;display:flex;align-items:center;justify-content:center;font-size:22px}
+html{background:#ebe7df}
+.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.i.f{fill:currentColor;stroke:none}
+.cmp .ic,.tools .ic{display:flex;align-items:center;justify-content:center}.cmp .ic.rb{background:var(--g2);color:#fff;border-color:var(--g2)}
+.b{position:relative}.mm{position:absolute;top:2px;right:4px;border:0;background:none;color:var(--mu);width:22px;height:22px;padding:0;opacity:.55;cursor:pointer;display:flex;align-items:center;justify-content:center}.b:hover .mm{opacity:1}.mm .i{width:16px;height:16px}
+.fw{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--mu);font-style:italic;margin-bottom:2px}.fw .i{width:13px;height:13px}
+.vn{display:flex;align-items:center;gap:8px;min-width:210px;margin:2px 0 4px}.vn button{width:34px;height:34px;border-radius:50%;border:0;background:var(--g2);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}.vn .vp{flex:1;min-width:80px;accent-color:var(--g2)}.vn .vt{font-size:12px;color:var(--mu);min-width:34px;text-align:right}
+.vo{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--g2);background:#fff;color:var(--g2);border-radius:18px;padding:6px 12px;font:600 13px Inter,sans-serif;cursor:pointer;margin:2px 0 4px}.vo.off{border-color:var(--ln);color:var(--mu);cursor:default}.vo .i{width:18px;height:18px}
+.mn{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--ln);font-size:15px;cursor:pointer}.mn:hover{background:#faf8f4}.mn.red{color:var(--red)}
+.eb{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eef6f1;border-top:1px solid var(--ln);font-size:13px;color:var(--g2)}.eb:empty{display:none}.eb button{margin-left:auto;border:0;background:none;color:var(--g2);cursor:pointer;display:flex}
+.shb{background:#eef2ee;color:var(--g1);width:34px;height:34px;margin:-4px 0 8px}
+.vw{position:fixed;inset:0;background:#000;z-index:15;display:none;flex-direction:column}.vw.on{display:flex}.vh{padding:calc(10px + env(safe-area-inset-top)) 12px 10px}.vb{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:8px}.vb img,.vb video{max-width:100%;max-height:100%;object-fit:contain}.vb audio{width:min(420px,92%)}
+.recbar{display:none;align-items:center;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--ln)}body.recording .recbar{display:flex}body.recording .cmp{display:none}
+.recbar .ic{width:40px;height:40px;border-radius:50%;border:1px solid var(--ln);background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}.recbar .ic.snd{background:var(--g2);color:#fff;border-color:var(--g2)}.recbar .ic.on{background:#25d366;border-color:#25d366;color:#fff}
+.recbar .rd{width:10px;height:10px;border-radius:50%;background:var(--red);animation:bl 1s infinite}@keyframes bl{50%{opacity:.25}}.recbar .rt2{font-variant-numeric:tabular-nums;font-size:15px}.recbar .sp{flex:1}
+@media(min-width:760px){body{max-width:860px;box-shadow:0 0 0 1px var(--ln),0 12px 40px rgba(0,0,0,.08)}header{padding-left:20px;padding-right:20px}.b{max-width:68%}.sh{align-items:center}.sh .card{max-width:460px;border-radius:18px}.r:hover,.mrow:hover{background:#faf8f4}.ib:hover{background:rgba(255,255,255,.28)}.sg{grid-template-columns:repeat(5,1fr)}.msgs{padding:16px 20px}.mm{opacity:0}.b:hover .mm{opacity:1}}
+@media(min-width:1200px){body{max-width:980px}header h1{font-size:21px}.b{font-size:15px;max-width:62%}.up{font-size:15px}}
+@media(max-width:360px){header h1{font-size:17px}.cmp{gap:6px;padding-left:8px;padding-right:8px}.cmp .ic{width:36px;height:36px}.sg{gap:10px 2px}.b{max-width:88%}}
+@media(max-height:480px){.sh .card{max-height:94dvh}}
 button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
 </head>
@@ -74,6 +92,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offse
   <div id="act"></div>
 </header>
 <div id="app"><div class="empty">Loading...</div></div>
+<div class="recbar" id="recbar"></div>
+<div class="vw" id="vw"></div>
 <div class="sh" id="sh" data-act="shclose"></div>
 <div id="toast"></div>
 <input type="file" id="fp" hidden>
@@ -105,19 +125,53 @@ let unsub = [], sub = [];
 let G, CH, C, UPS = [], cg = [], foll = false, cmpMode = "", ctab = "a";
 const cache = { groups: [], channels: [], communities: [], follows: new Set() };
 const names = {}, photos = {};
-let place = "", PEND = null, rec = null;
+let place = "", PEND = null, MSGS = {}, EDIT = null, FW = null, AU = null, AUid = null, AUdur = 0, rc = null;
 const safe = u => /^https:\/\//i.test(u || "") ? esc(u) : "";
 const bytes = n => !n ? "" : n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
 const av = (o, cls = "") => `<div class="av ${cls}">${safe(o.photoURL) ? `<img src="${safe(o.photoURL)}" alt="">` : esc((o.name || "?")[0].toUpperCase())}</div>`;
 const avU = (uid, cls = "s2") => `<div class="av ${cls}">${safe(photos[uid]) ? `<img src="${safe(photos[uid])}" alt="">` : esc((names[uid] || "?")[0].toUpperCase())}</div>`;
-function media(x) {
+const IC = {
+  back: '<path d="M19 12H5M12 19l-7-7 7-7"/>',
+  mic: '<path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/>',
+  send: '<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>',
+  clip: '<path d="M21 11l-9 9a5 5 0 0 1-7-7l9-9a3 3 0 0 1 4 4l-9 9a1 1 0 0 1-2-2l8-8"/>',
+  trash: '<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>',
+  check: '<path d="M5 12l5 5 9-10"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  play: '<path d="M8 5v14l11-7z"/>',
+  pause: '<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>',
+  fwd: '<path d="M15 4l6 6-6 6M21 10H9a6 6 0 0 0-6 6v3"/>',
+  edit: '<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  copy: '<path d="M9 9h11v11H9zM5 15V4h11"/>',
+  chev: '<path d="M6 9l6 6 6-6"/>',
+  once: '<circle cx="12" cy="12" r="9"/><path d="M10.5 9.5L12.5 8v8"/>'
+};
+const icon = (n, c = "") => `<svg class="i ${c}" viewBox="0 0 24 24">${IC[n]}</svg>`;
+const mmss = s => { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+function media(x, id = "") {
+  if (x.viewOnce) {
+    const k = x.imageUrl ? "Photo" : x.videoUrl ? "Video" : "Voice message", mine = x.senderId === me.uid, op = x.openedBy?.includes(me.uid), n = x.openedBy?.length || 0;
+    const lb = mine ? "View once" + (n ? ` &middot; opened by ${n}` : "") : op ? "Opened" : "Tap to view";
+    return `<button class="vo ${mine || op ? "off" : ""}" ${mine || op ? "disabled" : `data-act="vopen" data-id="${id}"`}>${icon("once")} ${k} &middot; ${lb}</button>`;
+  }
   let m = "";
-  if (safe(x.imageUrl)) m += `<a href="${safe(x.imageUrl)}" target="_blank" rel="noopener"><img class="mi" src="${safe(x.imageUrl)}" loading="lazy" alt="Photo"></a>`;
+  if (safe(x.imageUrl)) m += `<img class="mi" data-act="zoom" data-u="${safe(x.imageUrl)}" src="${safe(x.imageUrl)}" loading="lazy" alt="Photo">`;
   if (safe(x.videoUrl)) m += `<video class="mi" src="${safe(x.videoUrl)}" controls preload="metadata" playsinline></video>`;
-  if (safe(x.audioUrl)) m += `<audio class="ma" src="${safe(x.audioUrl)}" controls preload="metadata"></audio>`;
+  if (safe(x.audioUrl)) m += `<div class="vn" data-vn="${id}"><button data-act="vplay" data-id="${id}" data-u="${safe(x.audioUrl)}" aria-label="Play">${icon("play", "f")}</button><input class="vp" type="range" min="0" max="100" value="0" data-id="${id}"><span class="vt" data-d="${x.duration || 0}">${mmss(x.duration)}</span></div>`;
   if (safe(x.fileUrl)) m += `<a class="fl" href="${safe(x.fileUrl)}" target="_blank" rel="noopener"><span>&#128196;</span><span class="fi"><span class="fn">${esc(x.fileName || "Document")}</span><span class="fs">${bytes(x.fileSize)}</span></span></a>`;
   return m;
 }
+const vnEl = id => document.querySelector(`[data-vn="${CSS.escape(String(id))}"]`);
+function vnUpd(id) {
+  const e = vnEl(id); if (!e) return;
+  const t = e.querySelector(".vt"), p = e.querySelector(".vp"), b = e.querySelector("button");
+  const live = AU && AUid === id, d = live ? AUdur : +t.dataset.d;
+  b.innerHTML = icon(live && !AU.paused ? "pause" : "play", "f");
+  p.value = live && d ? (AU.currentTime / d) * 100 : 0;
+  t.textContent = mmss(live && AU.currentTime > 0 ? AU.currentTime : d);
+}
+function showViewer(html) { const v = $("#vw"); v.innerHTML = `<div class="vh"><button class="ib" data-act="vclose" aria-label="Back">${icon("back")}</button></div><div class="vb">${html}</div>`; v.classList.add("on"); }
+function closeViewer() { const v = $("#vw"); v.classList.remove("on"); v.innerHTML = ""; }
 const pickFile = accept => new Promise(res => { const f = $("#fp"); f.accept = accept; f.value = ""; f.onchange = () => res(f.files[0] || null); f.click(); });
 async function mediaFrom(file) {
   const t = file.type || "";
@@ -130,24 +184,44 @@ async function mediaFrom(file) {
 }
 function setPend(a) { PEND = a; const p = $("#pc"); if (p) p.innerHTML = a ? `${esc(a.label)} <a data-act="unpend">&#10005;</a>` : ""; }
 async function deliver(att) { if (place === "g") await sendG(att); else { setPend(att); toast("Attached. Tap Post to send."); } }
-async function sendFile(file) {
-  try { await deliver(await mediaFrom(file)); } catch (e) { console.error(e); toast(e.message || "Upload failed"); }
+async function sendFile(file, once) {
+  try { const a = await mediaFrom(file); if (once && place === "g") a.data.viewOnce = true; await deliver(a); } catch (e) { console.error(e); toast(e.message || "Upload failed"); }
 }
-async function voice(btn) {
-  if (rec) { rec.stop(); return; }
+async function recStart() {
+  if (rc || EDIT) return;
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast("Voice recording is not supported on this browser");
   let st; try { st = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch (e) { return toast("Allow microphone access to record"); }
-  const ch = [], mr = new MediaRecorder(st), t0 = Date.now(); rec = mr;
-  const stop = setTimeout(() => mr.state === "recording" && mr.stop(), 300000);
-  mr.ondataavailable = e => e.data.size && ch.push(e.data);
-  mr.onstop = async () => {
-    clearTimeout(stop); st.getTracks().forEach(t => t.stop()); rec = null;
-    document.querySelectorAll('[data-act="voice"]').forEach(b => { b.classList.remove("rec"); b.innerHTML = "&#127908;"; });
-    if (Date.now() - t0 < 1000) return;
-    const type = mr.mimeType || "audio/webm";
-    await sendFile(new File([new Blob(ch, { type })], "voice-note." + (type.includes("mp4") ? "m4a" : "webm"), { type }));
-  };
-  mr.start(); btn.classList.add("rec"); btn.innerHTML = "&#9209;";
+  const mr = new MediaRecorder(st); rc = { mr, st, ch: [], t0: Date.now(), once: false, send: false, iv: 0 };
+  mr.ondataavailable = e => e.data.size && rc.ch.push(e.data);
+  mr.onstop = recDone; mr.start();
+  $("#rt2").textContent = "0:00"; $("#ro").classList.remove("on");
+  rc.iv = setInterval(() => { const s = (Date.now() - rc.t0) / 1000; $("#rt2").textContent = mmss(s); if (s >= 300) recEnd(true); }, 250);
+  document.body.classList.add("recording");
+}
+function recEnd(send) { if (!rc || rc.mr.state !== "recording") return; rc.send = send; rc.mr.stop(); }
+async function recDone() {
+  const r = rc; rc = null; clearInterval(r.iv); r.st.getTracks().forEach(t => t.stop()); document.body.classList.remove("recording");
+  if (!r.send) return;
+  const secs = (Date.now() - r.t0) / 1000;
+  if (secs < 1) return toast("Recording too short");
+  const type = r.mr.mimeType || "audio/webm";
+  try {
+    const a = await mediaFrom(new File([new Blob(r.ch, { type })], "voice-note." + (type.includes("mp4") ? "m4a" : "webm"), { type }));
+    a.data.duration = Math.round(secs); if (r.once && place === "g") a.data.viewOnce = true;
+    await deliver(a);
+  } catch (e) { console.error(e); toast(e.message || "Upload failed"); }
+}
+function syncRb() {
+  const b = $("#rb"), i = $("#mi"); if (!b) return;
+  const has = !!(i && i.value.trim()) || !!EDIT;
+  b.innerHTML = icon(EDIT ? "check" : has ? "send" : "mic"); b.dataset.m = has ? "s" : "m"; b.setAttribute("aria-label", has ? "Send" : "Voice note");
+}
+function cancelEdit() { EDIT = null; const e = $("#eb"); if (e) e.innerHTML = ""; const i = $("#mi"); if (i) i.value = ""; syncRb(); }
+async function saveEdit() {
+  const i = $("#mi"), t = i.value.trim(), id = EDIT.id;
+  if (!t) return toast("Message cannot be empty");
+  if (t !== MSGS[id]?.text) { try { await upd(["groups", G.id, "messages", id], { text: t, editedAt: serverTimestamp() }); } catch (e) { console.error(e); toast("Could not edit (15 minute limit)"); } }
+  cancelEdit();
 }
 function shareSheet(url, title) {
   const u = encodeURIComponent(url), tx = encodeURIComponent(title + " - Arewa Market"), both = encodeURIComponent(title + " - Arewa Market\n" + url);
@@ -162,7 +236,7 @@ async function openMe() {
 const isAdmin = o => !!o?.adminIds?.includes(me.uid);
 const lis = (q, cb, arr) => (arr || unsub).push(onSnapshot(q, cb, e => { console.error(e); toast("Could not load. Check your connection or permissions."); }));
 const clrSub = () => { sub.forEach(f => f()); sub = []; };
-const clear = () => { unsub.forEach(f => f()); unsub = []; clrSub(); closeSheet(); };
+const clear = () => { unsub.forEach(f => f()); unsub = []; clrSub(); closeSheet(); closeViewer(); EDIT = null; if (rc && rc.mr.state === "recording") { rc.send = false; rc.mr.stop(); } if (AU) { AU.pause(); AU = null; AUid = null; } };
 
 async function nameOf(uid) {
   if (names[uid]) return names[uid];
@@ -178,7 +252,7 @@ function setHead(title, subt, back, actions = "") {
   $("#ttl").textContent = title; $("#sub").textContent = subt || "";
   $("#back").style.display = back ? "flex" : "none"; $("#act").innerHTML = actions;
 }
-function sheet(html) { const s = $("#sh"); s.innerHTML = `<div class="card">${html}</div>`; s.classList.add("on"); }
+function sheet(html) { const s = $("#sh"); s.innerHTML = `<div class="card"><button class="ib shb" data-act="shx" aria-label="Back">${icon("back")}</button>${html}</div>`; s.classList.add("on"); }
 function closeSheet() { const s = $("#sh"); s.classList.remove("on"); s.innerHTML = ""; }
 
 /* ============================ LIST ============================ */
@@ -235,11 +309,11 @@ async function mk() {
     if (cx === "channels") {
       const r = await addDoc(collection(db, "channels"), { ...base, followerCount: 1 });
       await setDoc(doc(db, "channelFollows", r.id + "_" + me.uid), { channelId: r.id, uid: me.uid, createdAt: serverTimestamp() });
-      return openChannel(r.id);
+      return route({ v: "c", id: r.id });
     }
     if (cx === "communities") {
       const r = await addDoc(collection(db, "communities"), { ...base, memberIds: [me.uid], groupCount: 0 });
-      return openComm(r.id);
+      return route({ v: "m", id: r.id });
     }
     if (cx === "cgroup" && (C.groupCount || 0) >= LIM.commGroups) return toast("A community can hold 49 groups plus the announcement space");
     const r = await addDoc(collection(db, "groups"), {
@@ -247,14 +321,14 @@ async function mk() {
       communityId: cx === "cgroup" ? C.id : null, lastMessage: "", lastMessageAt: serverTimestamp()
     });
     if (cx === "cgroup") { await updateDoc(doc(db, "communities", C.id), { groupCount: increment(1) }); closeSheet(); }
-    else openGroup(r.id);
+    else route({ v: "g", id: r.id });
   } catch (e) { console.error(e); toast("Could not create. Try again."); }
 }
 
 /* ============================ GROUP ============================ */
 function openGroup(id) {
   clear(); view(); cmpMode = ""; place = "g"; PEND = null;
-  app.innerHTML = `<div class="chat"><div class="msgs" id="msgs"></div><div class="cmp" id="cmp"></div></div>`;
+  app.innerHTML = `<div class="chat"><div class="msgs" id="msgs"></div><div class="eb" id="eb"></div><div class="cmp" id="cmp"></div></div>`;
   lis(doc(db, "groups", id), s => {
     if (!s.exists()) { toast("Group not found"); return list(); }
     G = { id, ...s.data() };
@@ -264,11 +338,14 @@ function openGroup(id) {
   });
   lis(query(collection(db, "groups", id, "messages"), orderBy("createdAt"), limit(200)), s => {
     const m = $("#msgs"); if (!m) return;
+    const first = !m.dataset.l, near = m.scrollHeight - m.scrollTop - m.clientHeight < 140;
+    MSGS = {}; m.dataset.l = 1;
     m.innerHTML = s.docs.map(d => {
-      const x = d.data(), mine = x.senderId === me.uid;
-      return `<div class="b ${mine ? "me" : ""}">${mine ? "" : `<b>${esc(x.senderName)}</b>`}${media(x)}${esc(x.text || "")}<i>${fmt(x.createdAt)}</i></div>`;
+      const x = d.data(), mine = x.senderId === me.uid; MSGS[d.id] = { id: d.id, ...x };
+      return `<div class="b ${mine ? "me" : ""}" data-mid="${d.id}"><button class="mm" data-act="mm" data-id="${d.id}" aria-label="Message options">${icon("chev")}</button>${mine ? "" : `<b>${esc(x.senderName)}</b>`}${x.forwarded ? `<span class="fw">${icon("fwd")} Forwarded</span>` : ""}${media(x, d.id)}${esc(x.text || "")}<i>${x.editedAt ? "edited &middot; " : ""}${fmt(x.createdAt)}</i></div>`;
     }).join("") || `<div class="empty">No messages yet. Say hello.</div>`;
-    m.scrollTop = m.scrollHeight;
+    if (first || near) m.scrollTop = m.scrollHeight;
+    if (AUid) vnUpd(AUid);
   });
 }
 const view = () => {};
@@ -277,16 +354,18 @@ function composer() {
   const mode = (G.onlyAdminsPost && !isAdmin(G)) ? "ro" : "rw";
   if (cmpMode === mode) return; cmpMode = mode;
   $("#cmp").innerHTML = mode === "ro" ? `<div class="note">Only admins can send messages in this group</div>` :
-    `<button class="ic" data-act="attach" aria-label="Attach">&#128206;</button><input id="mi" maxlength="2000" placeholder="Message" autocomplete="off"><button class="ic" data-act="voice" aria-label="Voice note">&#127908;</button><button data-act="send">Send</button>`;
+    `<button class="ic" data-act="attach" aria-label="Attach">${icon("clip")}</button><input id="mi" maxlength="2000" placeholder="Message" autocomplete="off"><button class="ic rb" id="rb" data-act="rb" data-m="m" aria-label="Voice note">${icon("mic")}</button>`;
 }
 
 async function sendG(att) {
+  if (EDIT && !att) return saveEdit();
   const i = $("#mi"), t = i?.value.trim() || ""; if (!t && !att?.data) return;
-  if (i) i.value = "";
+  if (i) { i.value = ""; syncRb(); }
+  const d = att?.data || {};
   try {
-    await addDoc(collection(db, "groups", G.id, "messages"), { senderId: me.uid, senderName: myName, text: t, ...(att?.data || {}), createdAt: serverTimestamp() });
+    await addDoc(collection(db, "groups", G.id, "messages"), { senderId: me.uid, senderName: myName, text: t, ...d, ...(d.viewOnce ? { openedBy: [] } : {}), createdAt: serverTimestamp() });
     await updateDoc(doc(db, "groups", G.id), { lastMessage: `${myName}: ${t.slice(0, 80) || att.label}`, lastMessageAt: serverTimestamp() });
-  } catch (e) { console.error(e); toast("Message not sent"); if (i) i.value = t; }
+  } catch (e) { console.error(e); toast("Message not sent"); if (i) { i.value = t; syncRb(); } }
 }
 
 async function ginfo() {
@@ -336,7 +415,7 @@ function openChannel(id) {
 
 function chead() {
   $("#chh").innerHTML = `<div class="card2">${av(CH, "big")}${isAdmin(CH) ? `<button class="sm" style="display:block;margin:0 auto 10px" data-act="setphoto" data-k="c">Change channel photo</button>` : ""}<p>${esc(CH.desc || "")}</p><div class="rowb"><span class="mu">Updates stay ${LIM.days} days</span><button class="sm ${foll ? "" : "gold"}" data-act="follow" data-id="${CH.id}">${foll ? "Following" : "Follow"}</button></div></div>`;
-  if (isAdmin(CH) && !$("#cpt")) $("#cpz").innerHTML = `<div class="post"><textarea id="cpt" maxlength="2000" placeholder="Share an update with followers"></textarea><div class="tools"><button class="ic" data-act="attach" aria-label="Attach">&#128206;</button><button class="ic" data-act="voice" aria-label="Voice note">&#127908;</button><span class="mu" id="pc"></span></div><button class="btn" data-act="cpost">Post update</button></div>`;
+  if (isAdmin(CH) && !$("#cpt")) $("#cpz").innerHTML = `<div class="post"><textarea id="cpt" maxlength="2000" placeholder="Share an update with followers"></textarea><div class="tools"><button class="ic" data-act="attach" aria-label="Attach">${icon("clip")}</button><button class="ic" data-act="voice" aria-label="Voice note">${icon("mic")}</button><span class="mu" id="pc"></span></div><button class="btn" data-act="cpost">Post update</button></div>`;
 }
 
 function ups() {
@@ -344,7 +423,7 @@ function ups() {
   b.innerHTML = UPS.map(u => {
     const c = {}; Object.values(u.reactions || {}).forEach(e => c[e] = (c[e] || 0) + 1);
     const mine = u.reactions?.[me.uid];
-    return `<div class="up">${media(u)}${esc(u.text || "")}${u.editedAt ? " <em>edited</em>" : ""}
+    return `<div class="up">${media(u, u.id)}${esc(u.text || "")}${u.editedAt ? " <em>edited</em>" : ""}
       <div class="rx">${EM.map(e => `<button class="${mine === e ? "on" : ""}" data-act="react" data-id="${u.id}" data-e="${e}">${e} ${c[e] || ""}</button>`).join("")}</div>
       <i>${fmt(u.createdAt)}${isAdmin(CH) ? ` <a data-act="uedit" data-id="${u.id}">Edit</a><a data-act="udel" data-id="${u.id}">Delete</a>` : ""}</i></div>`;
   }).join("") || `<div class="empty">No updates yet.</div>`;
@@ -377,9 +456,9 @@ function cbody() {
   clrSub();
   const b = $("#cb"), adm = isAdmin(C);
   if (ctab === "a") {
-    b.innerHTML = (adm ? `<div class="post"><textarea id="at" maxlength="2000" placeholder="Announcement for all members"></textarea><div class="tools"><button class="ic" data-act="attach" aria-label="Attach">&#128206;</button><button class="ic" data-act="voice" aria-label="Voice note">&#127908;</button><span class="mu" id="pc"></span></div><button class="btn" data-act="apost">Post announcement</button></div>` : "") + `<div id="al"></div>`;
+    b.innerHTML = (adm ? `<div class="post"><textarea id="at" maxlength="2000" placeholder="Announcement for all members"></textarea><div class="tools"><button class="ic" data-act="attach" aria-label="Attach">${icon("clip")}</button><button class="ic" data-act="voice" aria-label="Voice note">${icon("mic")}</button><span class="mu" id="pc"></span></div><button class="btn" data-act="apost">Post announcement</button></div>` : "") + `<div id="al"></div>`;
     lis(query(collection(db, "communities", C.id, "announcements"), orderBy("createdAt", "desc"), limit(50)), s => {
-      $("#al").innerHTML = s.docs.map(d => { const a = d.data(); return `<div class="up">${media(a)}${esc(a.text || "")}<i>${fmt(a.createdAt)}</i></div>`; }).join("") || `<div class="empty">No announcements yet.</div>`;
+      $("#al").innerHTML = s.docs.map(d => { const a = d.data(); return `<div class="up">${media(a, d.id)}${esc(a.text || "")}<i>${fmt(a.createdAt)}</i></div>`; }).join("") || `<div class="empty">No announcements yet.</div>`;
     }, sub);
   } else {
     b.innerHTML = (adm ? `<div class="post"><button class="btn" style="margin:0" data-act="newcg">New group in this community</button></div>` : "") + `<div id="gl"></div>`;
@@ -403,18 +482,70 @@ function cinfo() {
 const upd = (path, data) => updateDoc(doc(db, ...path), data);
 const acts = {
   shclose: (_, t, e) => { if (e.target.id === "sh") closeSheet(); },
-  back: () => list(),
+  back: () => goBack(), shx: () => closeSheet(),
   tab: (_, t) => { tab = t.dataset.v; list(); },
   new: () => sheet(createForm()),
   mk,
-  open: (id, t) => { const k = t.dataset.k; k === "g" ? openGroup(id) : k === "c" ? openChannel(id) : openComm(id); },
+  open: (id, t) => route({ v: t.dataset.k, id }),
   send: () => sendG(), ginfo, addf: addFriends,
   me: openMe,
   share: (_, t) => shareSheet(t.dataset.v, t.dataset.t),
   nshare: (_, t) => navigator.share({ title: t.dataset.t, url: t.dataset.v }).catch(() => {}),
-  attach: () => sheet(`<h3>Attach</h3><div class="sg"><a class="sb" data-act="pk" data-v="image/*"><span>&#128247;</span>Photo</a><a class="sb" data-act="pk" data-v="video/*"><span>&#127909;</span>Video</a><a class="sb" data-act="pk" data-v=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"><span>&#128196;</span>Document</a></div>`),
-  pk: async (_, t) => { closeSheet(); const f = await pickFile(t.dataset.v); if (f) await sendFile(f); },
-  voice: (_, t) => voice(t),
+  attach: () => sheet(`<h3>Attach</h3><div class="sg"><a class="sb" data-act="pk" data-v="image/*"><span>&#128247;</span>Photo</a><a class="sb" data-act="pk" data-v="video/*"><span>&#127909;</span>Video</a><a class="sb" data-act="pk" data-v=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip"><span>&#128196;</span>Document</a></div>${place === "g" ? `<label class="lbl"><input type="checkbox" id="vo"> ${icon("once")} View once (photo or video)</label>` : ""}`),
+  pk: async (_, t) => { const once = place === "g" && /^(image|video)\//.test(t.dataset.v) && !!$("#vo")?.checked; closeSheet(); const f = await pickFile(t.dataset.v); if (f) await sendFile(f, once); },
+  voice: () => recStart(),
+  rb: (_, t) => t.dataset.m === "s" ? sendG() : recStart(),
+  rcancel: () => recEnd(false),
+  rsend: () => recEnd(true),
+  ronce: (_, t) => { if (!rc) return; rc.once = !rc.once; t.classList.toggle("on", rc.once); toast(rc.once ? (place === "g" ? "View once on" : "View once works in groups only") : "View once off"); },
+  vplay: (id, t) => {
+    if (AU && AUid === id) { AU.paused ? AU.play() : AU.pause(); return; }
+    if (AU) { AU.pause(); const o = AUid; AU = null; AUid = null; vnUpd(o); }
+    AU = new Audio(t.dataset.u); AUid = id; AUdur = +vnEl(id).querySelector(".vt").dataset.d || 0;
+    AU.onloadedmetadata = () => { if (isFinite(AU.duration) && AU.duration > 0) AUdur = AU.duration; };
+    AU.ontimeupdate = AU.onplay = AU.onpause = () => vnUpd(id);
+    AU.onended = () => { AU.currentTime = 0; vnUpd(id); };
+    AU.play().catch(() => toast("Could not play"));
+  },
+  zoom: (_, t) => showViewer(`<img src="${safe(t.dataset.u)}" alt="Photo">`),
+  vclose: () => closeViewer(),
+  vopen: async id => {
+    const x = MSGS[id]; if (!x || x.senderId === me.uid || x.openedBy?.includes(me.uid)) return;
+    try { await upd(["groups", G.id, "messages", id], { openedBy: arrayUnion(me.uid) }); } catch (e) { console.error(e); return toast("Could not open"); }
+    showViewer(x.imageUrl ? `<img src="${safe(x.imageUrl)}" alt="">` : x.videoUrl ? `<video src="${safe(x.videoUrl)}" controls autoplay playsinline></video>` : `<audio src="${safe(x.audioUrl)}" controls autoplay></audio>`);
+  },
+  mm: id => {
+    const x = MSGS[id]; if (!x) return;
+    const mine = x.senderId === me.uid, hasMedia = ["imageUrl", "videoUrl", "audioUrl", "fileUrl"].some(k => x[k]);
+    const age = Date.now() - (x.createdAt?.toMillis?.() ?? Date.now());
+    const R = (a, i, l, c = "") => `<div class="mn ${c}" data-act="${a}" data-id="${id}">${icon(i)}<span>${l}</span></div>`;
+    const body = (mine && !hasMedia && !x.viewOnce && age < 9e5 ? R("medit", "edit", "Edit") : "") + (x.viewOnce ? "" : R("mfwd", "fwd", "Forward")) + (x.text ? R("mcopy", "copy", "Copy") : "") + (mine || isAdmin(G) ? R("mdel", "trash", "Delete", "red") : "");
+    if (body) sheet(`<h3>Message</h3>${body}`);
+  },
+  medit: id => {
+    const x = MSGS[id]; if (!x) return; closeSheet(); EDIT = { id };
+    $("#eb").innerHTML = `${icon("edit")}<span>Editing message</span><button data-act="eclose" aria-label="Cancel edit">${icon("x")}</button>`;
+    const i = $("#mi"); i.value = x.text || ""; i.focus(); syncRb();
+  },
+  eclose: () => cancelEdit(),
+  mcopy: id => { navigator.clipboard?.writeText(MSGS[id]?.text || "").then(() => toast("Copied")).catch(() => toast("Could not copy")); closeSheet(); },
+  mdel: async id => { if (!confirm("Delete this message for everyone?")) return; closeSheet(); await deleteDoc(doc(db, "groups", G.id, "messages", id)); },
+  mfwd: async id => {
+    FW = MSGS[id]; if (!FW) return; closeSheet();
+    const s = await getDocs(query(collection(db, "groups"), where("memberIds", "array-contains", me.uid)));
+    const gs = s.docs.map(d => ({ id: d.id, ...d.data() }));
+    sheet(`<h3>Forward to...</h3>` + (gs.map(g => `<div class="mrow"><span style="display:flex;align-items:center;gap:8px">${av(g, "s2")}${esc(g.name)}</span>${!g.onlyAdminsPost || isAdmin(g) ? `<button class="sm gold" data-act="mfsend" data-id="${g.id}">Send</button>` : `<em>Admins only</em>`}</div>`).join("") || `<div class="empty">You have no groups yet.</div>`));
+  },
+  mfsend: async (gid, t) => {
+    const x = FW; if (!x) return;
+    const d = { text: x.text || "" };
+    ["imageUrl", "videoUrl", "audioUrl", "fileUrl", "fileName", "fileSize", "duration"].forEach(k => { if (x[k] !== undefined && x[k] !== "") d[k] = x[k]; });
+    try {
+      await addDoc(collection(db, "groups", gid, "messages"), { senderId: me.uid, senderName: myName, ...d, forwarded: true, createdAt: serverTimestamp() });
+      await updateDoc(doc(db, "groups", gid), { lastMessage: `${myName}: ${d.text.slice(0, 80) || "Forwarded"}`, lastMessageAt: serverTimestamp() });
+      t.outerHTML = "<em>Sent</em>";
+    } catch (e) { console.error(e); toast("Could not forward"); }
+  },
   unpend: () => setPend(null),
   setphoto: async (_, t) => {
     const k = t.dataset.k, f = await pickFile("image/*"); if (!f) return;
@@ -441,7 +572,7 @@ const acts = {
     if (!confirm("Leave this group?")) return;
     const rest = G.memberIds.filter(u => u !== me.uid), data = { memberIds: arrayRemove(me.uid), adminIds: arrayRemove(me.uid) };
     if (isAdmin(G) && G.adminIds.length === 1 && rest.length) data.adminIds = [rest[0]];
-    await upd(["groups", G.id], data); list();
+    await upd(["groups", G.id], data); goBack();
   },
   follow: async id => {
     const ref = doc(db, "channelFollows", id + "_" + me.uid), on = cache.follows.has(id);
@@ -469,7 +600,7 @@ const acts = {
     await upd(["communities", C.id], { memberIds: arrayUnion(me.uid) });
   },
   cinfo,
-  cleave: async () => { if (confirm("Leave this community?")) { await upd(["communities", C.id], { memberIds: arrayRemove(me.uid), adminIds: arrayRemove(me.uid) }); list(); } },
+  cleave: async () => { if (confirm("Leave this community?")) { await upd(["communities", C.id], { memberIds: arrayRemove(me.uid), adminIds: arrayRemove(me.uid) }); goBack(); } },
   apost: async () => {
     const t = $("#at").value.trim(); if (!t && !PEND) return;
     await addDoc(collection(db, "communities", C.id, "announcements"), { text: t, ...(PEND?.data || {}), authorId: me.uid, createdAt: serverTimestamp() });
@@ -488,15 +619,40 @@ document.addEventListener("click", async e => {
   try { await acts[t.dataset.act]?.(t.dataset.id, t, e); }
   catch (err) { console.error(err); toast("Something went wrong. Check your permissions and try again."); }
 });
-document.addEventListener("keydown", e => { if (e.target.id === "mi" && e.key === "Enter") { e.preventDefault(); sendG(); } });
+document.addEventListener("keydown", e => {
+  if (e.target.id === "mi" && e.key === "Enter") { e.preventDefault(); sendG(); }
+  else if (e.key === "Escape") { if ($("#vw").classList.contains("on")) closeViewer(); else if ($("#sh").classList.contains("on")) closeSheet(); else if (EDIT) cancelEdit(); }
+});
+document.addEventListener("input", e => {
+  const t = e.target;
+  if (t.id === "mi") syncRb();
+  else if (t.classList?.contains("vp") && AU && AUid === t.dataset.id && AUdur) AU.currentTime = (t.value / 100) * AUdur;
+});
+let lp = 0;
+document.addEventListener("pointerdown", e => {
+  const b = e.target.closest(".b[data-mid]"); if (!b || e.target.closest("a,button,video,audio,input")) return;
+  lp = setTimeout(() => acts.mm(b.dataset.mid), 500);
+});
+["pointerup", "pointermove", "pointercancel", "scroll"].forEach(ev => document.addEventListener(ev, () => clearTimeout(lp), true));
+document.addEventListener("contextmenu", e => { const b = e.target.closest(".b[data-mid]"); if (b) { e.preventDefault(); acts.mm(b.dataset.mid); } });
+
+/* ============================ ROUTING (back button) ============================ */
+function route(s, push = true) {
+  if (push) history.pushState(s, "");
+  if (s.v === "g") openGroup(s.id); else if (s.v === "c") openChannel(s.id); else if (s.v === "m") openComm(s.id); else list();
+}
+function goBack() { const v = history.state?.v; if (v && v !== "l") history.back(); else list(); }
+window.addEventListener("popstate", e => { closeSheet(); closeViewer(); const s = e.state; route(s && s.v ? s : { v: "l" }, false); });
+$("#back").innerHTML = icon("back");
+$("#recbar").innerHTML = `<button class="ic" data-act="rcancel" aria-label="Cancel recording">${icon("trash")}</button><span class="rd"></span><span class="rt2" id="rt2">0:00</span><span class="sp"></span><button class="ic" id="ro" data-act="ronce" aria-label="View once">${icon("once")}</button><button class="ic snd" data-act="rsend" aria-label="Send voice note">${icon("send")}</button>`;
 
 /* ============================ START ============================ */
 async function joinGroup(id) {
   // Link din gayyata yana dauke da ID na group. Idan mutum ya riga ya zama member, ko group ya cika, update din ya gaza ba tare da lahani ba.
   try { await updateDoc(doc(db, "groups", id), { memberIds: arrayUnion(me.uid) }); }
   catch (e) { console.warn("join:", e.code); }
-  history.replaceState(null, "", location.pathname);
-  openGroup(id);
+  history.replaceState({ v: "l" }, "", location.pathname);
+  route({ v: "g", id });
 }
 
 onAuthStateChanged(auth, async user => {
@@ -505,9 +661,9 @@ onAuthStateChanged(auth, async user => {
   const P = new URLSearchParams(location.search);
   try {
     if (P.get("join")) await joinGroup(P.get("join"));
-    else if (P.get("channel")) { tab = "channels"; openChannel(P.get("channel")); }
-    else if (P.get("community")) { tab = "communities"; openComm(P.get("community")); }
-    else list();
+    else if (P.get("channel")) { tab = "channels"; history.replaceState({ v: "l" }, "", location.pathname); route({ v: "c", id: P.get("channel") }); }
+    else if (P.get("community")) { tab = "communities"; history.replaceState({ v: "l" }, "", location.pathname); route({ v: "m", id: P.get("community") }); }
+    else { history.replaceState({ v: "l" }, ""); list(); }
   } catch (e) { console.error(e); list(); }
 });
 </script>
