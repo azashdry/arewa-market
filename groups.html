@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Arewa Market - Groups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g1:#0d3b2c;--g2:#175e3f;--gold:#c9a227;--bg:#f8f6f3;--ink:#222;--mu:#6b7a72;--ln:#e5e0d8;--red:#b3261e}
+html,body{height:100%}
+body{font-family:'Inter',Arial,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;height:100dvh;max-width:680px;margin:0 auto}
+header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:calc(12px + env(safe-area-inset-top)) 14px 12px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--gold)}
+header h1{font-family:'Playfair Display',Georgia,serif;font-size:19px;line-height:1.2}
+header small{display:block;font-size:12px;opacity:.8;margin-top:2px}
+.hb{flex:1;min-width:0}
+.ib{background:rgba(255,255,255,.15);border:0;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#app{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto}
+.tabs,.st{display:flex;background:#fff;border-bottom:1px solid var(--ln);position:sticky;top:0;z-index:2}
+.tabs button,.st button{flex:1;padding:12px 4px;border:0;background:none;font:600 14px Inter,sans-serif;color:var(--mu);border-bottom:3px solid transparent;cursor:pointer}
+.tabs button.on,.st button.on{color:var(--g2);border-bottom-color:var(--gold)}
+h5{padding:14px 14px 6px;font-size:13px;color:var(--mu);font-weight:600}
+.r{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-bottom:1px solid var(--ln);cursor:pointer}
+.av{width:44px;height:44px;border-radius:50%;background:var(--g2);color:var(--gold);font:700 18px 'Playfair Display',serif;display:flex;align-items:center;justify-content:center;flex:none}
+.rt{flex:1;min-width:0}.rt b{display:block;font-size:15px}.rt span{display:block;font-size:13px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sm{border:1px solid var(--g2);background:#fff;color:var(--g2);border-radius:16px;padding:6px 12px;font:600 12px Inter,sans-serif;cursor:pointer}
+.sm.gold{background:var(--g2);color:#fff}.sm.red{border-color:var(--red);color:var(--red);margin-left:6px}
+.btn{display:block;width:100%;margin-top:10px;padding:12px;border:0;border-radius:10px;background:var(--g2);color:#fff;font:600 14px Inter,sans-serif;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--g2);border:1px solid var(--g2)}.btn.red{background:#fff;color:var(--red);border:1px solid var(--red)}
+.empty{padding:40px 24px;text-align:center;color:var(--mu);font-size:14px;line-height:1.5}
+.chat{flex:1;min-height:0;display:flex;flex-direction:column}
+.msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:6px}
+.b{max-width:80%;align-self:flex-start;background:#fff;border-radius:12px 12px 12px 3px;padding:8px 11px;font-size:14px;white-space:pre-wrap;word-break:break-word;border:1px solid var(--ln)}
+.b.me{align-self:flex-end;background:#dcefe3;border-radius:12px 12px 3px 12px;border-color:#c6e0cf}
+.b b{display:block;font-size:12px;color:var(--g2);margin-bottom:2px}.b i,.up i{display:block;font-size:11px;color:var(--mu);font-style:normal;margin-top:3px;text-align:right}
+.cmp{display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--ln)}
+.cmp input{flex:1;border:1px solid var(--ln);border-radius:20px;padding:10px 14px;font:14px Inter,sans-serif;outline-color:var(--g2)}
+.cmp button{border:0;background:var(--gold);color:#fff;border-radius:20px;padding:0 18px;font:600 14px Inter,sans-serif;cursor:pointer}
+.note{width:100%;text-align:center;font-size:13px;color:var(--mu);padding:4px}
+.card2,.post{background:#fff;padding:14px;border-bottom:1px solid var(--ln);font-size:14px;line-height:1.5}
+.rowb{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}.mu{color:var(--mu);font-size:13px}
+textarea,#fn,#fd{width:100%;border:1px solid var(--ln);border-radius:10px;padding:10px;font:14px Inter,sans-serif;outline-color:var(--g2);resize:vertical}
+textarea{min-height:70px}#fd{margin-top:8px;min-height:70px}
+.up{background:#fff;margin:10px 12px;padding:12px;border-radius:12px;border:1px solid var(--ln);font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.up em,.mrow em{font-size:11px;color:var(--mu)}.up a{color:var(--g2);cursor:pointer;margin-left:8px;font-weight:600}
+.rx{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.rx button{border:1px solid var(--ln);background:#fff;border-radius:14px;padding:3px 9px;font-size:13px;cursor:pointer}.rx button.on{border-color:var(--g2);background:#e8f4ec}
+.sh{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:10}.sh.on{display:flex}
+.sh .card{background:#fff;width:100%;max-width:680px;max-height:85dvh;overflow-y:auto;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+.card h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:6px}.card h4{margin:16px 0 6px;font-size:14px;color:var(--mu)}
+.mrow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--ln);font-size:14px;gap:8px}
+.lbl{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:14px}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90%;text-align:center}#toast.on{opacity:1}
+button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <button class="ib" id="back" data-act="back" style="display:none" aria-label="Back">&#8592;</button>
+  <div class="hb"><h1 id="ttl">Groups</h1><small id="sub"></small></div>
+  <div id="act"></div>
+</header>
+<div id="app"><div class="empty">Loading...</div></div>
+<div class="sh" id="sh" data-act="shclose"></div>
+<div id="toast"></div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import {
+  collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, deleteDoc, deleteField,
+  arrayUnion, arrayRemove, increment, onSnapshot, query, where, orderBy, limit,
+  serverTimestamp, Timestamp, writeBatch
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+/* Iyakoki (limits) - kamar WhatsApp */
+const LIM = { group: 1024, community: 5000, commGroups: 49, days: 30 };
+const EM = ["👍", "❤️", "😂", "🙏"];
+
+const $ = s => document.querySelector(s);
+const app = $("#app");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+const link = (k, v) => `${location.origin}${location.pathname}?${k}=${encodeURIComponent(v)}`;
+const fmt = t => t?.toDate ? t.toDate().toLocaleString([], { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) : "";
+const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.i); toast.i = setTimeout(() => t.classList.remove("on"), 2600); };
+
+let me, myName = "", tab = "groups", cx = "groups";
+let unsub = [], sub = [];
+let G, CH, C, UPS = [], cg = [], foll = false, cmpMode = "", ctab = "a";
+const cache = { groups: [], channels: [], communities: [], follows: new Set() };
+const names = {};
+
+const isAdmin = o => !!o?.adminIds?.includes(me.uid);
+const lis = (q, cb, arr) => (arr || unsub).push(onSnapshot(q, cb, e => { console.error(e); toast("Could not load. Check your connection or permissions."); }));
+const clrSub = () => { sub.forEach(f => f()); sub = []; };
+const clear = () => { unsub.forEach(f => f()); unsub = []; clrSub(); closeSheet(); };
+
+async function nameOf(uid) {
+  if (names[uid]) return names[uid];
+  try {
+    const s = await getDoc(doc(db, "users", uid));
+    const d = s.exists() ? s.data() : {};
+    names[uid] = d.businessName || d.displayName || d.fullName || d.name || "Member";
+  } catch (e) { names[uid] = "Member"; }
+  return names[uid];
+}
+
+function setHead(title, subt, back, actions = "") {
+  $("#ttl").textContent = title; $("#sub").textContent = subt || "";
+  $("#back").style.display = back ? "flex" : "none"; $("#act").innerHTML = actions;
+}
+function sheet(html) { const s = $("#sh"); s.innerHTML = `<div class="card">${html}</div>`; s.classList.add("on"); }
+function closeSheet() { const s = $("#sh"); s.classList.remove("on"); s.innerHTML = ""; }
+
+/* ============================ LIST ============================ */
+function row(k, o, subt, right = "") {
+  return `<div class="r" data-act="open" data-k="${k}" data-id="${o.id}"><div class="av">${esc((o.name || "?")[0].toUpperCase())}</div><div class="rt"><b>${esc(o.name)}</b><span>${esc(subt)}</span></div>${right}</div>`;
+}
+
+function paint() {
+  const b = $("#rows"); if (!b) return;
+  if (tab === "groups") {
+    const a = [...cache.groups].sort((x, y) => (y.lastMessageAt?.seconds || 0) - (x.lastMessageAt?.seconds || 0));
+    b.innerHTML = a.map(g => row("g", g, g.lastMessage || g.desc || `${g.memberIds.length} members`)).join("") ||
+      `<div class="empty">You are not in any group yet.<br>Tap + to create one, or open an invite link.</div>`;
+  } else if (tab === "channels") {
+    const mine = cache.channels.filter(c => cache.follows.has(c.id));
+    const rest = cache.channels.filter(c => !cache.follows.has(c.id));
+    const r = (c, on) => row("c", c, `${c.followerCount || 0} followers`, `<button class="sm ${on ? "" : "gold"}" data-act="follow" data-id="${c.id}">${on ? "Following" : "Follow"}</button>`);
+    b.innerHTML = (mine.length ? `<h5>Following</h5>${mine.map(c => r(c, true)).join("")}` : "") +
+      (rest.length ? `<h5>Discover</h5>${rest.map(c => r(c, false)).join("")}` : "") ||
+      `<div class="empty">No channels yet.<br>Tap + to start the first one.</div>`;
+  } else {
+    b.innerHTML = cache.communities.map(c => row("m", c, `${c.memberIds.length} members, ${c.groupCount || 0} groups`)).join("") ||
+      `<div class="empty">You are not in any community yet.<br>A community bundles related groups under one announcement space.</div>`;
+  }
+}
+
+function list() {
+  clear(); cmpMode = "";
+  setHead("Groups & Channels", "", false, `<button class="ib" data-act="new" aria-label="Create">+</button>`);
+  const T = [["groups", "Groups"], ["channels", "Channels"], ["communities", "Communities"]];
+  app.innerHTML = `<div class="tabs">${T.map(([k, l]) => `<button class="${tab === k ? "on" : ""}" data-act="tab" data-v="${k}">${l}</button>`).join("")}</div><div id="rows"></div>`;
+  const map = s => s.docs.map(d => ({ id: d.id, ...d.data() }));
+  if (tab === "groups") lis(query(collection(db, "groups"), where("memberIds", "array-contains", me.uid)), s => { cache.groups = map(s); paint(); });
+  if (tab === "communities") lis(query(collection(db, "communities"), where("memberIds", "array-contains", me.uid)), s => { cache.communities = map(s); paint(); });
+  if (tab === "channels") {
+    lis(query(collection(db, "channels"), limit(60)), s => { cache.channels = map(s); paint(); });
+    lis(query(collection(db, "channelFollows"), where("uid", "==", me.uid)), s => { cache.follows = new Set(s.docs.map(d => d.data().channelId)); paint(); });
+  }
+}
+
+/* ============================ CREATE ============================ */
+function createForm(ctx) {
+  cx = ctx || tab;
+  const L = { groups: "New group", channels: "New channel", communities: "New community", cgroup: "New group in this community" }[cx];
+  const H = { channels: "Only admins post. Followers can react. Followers' identities stay private.", communities: "An announcement space plus related groups." }[cx] || "";
+  return `<h3>${L}</h3><p class="mu" style="margin-bottom:10px">${H}</p><input id="fn" maxlength="60" placeholder="Name"><textarea id="fd" maxlength="300" placeholder="Description (optional)"></textarea><button class="btn" data-act="mk">Create</button>`;
+}
+
+async function mk() {
+  const n = $("#fn").value.trim(), d = $("#fd").value.trim();
+  if (!n) return toast("Enter a name");
+  const base = { name: n, desc: d, ownerId: me.uid, adminIds: [me.uid], createdAt: serverTimestamp() };
+  try {
+    if (cx === "channels") {
+      const r = await addDoc(collection(db, "channels"), { ...base, followerCount: 1 });
+      await setDoc(doc(db, "channelFollows", r.id + "_" + me.uid), { channelId: r.id, uid: me.uid, createdAt: serverTimestamp() });
+      return openChannel(r.id);
+    }
+    if (cx === "communities") {
+      const r = await addDoc(collection(db, "communities"), { ...base, memberIds: [me.uid], groupCount: 0 });
+      return openComm(r.id);
+    }
+    if (cx === "cgroup" && (C.groupCount || 0) >= LIM.commGroups) return toast("A community can hold 49 groups plus the announcement space");
+    const r = await addDoc(collection(db, "groups"), {
+      ...base, memberIds: [me.uid], onlyAdminsPost: false,
+      communityId: cx === "cgroup" ? C.id : null, lastMessage: "", lastMessageAt: serverTimestamp()
+    });
+    if (cx === "cgroup") { await updateDoc(doc(db, "communities", C.id), { groupCount: increment(1) }); closeSheet(); }
+    else openGroup(r.id);
+  } catch (e) { console.error(e); toast("Could not create. Try again."); }
+}
+
+/* ============================ GROUP ============================ */
+function openGroup(id) {
+  clear(); view(); cmpMode = "";
+  app.innerHTML = `<div class="chat"><div class="msgs" id="msgs"></div><div class="cmp" id="cmp"></div></div>`;
+  lis(doc(db, "groups", id), s => {
+    if (!s.exists()) { toast("Group not found"); return list(); }
+    G = { id, ...s.data() };
+    if (!G.memberIds.includes(me.uid)) { toast("You are not a member of this group"); return list(); }
+    setHead(G.name, `${G.memberIds.length} members`, true, `<button class="ib" data-act="ginfo" aria-label="Group info">&#9432;</button>`);
+    composer();
+  });
+  lis(query(collection(db, "groups", id, "messages"), orderBy("createdAt"), limit(200)), s => {
+    const m = $("#msgs"); if (!m) return;
+    m.innerHTML = s.docs.map(d => {
+      const x = d.data(), mine = x.senderId === me.uid;
+      return `<div class="b ${mine ? "me" : ""}">${mine ? "" : `<b>${esc(x.senderName)}</b>`}${esc(x.text)}<i>${fmt(x.createdAt)}</i></div>`;
+    }).join("") || `<div class="empty">No messages yet. Say hello.</div>`;
+    m.scrollTop = m.scrollHeight;
+  });
+}
+const view = () => {};
+
+function composer() {
+  const mode = (G.onlyAdminsPost && !isAdmin(G)) ? "ro" : "rw";
+  if (cmpMode === mode) return; cmpMode = mode;
+  $("#cmp").innerHTML = mode === "ro" ? `<div class="note">Only admins can send messages in this group</div>` :
+    `<input id="mi" maxlength="2000" placeholder="Message" autocomplete="off"><button data-act="send">Send</button>`;
+}
+
+async function sendG() {
+  const i = $("#mi"), t = i?.value.trim(); if (!t) return;
+  i.value = "";
+  try {
+    await addDoc(collection(db, "groups", G.id, "messages"), { senderId: me.uid, senderName: myName, text: t, createdAt: serverTimestamp() });
+    await updateDoc(doc(db, "groups", G.id), { lastMessage: `${myName}: ${t.slice(0, 80)}`, lastMessageAt: serverTimestamp() });
+  } catch (e) { console.error(e); toast("Message not sent"); i.value = t; }
+}
+
+async function ginfo() {
+  const adm = isAdmin(G), shown = G.memberIds.slice(0, 100);
+  const nm = await Promise.all(shown.map(nameOf));
+  sheet(`<h3>${esc(G.name)}</h3><p class="mu">${esc(G.desc || "")}</p>
+    <button class="btn ghost" data-act="copy" data-v="${link("join", G.id)}">Copy invite link</button>
+    ${adm ? `<label class="lbl"><input type="checkbox" data-act="oap" ${G.onlyAdminsPost ? "checked" : ""}> Only admins can send messages</label><button class="btn ghost" data-act="addf">Add from friends</button>` : ""}
+    <h4>${G.memberIds.length} of ${LIM.group} members</h4>
+    ${shown.map((u, i) => `<div class="mrow"><span>${esc(nm[i])} ${G.adminIds.includes(u) ? "<em>admin</em>" : ""}${u === me.uid ? " <em>you</em>" : ""}</span>${adm && u !== me.uid ? `<span><button class="sm" data-act="mkadm" data-id="${u}">${G.adminIds.includes(u) ? "Remove admin" : "Make admin"}</button><button class="sm red" data-act="rm" data-id="${u}">Remove</button></span>` : ""}</div>`).join("")}
+    ${G.memberIds.length > 100 ? `<p class="mu" style="margin-top:8px">and ${G.memberIds.length - 100} more</p>` : ""}
+    <button class="btn red" data-act="leave">Leave group</button>`);
+}
+
+async function addFriends() {
+  const col = collection(db, "friendRequests");
+  const [s1, s2] = await Promise.all([getDocs(query(col, where("from", "==", me.uid))), getDocs(query(col, where("to", "==", me.uid)))]);
+  const fr = [...s1.docs, ...s2.docs].map(d => d.data()).filter(r => r.status === "accepted")
+    .map(r => { const o = r.from === me.uid; return { id: o ? r.to : r.from, name: o ? r.toName : r.fromName }; })
+    .filter(f => !G.memberIds.includes(f.id));
+  sheet(`<h3>Add friends</h3>` + (fr.map(f => `<div class="mrow"><span>${esc(f.name || "Friend")}</span><button class="sm gold" data-act="addm" data-id="${f.id}">Add</button></div>`).join("") ||
+    `<div class="empty">All your friends are already in this group.</div>`));
+}
+
+/* ============================ CHANNEL ============================ */
+function openChannel(id) {
+  clear(); foll = false; UPS = [];
+  app.innerHTML = `<div id="chh"></div><div id="cpz"></div><div id="ups"></div>`;
+  lis(doc(db, "channels", id), s => {
+    if (!s.exists()) { toast("Channel not found"); return list(); }
+    CH = { id, ...s.data() };
+    setHead(CH.name, `${CH.followerCount || 0} followers`, true, `<button class="ib" data-act="copy" data-v="${link("channel", id)}" aria-label="Copy channel link">&#8599;</button>`);
+    chead(); ups();
+  });
+  lis(doc(db, "channelFollows", id + "_" + me.uid), s => {
+    foll = s.exists();
+    foll ? cache.follows.add(id) : cache.follows.delete(id);
+    if (CH) chead();
+  });
+  lis(query(collection(db, "channels", id, "updates"), orderBy("createdAt", "desc"), limit(60)), s => {
+    UPS = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(u => !u.expireAt || u.expireAt.toMillis() > Date.now());
+    ups();
+  });
+}
+
+function chead() {
+  $("#chh").innerHTML = `<div class="card2"><p>${esc(CH.desc || "")}</p><div class="rowb"><span class="mu">Updates stay ${LIM.days} days</span><button class="sm ${foll ? "" : "gold"}" data-act="follow" data-id="${CH.id}">${foll ? "Following" : "Follow"}</button></div></div>`;
+  if (isAdmin(CH) && !$("#cpt")) $("#cpz").innerHTML = `<div class="post"><textarea id="cpt" maxlength="2000" placeholder="Share an update with followers"></textarea><button class="btn" data-act="cpost">Post update</button></div>`;
+}
+
+function ups() {
+  const b = $("#ups"); if (!b || !CH) return;
+  b.innerHTML = UPS.map(u => {
+    const c = {}; Object.values(u.reactions || {}).forEach(e => c[e] = (c[e] || 0) + 1);
+    const mine = u.reactions?.[me.uid];
+    return `<div class="up">${esc(u.text)}${u.editedAt ? " <em>edited</em>" : ""}
+      <div class="rx">${EM.map(e => `<button class="${mine === e ? "on" : ""}" data-act="react" data-id="${u.id}" data-e="${e}">${e} ${c[e] || ""}</button>`).join("")}</div>
+      <i>${fmt(u.createdAt)}${isAdmin(CH) ? ` <a data-act="uedit" data-id="${u.id}">Edit</a><a data-act="udel" data-id="${u.id}">Delete</a>` : ""}</i></div>`;
+  }).join("") || `<div class="empty">No updates yet.</div>`;
+}
+
+/* ============================ COMMUNITY ============================ */
+function openComm(id) {
+  clear(); ctab = "a";
+  app.innerHTML = `<div id="mh"></div><div id="cb"></div>`;
+  lis(doc(db, "communities", id), s => {
+    if (!s.exists()) { toast("Community not found"); return list(); }
+    C = { id, ...s.data() };
+    const mem = C.memberIds.includes(me.uid);
+    setHead(C.name, `${C.memberIds.length} members`, true, mem ? `<button class="ib" data-act="cinfo" aria-label="Community info">&#9432;</button>` : "");
+    mhead();
+  });
+}
+
+function mhead() {
+  if (!C.memberIds.includes(me.uid)) {
+    clrSub(); $("#cb").innerHTML = "";
+    $("#mh").innerHTML = `<div class="card2"><p>${esc(C.desc || "")}</p><button class="btn" data-act="cjoin">Join community</button></div>`;
+    return;
+  }
+  $("#mh").innerHTML = `<div class="st"><button class="${ctab === "a" ? "on" : ""}" data-act="ct" data-v="a">Announcements</button><button class="${ctab === "g" ? "on" : ""}" data-act="ct" data-v="g">Groups</button></div>`;
+  if (!sub.length) cbody();
+}
+
+function cbody() {
+  clrSub();
+  const b = $("#cb"), adm = isAdmin(C);
+  if (ctab === "a") {
+    b.innerHTML = (adm ? `<div class="post"><textarea id="at" maxlength="2000" placeholder="Announcement for all members"></textarea><button class="btn" data-act="apost">Post announcement</button></div>` : "") + `<div id="al"></div>`;
+    lis(query(collection(db, "communities", C.id, "announcements"), orderBy("createdAt", "desc"), limit(50)), s => {
+      $("#al").innerHTML = s.docs.map(d => { const a = d.data(); return `<div class="up">${esc(a.text)}<i>${fmt(a.createdAt)}</i></div>`; }).join("") || `<div class="empty">No announcements yet.</div>`;
+    }, sub);
+  } else {
+    b.innerHTML = (adm ? `<div class="post"><button class="btn" style="margin:0" data-act="newcg">New group in this community</button></div>` : "") + `<div id="gl"></div>`;
+    lis(query(collection(db, "groups"), where("communityId", "==", C.id)), s => {
+      cg = s.docs.map(d => ({ id: d.id, ...d.data() }));
+      $("#gl").innerHTML = cg.map(g => row("g", g, `${g.memberIds.length} members`, g.memberIds.includes(me.uid) ? "" : `<button class="sm gold" data-act="gjoin" data-id="${g.id}">Join</button>`)).join("") || `<div class="empty">No groups in this community yet.</div>`;
+    }, sub);
+  }
+}
+
+function cinfo() {
+  sheet(`<h3>${esc(C.name)}</h3><p class="mu">${esc(C.desc || "")}</p>
+    <p class="mu" style="margin-top:8px">${C.memberIds.length} of ${LIM.community} members. Members cannot see each other's numbers across groups.</p>
+    <button class="btn ghost" data-act="copy" data-v="${link("community", C.id)}">Copy community link</button>
+    ${C.ownerId !== me.uid ? `<button class="btn red" data-act="cleave">Leave community</button>` : ""}`);
+}
+
+/* ============================ ACTIONS ============================ */
+const upd = (path, data) => updateDoc(doc(db, ...path), data);
+const acts = {
+  shclose: (_, t, e) => { if (e.target.id === "sh") closeSheet(); },
+  back: () => list(),
+  tab: (_, t) => { tab = t.dataset.v; list(); },
+  new: () => sheet(createForm()),
+  mk,
+  open: (id, t) => { const k = t.dataset.k; k === "g" ? openGroup(id) : k === "c" ? openChannel(id) : openComm(id); },
+  send: sendG, ginfo, addf: addFriends,
+  copy: (_, t) => { const v = t.dataset.v; navigator.clipboard?.writeText(v).then(() => toast("Link copied")).catch(() => prompt("Copy this link", v)) ?? prompt("Copy this link", v); },
+  oap: (_, t) => upd(["groups", G.id], { onlyAdminsPost: t.checked }),
+  mkadm: async id => { await upd(["groups", G.id], { adminIds: G.adminIds.includes(id) ? arrayRemove(id) : arrayUnion(id) }); closeSheet(); toast("Updated"); },
+  rm: async id => { await upd(["groups", G.id], { memberIds: arrayRemove(id), adminIds: arrayRemove(id) }); closeSheet(); toast("Member removed"); },
+  addm: async (id, t) => {
+    if (G.memberIds.length >= LIM.group) return toast("This group is full (1,024 members)");
+    await upd(["groups", G.id], { memberIds: arrayUnion(id) }); t.outerHTML = "<em>Added</em>";
+  },
+  leave: async () => {
+    if (!confirm("Leave this group?")) return;
+    const rest = G.memberIds.filter(u => u !== me.uid), data = { memberIds: arrayRemove(me.uid), adminIds: arrayRemove(me.uid) };
+    if (isAdmin(G) && G.adminIds.length === 1 && rest.length) data.adminIds = [rest[0]];
+    await upd(["groups", G.id], data); list();
+  },
+  follow: async id => {
+    const ref = doc(db, "channelFollows", id + "_" + me.uid), on = cache.follows.has(id);
+    try {
+      const b = writeBatch(db), ch = doc(db, "channels", id);
+      if (on) { b.delete(ref); b.update(ch, { followerCount: increment(-1) }); }
+      else { b.set(ref, { channelId: id, uid: me.uid, createdAt: serverTimestamp() }); b.update(ch, { followerCount: increment(1) }); }
+      await b.commit();
+    } catch (e) { console.error(e); toast("Could not update"); }
+  },
+  cpost: async () => {
+    const t = $("#cpt").value.trim(); if (!t) return;
+    await addDoc(collection(db, "channels", CH.id, "updates"), { text: t, authorId: me.uid, createdAt: serverTimestamp(), expireAt: Timestamp.fromMillis(Date.now() + LIM.days * 864e5), reactions: {} });
+    $("#cpt").value = "";
+  },
+  react: (id, t) => {
+    const u = UPS.find(x => x.id === id), e = t.dataset.e;
+    return upd(["channels", CH.id, "updates", id], { ["reactions." + me.uid]: u.reactions?.[me.uid] === e ? deleteField() : e });
+  },
+  uedit: async id => { const u = UPS.find(x => x.id === id), t = prompt("Edit update", u.text); if (t?.trim()) await upd(["channels", CH.id, "updates", id], { text: t.trim(), editedAt: serverTimestamp() }); },
+  udel: async id => { if (confirm("Delete this update?")) await deleteDoc(doc(db, "channels", CH.id, "updates", id)); },
+  ct: (_, t) => { ctab = t.dataset.v; clrSub(); mhead(); },
+  cjoin: async () => {
+    if (C.memberIds.length >= LIM.community) return toast("This community is full (5,000 members)");
+    await upd(["communities", C.id], { memberIds: arrayUnion(me.uid) });
+  },
+  cinfo,
+  cleave: async () => { if (confirm("Leave this community?")) { await upd(["communities", C.id], { memberIds: arrayRemove(me.uid), adminIds: arrayRemove(me.uid) }); list(); } },
+  apost: async () => {
+    const t = $("#at").value.trim(); if (!t) return;
+    await addDoc(collection(db, "communities", C.id, "announcements"), { text: t, authorId: me.uid, createdAt: serverTimestamp() });
+    $("#at").value = "";
+  },
+  newcg: () => sheet(createForm("cgroup")),
+  gjoin: async id => {
+    const g = cg.find(x => x.id === id);
+    if (g.memberIds.length >= LIM.group) return toast("This group is full");
+    await upd(["groups", id], { memberIds: arrayUnion(me.uid) });
+  }
+};
+
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-act]"); if (!t) return;
+  try { await acts[t.dataset.act]?.(t.dataset.id, t, e); }
+  catch (err) { console.error(err); toast("Something went wrong. Check your permissions and try again."); }
+});
+document.addEventListener("keydown", e => { if (e.target.id === "mi" && e.key === "Enter") { e.preventDefault(); sendG(); } });
+
+/* ============================ START ============================ */
+async function joinGroup(id) {
+  // Link din gayyata yana dauke da ID na group. Idan mutum ya riga ya zama member, ko group ya cika, update din ya gaza ba tare da lahani ba.
+  try { await updateDoc(doc(db, "groups", id), { memberIds: arrayUnion(me.uid) }); }
+  catch (e) { console.warn("join:", e.code); }
+  history.replaceState(null, "", location.pathname);
+  openGroup(id);
+}
+
+onAuthStateChanged(auth, async user => {
+  if (!user) { location.href = "login.html"; return; }
+  me = user; myName = await nameOf(user.uid);
+  const P = new URLSearchParams(location.search);
+  try {
+    if (P.get("join")) await joinGroup(P.get("join"));
+    else if (P.get("channel")) { tab = "channels"; openChannel(P.get("channel")); }
+    else if (P.get("community")) { tab = "communities"; openComm(P.get("community")); }
+    else list();
+  } catch (e) { console.error(e); list(); }
+});
+</script>
+</body>
+</html>

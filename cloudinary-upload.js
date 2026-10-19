@@ -9,8 +9,8 @@
    Upload Preset:  Arewa market   (Unsigned)
 
    ---------------------------------------------------------
-   SABON ABU: An kara IYAKA (limits) domin kada Cloudinary
-   FREE PLAN credits (25 kyauta/wata) su kare da sauri:
+   IYAKA (limits) domin kada Cloudinary FREE PLAN credits
+   (25 kyauta/wata) su kare da sauri:
 
      - Video:  max 50 MB   da max minti 5 (300s)
      - Audio (voice note): max 15 MB  da max minti 5 (300s)
@@ -18,6 +18,12 @@
    Idan file ya wuce wadannan, za a hana upload din kafin
    ma a tura shi zuwa Cloudinary - wannan yana ceton
    credits din ka.
+
+   GYARA: An magance matsalar "minti Infinity". Sautin da aka
+   dauka a browser (MediaRecorder/webm) yakan bada
+   duration = Infinity. Yanzu ana tilasta browser ya lissafa
+   tsawon sautin da gaske, kuma idan ba a iya sani ba, ba a
+   toshe user.
 ========================================================= */
 
 const CLOUD_NAME = "pelamtvq";
@@ -54,30 +60,50 @@ function getMediaCategory(file) {
  * ta hanyar loda shi na dan lokaci a browser (ba a tura komai zuwa
  * Cloudinary a wannan mataki ba, kyauta ne kuma cikin sauri).
  *
+ * Yana magance matsalar duration = Infinity (na webm recordings)
+ * ta hanyar tsallake zuwa karshen file don browser ya lissafa tsawon.
+ *
  * @param {File} file
  * @param {"video"|"audio"} category
- * @returns {Promise<number>} tsawon lokaci a seconds
+ * @returns {Promise<number|null>} tsawon lokaci a seconds, ko null
  */
 function getMediaDuration(file, category) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const el = document.createElement(category); // <video> ko <audio>
     el.preload = "metadata";
 
     const objectUrl = URL.createObjectURL(file);
     el.src = objectUrl;
 
-    const cleanup = () => URL.revokeObjectURL(objectUrl);
+    let finished = false;
+    const done = (value) => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timer);
+      URL.revokeObjectURL(objectUrl);
+      resolve(value);
+    };
+
+    // Idan an dauki lokaci mai tsawo ba tare da amsa ba, ci gaba
+    const timer = setTimeout(() => done(null), 5000);
 
     el.onloadedmetadata = () => {
-      cleanup();
-      resolve(el.duration);
+      if (el.duration === Infinity || isNaN(el.duration)) {
+        // Dabara: tsallaka zuwa karshe don browser ya lissafa tsawon
+        el.ontimeupdate = () => {
+          el.ontimeupdate = null;
+          done(isFinite(el.duration) ? el.duration : null);
+        };
+        el.currentTime = 1e101;
+      } else {
+        done(el.duration);
+      }
     };
 
     el.onerror = () => {
-      cleanup();
       // Idan ba a iya karanta duration ba, kar a toshe user - kawai
       // mu ci gaba ba tare da wannan gwajin ba.
-      resolve(null);
+      done(null);
     };
   });
 }
@@ -116,7 +142,12 @@ export async function uploadToCloudinary(file) {
   if (limit && (category === "video" || category === "audio")) {
     const duration = await getMediaDuration(file, category);
 
-    if (duration && duration > limit.maxDurationSeconds) {
+    // isFinite yana hana kuskuren "Infinity"
+    if (
+      duration &&
+      isFinite(duration) &&
+      duration > limit.maxDurationSeconds
+    ) {
       const maxMinutes = Math.round(limit.maxDurationSeconds / 60);
       throw new Error(
         `${category === "video" ? "Bidiyon" : "Saƙon sautin"} ya yi tsawo sosai ` +
@@ -129,36 +160,22 @@ export async function uploadToCloudinary(file) {
   // ---------- 3) TURA ZUWA CLOUDINARY ----------
   const formData = new FormData();
 
-  formData.append(
-    "file",
-    file
-  );
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
 
-  formData.append(
-    "upload_preset",
-    UPLOAD_PRESET
-  );
+  const response = await fetch(UPLOAD_ENDPOINT, {
+    method: "POST",
+    body: formData
+  });
 
-  const response =
-    await fetch(
-      UPLOAD_ENDPOINT,
-      {
-        method: "POST",
-        body: formData
-      }
-    );
-
-  const data =
-    await response.json();
+  const data = await response.json();
 
   if (!response.ok) {
-
     const msg =
       (data && data.error && data.error.message) ||
       "Ba a iya turo file din ba. Ka sake gwadawa.";
 
     throw new Error(msg);
-
   }
 
   return {
