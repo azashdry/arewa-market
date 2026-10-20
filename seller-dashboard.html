@@ -1141,7 +1141,7 @@ body.has-bottom-nav{
 <header>
 
   <div class="logo">
-    Arewa Market
+    <button type="button" aria-label="Back" onclick="arewaGoBack()" style="background:rgba(255,255,255,.15);border:0;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-right:10px;padding:0"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>Arewa Market
   </div>
 
   <div class="nav">
@@ -8357,6 +8357,13 @@ if ("serviceWorker" in navigator) {
 })();
 </script>
 <script type="module" src="bottom-nav.js"></script>
+<script>
+function arewaGoBack(){
+  var same=false;
+  try{same=!!document.referrer&&new URL(document.referrer).origin===location.origin;}catch(e){}
+  if(same&&history.length>1)history.back();else location.href="index.html";
+}
+</script>
 </body>
 
 </html>

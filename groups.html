@@ -158,7 +158,7 @@ function media(x, id = "") {
   if (safe(x.imageUrl)) m += `<img class="mi" data-act="zoom" data-u="${safe(x.imageUrl)}" src="${safe(x.imageUrl)}" loading="lazy" alt="Photo">`;
   if (safe(x.videoUrl)) m += `<video class="mi" src="${safe(x.videoUrl)}" controls preload="metadata" playsinline></video>`;
   if (safe(x.audioUrl)) m += `<div class="vn" data-vn="${id}"><button data-act="vplay" data-id="${id}" data-u="${safe(x.audioUrl)}" aria-label="Play">${icon("play", "f")}</button><input class="vp" type="range" min="0" max="100" value="0" data-id="${id}"><span class="vt" data-d="${x.duration || 0}">${mmss(x.duration)}</span></div>`;
-  if (safe(x.fileUrl)) m += `<a class="fl" href="${safe(x.fileUrl)}" target="_blank" rel="noopener"><span>&#128196;</span><span class="fi"><span class="fn">${esc(x.fileName || "Document")}</span><span class="fs">${bytes(x.fileSize)}</span></span></a>`;
+  if (safe(x.fileUrl)) m += `<a class="fl" href="${safe(x.fileUrl)}" data-act="dl" data-u="${safe(x.fileUrl)}" data-n="${esc(x.fileName || "document")}" target="_blank" rel="noopener"><span>&#128196;</span><span class="fi"><span class="fn">${esc(x.fileName || "Document")}</span><span class="fs">${bytes(x.fileSize)}</span></span></a>`;
   return m;
 }
 const vnEl = id => document.querySelector(`[data-vn="${CSS.escape(String(id))}"]`);
@@ -281,7 +281,7 @@ function paint() {
 
 function list() {
   clear(); cmpMode = "";
-  setHead("Groups & Channels", "", false, `<button class="ib" data-act="me" aria-label="My profile">&#128100;</button><button class="ib" data-act="new" aria-label="Create">+</button>`);
+  setHead("Groups & Channels", "", true, `<button class="ib" data-act="me" aria-label="My profile">&#128100;</button><button class="ib" data-act="new" aria-label="Create">+</button>`);
   const T = [["groups", "Groups"], ["channels", "Channels"], ["communities", "Communities"]];
   app.innerHTML = `<div class="tabs">${T.map(([k, l]) => `<button class="${tab === k ? "on" : ""}" data-act="tab" data-v="${k}">${l}</button>`).join("")}</div><div id="rows"></div>`;
   const map = s => s.docs.map(d => ({ id: d.id, ...d.data() }));
@@ -507,6 +507,22 @@ const acts = {
     AU.onended = () => { AU.currentTime = 0; vnUpd(id); };
     AU.play().catch(() => toast("Could not play"));
   },
+  dl: async (_, t, e) => {
+    e.preventDefault();
+    const u = t.dataset.u, n = t.dataset.n || "document";
+    toast("Downloading...");
+    try {
+      const r = await fetch(u);
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(await r.blob()); a.download = n;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    } catch (err) {
+      console.error(err);
+      toast("Could not download. The file host is blocking this file type.");
+    }
+  },
   zoom: (_, t) => showViewer(`<img src="${safe(t.dataset.u)}" alt="Photo">`),
   vclose: () => closeViewer(),
   vopen: async id => {
@@ -641,7 +657,11 @@ function route(s, push = true) {
   if (push) history.pushState(s, "");
   if (s.v === "g") openGroup(s.id); else if (s.v === "c") openChannel(s.id); else if (s.v === "m") openComm(s.id); else list();
 }
-function goBack() { const v = history.state?.v; if (v && v !== "l") history.back(); else list(); }
+function leavePage() {
+  let same = false; try { same = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch (e) {}
+  if (same && history.length > 1) history.back(); else location.href = "index.html";
+}
+function goBack() { const v = history.state?.v; if (v && v !== "l") history.back(); else leavePage(); }
 window.addEventListener("popstate", e => { closeSheet(); closeViewer(); const s = e.state; route(s && s.v ? s : { v: "l" }, false); });
 $("#back").innerHTML = icon("back");
 $("#recbar").innerHTML = `<button class="ic" data-act="rcancel" aria-label="Cancel recording">${icon("trash")}</button><span class="rd"></span><span class="rt2" id="rt2">0:00</span><span class="sp"></span><button class="ic" id="ro" data-act="ronce" aria-label="View once">${icon("once")}</button><button class="ic snd" data-act="rsend" aria-label="Send voice note">${icon("send")}</button>`;
