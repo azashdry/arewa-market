@@ -9,8 +9,7 @@ import { auth, db } from "./firebase.js";
 
 import {
   GoogleAuthProvider,
-  signInWithPopup,
-  browserPopupRedirectResolver
+  signInWithCredential
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
@@ -23,6 +22,65 @@ import {
   where,
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* ---------- Google Identity Services ----------
+   Ba ya amfani da firebaseapp.com redirect handler, don haka yana aiki
+   a GitHub Pages da kuma a waya (in-app browsers ma).
+
+   GOOGLE_CLIENT_ID: Firebase Console -> Authentication -> Sign-in method
+   -> Google -> "Web SDK configuration" -> Web client ID
+------------------------------------------------ */
+
+const GOOGLE_CLIENT_ID = "217844252739-2nls2viob1r0496afdj3rph1r53sg7bq.apps.googleusercontent.com";
+
+let tokenClient = null;
+let pending = null;
+
+const gisReady = new Promise((resolve, reject) => {
+
+  const script = document.createElement("script");
+  script.src = "https://accounts.google.com/gsi/client";
+  script.async = true;
+
+  script.onload = () => {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: "openid email profile",
+      callback: (resp) => {
+        if(!pending) return;
+        if(resp.error || !resp.access_token){
+          pending.reject({ code: "custom/google", message: resp.error_description || resp.error || "Google sign-in failed." });
+        }else{
+          pending.resolve(resp.access_token);
+        }
+      },
+      error_callback: (err) => {
+        if(!pending) return;
+        const type = err && err.type;
+        pending.reject({
+          code: type === "popup_closed" ? "auth/popup-closed-by-user"
+              : type === "popup_failed_to_open" ? "auth/popup-blocked"
+              : "custom/google",
+          message: (err && err.message) || "Google sign-in failed."
+        });
+      }
+    });
+    resolve();
+  };
+
+  script.onerror = () => reject({ code: "auth/network-request-failed" });
+  document.head.appendChild(script);
+});
+
+gisReady.catch(() => {});
+
+function getGoogleAccessToken(){
+  return new Promise((resolve, reject) => {
+    pending = { resolve, reject };
+    tokenClient.requestAccessToken({ prompt: "select_account" });
+  });
+}
 
 
 /* ---------- Referral helpers (iri ɗaya da na register.html) ---------- */
@@ -115,10 +173,17 @@ export function googleErrorMessage(error){
 
 export async function continueWithGoogle(){
 
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
+  if(GOOGLE_CLIENT_ID.startsWith("PASTE_")){
+    throw { code: "custom/no-client-id",
+            message: "Google Client ID has not been set in google-auth.js yet." };
+  }
 
-  const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
+  if(!tokenClient) await gisReady;
+
+  const accessToken = await getGoogleAccessToken();
+
+  const credential = GoogleAuthProvider.credential(null, accessToken);
+  const result = await signInWithCredential(auth, credential);
   const user = result.user;
 
   const userRef = doc(db, "users", user.uid);
