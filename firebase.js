@@ -8,7 +8,8 @@ import {
 
 import {
   initializeAuth,
-  browserLocalPersistence
+  browserLocalPersistence,
+  browserPopupRedirectResolver
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
@@ -50,7 +51,10 @@ const auth =
     app,
     {
       persistence:
-        browserLocalPersistence
+        browserLocalPersistence,
+      // Ana buƙatarsa don "Continue with Google" (popup)
+      popupRedirectResolver:
+        browserPopupRedirectResolver
     }
   );
 
