@@ -9,7 +9,8 @@ import { auth, db } from "./firebase.js";
 
 import {
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  browserPopupRedirectResolver
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
@@ -117,7 +118,7 @@ export async function continueWithGoogle(){
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
 
-  const result = await signInWithPopup(auth, provider);
+  const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
   const user = result.user;
 
   const userRef = doc(db, "users", user.uid);
