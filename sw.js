@@ -1,106 +1,62 @@
-/*
-  Arewa Market — service worker (v8)
+// =====================================================
+// AREWA MARKET - SERVICE WORKER
+// Yana sa app ya zama installable kuma yana bada ɗan
+// offline fallback. Network-first ne, don haka sabbin
+// canje-canje suna fitowa kai tsaye (babu tsohon cache).
+// =====================================================
 
-  - Shafukan HTML: network-first (kullum sabon fayil yake zuwa),
-    idan babu network sai a yi amfani da wanda aka adana.
-  - Sauran fayiloli (css/js/hotuna): adanawa da sabuntawa a baya.
-  - Ba ya taba Firebase/Firestore ko wasu shafukan waje.
-  - Idan komai ya gaza, yana mayar da sako mai sauki maimakon
-    ya bar browser ya nuna ERR_FAILED.
-*/
+const CACHE = "arewa-market-v1";
 
-const CACHE_NAME = "arewa-market-v8";
-
-const APP_SHELL = [
+const PRECACHE = [
+  "./",
   "./index.html",
   "./login.html",
   "./register.html",
-  "./friends.html",
-  "./messages.html",
-  "./groups.html",
-  "./status.html",
   "./manifest.json",
-  "./i18n.js",
-  "./bottom-nav.js",
-  "./report.js",
+  "./apple-touch-icon.png",
   "./icon-192.png",
-  "./icon-512.png",
-  "./icon-512-maskable.png",
-  "./apple-touch-icon.png"
+  "./icon-512.png"
 ];
 
-self.addEventListener("install", event => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache =>
-      Promise.all(APP_SHELL.map(url => cache.add(url).catch(() => {})))
+    caches.open(CACHE).then((cache) =>
+      // Idan wani fayil bai wanzu ba, ba zai hana installing ba
+      Promise.all(PRECACHE.map((url) => cache.add(url).catch(() => {})))
     )
   );
   self.skipWaiting();
 });
 
-self.addEventListener("activate", event => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-      )
-    )
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-function offlineResponse() {
-  return new Response("Offline - ba a samu haɗin intanet ko server ba.", {
-    status: 503,
-    headers: { "Content-Type": "text/plain; charset=utf-8" }
-  });
-}
+self.addEventListener("fetch", (event) => {
 
-self.addEventListener("fetch", event => {
-  const request = event.request;
+  const req = event.request;
+  const url = new URL(req.url);
 
-  if (request.method !== "GET") return;
-
-  const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return;
-
-  const isPage =
-    request.mode === "navigate" ||
-    url.pathname.endsWith(".html") ||
-    url.pathname.endsWith("/");
-
-  if (isPage) {
-    event.respondWith(
-      fetch(request)
-        .then(response => {
-          if (response && response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(c => c.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() =>
-          caches.match(request, { ignoreSearch: true })
-            .then(cached => cached || caches.match("./index.html"))
-            .then(cached => cached || offlineResponse())
-        )
-    );
-    return;
-  }
+  // Fayilolin shafin namu kaɗai (ba Firebase/Firestore/Cloudinary ba)
+  if(req.method !== "GET" || url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(request).then(cached => {
-      const network = fetch(request)
-        .then(response => {
-          if (response && response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(c => c.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached || offlineResponse());
-
-      return cached || network;
-    })
+    fetch(req)
+      .then((res) => {
+        if(res && res.ok){
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(req, copy));
+        }
+        return res;
+      })
+      .catch(() =>
+        caches.match(req).then((hit) =>
+          hit || (req.mode === "navigate" ? caches.match("./index.html") : undefined)
+        )
+      )
   );
 });
