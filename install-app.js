@@ -1,19 +1,24 @@
 // =====================================================
-// AREWA MARKET - INSTALL APP BANNER
-// Android/Chrome: maɓallin "Install" kai tsaye.
+// AREWA MARKET - DOWNLOAD APP BANNER
+// Android: banner mai maɓallin "Download" (APK) a ƙasan shafi.
 // iPhone/Safari: umarni (Share -> Add to Home Screen).
+// Ba ya fitowa a cikin app ɗin kanta, ko bayan an rufe shi.
 // =====================================================
 
 (function(){
 
+  const APK_URL =
+    "https://github.com/azashdry/arewa-market/releases/latest/download/Arewa.Market.apk";
+
   const KEY = "arewaInstallDismissedAt";
   const HIDE_DAYS = 3;
 
-  const isStandalone =
+  const inApp =
     window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true;
+    window.navigator.standalone === true ||
+    document.referrer.indexOf("android-app://") === 0;
 
-  if(isStandalone) return;   // an riga an saka app ɗin
+  if(inApp) return;   // an riga an buɗe cikin app
 
   try{
     const t = Number(localStorage.getItem(KEY) || 0);
@@ -21,10 +26,14 @@
   }catch(e){}
 
   const ua = navigator.userAgent || "";
+  const isAndroid = /android/i.test(ua);
   const isIOS = /iphone|ipad|ipod/i.test(ua);
-  const isIOSSafari = isIOS && /safari/i.test(ua) && !/crios|fxios|edgios|instagram|fban|fbav|whatsapp/i.test(ua);
+  const isIOSSafari = isIOS && /safari/i.test(ua) &&
+    !/crios|fxios|edgios|instagram|fban|fbav|whatsapp/i.test(ua);
 
-  let deferredPrompt = null;
+  // Cire tsohon banner na Chrome ("Install app"), muna amfani da namu
+  window.addEventListener("beforeinstallprompt", (e) => e.preventDefault());
+
   let bar = null;
 
   function dismiss(){
@@ -32,7 +41,7 @@
     if(bar){ bar.remove(); bar = null; }
   }
 
-  function build(text, actionLabel, onAction){
+  function build(text, link){
 
     if(bar) return;
 
@@ -61,16 +70,15 @@
     bar.appendChild(img);
     bar.appendChild(msg);
 
-    if(actionLabel){
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.textContent = actionLabel;
-      btn.style.cssText =
-        "flex:none;width:auto;height:auto;padding:9px 14px;border:0;border-radius:9px;" +
-        "background:#c9a227;color:#0d3b2c;font-weight:700;font-size:13px;cursor:pointer;" +
-        "box-shadow:none;display:block;";
-      btn.addEventListener("click", onAction);
-      bar.appendChild(btn);
+    if(link){
+      const a = document.createElement("a");
+      a.href = link.href;
+      a.textContent = link.label;
+      a.setAttribute("download", "");
+      a.style.cssText =
+        "flex:none;padding:9px 14px;border-radius:9px;background:#c9a227;" +
+        "color:#0d3b2c;font-weight:700;font-size:13px;text-decoration:none;";
+      bar.appendChild(a);
     }
 
     const x = document.createElement("button");
@@ -86,30 +94,22 @@
     document.body.appendChild(bar);
   }
 
-  /* ----- Android / Chrome / Edge ----- */
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    build("Install the app for faster access.", "Install", async () => {
-      if(!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      if(bar){ bar.remove(); bar = null; }
+  /* ----- Android: sauke APK ----- */
+  if(isAndroid){
+    window.addEventListener("load", () => {
+      setTimeout(() => build(
+        "Download our Android app.",
+        { href: APK_URL, label: "Download" }
+      ), 1500);
     });
-  });
-
-  window.addEventListener("appinstalled", () => {
-    deferredPrompt = null;
-    if(bar){ bar.remove(); bar = null; }
-  });
+  }
 
   /* ----- iPhone / iPad (Safari) ----- */
   if(isIOSSafari){
     window.addEventListener("load", () => {
       setTimeout(() => build(
         "To install: tap <b>Share</b> (⬆︎), then <b>Add to Home Screen</b>.",
-        null, null
+        null
       ), 2500);
     });
   }

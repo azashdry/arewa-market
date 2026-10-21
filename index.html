@@ -885,25 +885,8 @@ body.has-bottom-nav{
     Buy and sell products across Northern Nigeria.
   </p>
 
-  <a id="downloadAppBtn"
-     href="https://github.com/azashdry/arewa-market/releases/latest/download/Arewa.Market.apk"
-     style="display:none;margin:16px auto 0;width:fit-content;padding:11px 20px;border-radius:10px;background:#c9a227;color:#0d3b2c;font-weight:700;font-size:14px;text-decoration:none;">
-    ⬇ Download Android App
-  </a>
-
 </footer>
 
-<script>
-/* Maɓallin Download App: yana fitowa a Android kaɗai, ba a cikin app ɗin ba */
-(function(){
-  var isAndroid = /android/i.test(navigator.userAgent);
-  var inApp = window.matchMedia("(display-mode: standalone)").matches ||
-              document.referrer.indexOf("android-app://") === 0;
-  if(isAndroid && !inApp){
-    document.getElementById("downloadAppBtn").style.display = "block";
-  }
-})();
-</script>
 
 
 <div id="message"></div>
