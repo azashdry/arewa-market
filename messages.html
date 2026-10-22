@@ -1242,6 +1242,115 @@ header .logo small{opacity:.8;margin-top:2px}
 .msg-file-size{font-size:11px;color:#6b7a72}
 </style>
 <style id="no-top-nav">header .header-actions{display:none!important}</style>
+<style id="meta-look">
+/* ===== Meta/Messenger-style look, Arewa Market colours ===== */
+:root{--g3:#1f7a4d;--bg2:#f0f2f1;--online:#31a24c;--txt2:#65706b}
+body{background:#fff}
+
+/* ---------- inbox header ---------- */
+.inbox-header{padding:14px 14px 8px;border-bottom:0}
+.title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.inbox-header h2{font-family:'Inter',Arial,sans-serif;font-size:26px;font-weight:800;color:#111;margin:0;letter-spacing:-.3px}
+.grp-pill{background:#eef6f1;color:var(--g2);text-decoration:none;font-size:13px;font-weight:600;padding:8px 13px;border-radius:18px;white-space:nowrap}
+.search-wrap{position:relative}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--txt2);fill:none;stroke-width:2;stroke-linecap:round;pointer-events:none}
+.search{background:var(--bg2);border:0;border-radius:22px;padding:11px 14px 11px 41px;font-size:15px}
+.search:focus{border:0;box-shadow:0 0 0 2px rgba(23,94,63,.25)}
+
+/* ---------- active now strip ---------- */
+.active-strip{display:none;flex:0 0 auto;gap:14px;overflow-x:auto;padding:6px 14px 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.active-strip::-webkit-scrollbar{display:none}
+.active-strip.show{display:flex}
+.as-item{width:62px;flex:none;text-align:center;cursor:pointer}
+.as-item .av-wrap{display:block;width:56px;margin:0 auto}
+.as-name{font-size:12px;color:#333;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- avatars + presence ---------- */
+.av-wrap{position:relative;flex:none;display:inline-block;line-height:0}
+.conversation .avatar,.as-item .avatar{width:56px;height:56px;min-width:56px;background:linear-gradient(135deg,var(--g2),var(--g3))}
+.pdot{position:absolute;right:1px;bottom:1px;width:15px;height:15px;border-radius:50%;background:var(--online);border:2.5px solid #fff;box-sizing:border-box}
+.pbadge{position:absolute;right:-3px;bottom:-3px;background:#dff1e5;color:#17622f;font-size:11px;font-weight:600;line-height:1;padding:3px 5px;border-radius:10px;border:2px solid #fff;font-family:'Inter',Arial,sans-serif}
+
+/* ---------- conversation rows ---------- */
+.conversation{padding:9px 14px;border-bottom:0;gap:12px}
+.conversation:hover{background:#f5f7f6}
+.conversation.active{background:#e8f4ec}
+.conversation-name{font-size:16px;font-weight:500;color:#111}
+.has-unread .conversation-name{font-weight:700}
+.last-message{font-size:14px;color:var(--txt2);margin-top:2px;display:flex;align-items:center;gap:4px;min-width:0}
+.lm-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;display:inline-flex;align-items:center;gap:4px}
+.lm-time{flex:none;white-space:nowrap}
+.has-unread .last-message{color:#111;font-weight:600}
+.conv-side{flex:none;display:flex;align-items:center;justify-content:center;min-width:22px}
+.unread{margin:0;background:var(--gold)}
+.tick{width:18px;height:18px;color:var(--g2)}
+.ms{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* typing / recording */
+.typing-dots,.td{display:inline-flex;gap:3px;align-items:center}
+.typing-dots{background:#e8f4ec;border-radius:12px;padding:6px 9px}
+.typing-dots i,.td i{width:5px;height:5px;border-radius:50%;background:var(--g2);animation:tdot 1.2s infinite ease-in-out}
+.typing-dots i:nth-child(2),.td i:nth-child(2){animation-delay:.15s}
+.typing-dots i:nth-child(3),.td i:nth-child(3){animation-delay:.3s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-3px);opacity:1}}
+.act-txt{color:var(--g2);font-weight:600;font-size:13px}
+.act-rec{color:#d93025}
+.rec-bars{display:inline-flex;align-items:center;gap:2px;height:14px}
+.rec-bars i{width:3px;height:4px;border-radius:2px;background:#d93025;animation:rbar .9s infinite ease-in-out}
+.rec-bars i:nth-child(2){animation-delay:.12s}.rec-bars i:nth-child(3){animation-delay:.24s}.rec-bars i:nth-child(4){animation-delay:.36s}
+@keyframes rbar{0%,100%{height:4px}50%{height:14px}}
+
+/* ---------- chat header ---------- */
+.chat-header{background:#fff;border-bottom:1px solid #eef0ef;color:#111;padding:10px 12px;gap:10px}
+.chat-header .avatar{width:42px;height:42px;min-width:42px;background:linear-gradient(135deg,var(--g2),var(--g3))}
+.chat-header .pdot{width:12px;height:12px;border-width:2px;display:none}
+.chat-user h3{color:#111;font-family:'Inter',Arial,sans-serif;font-size:17px;font-weight:700}
+.chat-user p{color:var(--txt2);font-size:12.5px;margin-top:1px}
+.chat-user p.on{color:#1b8a3f}
+.chat-user p.act{color:var(--g2);font-weight:600}
+.chat-user p.rec{color:#d93025}
+.chat-header .back-btn,.chat-header .report-chat-btn{background:#eef6f1!important;color:var(--g2)!important}
+
+/* ---------- bubbles ---------- */
+.messages{background:#fff}
+.bubble{border:0;border-radius:18px;padding:8px 13px}
+.theirs .bubble{background:var(--bg2);color:#111;border-radius:18px 18px 18px 5px}
+.mine .bubble{background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;border:0;border-radius:18px 18px 5px 18px}
+.message-time{opacity:.7;font-size:10px}
+.mine .message-time{color:rgba(255,255,255,.8)}
+.mine .msg-file{background:rgba(255,255,255,.18)}
+.mine .msg-file-size{color:rgba(255,255,255,.8)}
+.typing-bubble{display:inline-flex;align-items:center;gap:8px;padding:12px 15px}
+.typing-bubble .ms{color:#d93025;width:16px;height:16px}
+.typing-bubble .rec-txt{font-size:12.5px;color:var(--txt2)}
+
+/* ---------- composer ---------- */
+.chat-input{border-top:0;padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:6px}
+.chat-input .gic{border:0;background:transparent;color:var(--g2)}
+.chat-input .gic.gb{background:transparent;color:var(--g2);border:0}
+.chat-input .gic.gb:hover,.chat-input .gic:hover{background:#eef6f1}
+.chat-input .gic.recording{background:#d93025;color:#fff}
+.chat-input textarea{background:var(--bg2);border:0;border-radius:22px}
+.chat-input textarea:focus{border:0;box-shadow:0 0 0 2px rgba(23,94,63,.25)}
+
+/* ---------- floating AI + new chat ---------- */
+.fab-stack{position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:14px;z-index:60}
+.meta-ai,.fab-new{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.22);-webkit-tap-highlight-color:transparent}
+.meta-ai{background:#fff}
+.meta-ai svg{width:38px;height:38px;animation:aiSpin 18s linear infinite}
+@keyframes aiSpin{to{transform:rotate(360deg)}}
+.fab-new{background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;width:60px;height:60px}
+.fab-new svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.meta-ai:active,.fab-new:active{transform:scale(.94)}
+body:has(.messaging.chat-open) .fab-stack{display:none}
+@media(prefers-reduced-motion:reduce){.meta-ai svg,.typing-dots i,.td i,.rec-bars i{animation:none}}
+
+@media(max-width:700px){
+  .container{padding:0}
+  .messaging{border-radius:0;box-shadow:none}
+}
+</style>
+
 </head>
 
 <body class="has-bottom-nav">
@@ -1318,34 +1427,21 @@ header .logo small{opacity:.8;margin-top:2px}
 
       <div class="inbox-header">
 
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
-
-          <h2 style="margin-bottom:0">
-            💬 Messages
-          </h2>
-
-          <a
-            href="./groups.html"
-            style="background:#165d3c;color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;border-radius:18px;border-bottom:2px solid #c9a227;white-space:nowrap"
-          >
-            👥 Groups &amp; Channels
-          </a>
-
+        <div class="title-row">
+          <h2>Messages</h2>
+          <a href="./groups.html" class="grp-pill">👥 Groups &amp; Channels</a>
         </div>
 
-        <input
-          type="text"
-          id="conversationSearch"
-          class="search"
-          placeholder="Search conversations..."
-        >
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="conversationSearch" class="search" placeholder="Search">
+        </div>
 
       </div>
 
-      <div
-        id="conversations"
-        class="conversations"
-      >
+      <div id="activeStrip" class="active-strip"></div>
+
+      <div id="conversations" class="conversations">
 
         <div class="loading">
           Loading messages...
@@ -1399,12 +1495,7 @@ header .logo small{opacity:.8;margin-top:2px}
             <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </button>
 
-          <div
-            id="chatAvatar"
-            class="avatar"
-          >
-            ?
-          </div>
+          <div class="av-wrap"><div id="chatAvatar" class="avatar">?</div><span class="pdot" id="chatDot"></span></div>
 
           <div class="chat-user">
 
@@ -1605,6 +1696,23 @@ header .logo small{opacity:.8;margin-top:2px}
 
   </div>
 
+</div>
+
+<!-- Floating AI (Meta AI style) + New chat -->
+<div class="fab-stack">
+  <a class="meta-ai" href="https://gemini.google.com/gem/11TOPANhCb5hhN0IuuWTyZSswV9tE80D8?usp=sharing" target="_blank" rel="noopener" aria-label="Tambayi AI" title="Tambayi AI">
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <g opacity=".95">
+        <ellipse cx="20" cy="9"  rx="4.6" ry="7.6" fill="#175e3f"/>
+        <ellipse cx="20" cy="9"  rx="4.6" ry="7.6" fill="#c9a227" transform="rotate(60 20 20)"/>
+        <ellipse cx="20" cy="9"  rx="4.6" ry="7.6" fill="#1f7a4d" transform="rotate(120 20 20)"/>
+        <ellipse cx="20" cy="9"  rx="4.6" ry="7.6" fill="#d9b84a" transform="rotate(180 20 20)"/>
+        <ellipse cx="20" cy="9"  rx="4.6" ry="7.6" fill="#0d3b2c" transform="rotate(240 20 20)"/>
+        <ellipse cx="20" cy="9"  rx="4.6" ry="7.6" fill="#2f8f5b" transform="rotate(300 20 20)"/>
+      </g>
+    </svg>
+  </a>
+  <a class="fab-new" href="friends.html" aria-label="Sabon saƙo" title="Sabon saƙo"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></a>
 </div>
 
 <script>
@@ -1957,6 +2065,14 @@ let currentConversationId = null;
 
 let currentOtherUserId = null;
 
+const userCache = {};
+const presenceUnsubs = {};
+let chatRoleText = "";
+
+const MIC_SVG = '<svg class="ms" viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/></svg>';
+const TICK_SENT = '<svg class="tick" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 12.5l2.7 2.7L16 9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const TICK_SEEN = '<svg class="tick" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="currentColor"/><path d="M8 12.5l2.7 2.7L16 9.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
 document.addEventListener("click", e => {
   const btn = e.target.closest && e.target.closest("#reportChatBtn");
   if(!btn) return;
@@ -2081,6 +2197,8 @@ onAuthStateChanged(
 
       startConversations();
 
+      startPresence();
+
     }catch(error){
 
       console.error(
@@ -2189,9 +2307,9 @@ function startConversations(){
 
           }
 
-          let otherUser = null;
+          let otherUser = userCache[otherUserId] || null;
 
-          try{
+          if(!otherUser) try{
 
             const userSnap =
               await getDoc(
@@ -2210,8 +2328,8 @@ function startConversations(){
                   otherUserId,
 
                 ...userSnap.data()
-
               };
+              userCache[otherUserId] = otherUser;
 
             }
 
@@ -2223,6 +2341,8 @@ function startConversations(){
             );
 
           }
+
+          watchPresence(otherUserId);
 
           conversations.push({
 
@@ -2238,6 +2358,9 @@ function startConversations(){
         }
 
         renderConversations();
+
+        updateChatStatus();
+        updateTypingRow();
 
         /*
           If sellerId was passed from
@@ -2281,6 +2404,9 @@ function startConversations(){
 ========================================= */
 
 function renderConversations(){
+
+  renderActiveStrip();
+
 
   const search =
     conversationSearch.value
@@ -2373,6 +2499,21 @@ function renderConversations(){
    CONVERSATION ITEM
 ========================================= */
 
+function avatarHtml(user, name){
+
+  const initial =
+    String(name || "?")
+      .charAt(0)
+      .toUpperCase();
+
+  return `<div class="avatar">${
+    user && user.profileImageUrl
+      ? `<img src="${escapeHtml(user.profileImageUrl)}" alt="${escapeHtml(name)}" onerror="this.style.display='none'">`
+      : escapeHtml(initial)
+  }</div>`;
+
+}
+
 function conversationItem(
   conversation
 ){
@@ -2385,102 +2526,122 @@ function conversationItem(
     user.name ||
     "Arewa Market User";
 
-  const initial =
-    name
-      .charAt(0)
-      .toUpperCase();
+  const counts =
+    conversation.unreadCount || {};
 
   const unread =
-    Number(
-      conversation.unreadCount &&
-      conversation.unreadCount[currentUser.uid]
-        ? conversation.unreadCount[currentUser.uid]
-        : 0
-    );
+    Number(counts[currentUser.uid] || 0);
+
+  const otherUnread =
+    Number(user.id ? (counts[user.id] || 0) : 0);
 
   const active =
-    conversation.id ===
-    currentConversationId
+    conversation.id === currentConversationId
       ? "active"
       : "";
+
+  const online =
+    isOnline(user);
+
+  const badge =
+    online ? "" : lastSeenShort(user);
+
+  const act =
+    activityOf(conversation);
+
+  const lastText =
+    String(conversation.lastMessage || "");
+
+  const mine =
+    conversation.lastSenderId === currentUser.uid;
+
+  const isAudio =
+    conversation.lastMessageType === "audio" ||
+    (
+      !conversation.lastMessageType &&
+      lastText.indexOf("🎤") === 0
+    );
+
+  const prefix =
+    mine ? "You: " : "";
+
+  let preview;
+
+  if(act === "typing"){
+
+    preview =
+      `<span class="typing-dots"><i></i><i></i><i></i></span><span class="act-txt">yana rubutu…</span>`;
+
+  }else if(act === "recording"){
+
+    preview =
+      `<span class="lm-text act-rec">${MIC_SVG}<span class="rec-bars"><i></i><i></i><i></i><i></i></span><span class="act-txt act-rec">yana rikodin murya…</span></span>`;
+
+  }else if(isAudio){
+
+    preview =
+      `<span class="lm-text">${prefix}${MIC_SVG} Saƙon murya</span>`;
+
+  }else{
+
+    preview =
+      `<span class="lm-text">${prefix}${escapeHtml(lastText || "No messages yet")}</span>`;
+
+  }
+
+  const time =
+    formatTime(conversation.lastMessageAt);
+
+  const timeHtml =
+    (!act && time)
+      ? `<span class="lm-time">· ${escapeHtml(time)}</span>`
+      : "";
+
+  let side = "";
+
+  if(unread > 0){
+
+    side =
+      `<span class="unread">${unread > 99 ? "99+" : unread}</span>`;
+
+  }else if(mine && lastText){
+
+    side =
+      otherUnread > 0
+        ? TICK_SENT
+        : TICK_SEEN;
+
+  }
 
   return `
 
     <div
-      class="conversation ${active}"
+      class="conversation ${active} ${unread > 0 ? "has-unread" : ""}"
       data-id="${escapeHtml(conversation.id)}"
     >
 
-      <div class="avatar">
-
-        ${
-          user.profileImageUrl
-          ?
-          `
-          <img
-            src="${escapeHtml(
-              user.profileImageUrl
-            )}"
-            alt="${escapeHtml(name)}"
-            onerror="
-              this.style.display='none'
-            "
-          >
-          `
-          :
-          escapeHtml(initial)
-        }
-
+      <div class="av-wrap">
+        ${avatarHtml(user, name)}
+        ${online ? '<span class="pdot"></span>' : ""}
+        ${badge ? `<span class="pbadge">${badge}</span>` : ""}
       </div>
 
       <div class="conversation-info">
 
-        <div class="conversation-top">
+        <div class="conversation-name">${escapeHtml(name)}</div>
 
-          <div class="conversation-name">
-
-            ${escapeHtml(name)}
-
-            ${
-              unread > 0
-              ?
-              `
-              <span class="unread">
-                ${unread > 99 ? "99+" : unread}
-              </span>
-              `
-              :
-              ""
-            }
-
-          </div>
-
-          <div class="conversation-time">
-
-            ${formatTime(
-              conversation.lastMessageAt
-            )}
-
-          </div>
-
-        </div>
-
-        <div class="last-message">
-
-          ${escapeHtml(
-            conversation.lastMessage ||
-            "No messages yet"
-          )}
-
-        </div>
+        <div class="last-message">${preview}${timeHtml}</div>
 
       </div>
+
+      <div class="conv-side">${side}</div>
 
     </div>
 
   `;
 
 }
+
 
 /* =========================================
    OPEN OR CREATE CONVERSATION
@@ -2671,6 +2832,8 @@ async function openConversation(
 
   }
 
+  stopActivity();
+
   currentConversationId =
     conversationId;
 
@@ -2788,10 +2951,18 @@ async function displayChatUser(
     chatName.textContent =
       name;
 
-    chatRole.textContent =
+    chatRoleText =
       user.role === "seller"
         ? "Seller"
         : "Buyer";
+
+    if(!userCache[userId]){
+      userCache[userId] = { id: userId, ...user };
+    }
+
+    watchPresence(userId);
+
+    updateChatStatus();
 
     if(user.profileImageUrl){
 
@@ -2912,6 +3083,8 @@ function subscribeToMessages(
 
           }
         );
+
+        updateTypingRow();
 
         requestAnimationFrame(() => {
 
@@ -4168,6 +4341,12 @@ messageForm.addEventListener(
           lastMessage:
             lastMessagePreview,
 
+          lastSenderId:
+            currentUser.uid,
+
+          lastMessageType:
+            text ? "text" : audioUrl ? "audio" : imageUrl ? "image" : videoUrl ? "video" : fileAtt ? "file" : "text",
+
           lastMessageAt:
             serverTimestamp(),
 
@@ -4373,6 +4552,427 @@ logoutBtn.addEventListener(
 
   }
 );
+
+/* =========================================
+   PRESENCE / TYPING / RECORDING (Meta-style)
+========================================= */
+
+const ACTIVE_WINDOW = 90000;   // "online" if heartbeat < 90s old
+const ACT_WINDOW = 15000;      // typing/recording considered live for 15s
+
+function toMs(ts){
+
+  if(!ts) return 0;
+
+  if(typeof ts.toDate === "function") return ts.toDate().getTime();
+
+  if(typeof ts === "number") return ts;
+
+  return 0;
+
+}
+
+function isOnline(u){
+
+  if(!u || u.online === false) return false;
+
+  const t = toMs(u.lastActive);
+
+  return !!t && (Date.now() - t) < ACTIVE_WINDOW;
+
+}
+
+function lastSeenShort(u){
+
+  if(!u || isOnline(u)) return "";
+
+  const t = toMs(u.lastActive);
+
+  if(!t) return "";
+
+  const m = Math.max(1, Math.floor((Date.now() - t) / 60000));
+
+  if(m < 60) return m + "m";
+
+  const h = Math.floor(m / 60);
+
+  return h < 24 ? h + "h" : "";
+
+}
+
+function activityOf(conv){
+
+  if(!conv || !conv.activity || !currentUser) return null;
+
+  const otherId =
+    conv.otherUser
+      ? conv.otherUser.id
+      : (conv.participantIds || []).find(id => id !== currentUser.uid);
+
+  const a = otherId && conv.activity[otherId];
+
+  if(!a || !a.type) return null;
+
+  const t = toMs(a.at);
+
+  if(!t || (Date.now() - t) > ACT_WINDOW) return null;
+
+  return a.type;
+
+}
+
+/* ----- live presence of the people I chat with ----- */
+
+let renderQueued = false;
+
+function scheduleRender(){
+
+  if(renderQueued) return;
+
+  renderQueued = true;
+
+  setTimeout(() => {
+
+    renderQueued = false;
+
+    renderConversations();
+
+    updateChatStatus();
+
+  }, 150);
+
+}
+
+function watchPresence(uid){
+
+  if(!uid || presenceUnsubs[uid]) return;
+
+  presenceUnsubs[uid] = onSnapshot(
+    doc(db, "users", uid),
+    (snap) => {
+
+      if(!snap.exists()) return;
+
+      const u = { id: uid, ...snap.data() };
+
+      userCache[uid] = u;
+
+      conversations.forEach(c => {
+        if(c.otherUser && c.otherUser.id === uid){
+          c.otherUser = u;
+        }
+      });
+
+      scheduleRender();
+
+    },
+    () => {}
+  );
+
+}
+
+/* ----- "Active now" strip ----- */
+
+function renderActiveStrip(){
+
+  const strip = document.getElementById("activeStrip");
+
+  if(!strip) return;
+
+  const items = conversations.filter(c => isOnline(c.otherUser));
+
+  if(!items.length){
+
+    strip.classList.remove("show");
+    strip.innerHTML = "";
+    return;
+
+  }
+
+  const left = strip.scrollLeft;
+
+  strip.innerHTML = items.map(c => {
+
+    const u = c.otherUser;
+
+    const name = u.businessName || u.name || "User";
+
+    return `<div class="as-item" data-id="${escapeHtml(c.id)}">
+      <div class="av-wrap">${avatarHtml(u, name)}<span class="pdot"></span></div>
+      <div class="as-name">${escapeHtml(name.split(" ")[0])}</div>
+    </div>`;
+
+  }).join("");
+
+  strip.classList.add("show");
+
+  strip.scrollLeft = left;
+
+  strip.querySelectorAll(".as-item").forEach(el => {
+    el.addEventListener("click", () => openConversation(el.dataset.id));
+  });
+
+}
+
+/* ----- chat header status line ----- */
+
+function updateChatStatus(){
+
+  if(!currentOtherUserId) return;
+
+  const user = userCache[currentOtherUserId] || null;
+
+  const conv = conversations.find(c => c.id === currentConversationId);
+
+  const act = activityOf(conv);
+
+  const online = isOnline(user);
+
+  const dot = document.getElementById("chatDot");
+
+  if(dot) dot.style.display = online ? "block" : "none";
+
+  chatRole.className = "";
+
+  if(act === "typing"){
+
+    chatRole.textContent = "yana rubutu…";
+    chatRole.className = "act";
+
+  }else if(act === "recording"){
+
+    chatRole.textContent = "yana rikodin murya…";
+    chatRole.className = "act rec";
+
+  }else if(online){
+
+    chatRole.textContent = "Yana kan layi";
+    chatRole.className = "on";
+
+  }else{
+
+    const s = lastSeenShort(user);
+
+    chatRole.textContent =
+      s ? "An gan shi " + s + " da suka wuce" : chatRoleText;
+
+  }
+
+}
+
+/* ----- typing / recording bubble inside the chat ----- */
+
+function updateTypingRow(){
+
+  const old = document.getElementById("typingRow");
+
+  const conv = conversations.find(c => c.id === currentConversationId);
+
+  const act = activityOf(conv);
+
+  if(!act){
+
+    if(old) old.remove();
+
+    return;
+
+  }
+
+  const nearBottom =
+    messagesContainer.scrollHeight -
+    messagesContainer.scrollTop -
+    messagesContainer.clientHeight < 120;
+
+  if(old && old.dataset.type === act){
+
+    if(old !== messagesContainer.lastElementChild){
+      messagesContainer.appendChild(old);
+    }
+
+    return;
+
+  }
+
+  if(old) old.remove();
+
+  const row = document.createElement("div");
+
+  row.id = "typingRow";
+
+  row.dataset.type = act;
+
+  row.className = "message-row theirs";
+
+  row.innerHTML =
+    act === "recording"
+      ? `<div class="bubble typing-bubble">${MIC_SVG}<span class="rec-bars"><i></i><i></i><i></i><i></i></span><span class="rec-txt">yana rikodin murya…</span></div>`
+      : `<div class="bubble typing-bubble"><span class="td"><i></i><i></i><i></i></span></div>`;
+
+  messagesContainer.appendChild(row);
+
+  if(nearBottom){
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+}
+
+/* ----- my own presence heartbeat ----- */
+
+let presenceTimer = null;
+
+async function beat(online){
+
+  if(!currentUser) return;
+
+  try{
+
+    await updateDoc(
+      doc(db, "users", currentUser.uid),
+      {
+        lastActive: serverTimestamp(),
+        online: online
+      }
+    );
+
+  }catch(error){}
+
+}
+
+function startPresence(){
+
+  if(presenceTimer) return;
+
+  beat(!document.hidden);
+
+  presenceTimer = setInterval(() => {
+    if(!document.hidden) beat(true);
+  }, 30000);
+
+  document.addEventListener("visibilitychange", () => {
+    beat(!document.hidden);
+    if(document.hidden) stopActivity();
+  });
+
+  window.addEventListener("pagehide", () => {
+    beat(false);
+    stopActivity();
+  });
+
+  // keep "online / 5m" labels fresh
+  setInterval(() => {
+    if(!document.hidden) scheduleRender();
+  }, 20000);
+
+}
+
+/* ----- my own typing / recording signal ----- */
+
+let actType = null;
+let actTimer = null;
+let actBeat = null;
+let lastActWrite = 0;
+
+async function setActivity(type){
+
+  if(!currentUser || !currentConversationId) return;
+
+  try{
+
+    await updateDoc(
+      doc(db, "conversations", currentConversationId),
+      {
+        ["activity." + currentUser.uid]:
+          type
+            ? { type: type, at: serverTimestamp() }
+            : null
+      }
+    );
+
+  }catch(error){}
+
+}
+
+function stopActivity(){
+
+  clearTimeout(actTimer);
+
+  clearInterval(actBeat);
+
+  actBeat = null;
+
+  if(actType){
+
+    actType = null;
+
+    setActivity(null);
+
+  }
+
+}
+
+messageInput.addEventListener("input", () => {
+
+  if(editingMessageId) return;
+
+  if(messageInput.value.trim()){
+
+    const now = Date.now();
+
+    if(actType !== "typing" || now - lastActWrite > 3000){
+
+      actType = "typing";
+
+      lastActWrite = now;
+
+      setActivity("typing");
+
+    }
+
+    clearTimeout(actTimer);
+
+    actTimer = setTimeout(stopActivity, 4000);
+
+  }else{
+
+    stopActivity();
+
+  }
+
+});
+
+messageInput.addEventListener("blur", () => {
+  if(actType === "typing") stopActivity();
+});
+
+messageForm.addEventListener("submit", () => stopActivity());
+
+backBtn.addEventListener("click", () => stopActivity());
+
+// voice-note recording → "yana rikodin murya…"
+new MutationObserver(() => {
+
+  const rec = chatMicBtn.classList.contains("recording");
+
+  if(rec && actType !== "recording"){
+
+    clearTimeout(actTimer);
+
+    actType = "recording";
+
+    setActivity("recording");
+
+    clearInterval(actBeat);
+
+    actBeat = setInterval(() => setActivity("recording"), 5000);
+
+  }else if(!rec && actType === "recording"){
+
+    stopActivity();
+
+  }
+
+}).observe(chatMicBtn, { attributes: true, attributeFilter: ["class"] });
+
 
 /* =========================================
    FORMAT TIME
