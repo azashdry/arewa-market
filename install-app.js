@@ -36,9 +36,17 @@
 
   let bar = null;
 
+  // Yana gaya wa shafi tsayin banner, don maɓallin AI ya hau sama kada ya hau kansa
+  function setBannerH(){
+    const h = bar ? (bar.offsetHeight + 12) : 0;
+    document.documentElement.style.setProperty("--install-banner-h", h + "px");
+  }
+  window.addEventListener("resize", () => { if(bar) setBannerH(); });
+
   function dismiss(){
     try{ localStorage.setItem(KEY, String(Date.now())); }catch(e){}
     if(bar){ bar.remove(); bar = null; }
+    setBannerH();
   }
 
   function build(text, link){
@@ -92,6 +100,7 @@
     bar.appendChild(x);
 
     document.body.appendChild(bar);
+    setBannerH();
   }
 
   /* ----- Android: sauke APK ----- */

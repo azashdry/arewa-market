@@ -1343,6 +1343,9 @@ body{background:#fff}
 .fab-new svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
 .meta-ai:active,.fab-new:active{transform:scale(.94)}
 body:has(.messaging.chat-open) .fab-stack{display:none}
+/* Fallback: yana aiki ko da browser bai goyi bayan :has ba, ko allon ya fi 700px */
+body.chat-active .fab-stack{display:none!important}
+@media(max-width:700px){body.chat-active .bottom-nav{display:none!important}}
 @media(prefers-reduced-motion:reduce){.meta-ai svg,.typing-dots i,.td i,.rec-bars i{animation:none}}
 
 @media(max-width:700px){
@@ -5145,6 +5148,23 @@ if ("serviceWorker" in navigator) {
   }
   inp.addEventListener("input",sync);
   setInterval(sync,250);
+  sync();
+})();
+</script>
+<script>
+/* Boye maɓallan + da AI idan an buɗe chat, don kada su rufe wajen rubutu/aikawa */
+(function(){
+  var msg=document.getElementById("messaging");
+  var chat=document.getElementById("chatContent");
+  if(!msg||!chat) return;
+  function sync(){
+    var wide=window.matchMedia("(min-width:701px)").matches;
+    var open=wide ? chat.style.display==="flex" : msg.classList.contains("chat-open");
+    document.body.classList.toggle("chat-active",open);
+  }
+  new MutationObserver(sync).observe(msg,{attributes:true,attributeFilter:["class"]});
+  new MutationObserver(sync).observe(chat,{attributes:true,attributeFilter:["style"]});
+  window.addEventListener("resize",sync);
   sync();
 })();
 </script>
