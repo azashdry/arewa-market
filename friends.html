@@ -146,6 +146,22 @@ body{font-family:'Inter',Arial,sans-serif;background:#f8f6f3;color:#222;padding-
   <div id="panel-discover" class="panel active">
 
     <div class="box">
+      <h3>🔎 Search people</h3>
+      <div class="field">
+        <input id="searchPhone" type="search" autocomplete="off" placeholder="Search by name or phone, e.g. Aminu / 0803 123 4567">
+        <button id="btnSearchPhone" class="btn btn-primary">Search</button>
+      </div>
+    </div>
+
+    <div id="discoverList"></div>
+
+    <div id="moreWrap" style="text-align:center;margin:14px 0 6px;display:none">
+      <button id="btnMore" class="btn btn-ghost" style="min-width:180px">Show more people</button>
+    </div>
+
+    <div class="section-title">More ways to find friends</div>
+
+    <div class="box">
       <h3>📍 People near you</h3>
       <p class="hint">Allow your location to see people around you. We only save a rough area (about 5 km), never your exact position.</p>
       <div class="row-btns">
@@ -156,18 +172,12 @@ body{font-family:'Inter',Arial,sans-serif;background:#f8f6f3;color:#222;padding-
     </div>
 
     <div class="box">
-      <h3>🔎 Find people</h3>
+      <h3>📇 From your contacts</h3>
       <p class="hint">Find friends who already use Arewa Market. Numbers are scrambled (hashed) on your phone and are never uploaded or stored.</p>
       <div class="row-btns">
         <button id="btnContacts" class="btn btn-gold">Find from contacts</button>
       </div>
       <div id="contactNote" class="note"></div>
-
-      <p class="hint" style="margin-top:14px">Or search by name or phone number:</p>
-      <div class="field">
-        <input id="searchPhone" type="search" autocomplete="off" placeholder="Name or phone, e.g. Aminu / 0803 123 4567">
-        <button id="btnSearchPhone" class="btn btn-primary">Search</button>
-      </div>
     </div>
 
     <div class="box" id="myPhoneBox">
@@ -179,7 +189,6 @@ body{font-family:'Inter',Arial,sans-serif;background:#f8f6f3;color:#222;padding-
       </div>
     </div>
 
-    <div id="discoverList"></div>
   </div>
 
   <!-- ============ REQUESTS ============ -->
@@ -233,7 +242,7 @@ import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {
   collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc,
-  query, where, limit, onSnapshot, serverTimestamp
+  query, where, limit, orderBy, startAfter, documentId, onSnapshot, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 /* ============================================================
@@ -247,8 +256,14 @@ const state = {
   received: [],    // requests sent to me
   nearby: [],      // suggestion users
   contactMatches: [],
-  searchResults: []
+  searchResults: [],
+  everyone: [],          // all registered users (loaded page by page)
+  lastDoc: null,
+  everyoneDone: false,
+  loadingEveryone: false,
+  query: ""              // active search text
 };
+const PAGE_SIZE = 20;
 
 const $ = id => document.getElementById(id);
 
@@ -418,11 +433,25 @@ function renderDiscover(){
     items.forEach(u => { seen.add(u.id); html += personCard(u, tagHtml); });
   };
 
-  add(state.searchResults, "Search results", `<span class="tag contact">Search result</span>`);
+  // While searching, show only the search results
+  if(state.query){
+    add(state.searchResults, "Search results", `<span class="tag contact">Search result</span>`);
+    box.innerHTML = html || `<div class="empty">No one found for “${esc(state.query)}”.<br>Check the spelling and try again.</div>`;
+    $("moreWrap").style.display = "none";
+    return;
+  }
+
   add(state.contactMatches, "From your contacts", `<span class="tag contact">In your contacts</span>`);
   add(state.nearby, "Near you", `<span class="tag near">Near you</span>`);
+  add(state.everyone, "People on Arewa Market", "");
 
-  box.innerHTML = html || `<div class="empty">No suggestions yet.<br>Turn on location or find friends from your contacts above.</div>`;
+  if(!html){
+    html = state.loadingEveryone
+      ? `<div class="empty">Loading people…</div>`
+      : `<div class="empty">No one to show yet.</div>`;
+  }
+  box.innerHTML = html;
+  $("moreWrap").style.display = state.everyoneDone ? "none" : "block";
 }
 
 function renderRequests(){
@@ -527,6 +556,45 @@ async function loadNearby(){
     toast("Could not load nearby people");
   }
   renderDiscover();
+}
+
+/* ============================================================
+   DISCOVER: EVERYONE (like Facebook "People you may know")
+============================================================ */
+async function loadEveryone(depth = 0){
+  if(state.everyoneDone || state.loadingEveryone) return;
+  state.loadingEveryone = true;
+  $("btnMore").disabled = true;
+
+  try{
+    const constraints = [orderBy(documentId())];
+    if(state.lastDoc) constraints.push(startAfter(state.lastDoc));
+    constraints.push(limit(PAGE_SIZE));
+
+    const snap = await getDocs(query(collection(db, "users"), ...constraints));
+
+    if(snap.docs.length){
+      state.lastDoc = snap.docs[snap.docs.length - 1];
+      const have = new Set(state.everyone.map(u => u.id));
+      snap.docs.forEach(d => {
+        const u = { id:d.id, ...d.data() };
+        if(u.id !== state.me.uid && u.active !== false && !have.has(u.id)) state.everyone.push(u);
+      });
+    }
+    if(snap.docs.length < PAGE_SIZE) state.everyoneDone = true;
+  }catch(e){
+    console.error("everyone", e);
+    toast("Could not load people");
+    state.everyoneDone = true;
+  }
+
+  state.loadingEveryone = false;
+  $("btnMore").disabled = false;
+  renderDiscover();
+
+  // If most of this page was filtered out (friends, inactive), fetch a bit more
+  const visible = state.everyone.filter(u => relationWith(u.id).type !== "friends").length;
+  if(!state.everyoneDone && visible < 10 && depth < 3) loadEveryone(depth + 1);
 }
 
 async function enableLocation(){
@@ -665,29 +733,48 @@ async function searchByName(text){
   return Array.from(found.values()).slice(0, 25);
 }
 
-async function searchByPhone(){
+async function searchByPhone(silent = false){
   const raw = $("searchPhone").value.trim();
-  if(!raw){ toast("Type a name or phone number"); return; }
+
+  // Empty box -> back to the full list
+  if(!raw){
+    state.query = "";
+    state.searchResults = [];
+    renderDiscover();
+    return;
+  }
 
   const btn = $("btnSearchPhone");
   btn.disabled = true;
 
   try{
+    let results;
     if(looksLikePhone(raw)){
       const h = await hashPhone(raw);
-      if(!h){ toast("Enter a valid phone number"); return; }
+      if(!h){ if(!silent) toast("Enter a valid phone number"); return; }
       const snap = await getDocs(query(collection(db, "users"), where("phoneHash", "==", h), limit(5)));
-      state.searchResults = snap.docs
+      results = snap.docs
         .map(d => ({ id:d.id, ...d.data() }))
         .filter(u => u.id !== state.me.uid && u.active !== false);
     }else{
-      if(raw.length < 2){ toast("Type at least 2 letters"); return; }
-      state.searchResults = await searchByName(raw);
+      if(raw.length < 2){ if(!silent) toast("Type at least 2 letters"); return; }
+      results = await searchByName(raw);
     }
+    // ignore outdated answers if the user kept typing
+    if($("searchPhone").value.trim() !== raw) return;
+    state.query = raw;
+    state.searchResults = results;
     renderDiscover();
-    if(!state.searchResults.length) toast("No one found. Check the spelling.");
-  }catch(e){ console.error(e); toast("Search failed"); }
+  }catch(e){ console.error(e); if(!silent) toast("Search failed"); }
   finally{ btn.disabled = false; }
+}
+
+let searchTimer = null;
+function onSearchInput(){
+  clearTimeout(searchTimer);
+  const raw = $("searchPhone").value.trim();
+  if(!raw){ searchByPhone(true); return; }
+  searchTimer = setTimeout(() => searchByPhone(true), 450);
 }
 
 /* ============================================================
@@ -727,7 +814,7 @@ document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]");
   if(!el) return;
   const id = el.dataset.id;
-  const all = [...state.nearby, ...state.contactMatches, ...state.searchResults];
+  const all = [...state.everyone, ...state.nearby, ...state.contactMatches, ...state.searchResults];
 
   switch(el.dataset.act){
     case "add": {
@@ -771,8 +858,10 @@ document.addEventListener("click", e => {
 $("btnLocation").addEventListener("click", enableLocation);
 $("btnLocationOff").addEventListener("click", disableLocation);
 $("btnContacts").addEventListener("click", findFromContacts);
-$("btnSearchPhone").addEventListener("click", searchByPhone);
-$("searchPhone").addEventListener("keydown", e => { if(e.key === "Enter") searchByPhone(); });
+$("btnSearchPhone").addEventListener("click", () => searchByPhone(false));
+$("searchPhone").addEventListener("keydown", e => { if(e.key === "Enter"){ clearTimeout(searchTimer); searchByPhone(false); } });
+$("searchPhone").addEventListener("input", onSearchInput);
+$("btnMore").addEventListener("click", () => loadEveryone());
 $("btnSavePhone").addEventListener("click", saveMyPhone);
 
 /* ============================================================
@@ -805,6 +894,7 @@ onAuthStateChanged(auth, async user => {
   listenRequests();
   loadNearby();
   renderAll();
+  loadEveryone();
 });
 
 if("serviceWorker" in navigator){
