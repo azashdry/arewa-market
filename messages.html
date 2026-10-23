@@ -4366,6 +4366,15 @@ messageForm.addEventListener(
         }
       );
 
+      // Aika sanarwa ga wanda zai karɓa (idan ya kunna sanarwa)
+      if(window.arewaNotify){
+        window.arewaNotify({
+          type: "message",
+          toUid: currentOtherUserId,
+          conversationId: currentConversationId
+        });
+      }
+
       messageInput.value =
         "";
 
@@ -5169,6 +5178,7 @@ if ("serviceWorker" in navigator) {
   sync();
 })();
 </script>
+<script type="module" src="push-client.js"></script>
 </body>
 
 </html>

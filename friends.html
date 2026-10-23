@@ -372,6 +372,7 @@ async function sendRequest(user){
       updatedAt: serverTimestamp()
     });
     toast("Friend request sent");
+    if(window.arewaNotify) window.arewaNotify({ type:"friend_request", toUid: uid, requestId: state.me.uid + "_" + uid });
   }catch(e){
     console.error(e);
     toast("Could not send request");
@@ -382,6 +383,7 @@ async function acceptRequest(req){
   try{
     await updateDoc(doc(db, "friendRequests", req.id), { status:"accepted", updatedAt: serverTimestamp() });
     toast("You are now friends 🎉");
+    if(window.arewaNotify && req.from) window.arewaNotify({ type:"friend_accept", toUid: req.from, requestId: req.id });
   }catch(e){ console.error(e); toast("Could not accept"); }
 }
 
@@ -904,5 +906,6 @@ if("serviceWorker" in navigator){
 </script>
 
 <script type="module" src="bottom-nav.js"></script>
+<script type="module" src="push-client.js"></script>
 </body>
 </html>
