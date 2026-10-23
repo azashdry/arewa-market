@@ -1703,6 +1703,30 @@ body.has-bottom-nav{
 
     <div class="form-group">
 
+      <label>Shop Address * <small style="font-weight:400;opacity:.75">(street name / layi)</small></label>
+
+      <input
+        type="text"
+        id="productShopAddress"
+        maxlength="120"
+        placeholder="e.g. Zoo Road, Shop 14 / Layin Zoo Road, Shago na 14">
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Known As / Landmark * <small style="font-weight:400;opacity:.75">(sunan wajen da ake kiransa)</small></label>
+
+      <input
+        type="text"
+        id="productLandmark"
+        maxlength="80"
+        placeholder="e.g. Behind Juma'a Mosque / Bayan Masallacin Juma'a">
+
+    </div>
+
+    <div class="form-group">
+
       <label>Product Image URL</label>
 
       <input
@@ -4756,6 +4780,22 @@ function renderProducts(){
                     )}
                   </div>
 
+                  <div>
+                    <strong>Address:</strong>
+                    ${escapeHtml(
+                      product.shopAddress ||
+                      "Not set (please edit)"
+                    )}
+                  </div>
+
+                  <div>
+                    <strong>Known as:</strong>
+                    ${escapeHtml(
+                      product.landmark ||
+                      "Not set (please edit)"
+                    )}
+                  </div>
+
                   <div style="margin-top:5px;">
 
                     <span
@@ -5573,6 +5613,9 @@ function openProductModal(product=null){
     $("productPrice").value = "";
     $("productCategory").value = "";
 
+    $("productShopAddress").value = "";
+    $("productLandmark").value = "";
+
     $("productState").value =
       (sellerData && sellerData.state) || "";
 
@@ -5615,6 +5658,12 @@ function openProductModal(product=null){
 
     $("productCategory").value =
       product.category || "";
+
+    $("productShopAddress").value =
+      product.shopAddress || "";
+
+    $("productLandmark").value =
+      product.landmark || "";
 
     $("productState").value =
       product.state || "";
@@ -5708,6 +5757,12 @@ async function saveProduct(){
   const lga =
     $("productLga").value;
 
+  const shopAddress =
+    $("productShopAddress").value.trim();
+
+  const landmark =
+    $("productLandmark").value.trim();
+
 
   const imageUrl =
     $("productImage").value.trim();
@@ -5777,6 +5832,32 @@ async function saveProduct(){
   }
 
 
+  if(shopAddress.length < 3){
+
+    showMessage(
+      $("productMessage"),
+      "Please enter the shop address (street name).",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(landmark.length < 3){
+
+    showMessage(
+      $("productMessage"),
+      "Please enter the name the place is known by (landmark).",
+      "error"
+    );
+
+    return;
+
+  }
+
+
   const saveButton =
     $("saveProductBtn");
 
@@ -5835,6 +5916,8 @@ async function saveProduct(){
           lga,
           location:
             lga + ", " + state,
+          shopAddress,
+          landmark,
           imageUrl,
           description,
           deliveryOption,
@@ -5879,6 +5962,8 @@ async function saveProduct(){
           lga,
           location:
             lga + ", " + state,
+          shopAddress,
+          landmark,
           imageUrl,
           description,
           deliveryOption,

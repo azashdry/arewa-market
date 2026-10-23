@@ -2388,6 +2388,14 @@ function productCard(product){
             📍 ${escapeHtml(location)}
           </div>
 
+          ${product.shopAddress ? `<div>
+            🏪 ${escapeHtml(product.shopAddress)}
+          </div>` : ""}
+
+          ${product.landmark ? `<div>
+            🧭 ${escapeHtml(product.landmark)}
+          </div>` : ""}
+
           <div>
             👤 ${escapeHtml(sellerName)}
           </div>
