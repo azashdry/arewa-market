@@ -1703,6 +1703,21 @@ body.has-bottom-nav{
 
     <div class="form-group">
 
+      <label>Market / Kasuwa <small style="font-weight:400;opacity:.75">(optional - pick or write your own)</small></label>
+
+      <select id="productMarket"></select>
+
+      <input
+        type="text"
+        id="productMarketOther"
+        maxlength="60"
+        style="display:none;margin-top:8px;"
+        placeholder="Write the market name / Rubuta sunan kasuwa">
+
+    </div>
+
+    <div class="form-group">
+
       <label>Shop Address * <small style="font-weight:400;opacity:.75">(street name / layi)</small></label>
 
       <input
@@ -2454,6 +2469,93 @@ function populateStateSelect(selectEl){
 
 populateStateSelect($("productState"));
 populateStateSelect($("sellerState"));
+
+
+/* =========================================
+   MARKET PICKER (list + write your own)
+========================================= */
+
+const NORTH_MARKETS = [
+  { state: "Kano", markets: ["Kantin Kwari","Singa","Sabon Gari (Kano)","Rimi","Dawanau (Grains)","Kurmi","Wambai","Yankaba"] },
+  { state: "Kaduna", markets: ["Kaduna Central Market","Kawo","Panteka","Barnawa","Sabon Gari (Zaria)","Samaru (Zaria)"] },
+  { state: "Katsina", markets: ["Katsina Central Market"] },
+  { state: "Sokoto", markets: ["Sokoto Central Market","Kara (Livestock)"] },
+  { state: "Zamfara", markets: ["Gusau Central Market"] },
+  { state: "Borno", markets: ["Monday Market (Maiduguri)","Gamboru Market","Baga Road (Fish) Market"] },
+  { state: "Bauchi", markets: ["Muda Lawal","Wunti","Yelwa Tudu"] },
+  { state: "Gombe", markets: ["Gombe Central Market"] },
+  { state: "Yobe", markets: ["Potiskum Market"] },
+  { state: "Adamawa", markets: ["Jimeta Modern Market"] },
+  { state: "Plateau", markets: ["Terminus (Jos)","Jos Main Market","Farin Gada (Jos)"] },
+  { state: "Benue", markets: ["Wurukum (Makurdi)"] },
+  { state: "Kwara", markets: ["Oja Oba (Ilorin)"] },
+  { state: "FCT Abuja", markets: ["Wuse Market","Garki International Market","Utako Market","Dei-Dei (Building Materials)","Kubwa Market"] }
+];
+const ALL_MARKETS = NORTH_MARKETS.reduce((a, g) => a.concat(g.markets), []);
+
+(function buildMarketSelect(){
+
+  const sel = $("productMarket");
+
+  let html =
+    '<option value="">Not in a market / Ba a kasuwa ba</option>';
+
+  NORTH_MARKETS.forEach(g => {
+
+    html += '<optgroup label="' + escapeHtml(g.state) + '">' +
+      g.markets.map(m =>
+        '<option value="' + escapeHtml(m) + '">' + escapeHtml(m) + '</option>'
+      ).join("") +
+      '</optgroup>';
+
+  });
+
+  html +=
+    '<option value="__other">Other - write market name / Wata kasuwa</option>';
+
+  sel.innerHTML = html;
+
+  sel.addEventListener("change", () => {
+
+    $("productMarketOther").style.display =
+      sel.value === "__other" ? "block" : "none";
+
+  });
+
+})();
+
+function setMarketFields(value){
+
+  const sel = $("productMarket");
+
+  const other = $("productMarketOther");
+
+  const known = ALL_MARKETS.find(
+    m => m.toLowerCase() === String(value || "").toLowerCase()
+  );
+
+  if(!value){
+
+    sel.value = "";
+    other.value = "";
+
+  }else if(known){
+
+    sel.value = known;
+    other.value = "";
+
+  }else{
+
+    sel.value = "__other";
+    other.value = value;
+
+  }
+
+  other.style.display =
+    sel.value === "__other" ? "block" : "none";
+
+}
+
 
 $("productState").addEventListener(
   "change",
@@ -4796,6 +4898,11 @@ function renderProducts(){
                     )}
                   </div>
 
+                  ${product.market ? `<div>
+                    <strong>Market:</strong>
+                    ${escapeHtml(product.market)}
+                  </div>` : ""}
+
                   <div style="margin-top:5px;">
 
                     <span
@@ -5615,6 +5722,7 @@ function openProductModal(product=null){
 
     $("productShopAddress").value = "";
     $("productLandmark").value = "";
+    setMarketFields("");
 
     $("productState").value =
       (sellerData && sellerData.state) || "";
@@ -5664,6 +5772,8 @@ function openProductModal(product=null){
 
     $("productLandmark").value =
       product.landmark || "";
+
+    setMarketFields(product.market || "");
 
     $("productState").value =
       product.state || "";
@@ -5763,6 +5873,26 @@ async function saveProduct(){
   const landmark =
     $("productLandmark").value.trim();
 
+  const marketSel =
+    $("productMarket").value;
+
+  let market = marketSel;
+
+  if(marketSel === "__other"){
+
+    market =
+      $("productMarketOther").value
+        .trim()
+        .replace(/\s+/g, " ");
+
+    const knownMarket = ALL_MARKETS.find(
+      m => m.toLowerCase() === market.toLowerCase()
+    );
+
+    if(knownMarket) market = knownMarket;
+
+  }
+
 
   const imageUrl =
     $("productImage").value.trim();
@@ -5858,6 +5988,19 @@ async function saveProduct(){
   }
 
 
+  if(marketSel === "__other" && market.length < 3){
+
+    showMessage(
+      $("productMessage"),
+      "Please write the market name, or choose one from the list.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
   const saveButton =
     $("saveProductBtn");
 
@@ -5918,6 +6061,7 @@ async function saveProduct(){
             lga + ", " + state,
           shopAddress,
           landmark,
+          market,
           imageUrl,
           description,
           deliveryOption,
@@ -5964,6 +6108,7 @@ async function saveProduct(){
             lga + ", " + state,
           shopAddress,
           landmark,
+          market,
           imageUrl,
           description,
           deliveryOption,

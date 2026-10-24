@@ -1385,6 +1385,11 @@ body.has-bottom-nav{
                 ${escapeHtml(location)}
               </div>
 
+              ${product.market ? `<div>
+                🏬 <strong>Market:</strong>
+                ${escapeHtml(product.market)}
+              </div>` : ""}
+
               ${product.shopAddress ? `<div>
                 🏪 <strong>Address:</strong>
                 ${escapeHtml(product.shopAddress)}
@@ -1490,7 +1495,7 @@ body.has-bottom-nav{
           const text =
             "🛍️ *" + name + "*\n" +
             "💰 ₦" + price + "\n" +
-            "📍 " + location + (product.shopAddress ? "\\n🏪 " + product.shopAddress : "") + (product.landmark ? "\\n🧭 " + product.landmark : "") + "\\n\\n" +
+            "📍 " + location + (product.market ? "\n🏬 " + product.market : "") + (product.shopAddress ? "\\n🏪 " + product.shopAddress : "") + (product.landmark ? "\\n🧭 " + product.landmark : "") + "\\n\\n" +
             window.t("share_wa_text") + "\n" + link +
             (/^https?:/.test(image) ? "\n\n🖼️ " + image : "");
 

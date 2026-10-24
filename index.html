@@ -710,6 +710,7 @@ body.has-bottom-nav{
 .seller-banner a{background:#c9a227;color:#1a1a1a;text-decoration:none;font-weight:700;font-size:13px;padding:9px 14px;border-radius:9px;white-space:nowrap}
 </style>
 <style id="grid-two-col">
+.filters{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .message-seller{display:block;margin-top:6px;text-align:center;padding:9px;border:1.5px solid #135134;color:#135134;background:#fff;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold}
 .message-seller:hover{background:#eef6f1}
 /* ===== 2-column compact product grid on phones (AliExpress style) ===== */
@@ -846,6 +847,13 @@ body.has-bottom-nav{
       <option value="all" data-i18n="all_lgas">
         All LGAs
       </option>
+
+    </select>
+
+
+    <select id="marketFilter">
+
+      <option value="all">All Markets / Duk Kasuwanni</option>
 
     </select>
 
@@ -1112,6 +1120,104 @@ const sortFilter =
   document.getElementById(
     "sortFilter"
   );
+
+const marketFilter =
+  document.getElementById("marketFilter");
+
+let currentMarket = "all";
+
+const NORTH_MARKETS = [
+  { state: "Kano", markets: ["Kantin Kwari","Singa","Sabon Gari (Kano)","Rimi","Dawanau (Grains)","Kurmi","Wambai","Yankaba"] },
+  { state: "Kaduna", markets: ["Kaduna Central Market","Kawo","Panteka","Barnawa","Sabon Gari (Zaria)","Samaru (Zaria)"] },
+  { state: "Katsina", markets: ["Katsina Central Market"] },
+  { state: "Sokoto", markets: ["Sokoto Central Market","Kara (Livestock)"] },
+  { state: "Zamfara", markets: ["Gusau Central Market"] },
+  { state: "Borno", markets: ["Monday Market (Maiduguri)","Gamboru Market","Baga Road (Fish) Market"] },
+  { state: "Bauchi", markets: ["Muda Lawal","Wunti","Yelwa Tudu"] },
+  { state: "Gombe", markets: ["Gombe Central Market"] },
+  { state: "Yobe", markets: ["Potiskum Market"] },
+  { state: "Adamawa", markets: ["Jimeta Modern Market"] },
+  { state: "Plateau", markets: ["Terminus (Jos)","Jos Main Market","Farin Gada (Jos)"] },
+  { state: "Benue", markets: ["Wurukum (Makurdi)"] },
+  { state: "Kwara", markets: ["Oja Oba (Ilorin)"] },
+  { state: "FCT Abuja", markets: ["Wuse Market","Garki International Market","Utako Market","Dei-Dei (Building Materials)","Kubwa Market"] }
+];
+const ALL_MARKETS = NORTH_MARKETS.reduce((a, g) => a.concat(g.markets), []);
+
+let marketSig = "";
+
+function refreshMarketOptions(){
+
+  const counts = {};
+  const extra = {};
+
+  const known = new Set(ALL_MARKETS.map(m => m.toLowerCase()));
+
+  allProducts.forEach(p => {
+
+    const m = String(p.market || "").trim();
+
+    if(!m) return;
+
+    const k = m.toLowerCase();
+
+    counts[k] = (counts[k] || 0) + 1;
+
+    if(!known.has(k)) extra[k] = m;
+
+  });
+
+  const sig = JSON.stringify([counts, currentMarket]);
+
+  if(sig === marketSig) return;
+
+  marketSig = sig;
+
+  const opt = m =>
+    '<option value="' + escapeHtml(m) + '">' + escapeHtml(m) +
+    (counts[m.toLowerCase()] ? " (" + counts[m.toLowerCase()] + ")" : "") +
+    '</option>';
+
+  let html = '<option value="all">All Markets / Duk Kasuwanni</option>';
+
+  NORTH_MARKETS.forEach(g => {
+
+    html += '<optgroup label="' + escapeHtml(g.state) + '">' +
+      g.markets.map(opt).join("") + '</optgroup>';
+
+  });
+
+  const ex = Object.values(extra).sort();
+
+  if(ex.length){
+
+    html += '<optgroup label="Other markets / Wasu kasuwanni">' +
+      ex.map(opt).join("") + '</optgroup>';
+
+  }
+
+  marketFilter.innerHTML = html;
+
+  marketFilter.value = currentMarket;
+
+  if(marketFilter.value !== currentMarket){
+
+    currentMarket = "all";
+
+    marketFilter.value = "all";
+
+  }
+
+}
+
+marketFilter.addEventListener("change", () => {
+
+  currentMarket = marketFilter.value;
+
+  renderProducts();
+
+});
+
 
 const navArea =
   document.getElementById(
@@ -1975,6 +2081,9 @@ async function loadProducts(){
 
 function getFilteredProducts(){
 
+  refreshMarketOptions();
+
+
   let products =
     [...allProducts];
 
@@ -2046,7 +2155,13 @@ function getFilteredProducts(){
 
           seller.includes(search) ||
 
-          description.includes(search)
+          description.includes(search) ||
+
+          String(product.market || "").toLowerCase().includes(search) ||
+
+          String(product.shopAddress || "").toLowerCase().includes(search) ||
+
+          String(product.landmark || "").toLowerCase().includes(search)
 
         );
 
@@ -2117,6 +2232,26 @@ function getFilteredProducts(){
         ).toLowerCase() ===
         String(
           currentLga
+        ).toLowerCase()
+
+      );
+
+  }
+
+
+  if(
+    currentMarket &&
+    currentMarket !== "all"
+  ){
+
+    products =
+      products.filter(product =>
+
+        String(
+          product.market || ""
+        ).toLowerCase() ===
+        String(
+          currentMarket
         ).toLowerCase()
 
       );
@@ -2439,6 +2574,10 @@ function productCard(product){
           <div>
             📍 ${escapeHtml(location)}
           </div>
+
+          ${product.market ? `<div>
+            🏬 ${escapeHtml(product.market)}
+          </div>` : ""}
 
           ${product.shopAddress ? `<div>
             🏪 ${escapeHtml(product.shopAddress)}
