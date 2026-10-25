@@ -726,6 +726,9 @@ body.has-bottom-nav{
 .seller-banner a{background:#c9a227;color:#1a1a1a;text-decoration:none;font-weight:700;font-size:13px;padding:9px 14px;border-radius:9px;white-space:nowrap}
 </style>
 <style id="grid-two-col">
+.more-wrap{grid-column:1/-1;text-align:center;padding:10px 0 18px}
+.more-btn{background:#0f4d2d;color:#fff;border:0;border-radius:10px;padding:12px 22px;font-weight:700;font-size:14px;cursor:pointer}
+.product-card{content-visibility:auto;contain-intrinsic-size:auto 320px}
 .filters{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .message-seller{display:block;margin-top:6px;text-align:center;padding:9px;border:1.5px solid #135134;color:#135134;background:#fff;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold}
 .message-seller:hover{background:#eef6f1}
@@ -2005,66 +2008,125 @@ function hideProductsOverFreeLimit(){
    LOAD PRODUCTS
 ================================================= */
 
-async function loadProducts(){
+/* ---- Product cache: shafin gida yana budewa nan take, ---- */
+/* ---- kuma Firestore ba a karanta shi a kowane budewa ----  */
 
-  productsGrid.innerHTML = `
+const PRODUCT_CACHE_KEY = "am_products_v1";
+const CACHE_FRESH_MS = 3 * 60 * 1000;    // kasa da mintuna 3: babu network
+const CACHE_STALE_MS = 30 * 60 * 1000;   // kasa da mintuna 30: nuna nan take, sabunta a baya
+const TS_FIELDS = ["createdAt", "featuredUntil"];
 
-    <div class="loading">
-      Loading products...
-    </div>
-
-  `;
-
+function readProductCache(){
 
   try{
 
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "products"
-        )
-      );
+    const raw = localStorage.getItem(PRODUCT_CACHE_KEY);
 
+    if(!raw) return null;
 
-    allProducts = [];
+    const c = JSON.parse(raw);
 
+    if(!c || !Array.isArray(c.products)) return null;
 
-    snapshot.forEach(item => {
+    c.products.forEach(p => {
 
-      const data =
-        item.data();
+      TS_FIELDS.forEach(k => {
 
+        const v = p[k];
 
-      if(data.status === "active"){
+        if(v && typeof v === "object" && "__ms" in v){
 
-        allProducts.push({
+          const ms = v.__ms;
 
-          id:item.id,
+          p[k] = {
+            toMillis: () => ms,
+            toDate: () => new Date(ms),
+            seconds: Math.floor(ms / 1000)
+          };
 
-          ...data
+        }
 
-        });
-
-      }
+      });
 
     });
 
+    return c;
+
+  }catch(e){
+
+    return null;
+
+  }
+
+}
+
+function writeProductCache(){
+
+  try{
+
+    const products = allProducts.slice(0, 600).map(p => {
+
+      const o = { ...p };
+
+      TS_FIELDS.forEach(k => {
+
+        if(o[k] && typeof o[k].toMillis === "function"){
+          o[k] = { __ms: o[k].toMillis() };
+        }
+
+      });
+
+      return o;
+
+    });
+
+    localStorage.setItem(
+      PRODUCT_CACHE_KEY,
+      JSON.stringify({
+        t: Date.now(),
+        products,
+        premium: [...premiumSellers]
+      })
+    );
+
+  }catch(e){}
+
+}
+
+async function fetchProducts(silent){
+
+  try{
+
+    // Active kawai ake karantawa (ba a biyan kudin karanta wadanda ba active ba)
+    const snapshot =
+      await getDocs(
+        query(
+          collection(db, "products"),
+          where("status", "==", "active")
+        )
+      );
+
+    const fresh = [];
+
+    snapshot.forEach(item => {
+      fresh.push({ id: item.id, ...item.data() });
+    });
+
+    allProducts = fresh;
 
     await loadPremiumSellers();
 
-    hideProductsOverFreeLimit();
+    writeProductCache();
 
+    hideProductsOverFreeLimit();
 
     renderProducts();
 
   }catch(error){
 
-    console.error(
-      "Products error:",
-      error
-    );
+    console.error("Products error:", error);
 
+    if(silent) return;
 
     productsGrid.innerHTML = `
 
@@ -2082,11 +2144,52 @@ async function loadProducts(){
 
     `;
 
-
-    productCount.textContent =
-      "0 products";
+    productCount.textContent = "0 products";
 
   }
+
+}
+
+async function loadProducts(){
+
+  const cache = readProductCache();
+
+  const age = cache ? Date.now() - cache.t : Infinity;
+
+  let isReload = false;
+
+  try{
+    const nav = performance.getEntriesByType("navigation")[0];
+    isReload = !!nav && nav.type === "reload";
+  }catch(e){}
+
+  if(cache && age < CACHE_STALE_MS){
+
+    allProducts = cache.products;
+
+    premiumSellers = new Set(cache.premium || []);
+
+    hideProductsOverFreeLimit();
+
+    renderProducts();
+
+    if(age < CACHE_FRESH_MS && !isReload) return;
+
+    fetchProducts(true);   // sabunta a baya, ba tare da jira ba
+
+    return;
+
+  }
+
+  productsGrid.innerHTML = `
+
+    <div class="loading">
+      Loading products...
+    </div>
+
+  `;
+
+  await fetchProducts(false);
 
 }
 
@@ -2360,6 +2463,10 @@ function getFilteredProducts(){
    RENDER PRODUCTS
 ================================================= */
 
+const PAGE_SIZE = 24;
+let visibleCount = PAGE_SIZE;
+let renderSig = "";
+
 function renderProducts(){
 
   const products =
@@ -2423,10 +2530,33 @@ function renderProducts(){
   }
 
 
+  const sig = JSON.stringify([
+    currentCategory, currentState, currentLga, currentSearch,
+    currentSort, followingOnly, nearbyOnly, currentMarket
+  ]);
+
+  if(sig !== renderSig){
+    renderSig = sig;
+    visibleCount = PAGE_SIZE;
+  }
+
+  const shown = products.slice(0, visibleCount);
+
   productsGrid.innerHTML =
-    products.map(
-      productCard
-    ).join("");
+    shown.map(productCard).join("") +
+    (products.length > shown.length
+      ? '<div class="more-wrap"><button type="button" class="more-btn" id="moreBtn">Show more (' +
+        (products.length - shown.length) + ')</button></div>'
+      : "");
+
+  const moreBtn = document.getElementById("moreBtn");
+
+  if(moreBtn){
+    moreBtn.addEventListener("click", () => {
+      visibleCount += PAGE_SIZE;
+      renderProducts();
+    });
+  }
 
 }
 
@@ -2435,11 +2565,36 @@ function renderProducts(){
    PRODUCT CARD
 ================================================= */
 
+const PLACEHOLDER_IMG =
+  "data:image/svg+xml;utf8," + encodeURIComponent(
+    "<svg xmlns='http://www.w3.org/2000/svg' width='500' height='400'>" +
+    "<rect width='500' height='400' fill='#efe9d6'/>" +
+    "<text x='250' y='210' font-family='Arial' font-size='28' font-weight='bold' fill='#9a8a4a' text-anchor='middle'>Arewa Market</text></svg>"
+  );
+
+// Cloudinary: a nemi hoto karami (kasa da nauyi) maimakon na asali
+function thumbUrl(url){
+
+  if(!url) return "";
+
+  try{
+
+    if(url.indexOf("res.cloudinary.com") > -1 && url.indexOf("/upload/") > -1 && !/\/upload\/[^/]*(w_|c_|q_)/.test(url)){
+
+      return url.replace("/upload/", "/upload/w_600,c_limit,q_auto,f_auto/");
+
+    }
+
+  }catch(e){}
+
+  return url;
+
+}
+
 function productCard(product){
 
   const image =
-    product.imageUrl ||
-    "https://via.placeholder.com/500x350?text=Arewa+Market";
+    thumbUrl(product.imageUrl) || PLACEHOLDER_IMG;
 
 
   const price =
@@ -2559,9 +2714,9 @@ function productCard(product){
         alt="${escapeHtml(
           product.name || "Product"
         )}"
-        onerror="
-          this.src='https://via.placeholder.com/500x350?text=Arewa+Market'
-        "
+        loading="lazy"
+        decoding="async"
+        onerror="this.onerror=null;this.src='${PLACEHOLDER_IMG}'"
       >
 
 

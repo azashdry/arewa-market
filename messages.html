@@ -4662,6 +4662,10 @@ function watchPresence(uid){
 
   if(!uid || presenceUnsubs[uid]) return;
 
+  // iyaka: kar a bude listeners da yawa (nauyi/karatu)
+  if(Object.keys(presenceUnsubs).length >= 25) return;
+
+
   presenceUnsubs[uid] = onSnapshot(
     doc(db, "users", uid),
     (snap) => {

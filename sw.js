@@ -5,7 +5,8 @@
 // canje-canje suna fitowa kai tsaye (babu tsohon cache).
 // =====================================================
 
-const CACHE = "arewa-market-v2";
+const CACHE = "arewa-market-v3";
+const STATIC_CACHE = "arewa-static-v1";   // Firebase SDK, fonts, hotuna (basa canzawa)
 
 const PRECACHE = [
   "./",
@@ -31,18 +32,57 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE && k !== STATIC_CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
+
+// Cache-first: abubuwan da ba sa canzawa (Firebase SDK mai lamba, fonts, hotunan app)
+function isStaticAsset(url){
+
+  if(url.hostname === "www.gstatic.com" && url.pathname.indexOf("/firebasejs/") === 0) return true;
+
+  if(url.hostname === "fonts.gstatic.com" || url.hostname === "fonts.googleapis.com") return true;
+
+  if(url.origin === self.location.origin && /\.(png|jpe?g|webp|svg|ico|woff2?)$/i.test(url.pathname)) return true;
+
+  return false;
+
+}
 
 self.addEventListener("fetch", (event) => {
 
   const req = event.request;
   const url = new URL(req.url);
 
+  if(req.method !== "GET") return;
+
+  // Abubuwa masu tsayawa: cache-first + sabuntawa a baya (da sauri sosai)
+  if(isStaticAsset(url)){
+
+    event.respondWith(
+      caches.open(STATIC_CACHE).then((cache) =>
+        cache.match(req).then((hit) => {
+
+          const network = fetch(req)
+            .then((res) => {
+              if(res && (res.ok || res.type === "opaque")) cache.put(req, res.clone());
+              return res;
+            })
+            .catch(() => hit);
+
+          return hit || network;
+
+        })
+      )
+    );
+
+    return;
+
+  }
+
   // Fayilolin shafin namu kaɗai (ba Firebase/Firestore/Cloudinary ba)
-  if(req.method !== "GET" || url.origin !== self.location.origin) return;
+  if(url.origin !== self.location.origin) return;
 
   event.respondWith(
     fetch(req)
