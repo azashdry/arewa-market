@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script type="module" src="monitor.js"></script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arewa Market - Super Admin</title>
@@ -658,6 +660,27 @@ h1{
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Arewa Market">
+<style id="admin-compact">
+/* ===== Collapsible sections + status filters (less scrolling) ===== */
+.sec-head-click{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sec-chev{display:inline-block;width:22px;color:#c9a227;transition:transform .2s}
+.section.collapsed .sec-body{display:none}
+.section.collapsed .section-header{margin-bottom:0}
+.section.collapsed .sec-chev{transform:rotate(-90deg)}
+.section.collapsed{padding-top:16px;padding-bottom:16px}
+.sec-count{display:inline-block;background:#d93025;color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:2px 9px;margin-left:8px;vertical-align:middle;font-family:Inter,Arial,sans-serif}
+.adm-toolbar{position:sticky;top:0;z-index:40;background:#fffdf7;border:1px solid #ede8df;border-radius:12px;padding:8px;display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap;box-shadow:0 4px 14px rgba(16,66,42,.08)}
+.adm-toolbar select{flex:1;min-width:160px;padding:10px;border-radius:9px;border:1px solid #d9e6dd;background:#fff;font-size:14px}
+.adm-toolbar button{padding:10px 12px;border:0;border-radius:9px;background:#0f4d2d;color:#fff;font-weight:700;font-size:13px;cursor:pointer}
+.adm-toolbar button.ghost{background:#eef6f1;color:#0f4d2d}
+.status-chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.status-chips:empty{display:none}
+.status-chip{border:1px solid #d9e6dd;background:#fff;color:#0f2d1f;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+.status-chip.on{background:#0f4d2d;color:#fff;border-color:#0f4d2d}
+.status-chip i{font-style:normal;opacity:.75;margin-left:3px}
+.status-note{width:100%;color:#6b7a72;font-size:13px;padding:6px 2px}
+.hidden-by-status{display:none!important}
+</style>
 </head>
 
 <body>
@@ -716,6 +739,8 @@ h1{
     <h2>Super Admin Dashboard</h2>
 
     <p id="adminEmail"></p>
+
+    <a href="health.html" style="display:inline-block;margin:6px 0;color:#c9a227;font-weight:700;text-decoration:none;">🩺 Health Monitor →</a>
 
     <button
       class="logout"
@@ -11808,6 +11833,166 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   });
 }
+</script>
+<script>
+(function(){
+try{
+
+/* ---------- 1) Collapsible sections ---------- */
+var KEY="adminOpenSections", open={};
+try{ open=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(open)); }catch(e){} }
+
+var sections=[].slice.call(document.querySelectorAll(".section")).filter(function(s){
+  return s.querySelector(":scope > .section-header");
+});
+
+function toggle(sec,force){
+  var collapse = force===undefined ? !sec.classList.contains("collapsed") : !force;
+  sec.classList.toggle("collapsed",collapse);
+  open[sec.dataset.title]=!collapse;
+  save();
+}
+
+sections.forEach(function(sec,i){
+  var head=sec.querySelector(":scope > .section-header");
+  var h2=head.querySelector("h2");
+  var title=(h2?h2.textContent:"Section "+(i+1)).replace(/\s+/g," ").trim();
+  sec.dataset.title=title;
+
+  var body=document.createElement("div");
+  body.className="sec-body";
+  while(head.nextSibling){ body.appendChild(head.nextSibling); }
+  sec.appendChild(body);
+
+  if(h2){
+    var chev=document.createElement("span");
+    chev.className="sec-chev"; chev.textContent="\u25BE";
+    h2.insertBefore(chev,h2.firstChild);
+    var cnt=document.createElement("span");
+    cnt.className="sec-count"; cnt.style.display="none";
+    h2.appendChild(cnt);
+  }
+
+  head.classList.add("sec-head-click");
+  head.addEventListener("click",function(e){
+    if(e.target.closest("button,input,select,a,textarea,label")) return;
+    toggle(sec);
+  });
+
+  if(!open[title]) sec.classList.add("collapsed");
+});
+
+if(sections.length){
+  var bar=document.createElement("div");
+  bar.className="adm-toolbar";
+  bar.innerHTML=
+    '<select id="admJump"><option value="">\u2630 Jump to section...</option>'+
+    sections.map(function(s,i){ return '<option value="'+i+'">'+s.dataset.title.replace(/</g,"&lt;")+'</option>'; }).join("")+
+    '</select><button id="admOpenAll" class="ghost">Open all</button><button id="admCloseAll">Close all</button>';
+  sections[0].parentNode.insertBefore(bar,sections[0]);
+
+  document.getElementById("admJump").addEventListener("change",function(){
+    var v=this.value; if(v==="") return;
+    sections.forEach(function(s,i){ toggle(s, String(i)===v); });
+    var target=sections[+v];
+    setTimeout(function(){ target.scrollIntoView({behavior:"smooth",block:"start"}); },50);
+    this.value="";
+  });
+  document.getElementById("admOpenAll").addEventListener("click",function(){ sections.forEach(function(s){ toggle(s,true); }); });
+  document.getElementById("admCloseAll").addEventListener("click",function(){ sections.forEach(function(s){ toggle(s,false); }); });
+}
+
+/* ---------- 2) Status filter chips for request lists ---------- */
+var LISTS=["premiumRequestsList","featuredRequestsList","withdrawalRequestsList","sellerApplicationsList","commissionsList"];
+var ORDER=["pending","approved","active","paid","rejected","revoked"];
+
+LISTS.forEach(function(id){
+  var list=document.getElementById(id);
+  if(!list) return;
+
+  var chips=document.createElement("div");
+  chips.className="status-chips";
+  list.parentNode.insertBefore(chips,list);
+
+  var sel="all", chosen=false, timer=null;
+  var secCount=null;
+  var secEl=list.closest(".section");
+  if(secEl) secCount=secEl.querySelector(".sec-count");
+
+  function statusOf(item){
+    var bs=item.querySelectorAll(".badge");
+    for(var i=bs.length-1;i>=0;i--){
+      if(!bs[i].classList.contains("premium-badge")){
+        return bs[i].textContent.replace(/\s+/g," ").trim().toLowerCase();
+      }
+    }
+    return "";
+  }
+
+  function apply(){
+    var items=[].slice.call(list.children).filter(function(c){ return c.classList.contains("item"); });
+    var counts={}, sts=[];
+    items.forEach(function(it){
+      var st=statusOf(it); sts.push(st);
+      if(st) counts[st]=(counts[st]||0)+1;
+    });
+    var keys=Object.keys(counts);
+
+    if(!items.length || !keys.length){
+      chips.innerHTML="";
+      items.forEach(function(it){ it.classList.remove("hidden-by-status"); });
+      if(secCount) secCount.style.display="none";
+      return;
+    }
+
+    keys.sort(function(a,b){
+      var ia=ORDER.indexOf(a), ib=ORDER.indexOf(b);
+      ia=ia<0?99:ia; ib=ib<0?99:ib;
+      return (ia-ib)||a.localeCompare(b);
+    });
+
+    if(!chosen || (sel!=="all" && !counts[sel])){
+      sel = counts.pending ? "pending" : "all";
+    }
+
+    var visible=0;
+    items.forEach(function(it,i){
+      var hide = sel!=="all" && sts[i] && sts[i]!==sel;
+      it.classList.toggle("hidden-by-status",!!hide);
+      if(!hide) visible++;
+    });
+
+    chips.innerHTML=
+      keys.map(function(k){
+        return '<button type="button" class="status-chip'+(sel===k?' on':'')+'" data-s="'+k+'">'+k.charAt(0).toUpperCase()+k.slice(1)+'<i>'+counts[k]+'</i></button>';
+      }).join("")+
+      '<button type="button" class="status-chip'+(sel==="all"?' on':'')+'" data-s="all">All<i>'+items.length+'</i></button>'+
+      (visible===0?'<div class="status-note">Babu abin nuna a nan.</div>':'');
+
+    if(secCount){
+      var pend=counts.pending||0;
+      secCount.textContent=pend+" pending";
+      secCount.style.display=pend>0?"inline-block":"none";
+    }
+  }
+
+  chips.addEventListener("click",function(e){
+    var b=e.target.closest(".status-chip");
+    if(!b) return;
+    sel=b.dataset.s; chosen=true; apply();
+  });
+
+  new MutationObserver(function(){
+    clearTimeout(timer);
+    timer=setTimeout(apply,0);
+  }).observe(list,{childList:true});
+
+  apply();
+});
+
+}catch(err){ console.error("admin-compact:",err); }
+})();
 </script>
 </body>
 

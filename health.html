@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Arewa Market - Health Monitor</title>
+
+<style>
+:root{
+  --g1:#0d3b2c;--g2:#175e3f;--g3:#1f7a4d;--gold:#c9a227;
+  --bg:#f7f4ec;--card:#fff;--tx:#1d2b24;--mu:#65706b;--line:#e8e2d2;
+  --ok:#2e9e57;--warn:#e0a100;--bad:#d93025;--off:#a9b0ac;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#101a15;--card:#18251e;--tx:#e8efe9;--mu:#9fb0a5;--line:#2a3a31}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;padding-bottom:40px}
+header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:calc(18px + env(safe-area-inset-top)) 16px 16px;border-bottom:4px solid var(--gold)}
+header h1{margin:0;font-size:22px;font-family:Georgia,'Playfair Display',serif}
+header p{margin:4px 0 0;font-size:13px;opacity:.85}
+header a{color:#f5e3a1;font-size:13px;text-decoration:none;display:inline-block;margin-top:8px}
+main{max-width:760px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+h2{font-size:15px;margin:0 0 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.btn{border:0;border-radius:8px;padding:8px 12px;font-weight:700;font-size:13px;cursor:pointer;background:var(--g2);color:#fff}
+.btn.ghost{background:transparent;color:var(--g2);border:1.5px solid var(--g2)}
+.btn.small{padding:6px 10px;font-size:12px}
+.btn:disabled{opacity:.5}
+
+/* status lights */
+.row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--off);flex:none;margin-top:3px;box-shadow:0 0 0 3px rgba(0,0,0,.05)}
+.dot.ok{background:var(--ok)}.dot.warn{background:var(--warn)}.dot.bad{background:var(--bad);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(217,48,37,.18)}}
+.row b{display:block;font-size:14px}
+.row span{font-size:12.5px;color:var(--mu)}
+.summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chip{padding:5px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line);font-size:12px;cursor:pointer;color:var(--tx)}
+.chip.on{background:var(--g2);color:#fff;border-color:var(--g2)}
+.chip i{font-style:normal;font-weight:700}
+
+/* errors */
+.err{border-top:1px solid var(--line);padding:11px 0}
+.err:first-of-type{border-top:0}
+.err .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--mu)}
+.tag{padding:2px 8px;border-radius:6px;background:var(--bg);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--tx)}
+.tag.open{background:#fde8e6;color:#a1271c;border-color:#f4c2bd}
+.tag.resolved{background:#e4f4ea;color:#17622f;border-color:#bfe2cb}
+.msg{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;margin:7px 0;word-break:break-word;background:var(--bg);padding:8px;border-radius:8px}
+.hint{font-size:12.5px;color:var(--g2);margin:6px 0}
+@media(prefers-color-scheme:dark){.hint{color:#8fd1ac}}
+.acts{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.empty,.gate{text-align:center;color:var(--mu);padding:22px 8px;font-size:14px}
+.gate a{color:var(--g2);font-weight:700}
+#app{display:none}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🩺 Health Monitor</h1>
+  <p>Arewa Market: duba lafiyar app a kallo ɗaya</p>
+  <a href="admin.html">← Koma Admin</a>
+</header>
+
+<main>
+
+  <div id="gate" class="card gate">Ana tantancewa…</div>
+
+  <div id="app">
+
+    <div class="card">
+      <h2>
+        <span>Fitilun lafiya</span>
+        <button class="btn small" id="recheck">Sake dubawa</button>
+      </h2>
+      <div id="lights"></div>
+    </div>
+
+    <div class="card">
+      <h2><span>Matsalolin da aka kama</span></h2>
+      <div class="summary" id="filters"></div>
+      <div class="summary" id="pages"></div>
+      <div id="errors"><div class="empty">Ana lodi…</div></div>
+      <div class="acts" style="margin-top:12px">
+        <button class="btn ghost small" id="clearResolved">Share duk wadanda aka gyara</button>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  doc, getDoc, getDocs, collection, query, orderBy, limit,
+  onSnapshot, updateDoc, deleteDoc, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const PUSH_WORKER = "https://arewa-push.aminuibrahimdorayi001.workers.dev";
+const AI_WORKER   = "https://arewa-ai.aminuibrahimdorayi001.workers.dev";
+
+const $ = id => document.getElementById(id);
+
+const esc = s => String(s == null ? "" : s)
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+let currentUser = null;
+let allErrors = [];
+let statusFilter = "open";
+let pageFilter = "all";
+
+
+/* =========================================
+   ADMIN GATE
+   (login yana a admin.html; session iri daya ne)
+========================================= */
+
+onAuthStateChanged(auth, async user => {
+
+  if(!user){
+
+    $("gate").innerHTML =
+      'Ba ka shiga ba. Ka shiga a <a href="admin.html">admin.html</a> tukuna, sai ka dawo nan.';
+
+    return;
+
+  }
+
+  try{
+
+    const snap = await getDoc(doc(db, "admins", user.uid));
+
+    const d = snap.exists() ? snap.data() : null;
+
+    if(!d || d.role !== "superAdmin" || d.active !== true){
+
+      $("gate").textContent =
+        "Wannan shafin na Super Admin ne kaɗai.";
+
+      return;
+
+    }
+
+    currentUser = user;
+
+    $("gate").style.display = "none";
+
+    $("app").style.display = "block";
+
+    runChecks();
+
+    listenErrors();
+
+  }catch(e){
+
+    $("gate").textContent =
+      "Ba a iya tantancewa ba: " + (e.code || e.message);
+
+  }
+
+});
+
+
+/* =========================================
+   STATUS LIGHTS
+========================================= */
+
+const ok   = t => ({ s: "ok", t });
+const warn = t => ({ s: "warn", t });
+const bad  = t => ({ s: "bad", t });
+
+async function timed(fn){
+
+  const t0 = performance.now();
+
+  try{
+
+    const r = await fn();
+
+    return { ok: true, ms: Math.round(performance.now() - t0), r };
+
+  }catch(e){
+
+    return { ok: false, ms: Math.round(performance.now() - t0), e };
+
+  }
+
+}
+
+function withTimeout(ms){
+
+  const c = new AbortController();
+
+  const t = setTimeout(() => c.abort(), ms);
+
+  return { signal: c.signal, done: () => clearTimeout(t) };
+
+}
+
+async function checkWorker(url, needsCode){
+
+  const to = withTimeout(7000);
+
+  try{
+
+    const r = await fetch(url, { signal: to.signal });
+
+    const txt = await r.text();
+
+    to.done();
+
+    if(/Hello World/i.test(txt) && needsCode){
+      return warn("Hello World kawai: ba a saka code ɗin sanarwa ba tukuna");
+    }
+
+    if(r.status >= 500){
+      return bad("Worker ya yi kuskure (" + r.status + ")");
+    }
+
+    return ok("Yana amsawa (" + r.status + ")");
+
+  }catch(e){
+
+    to.done();
+
+    // CORS na iya hana karantawa, amma bari mu ga ko yana nan
+    const to2 = withTimeout(7000);
+
+    try{
+
+      await fetch(url, { mode: "no-cors", signal: to2.signal });
+
+      to2.done();
+
+      return needsCode
+        ? warn("Yana nan, amma browser ya hana karantawa (mai yiwuwa Hello World)")
+        : ok("Yana nan");
+
+    }catch(_){
+
+      to2.done();
+
+      return bad("Ba a iya isa gare shi ba");
+
+    }
+
+  }
+
+}
+
+function checkImage(src){
+
+  return new Promise(res => {
+
+    const img = new Image();
+
+    const t = setTimeout(() => res(warn("Yana jinkirin lodi")), 8000);
+
+    img.onload = () => { clearTimeout(t); res(ok("Yana lodi")); };
+
+    img.onerror = () => { clearTimeout(t); res(bad("Hoton ya ƙi lodi")); };
+
+    img.src = src + "?c=" + Date.now();
+
+  });
+
+}
+
+const CHECKS = [
+
+  { name: "Shiga (Firebase Auth)", run: async () =>
+      auth.currentUser
+        ? ok("An shiga da " + (auth.currentUser.email || "account"))
+        : bad("Babu mai shiga")
+  },
+
+  { name: "Database (Firestore)", run: async () => {
+
+      const r = await timed(() =>
+        getDocs(query(collection(db, "categories"), limit(1)))
+      );
+
+      if(!r.ok) return bad((r.e && r.e.code) || "Ya kasa karantawa");
+
+      return r.ms > 2500
+        ? warn("Yana aiki amma a hankali (" + r.ms + " ms)")
+        : ok("Yana aiki (" + r.ms + " ms)");
+
+  }},
+
+  { name: "Sanarwa (Push Worker)", run: () => checkWorker(PUSH_WORKER, true) },
+
+  { name: "Saitin sanarwa (push-client.js)", run: async () => {
+
+      try{
+
+        const txt = await (await fetch("push-client.js?c=" + Date.now())).text();
+
+        return /PASTE_/.test(txt)
+          ? warn("An kashe: ba a cika URL/VAPID ba")
+          : ok("An saita");
+
+      }catch(e){
+
+        return bad("Ba a samu push-client.js ba");
+
+      }
+
+  }},
+
+  { name: "AI (arewa-ai Worker)", run: () => checkWorker(AI_WORKER, false) },
+
+  { name: "Hotuna da fayiloli (og-image)", run: () => checkImage("og-image.png") },
+
+  { name: "Service worker (offline/cache)", run: async () => {
+
+      if(!("serviceWorker" in navigator)) return warn("Browser bai goyi bayan ba");
+
+      const reg = await navigator.serviceWorker.getRegistration();
+
+      if(!reg) return warn("Ba a yi rajista ba");
+
+      let names = [];
+
+      try{ names = await caches.keys(); }catch(_){}
+
+      return ok("Yana aiki" + (names.length ? " (" + names.join(", ") + ")" : ""));
+
+  }}
+
+];
+
+function drawLights(results){
+
+  const errLight = errorsLight();
+
+  const rows = results.concat([errLight]);
+
+  $("lights").innerHTML = rows.map(r => `
+    <div class="row">
+      <div class="dot ${r.res ? r.res.s : ""}"></div>
+      <div><b>${esc(r.name)}</b><span>${esc(r.res ? r.res.t : "Ana dubawa…")}</span></div>
+    </div>`).join("");
+
+}
+
+let lastResults = [];
+
+async function runChecks(){
+
+  $("recheck").disabled = true;
+
+  lastResults = CHECKS.map(c => ({ name: c.name, res: null }));
+
+  drawLights(lastResults);
+
+  await Promise.all(CHECKS.map(async (c, i) => {
+
+    let res;
+
+    try{ res = await c.run(); }
+    catch(e){ res = bad(e.code || e.message || "Kuskure"); }
+
+    lastResults[i].res = res;
+
+    drawLights(lastResults);
+
+  }));
+
+  $("recheck").disabled = false;
+
+}
+
+$("recheck").addEventListener("click", runChecks);
+
+
+/* =========================================
+   ERRORS (live)
+========================================= */
+
+const DAY = 24 * 3600 * 1000;
+
+function ms(ts){
+  return ts && ts.toMillis ? ts.toMillis() : 0;
+}
+
+function errorsLight(){
+
+  const open = allErrors.filter(e => e.status === "open");
+
+  const recent = open.filter(e => Date.now() - ms(e.lastSeen) < DAY);
+
+  let res;
+
+  if(recent.length) res = bad(recent.length + " matsala a cikin awa 24");
+  else if(open.length) res = warn(open.length + " tsohuwar matsala a buɗe");
+  else res = ok("Babu matsala a buɗe");
+
+  return { name: "Kurakuran masu amfani", res };
+
+}
+
+function listenErrors(){
+
+  onSnapshot(
+    query(collection(db, "errorLogs"), orderBy("lastSeen", "desc"), limit(200)),
+    snap => {
+
+      allErrors = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      renderErrors();
+
+      if(lastResults.length) drawLights(lastResults);
+
+    },
+    e => {
+
+      $("errors").innerHTML =
+        '<div class="empty">Ba a iya karanta rahotanni ba: ' +
+        esc(e.code || e.message) +
+        '<br>Ka tabbata ka ƙara rules na <b>errorLogs</b>.</div>';
+
+    }
+  );
+
+}
+
+function ago(t){
+
+  if(!t) return "yanzu";
+
+  const s = Math.max(0, (Date.now() - t) / 1000);
+
+  if(s < 60) return "yanzu";
+  if(s < 3600) return Math.floor(s / 60) + " min da suka wuce";
+  if(s < 86400) return Math.floor(s / 3600) + " awa da suka wuce";
+
+  return Math.floor(s / 86400) + " kwana da suka wuce";
+
+}
+
+function hint(e){
+
+  const text = ((e.code || "") + " " + (e.message || "")).toLowerCase();
+
+  if(e.kind === "resource" && /failed to load img/.test(text))
+    return "Hoto ya ƙi buɗewa: link ɗin hoton ya lalace ko an goge shi, ko kuma sabis ɗin hotuna yana da matsala.";
+
+  if(e.kind === "resource")
+    return "Fayil na app ya ƙi lodi. Ka tabbata an ɗora shi a GitHub Pages, ko kuma cache ne: ka goge cache.";
+
+  if(/permission-denied|missing or insufficient permissions/.test(text))
+    return "Firestore Rules sun hana wannan aiki. Ka duba rules na collection ɗin da wannan shafin ke amfani da shi, ko kuma mai amfani bai shiga (login) ba.";
+
+  if(/requires an index|failed-precondition/.test(text))
+    return "Ana buƙatar Firestore index. Ka kwafi link ɗin da ke cikin saƙon kuskuren, ka buɗe shi a Firebase don ƙirƙirar index.";
+
+  if(/unauthenticated/.test(text))
+    return "Session ya ƙare ko mai amfani ya fita. Ka sake shiga.";
+
+  if(/resource-exhausted|quota/.test(text))
+    return "An wuce iyakar kyauta ta Firebase (quota). Ka duba Usage a Firebase Console.";
+
+  if(/unavailable|network|offline|failed to fetch/.test(text))
+    return "Matsalar sadarwa ce, ko Firebase/Worker ya kasa samuwa na ɗan lokaci.";
+
+  if(/not-found/.test(text))
+    return "Takardar da ake nema ba ta wanzu (an goge ta ko ID ɗin ba daidai ba).";
+
+  if(/is not defined|cannot read|is not a function|undefined|unexpected token/.test(text))
+    return "Kuskuren code ne (JavaScript). Ka kwafi shi ka turo wa mai gyara.";
+
+  return "Ka kwafi saƙon ka turo wa mai gyara.";
+
+}
+
+function renderErrors(){
+
+  // lambobin shafuka
+  const pages = {};
+
+  allErrors.forEach(e => {
+
+    if(statusFilter !== "all" && e.status !== statusFilter) return;
+
+    pages[e.page] = (pages[e.page] || 0) + 1;
+
+  });
+
+  const openN = allErrors.filter(e => e.status === "open").length;
+
+  const resN = allErrors.length - openN;
+
+  $("filters").innerHTML =
+    [["open", "Buɗe", openN], ["resolved", "An gyara", resN], ["all", "Duka", allErrors.length]]
+      .map(f => `<span class="chip ${statusFilter === f[0] ? "on" : ""}" data-s="${f[0]}">${f[1]} <i>${f[2]}</i></span>`)
+      .join("");
+
+  $("pages").innerHTML =
+    '<span class="chip ' + (pageFilter === "all" ? "on" : "") + '" data-p="all">Duka shafuka</span>' +
+    Object.keys(pages).sort().map(p =>
+      `<span class="chip ${pageFilter === p ? "on" : ""}" data-p="${esc(p)}">${esc(p)} <i>${pages[p]}</i></span>`
+    ).join("");
+
+  const list = allErrors.filter(e =>
+    (statusFilter === "all" || e.status === statusFilter) &&
+    (pageFilter === "all" || e.page === pageFilter)
+  );
+
+  if(!list.length){
+
+    $("errors").innerHTML =
+      '<div class="empty">' +
+      (statusFilter === "open" ? "🎉 Babu matsala a buɗe." : "Babu abin nuna.") +
+      '</div>';
+
+    return;
+
+  }
+
+  $("errors").innerHTML = list.map(e => `
+    <div class="err">
+      <div class="top">
+        <span class="tag ${esc(e.status)}">${e.status === "open" ? "Buɗe" : "An gyara"}</span>
+        <span class="tag">${esc(e.page)}</span>
+        <span class="tag">${esc(e.kind)}${e.code ? " · " + esc(e.code) : ""}</span>
+        <span>×${esc(e.count || 1)}</span>
+        <span>${esc(ago(ms(e.lastSeen)))}</span>
+      </div>
+      <div class="msg">${esc(e.message)}</div>
+      ${e.source ? '<div class="top">' + esc(e.source) + '</div>' : ""}
+      <div class="hint">💡 ${esc(hint(e))}</div>
+      <div class="top">${esc(e.lastDevice || "")}</div>
+      <div class="acts">
+        <button class="btn small" data-copy="${esc(e.id)}">Kwafi</button>
+        ${e.status === "open"
+          ? `<button class="btn ghost small" data-resolve="${esc(e.id)}">An gyara ✓</button>`
+          : ""}
+      </div>
+    </div>`).join("");
+
+}
+
+document.addEventListener("click", async ev => {
+
+  const t = ev.target.closest("[data-s],[data-p],[data-copy],[data-resolve]");
+
+  if(!t) return;
+
+  if(t.dataset.s){ statusFilter = t.dataset.s; pageFilter = "all"; renderErrors(); return; }
+
+  if(t.dataset.p){ pageFilter = t.dataset.p; renderErrors(); return; }
+
+  if(t.dataset.copy){
+
+    const e = allErrors.find(x => x.id === t.dataset.copy);
+
+    if(!e) return;
+
+    const text =
+      "Arewa Market error\n" +
+      "Page: " + e.page + "\n" +
+      "Type: " + e.kind + (e.code ? " (" + e.code + ")" : "") + "\n" +
+      "Message: " + e.message + "\n" +
+      (e.source ? "Source: " + e.source + "\n" : "") +
+      "Count: " + (e.count || 1) + "\n" +
+      "Device: " + (e.lastDevice || "");
+
+    try{
+      await navigator.clipboard.writeText(text);
+      t.textContent = "An kwafa ✓";
+    }catch(_){
+      t.textContent = "Kwafi ya kasa";
+    }
+
+    return;
+
+  }
+
+  if(t.dataset.resolve){
+
+    t.disabled = true;
+
+    try{
+
+      await updateDoc(doc(db, "errorLogs", t.dataset.resolve), {
+        status: "resolved",
+        resolvedAt: serverTimestamp(),
+        resolvedBy: currentUser.uid
+      });
+
+    }catch(e){
+
+      t.disabled = false;
+
+      alert("Ba a iya sabuntawa ba: " + (e.code || e.message));
+
+    }
+
+  }
+
+});
+
+$("clearResolved").addEventListener("click", async () => {
+
+  const done = allErrors.filter(e => e.status === "resolved");
+
+  if(!done.length){ alert("Babu wanda aka gyara."); return; }
+
+  if(!confirm("Share rahotanni " + done.length + " da aka gyara?")) return;
+
+  for(const e of done){
+
+    try{ await deleteDoc(doc(db, "errorLogs", e.id)); }catch(_){}
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
