@@ -77,10 +77,12 @@ async function registerToken(){
 
   const uid = auth.currentUser.uid;
 
+  // GWAJI: ba mu tsallake rajista da cache ba, don mu tabbatar server yana da token.
+  // (Daga baya a mayar da shi: tsallake idan an yi rajista cikin awa 6)
   try{
     const prev = JSON.parse(localStorage.getItem(REG_KEY) || "null");
     if(prev && prev.token === token && prev.uid === uid &&
-       Date.now() - prev.at < 7 * 86400000){ dbg("an riga an yi rajista (cache)"); return true; }   // an riga an yi kwanan nan
+       Date.now() - prev.at < 0){ dbg("an riga an yi rajista (cache)"); return true; }
   }catch(e){}
 
   const res = await fetch(WORKER_URL + "/register", {
