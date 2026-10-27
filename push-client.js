@@ -38,6 +38,20 @@ const REG_KEY = "arewaPushReg";
 const ASK_HIDE_DAYS = 3;
 
 
+/* ---------- GWAJI (cire daga baya) ---------- */
+function dbg(t){
+  try{
+    let b=document.getElementById("pushDbg");
+    if(!b){
+      b=document.createElement("div"); b.id="pushDbg";
+      b.style.cssText="position:fixed;left:6px;right:6px;bottom:70px;z-index:999999;background:rgba(0,0,0,.85);color:#0f0;font:11px monospace;padding:8px;border-radius:8px;white-space:pre-wrap;max-height:40vh;overflow:auto";
+      b.onclick=()=>b.remove();
+      document.body.appendChild(b);
+    }
+    b.textContent+=t+"\n";
+  }catch(e){}
+}
+
 async function authHeaders(){
   const idToken = await auth.currentUser.getIdToken();
   return { "Authorization": "Bearer " + idToken, "Content-Type": "application/json" };
@@ -160,7 +174,9 @@ function showAskBanner(){
 
 onAuthStateChanged(auth, async (user) => {
 
+  dbg("user: "+(user?"yes":"no")+" configured: "+configured);
   if(!user || !configured) return;
+  dbg("permission: "+("Notification" in window?Notification.permission:"babu Notification"));
   if(!("Notification" in window) || !("serviceWorker" in navigator)) return;
 
   try{
@@ -168,17 +184,18 @@ onAuthStateChanged(auth, async (user) => {
   }catch(e){ return; }
 
   if(Notification.permission === "granted"){
-    registerToken().catch(e => console.error("push register:", e));
+    registerToken().then(r => dbg("register: "+r)).catch(e => dbg("register ERROR: "+(e&&e.message||e)));
     return;
   }
 
-  if(Notification.permission !== "default") return;   // an hana
+  if(Notification.permission !== "default"){ dbg("an hana (denied)"); return; }
 
   try{
     const t = Number(localStorage.getItem(ASK_KEY) || 0);
     if(t && Date.now() - t < ASK_HIDE_DAYS * 86400000) return;
   }catch(e){}
 
+  dbg("banner zai fito cikin 4s");
   setTimeout(showAskBanner, 4000);
 });
 
