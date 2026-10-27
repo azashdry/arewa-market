@@ -23,10 +23,10 @@ import {
 /* ====== SAITI (ka cika waɗannan guda biyu) ====== */
 
 // URL na Cloudflare Worker ɗinka, misali: https://arewa-push.azashdry.workers.dev
-const WORKER_URL = "PASTE_WORKER_URL_HERE";
+const WORKER_URL = "https://arewa-push.vercel.app";
 
 // Firebase Console -> Project settings -> Cloud Messaging -> Web Push certificates -> Key pair
-const VAPID_KEY = "PASTE_VAPID_PUBLIC_KEY_HERE";
+const VAPID_KEY = "BEerB-jewpbcrlUD-wq8jGl235JfnJ_Gb5tX2dm4bbHu_RrvxHgCMQpfFMd9jxlv5gta-XARuvHJsZeoXXHnm7Y";
 
 /* ================================================ */
 
