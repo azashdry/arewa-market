@@ -106,6 +106,15 @@ self.addEventListener("fetch", (event) => {
    PUSH NOTIFICATIONS (Firebase Cloud Messaging)
 ===================================================== */
 
+// Alamar/lamba a kan icon ɗin app (idan wayar tana goyon baya)
+function updateBadge(){
+  return self.registration.getNotifications().then((list) => {
+    if(!("setAppBadge" in self.navigator)) return;
+    if(list.length) return self.navigator.setAppBadge(list.length);
+    return self.navigator.clearAppBadge();
+  }).catch(() => {});
+}
+
 self.addEventListener("push", (event) => {
 
   let payload = {};
@@ -133,7 +142,7 @@ self.addEventListener("push", (event) => {
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
       const focused = list.some((c) => c.visibilityState === "visible" && c.focused);
       if(focused) return;
-      return self.registration.showNotification(title, options);
+      return self.registration.showNotification(title, options).then(updateBadge);
     })
   );
 });
@@ -141,6 +150,7 @@ self.addEventListener("push", (event) => {
 self.addEventListener("notificationclick", (event) => {
 
   event.notification.close();
+  updateBadge();
 
   const target = new URL(
     (event.notification.data && event.notification.data.url) || "index.html",

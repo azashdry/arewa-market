@@ -181,3 +181,14 @@ onAuthStateChanged(auth, async (user) => {
 
   setTimeout(showAskBanner, 4000);
 });
+
+
+/* ---------- Share alamar a kan icon idan an bude app ---------- */
+
+function clearBadge(){
+  try{
+    if(document.visibilityState === "visible" && navigator.clearAppBadge) navigator.clearAppBadge();
+  }catch(e){}
+}
+document.addEventListener("visibilitychange", clearBadge);
+clearBadge();
