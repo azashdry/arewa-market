@@ -72,6 +72,7 @@ async function registerToken(){
     vapidKey: VAPID_KEY,
     serviceWorkerRegistration: reg
   });
+  dbg("token: ..." + (token ? token.slice(-8) : "BABU TOKEN"));
   if(!token) return false;
 
   const uid = auth.currentUser.uid;
@@ -79,7 +80,7 @@ async function registerToken(){
   try{
     const prev = JSON.parse(localStorage.getItem(REG_KEY) || "null");
     if(prev && prev.token === token && prev.uid === uid &&
-       Date.now() - prev.at < 7 * 86400000) return true;   // an riga an yi kwanan nan
+       Date.now() - prev.at < 7 * 86400000){ dbg("an riga an yi rajista (cache)"); return true; }   // an riga an yi kwanan nan
   }catch(e){}
 
   const res = await fetch(WORKER_URL + "/register", {
@@ -87,6 +88,8 @@ async function registerToken(){
     headers: await authHeaders(),
     body: JSON.stringify({ token })
   });
+
+  dbg("server register: " + res.status);
 
   if(res.ok){
     try{ localStorage.setItem(REG_KEY, JSON.stringify({ token, uid, at: Date.now() })); }catch(e){}
@@ -105,8 +108,11 @@ export async function notifyUser(payload){
       keepalive: true,
       headers: await authHeaders(),
       body: JSON.stringify(payload)
-    }).catch(() => {});
-  }catch(e){}
+    }).then(async (r) => {
+      let t = ""; try{ t = await r.text(); }catch(e){}
+      dbg("notify " + payload.type + ": " + r.status + " " + t.slice(0, 90));
+    }).catch((e) => dbg("notify ERROR: " + (e && e.message || e)));
+  }catch(e){ dbg("notify EXC: " + (e && e.message || e)); }
 }
 
 window.arewaNotify = notifyUser;
