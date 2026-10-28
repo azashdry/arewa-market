@@ -2840,6 +2840,22 @@ function scrollChatToBottom(){
 
     el.scrollTop = el.scrollHeight;
 
+    /*
+      On phones the chat grows to fit all messages, so the whole
+      PAGE scrolls (not the messages box). Scroll the page to the
+      very bottom too, so the newest message and the input show.
+    */
+
+    if(window.matchMedia("(max-width:700px)").matches){
+
+      const doc =
+        document.scrollingElement ||
+        document.documentElement;
+
+      window.scrollTo(0, doc.scrollHeight);
+
+    }
+
   };
 
   jump();
