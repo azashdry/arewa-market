@@ -38,20 +38,6 @@ const REG_KEY = "arewaPushReg";
 const ASK_HIDE_DAYS = 3;
 
 
-/* ---------- GWAJI (cire daga baya) ---------- */
-function dbg(t){
-  try{
-    let b=document.getElementById("pushDbg");
-    if(!b){
-      b=document.createElement("div"); b.id="pushDbg";
-      b.style.cssText="position:fixed;left:6px;right:6px;bottom:70px;z-index:999999;background:rgba(0,0,0,.85);color:#0f0;font:11px monospace;padding:8px;border-radius:8px;white-space:pre-wrap;max-height:40vh;overflow:auto";
-      b.onclick=()=>b.remove();
-      document.body.appendChild(b);
-    }
-    b.textContent+=t+"\n";
-  }catch(e){}
-}
-
 async function authHeaders(){
   const idToken = await auth.currentUser.getIdToken();
   return { "Authorization": "Bearer " + idToken, "Content-Type": "application/json" };
@@ -72,17 +58,14 @@ async function registerToken(){
     vapidKey: VAPID_KEY,
     serviceWorkerRegistration: reg
   });
-  dbg("token: ..." + (token ? token.slice(-8) : "BABU TOKEN"));
   if(!token) return false;
 
   const uid = auth.currentUser.uid;
 
-  // GWAJI: ba mu tsallake rajista da cache ba, don mu tabbatar server yana da token.
-  // (Daga baya a mayar da shi: tsallake idan an yi rajista cikin awa 6)
   try{
     const prev = JSON.parse(localStorage.getItem(REG_KEY) || "null");
     if(prev && prev.token === token && prev.uid === uid &&
-       Date.now() - prev.at < 0){ dbg("an riga an yi rajista (cache)"); return true; }
+       Date.now() - prev.at < 6 * 3600000) return true;   // an yi rajista cikin awa 6
   }catch(e){}
 
   const res = await fetch(WORKER_URL + "/register", {
@@ -90,8 +73,6 @@ async function registerToken(){
     headers: await authHeaders(),
     body: JSON.stringify({ token })
   });
-
-  dbg("server register: " + res.status);
 
   if(res.ok){
     try{ localStorage.setItem(REG_KEY, JSON.stringify({ token, uid, at: Date.now() })); }catch(e){}
@@ -110,11 +91,8 @@ export async function notifyUser(payload){
       keepalive: true,
       headers: await authHeaders(),
       body: JSON.stringify(payload)
-    }).then(async (r) => {
-      let t = ""; try{ t = await r.text(); }catch(e){}
-      dbg("notify " + payload.type + ": " + r.status + " " + t.slice(0, 90));
-    }).catch((e) => dbg("notify ERROR: " + (e && e.message || e)));
-  }catch(e){ dbg("notify EXC: " + (e && e.message || e)); }
+    }).catch(() => {});
+  }catch(e){}
 }
 
 window.arewaNotify = notifyUser;
@@ -182,29 +160,30 @@ function showAskBanner(){
 
 onAuthStateChanged(auth, async (user) => {
 
-  dbg("user: "+(user?"yes":"no")+" configured: "+configured);
   if(!user || !configured) return;
-  dbg("permission: "+("Notification" in window?Notification.permission:"babu Notification"));
   if(!("Notification" in window) || !("serviceWorker" in navigator)) return;
 
   try{
     if(!(await isSupported())) return;   // misali iPhone idan ba a saka app ba
   }catch(e){ return; }
 
+  // An riga an ba da izini: kawai a tabbatar server yana da token
   if(Notification.permission === "granted"){
-    registerToken().then(r => dbg("register: "+r)).catch(e => dbg("register ERROR: "+(e&&e.message||e)));
+    registerToken().catch(e => console.error("push register:", e));
     return;
   }
 
-  if(Notification.permission !== "default"){ dbg("an hana (denied)"); return; }
+  // An hana a settings: ba za a iya tambaya ba
+  if(Notification.permission !== "default") return;
 
+  // Idan mutum ya taba danna ✕, a bari kwana 3
   try{
     const t = Number(localStorage.getItem(ASK_KEY) || 0);
     if(t && Date.now() - t < ASK_HIDE_DAYS * 86400000) return;
   }catch(e){}
 
-  dbg("banner zai fito cikin 4s");
-  setTimeout(showAskBanner, 4000);
+  // Banner yana fitowa da zarar mutum ya shiga
+  setTimeout(showAskBanner, 800);
 });
 
 
