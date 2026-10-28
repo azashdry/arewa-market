@@ -1762,6 +1762,8 @@ import {
   query,
   where,
   orderBy,
+  limitToLast,
+  endBefore,
   onSnapshot,
   serverTimestamp,
   arrayUnion
@@ -2097,6 +2099,13 @@ let conversations = [];
 let unsubscribeConversations = null;
 
 let unsubscribeMessages = null;
+
+/* ---- pagination state for messages ---- */
+const MESSAGES_PAGE_SIZE = 30;
+let oldestLoadedDoc = null;
+let hasOlderMessages = false;
+let loadingOlder = false;
+let olderObserver = null;
 
 /* =========================================
    URL
@@ -2886,6 +2895,212 @@ function scrollChatToBottom(){
 
 }
 
+/* =========================================
+   PERFORMANCE HELPERS (pagination + incremental render)
+========================================= */
+
+function isMobileLayout(){
+  return window.matchMedia("(max-width:700px)").matches;
+}
+
+function isChatNearBottom(){
+
+  if(isMobileLayout()){
+
+    const d =
+      document.scrollingElement ||
+      document.documentElement;
+
+    return d.scrollHeight - window.scrollY - window.innerHeight < 250;
+
+  }
+
+  return (
+    messagesContainer.scrollHeight -
+    messagesContainer.scrollTop -
+    messagesContainer.clientHeight
+  ) < 150;
+
+}
+
+/* Build one message row WITHOUT leaving it in the page. */
+
+function buildMessageRow(data, id){
+
+  const before = messagesContainer.children.length;
+
+  renderMessage(data, id);
+
+  if(messagesContainer.children.length === before){
+    return null;
+  }
+
+  const row = messagesContainer.lastElementChild;
+
+  row.dataset.mid = id;
+
+  row.remove();
+
+  return row;
+
+}
+
+/* Add a row at the end (but above the "typing..." row). */
+
+function appendMessageRow(row){
+
+  const typing = document.getElementById("typingRow");
+
+  if(typing){
+    messagesContainer.insertBefore(row, typing);
+  }else{
+    messagesContainer.appendChild(row);
+  }
+
+}
+
+function updateOlderButton(conversationId){
+
+  if(olderObserver){
+    olderObserver.disconnect();
+    olderObserver = null;
+  }
+
+  const old = document.getElementById("loadOlderBtn");
+
+  if(old) old.remove();
+
+  if(!hasOlderMessages) return;
+
+  const btn = document.createElement("button");
+
+  btn.id = "loadOlderBtn";
+  btn.type = "button";
+  btn.textContent = "⬆ Ɗauko saƙonnin baya";
+  btn.style.cssText =
+    "display:block;margin:0 auto 12px;padding:8px 14px;" +
+    "border:1px solid #e3dfd7;border-radius:18px;" +
+    "background:#fff;color:#165d3c;font-size:12px;" +
+    "font-weight:600;cursor:pointer;";
+
+  btn.addEventListener("click", () => loadOlderMessages(conversationId));
+
+  messagesContainer.insertBefore(btn, messagesContainer.firstChild);
+
+  /* Auto-load when the user scrolls up to the top.
+     Delayed so it does not fire while we jump to the bottom. */
+
+  setTimeout(() => {
+
+    if(!btn.isConnected) return;
+
+    if("IntersectionObserver" in window){
+
+      olderObserver = new IntersectionObserver(entries => {
+
+        if(entries.some(e => e.isIntersecting)){
+          loadOlderMessages(conversationId);
+        }
+
+      });
+
+      olderObserver.observe(btn);
+
+    }
+
+  }, 900);
+
+}
+
+async function loadOlderMessages(conversationId){
+
+  if(loadingOlder || !hasOlderMessages || !oldestLoadedDoc) return;
+
+  if(conversationId !== currentConversationId) return;
+
+  loadingOlder = true;
+
+  const btn = document.getElementById("loadOlderBtn");
+
+  if(btn) btn.textContent = "Ana lodawa...";
+
+  try{
+
+    const olderQ =
+      query(
+        collection(db, "conversations", conversationId, "messages"),
+        orderBy("createdAt", "asc"),
+        endBefore(oldestLoadedDoc),
+        limitToLast(MESSAGES_PAGE_SIZE)
+      );
+
+    const snap = await getDocs(olderQ);
+
+    if(conversationId !== currentConversationId) return;
+
+    const mobile = isMobileLayout();
+
+    const d =
+      document.scrollingElement ||
+      document.documentElement;
+
+    const prevHeight =
+      mobile ? d.scrollHeight : messagesContainer.scrollHeight;
+
+    const prevTop =
+      mobile ? window.scrollY : messagesContainer.scrollTop;
+
+    const frag = document.createDocumentFragment();
+
+    snap.forEach(m => {
+
+      if(messagesContainer.querySelector(`[data-mid="${CSS.escape(m.id)}"]`)) return;
+
+      const row = buildMessageRow(m.data(), m.id);
+
+      if(row) frag.appendChild(row);
+
+    });
+
+    const first = btn ? btn.nextSibling : messagesContainer.firstChild;
+
+    messagesContainer.style.scrollBehavior = "auto";
+
+    messagesContainer.insertBefore(frag, first);
+
+    /* keep the user at the same message after inserting above */
+
+    const newHeight =
+      mobile ? d.scrollHeight : messagesContainer.scrollHeight;
+
+    if(mobile){
+      window.scrollTo(0, prevTop + (newHeight - prevHeight));
+    }else{
+      messagesContainer.scrollTop = prevTop + (newHeight - prevHeight);
+    }
+
+    if(snap.size > 0){
+      oldestLoadedDoc = snap.docs[0];
+    }
+
+    hasOlderMessages = snap.size >= MESSAGES_PAGE_SIZE;
+
+  }catch(err){
+
+    console.error("Load older messages error:", err);
+
+  }finally{
+
+    loadingOlder = false;
+
+    if(conversationId === currentConversationId){
+      updateOlderButton(conversationId);
+    }
+
+  }
+
+}
+
 async function openConversation(
   conversationId
 ){
@@ -3107,56 +3322,136 @@ function subscribeToMessages(
   const q =
     query(
       messagesRef,
-      orderBy(
-        "createdAt",
-        "asc"
-      )
+      orderBy("createdAt", "asc"),
+      limitToLast(MESSAGES_PAGE_SIZE)
     );
+
+  let firstSnapshot = true;
+
+  oldestLoadedDoc = null;
+  hasOlderMessages = false;
+  loadingOlder = false;
+
+  if(olderObserver){
+    olderObserver.disconnect();
+    olderObserver = null;
+  }
 
   unsubscribeMessages =
     onSnapshot(
       q,
       (snapshot) => {
 
-        messagesContainer.innerHTML =
-          "";
+        /* ---------- FIRST LOAD: draw the latest messages once ---------- */
 
-        if(snapshot.empty){
+        if(firstSnapshot){
 
-          messagesContainer.innerHTML = `
+          firstSnapshot = false;
 
-            <div class="empty">
+          messagesContainer.innerHTML = "";
 
-              <h3>
-                Start the conversation
-              </h3>
+          if(snapshot.empty){
 
-              <p>
-                Send your first message below.
-              </p>
+            messagesContainer.innerHTML = `
 
-            </div>
+              <div class="empty">
 
-          `;
+                <h3>
+                  Start the conversation
+                </h3>
+
+                <p>
+                  Send your first message below.
+                </p>
+
+              </div>
+
+            `;
+
+            return;
+
+          }
+
+          snapshot.forEach(m => {
+
+            const row = buildMessageRow(m.data(), m.id);
+
+            if(row) messagesContainer.appendChild(row);
+
+          });
+
+          oldestLoadedDoc = snapshot.docs[0];
+
+          hasOlderMessages = snapshot.size >= MESSAGES_PAGE_SIZE;
+
+          updateOlderButton(conversationId);
+
+          updateTypingRow();
+
+          scrollChatToBottom();
 
           return;
 
         }
 
-        snapshot.forEach(
-          messageDoc => {
+        /* ---------- LATER UPDATES: only touch what changed ---------- */
 
-            renderMessage(
-              messageDoc.data(),
-              messageDoc.id
-            );
+        const wasNearBottom = isChatNearBottom();
+
+        let addedMine = false;
+
+        const placeholder =
+          messagesContainer.querySelector(":scope > .empty, :scope > .loading");
+
+        if(placeholder && !snapshot.empty){
+          placeholder.remove();
+        }
+
+        snapshot.docChanges().forEach(change => {
+
+          /* "removed" also fires when the 30-message window slides; ignore it
+             (deleting a message only marks it deleted, it is not removed). */
+
+          if(change.type === "removed") return;
+
+          const data = change.doc.data();
+
+          const id = change.doc.id;
+
+          const existing =
+            messagesContainer.querySelector(`[data-mid="${CSS.escape(id)}"]`);
+
+          const row = buildMessageRow(data, id);
+
+          if(existing){
+
+            if(row){
+              existing.replaceWith(row);
+            }else{
+              existing.remove();
+            }
+
+          }else if(row){
+
+            appendMessageRow(row);
+
+            if(
+              change.type === "added" &&
+              currentUser &&
+              data.senderId === currentUser.uid
+            ){
+              addedMine = true;
+            }
 
           }
-        );
+
+        });
 
         updateTypingRow();
 
-        scrollChatToBottom();
+        if(addedMine || wasNearBottom){
+          scrollChatToBottom();
+        }
 
       },
       (error) => {
