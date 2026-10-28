@@ -2822,6 +2822,54 @@ async function openOrCreateConversation(
    OPEN CONVERSATION
 ========================================= */
 
+/*
+  Always jump instantly to the newest message when a chat opens.
+  Runs again after images/videos load (they change the height)
+  and after a short delay, so the view never stops half-way.
+*/
+
+function scrollChatToBottom(){
+
+  const el = messagesContainer;
+
+  if(!el) return;
+
+  const jump = () => {
+
+    el.style.scrollBehavior = "auto";
+
+    el.scrollTop = el.scrollHeight;
+
+  };
+
+  jump();
+
+  requestAnimationFrame(jump);
+
+  setTimeout(jump, 150);
+
+  setTimeout(jump, 500);
+
+  el.querySelectorAll("img, video").forEach(media => {
+
+    const evt =
+      media.tagName === "VIDEO"
+        ? "loadedmetadata"
+        : "load";
+
+    if(
+      (media.tagName === "IMG" && !media.complete) ||
+      (media.tagName === "VIDEO" && media.readyState < 1)
+    ){
+
+      media.addEventListener(evt, jump, { once: true });
+
+    }
+
+  });
+
+}
+
 async function openConversation(
   conversationId
 ){
@@ -3092,12 +3140,7 @@ function subscribeToMessages(
 
         updateTypingRow();
 
-        requestAnimationFrame(() => {
-
-          messagesContainer.scrollTop =
-            messagesContainer.scrollHeight;
-
-        });
+        scrollChatToBottom();
 
       },
       (error) => {
