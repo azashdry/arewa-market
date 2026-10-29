@@ -4686,10 +4686,15 @@ async function loadProducts(){
 
   try{
 
+    /* Fetch ONLY this seller's products (not the whole collection) */
     const snapshot =
       await getDocs(
-        collection(db,"products")
+        query(
+          collection(db,"products"),
+          where("sellerId","==",currentUser.uid)
+        )
       );
+
 
 
     allProducts = [];
