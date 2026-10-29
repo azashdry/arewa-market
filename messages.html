@@ -2099,6 +2099,11 @@ let conversations = [];
 
 let unsubscribeConversations = null;
 
+/* ---- conversations "load more" ---- */
+const CONVERSATIONS_PAGE_SIZE = 50;
+let conversationsLimit = CONVERSATIONS_PAGE_SIZE;
+let conversationsHasMore = false;
+
 let unsubscribeMessages = null;
 
 /* ---- pagination state for messages ---- */
@@ -2293,7 +2298,7 @@ function startConversations(){
       "lastMessageAt",
       "desc"
     ),
-    limit(50)
+    limit(conversationsLimit)
   );
 
   unsubscribeConversations =
@@ -2301,6 +2306,7 @@ function startConversations(){
       q,
       async (snapshot) => {
 
+        conversationsHasMore = snapshot.size >= conversationsLimit;
         conversations = [];
 
         for(
@@ -2490,6 +2496,35 @@ function renderConversations(){
     list.map(
       conversationItem
     ).join("");
+
+  /* "Load more" button (not shown while searching) */
+
+  if(conversationsHasMore && !search){
+
+    const moreBtn = document.createElement("button");
+
+    moreBtn.id = "loadMoreConvsBtn";
+    moreBtn.type = "button";
+    moreBtn.textContent = "⬇ Ɗauko ƙari";
+    moreBtn.style.cssText =
+      "display:block;width:calc(100% - 24px);margin:12px;padding:10px;" +
+      "border:1px solid #e3dfd7;border-radius:12px;background:#fff;" +
+      "color:#165d3c;font-size:13px;font-weight:600;cursor:pointer;";
+
+    moreBtn.addEventListener("click", () => {
+
+      moreBtn.disabled = true;
+      moreBtn.textContent = "Ana lodawa...";
+
+      conversationsLimit += CONVERSATIONS_PAGE_SIZE;
+
+      startConversations();
+
+    });
+
+    conversationsContainer.appendChild(moreBtn);
+
+  }
 
   document
     .querySelectorAll(
