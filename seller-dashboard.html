@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <script type="module" src="monitor.js"></script>
-<script>try{localStorage.removeItem("am_products_v1")}catch(e){}</script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -4806,13 +4805,47 @@ function renderProducts(){
   }
 
 
+  /* ---- LOCKED PRODUCTS (hidden from buyers on Free plan) ---- */
+  let lockedIds = new Set();
+
+  if(sellerData){
+
+    const premiumNow = getPremiumState();
+
+    const visibleNow =
+      getVisibleProductIds(
+        allProducts,
+        premiumNow.active
+      );
+
+    allProducts.forEach(p => {
+      if(!visibleNow.has(p.id)){
+        lockedIds.add(p.id);
+      }
+    });
+
+  }
+
+  const lockedBanner =
+    lockedIds.size > 0
+    ? `<div style="background:#fff4d6;border:1px solid #e6c96a;color:#7a5a00;padding:12px 14px;border-radius:12px;margin-bottom:14px;font-size:13px;line-height:1.55;">
+         🔒 <strong>${lockedIds.size}</strong> of your products are
+         locked and <strong>hidden from buyers</strong> because your
+         Premium is not active (Free plan shows only
+         ${FREE_MAX_PRODUCTS} products). Nothing was deleted.
+         Renew Premium to make them visible again.
+       </div>`
+    : "";
+
   container.innerHTML = `
 
-    <div class="products-grid">
+    ${lockedBanner}<div class="products-grid">
 
       ${
         allProducts.map(product => {
 
+          const locked =
+            lockedIds.has(product.id);
           const image =
             product.imageUrl || "";
 
@@ -4831,7 +4864,7 @@ function renderProducts(){
 
           return `
 
-            <div class="product-card">
+            <div class="product-card" style="${locked ? 'opacity:.7;border:2px dashed #c9a227;' : ''}">
 
               ${
                 image
@@ -4921,6 +4954,7 @@ function renderProducts(){
                       ${status}
 
                     </span>
+                    ${locked ? `<span style="display:inline-block;margin-left:6px;padding:4px 8px;border-radius:12px;font-size:11px;font-weight:bold;background:#fff1c9;color:#7a5a00;">🔒 Hidden from buyers</span>` : ""}
 
                   </div>
 
