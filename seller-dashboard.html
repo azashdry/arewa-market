@@ -2745,21 +2745,24 @@ onAuthStateChanged(auth, async user => {
 
     renderSellerProfile();
 
+    /* PERF: load what is visible first, defer the rest */
     loadCategories();
-
     loadProducts();
-
     loadPremiumData();
 
-    loadFeaturedSettingsData();
+    const deferLoad = window.requestIdleCallback
+      ? (fn) => requestIdleCallback(fn, { timeout: 2500 })
+      : (fn) => setTimeout(fn, 1200);
 
-    loadReferralData();
-
-    loadWithdrawalSettings();
-
-    loadWithdrawalData();
-
-    listenForMessages();
+    deferLoad(() => {
+      loadFeaturedSettingsData();
+      loadWithdrawalSettings();
+      listenForMessages();
+      setTimeout(() => {
+        loadReferralData();
+        loadWithdrawalData();
+      }, 800);
+    });
 
     // Re-check the Premium countdown/expiry every minute so it
     // flips to "Expired" and the Free-plan limits kick in on
@@ -4877,6 +4880,8 @@ function renderProducts(){
                 `<img
                   class="product-image"
                   src="${escapeHtml(image)}"
+                  loading="lazy"
+                  decoding="async"
                   alt="${escapeHtml(product.name || "Product")}"
                   onerror="this.style.display='none';">`
                 :

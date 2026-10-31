@@ -6,7 +6,7 @@
    - Ana nuna shi sau ɗaya a kowane zama (session), kada ya
      dame mutum idan yana tafiya tsakanin shafuka.
    - Yana ɓacewa bayan shafi ya gama loading (mafi ƙaranci
-     0.7 daƙiƙa), kuma a ƙarshe bayan daƙiƙa 6 ko da menene.
+     0.7 daƙiƙa), kuma a ƙarshe bayan daƙiƙa 2.5 ko da menene.
    Ana saka shi a <head>, kafin sauran scripts:
    <script src="splash.js"></script>
 ========================================================= */
@@ -88,8 +88,10 @@
     }, wait);
   }
 
-  if(document.readyState === "complete") hide();
-  else window.addEventListener("load", hide);
+  // PERF: kada a jira "load" (yana jiran duk hotuna/fonts). A boye idan
+  // shafi ya fara fitowa (DOMContentLoaded), ko bayan daƙiƙa 2.5 a ƙarshe.
+  if(document.readyState !== "loading") hide();
+  else document.addEventListener("DOMContentLoaded", hide);
 
-  setTimeout(hide, 6000);   // na tsaro: kada ya makale
+  setTimeout(hide, 2500);   // na tsaro: kada ya makale
 })();

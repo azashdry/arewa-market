@@ -2309,6 +2309,21 @@ function startConversations(){
         conversationsHasMore = snapshot.size >= conversationsLimit;
         conversations = [];
 
+        /* PERF: fetch all missing users IN PARALLEL (not one-by-one) */
+        try{
+          const missingIds = [...new Set(
+            snapshot.docs
+              .map(d => (d.data().participantIds || []).find(id => id !== currentUser.uid))
+              .filter(id => id && !userCache[id])
+          )];
+          await Promise.all(missingIds.map(async uid => {
+            try{
+              const us = await getDoc(doc(db,"users",uid));
+              if(us.exists()) userCache[uid] = { id: uid, ...us.data() };
+            }catch(e){ console.error("Prefetch user error:", e); }
+          }));
+        }catch(e){ console.error("Prefetch error:", e); }
+
         for(
           const conversationDoc
           of snapshot.docs
@@ -5618,7 +5633,10 @@ if ("serviceWorker" in navigator) {
     mic.style.display=s?"none":"flex";
   }
   inp.addEventListener("input",sync);
-  setInterval(sync,250);
+  ["chatImagePreviewBox","chatVideoPreviewBox","chatAudioPreviewBox","chatFilePreviewBox","editMessageBox"].forEach(function(id){
+    var e=$(id); if(e) new MutationObserver(sync).observe(e,{attributes:true,attributeFilter:["class"]});
+  });
+  new MutationObserver(sync).observe(mic,{attributes:true,attributeFilter:["class"]});
   sync();
 })();
 </script>
