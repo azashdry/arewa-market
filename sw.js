@@ -84,36 +84,41 @@ self.addEventListener("fetch", (event) => {
   // Fayilolin shafin namu kaɗai (ba Firebase/Firestore/Cloudinary ba)
   if(url.origin !== self.location.origin) return;
 
-  event.respondWith(
+  // Network-first, amma idan network ya yi jinkiri (fiye da 3.5s) a nuna kwafin da aka adana
+  event.respondWith(new Promise((resolve) => {
+
+    let done = false;
+
+    const fallback = () =>
+      caches.match(req).then((hit) =>
+        hit || (req.mode === "navigate" ? caches.match("./index.html") : undefined)
+      );
+
+    const timer = setTimeout(() => {
+      fallback().then((hit) => { if(hit && !done){ done = true; resolve(hit); } });
+    }, 3500);
+
     fetch(req)
       .then((res) => {
+        clearTimeout(timer);
         if(res && res.ok){
           const copy = res.clone();
           caches.open(CACHE).then((c) => c.put(req, copy));
         }
-        return res;
+        if(!done){ done = true; resolve(res); }
       })
-      .catch(() =>
-        caches.match(req).then((hit) =>
-          hit || (req.mode === "navigate" ? caches.match("./index.html") : undefined)
-        )
-      )
-  );
+      .catch(() => {
+        clearTimeout(timer);
+        fallback().then((hit) => { if(!done){ done = true; resolve(hit || Response.error()); } });
+      });
+
+  }));
 });
 
 
 /* =====================================================
    PUSH NOTIFICATIONS (Firebase Cloud Messaging)
 ===================================================== */
-
-// Alamar/lamba a kan icon ɗin app (idan wayar tana goyon baya)
-function updateBadge(){
-  return self.registration.getNotifications().then((list) => {
-    if(!("setAppBadge" in self.navigator)) return;
-    if(list.length) return self.navigator.setAppBadge(list.length);
-    return self.navigator.clearAppBadge();
-  }).catch(() => {});
-}
 
 self.addEventListener("push", (event) => {
 
@@ -142,7 +147,7 @@ self.addEventListener("push", (event) => {
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
       const focused = list.some((c) => c.visibilityState === "visible" && c.focused);
       if(focused) return;
-      return self.registration.showNotification(title, options).then(updateBadge);
+      return self.registration.showNotification(title, options);
     })
   );
 });
@@ -150,7 +155,6 @@ self.addEventListener("push", (event) => {
 self.addEventListener("notificationclick", (event) => {
 
   event.notification.close();
-  updateBadge();
 
   const target = new URL(
     (event.notification.data && event.notification.data.url) || "index.html",

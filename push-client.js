@@ -13,11 +13,10 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-import {
-  getMessaging,
-  getToken,
-  isSupported
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js";
+// Ana lodin Firebase Messaging ne kawai idan ana bukata (yana rage nauyin kowane shafi)
+function loadMessaging(){
+  return import("https://www.gstatic.com/firebasejs/12.1.0/firebase-messaging.js");
+}
 
 
 /* ====== SAITI (ka cika waɗannan guda biyu) ====== */
@@ -47,6 +46,8 @@ async function authHeaders(){
 /* ---------- Rajistar token ---------- */
 
 async function registerToken(){
+
+  const { getMessaging, getToken, isSupported } = await loadMessaging();
 
   if(!(await isSupported())) return false;
 
@@ -163,12 +164,12 @@ onAuthStateChanged(auth, async (user) => {
   if(!user || !configured) return;
   if(!("Notification" in window) || !("serviceWorker" in navigator)) return;
 
-  try{
-    if(!(await isSupported())) return;   // misali iPhone idan ba a saka app ba
-  }catch(e){ return; }
-
-  // An riga an ba da izini: kawai a tabbatar server yana da token
+  // An riga an ba da izini: a tabbatar server yana da token (ba tare da lodin komai ba idan an yi kwanan nan)
   if(Notification.permission === "granted"){
+    try{
+      const prev = JSON.parse(localStorage.getItem(REG_KEY) || "null");
+      if(prev && prev.uid === user.uid && Date.now() - prev.at < 6 * 3600000) return;
+    }catch(e){}
     registerToken().catch(e => console.error("push register:", e));
     return;
   }
@@ -181,6 +182,11 @@ onAuthStateChanged(auth, async (user) => {
     const t = Number(localStorage.getItem(ASK_KEY) || 0);
     if(t && Date.now() - t < ASK_HIDE_DAYS * 86400000) return;
   }catch(e){}
+
+  try{
+    const m = await loadMessaging();
+    if(!(await m.isSupported())) return;   // misali iPhone idan ba a saka app ba
+  }catch(e){ return; }
 
   // Banner yana fitowa da zarar mutum ya shiga
   setTimeout(showAskBanner, 800);

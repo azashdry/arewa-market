@@ -761,6 +761,7 @@ body.has-bottom-nav{
 
 <body class="has-bottom-nav">
 
+
 <header>
 
   <div class="header-inner">
@@ -1095,6 +1096,7 @@ let currentUserData = null;
 let messagesUnsubscribe = null;
 
 let premiumSellers = new Set();
+let premiumReady = false;   // false = ba mu boye products ba tukuna
 let followingIds = new Set();
 let followingOnly = false;
 let nearbyOnly = false;
@@ -1949,6 +1951,9 @@ async function loadPremiumSellers(){
 
 function hideProductsOverFreeLimit(){
 
+  if(!premiumReady) return;
+
+
   const bySeller = {};
 
   allProducts.forEach(product => {
@@ -2114,7 +2119,13 @@ async function fetchProducts(silent){
 
     allProducts = fresh;
 
-    await loadPremiumSellers();
+    premiumReady = false;
+
+    renderProducts();            // nuna products nan take (ba sai an jira sellers ba)
+
+    await loadPremiumSellers();  // a baya: Premium badge da iyakar free plan
+
+    premiumReady = true;
 
     writeProductCache();
 
@@ -2168,6 +2179,8 @@ async function loadProducts(){
     allProducts = cache.products;
 
     premiumSellers = new Set(cache.premium || []);
+
+    premiumReady = true;
 
     hideProductsOverFreeLimit();
 
@@ -2468,6 +2481,9 @@ let visibleCount = PAGE_SIZE;
 let renderSig = "";
 
 function renderProducts(){
+
+  if(window.__hideSplash) window.__hideSplash();
+
 
   const products =
     getFilteredProducts();
