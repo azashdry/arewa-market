@@ -768,7 +768,7 @@ body.has-bottom-nav{
 
     <a href="index.html" class="brand">
       <h1>Arewa Market</h1>
-      <p data-i18n="tagline">Kasuwar Arewa a Hannunka</p>
+      <p data-i18n="tagline">Northern Nigeria's market in your hand</p>
     </a>
 
     <div class="header-search">
@@ -803,7 +803,7 @@ body.has-bottom-nav{
 
 <section class="hero">
 
-  <div class="eyebrow">SAUKI YAZO!</div>
+  <div class="eyebrow" data-i18n="hero_eyebrow">SHOPPING MADE EASY!</div>
 
   <h2 data-i18n="hero_h">Buy & Sell Across Northern Nigeria</h2>
 
@@ -827,7 +827,7 @@ body.has-bottom-nav{
       ★ Following
     </button>
     <button type="button" class="feed-tab" id="tabNearby" data-i18n="tab_nearby">
-      📍 Kusa da kai
+      📍 Near me
     </button>
   </div>
   <div class="nearby-note" id="nearbyNote" style="display:none"></div>
@@ -844,6 +844,7 @@ body.has-bottom-nav{
     <button
       class="category-btn active"
       data-category="all"
+      data-i18n="all"
     >
       All
     </button>
@@ -873,7 +874,7 @@ body.has-bottom-nav{
 
     <select id="marketFilter">
 
-      <option value="all">All Markets / Duk Kasuwanni</option>
+      <option value="all" data-i18n="all_markets">All Markets</option>
 
     </select>
 
@@ -923,7 +924,7 @@ body.has-bottom-nav{
     id="productsGrid"
   >
 
-    <div class="loading">
+    <div class="loading" data-i18n="loading_products">
       Loading products...
     </div>
 
@@ -956,7 +957,7 @@ import {
   db
 } from "./firebase.js";
 
-import { t } from "./i18n.js";
+import { t, getLang } from "./i18n.js";
 
 
 import {
@@ -1188,7 +1189,7 @@ function refreshMarketOptions(){
 
   });
 
-  const sig = JSON.stringify([counts, currentMarket]);
+  const sig = JSON.stringify([counts, currentMarket, getLang()]);
 
   if(sig === marketSig) return;
 
@@ -1199,7 +1200,7 @@ function refreshMarketOptions(){
     (counts[m.toLowerCase()] ? " (" + counts[m.toLowerCase()] + ")" : "") +
     '</option>';
 
-  let html = '<option value="all">All Markets / Duk Kasuwanni</option>';
+  let html = '<option value="all" data-i18n="all_markets">' + t("all_markets") + '</option>';
 
   NORTH_MARKETS.forEach(g => {
 
@@ -1212,7 +1213,7 @@ function refreshMarketOptions(){
 
   if(ex.length){
 
-    html += '<optgroup label="Other markets / Wasu kasuwanni">' +
+    html += '<optgroup label="' + escapeHtml(t("other_markets")) + '">' +
       ex.map(opt).join("") + '</optgroup>';
 
   }
@@ -1456,6 +1457,7 @@ function renderLoggedInNav(){
       <a
         href="seller-dashboard.html"
         class="seller-btn"
+        data-i18n="seller_dashboard"
       >
         Seller Dashboard
       </a>
@@ -1475,6 +1477,7 @@ function renderLoggedInNav(){
         <a
           href="seller-apply.html"
           class="seller-btn"
+          data-i18n="become_seller"
         >
           Become a Seller
         </a>
@@ -1492,7 +1495,7 @@ function renderLoggedInNav(){
       href="messages.html"
       class="messages-btn"
     >
-      💬 Messages
+      💬 <span data-i18n="nav_messages">Messages</span>
 
       <span
         id="messageBadge"
@@ -1512,6 +1515,7 @@ function renderLoggedInNav(){
     <button
       class="logout"
       id="logoutBtn"
+      data-i18n="logout"
     >
       Logout
     </button>
@@ -1547,7 +1551,7 @@ function renderLoggedInNav(){
           await signOut(auth);
 
           showMessage(
-            "You have been logged out."
+            t("logged_out")
           );
 
           setTimeout(() => {
@@ -1561,7 +1565,7 @@ function renderLoggedInNav(){
           console.error(error);
 
           showMessage(
-            "Logout failed."
+            t("logout_fail")
           );
 
         }
@@ -1755,6 +1759,7 @@ async function loadCategories(){
       <button
         class="category-btn active"
         data-category="all"
+        data-i18n="all"
       >
         All
       </button>
@@ -1777,6 +1782,7 @@ function renderCategories(){
     <button
       class="category-btn active"
       data-category="all"
+      data-i18n="all"
     >
       All
     </button>
@@ -2144,18 +2150,19 @@ async function fetchProducts(silent){
       <div class="empty">
 
         <h3>
-          Unable to load products
+          ${t("load_fail_h")}
         </h3>
 
         <p>
-          Please refresh the page and try again.
+          ${t("load_fail_p")}
         </p>
 
       </div>
 
     `;
 
-    productCount.textContent = "0 products";
+    productCount.removeAttribute("data-i18n");
+    productCount.textContent = t("count_many", { n: 0 });
 
   }
 
@@ -2196,7 +2203,7 @@ async function loadProducts(){
 
   productsGrid.innerHTML = `
 
-    <div class="loading">
+    <div class="loading" data-i18n="loading_products">
       Loading products...
     </div>
 
@@ -2510,15 +2517,15 @@ function renderProducts(){
         <h3>
           ${
             followingIds.size === 0
-              ? "You are not following any seller yet"
-              : "No products from sellers you follow"
+              ? t("follow_none_h")
+              : t("follow_empty_h")
           }
         </h3>
         <p>
           ${
             followingIds.size === 0
-              ? "Open a seller profile and tap Follow to see their new products here."
-              : "Check again later, or try another category or state."
+              ? t("follow_none_p")
+              : t("follow_empty_p")
           }
         </p>
       </div>
@@ -2530,11 +2537,11 @@ function renderProducts(){
     productsGrid.innerHTML = `
       <div class="empty">
         <h3>
-          No products found
+          ${t("no_products_h")}
         </h3>
 
         <p>
-          Try another search, category or state.
+          ${t("no_products_p")}
         </p>
 
       </div>
@@ -2561,8 +2568,8 @@ function renderProducts(){
   productsGrid.innerHTML =
     shown.map(productCard).join("") +
     (products.length > shown.length
-      ? '<div class="more-wrap"><button type="button" class="more-btn" id="moreBtn">Show more (' +
-        (products.length - shown.length) + ')</button></div>'
+      ? '<div class="more-wrap"><button type="button" class="more-btn" id="moreBtn">' +
+        t("show_more", { n: products.length - shown.length }) + '</button></div>'
       : "");
 
   const moreBtn = document.getElementById("moreBtn");
@@ -2623,12 +2630,12 @@ function productCard(product){
 
   const category =
     product.category ||
-    "Uncategorized";
+    t("uncategorized");
 
 
   const location =
     product.location ||
-    "Northern Nigeria";
+    t("loc_default");
 
 
   const sellerName =
@@ -2640,7 +2647,7 @@ function productCard(product){
     isActivelyFeatured(product)
       ? `
         <span class="featured">
-          Featured
+          ${t("featured")}
         </span>
       `
       : "";
@@ -2653,7 +2660,7 @@ function productCard(product){
     )
       ? `
         <div class="premium-badge">
-          ★ PREMIUM SELLER
+          ${t("premium_seller")}
         </div>
       `
       : "";
@@ -2675,7 +2682,7 @@ function productCard(product){
           product.sellerId
         )}"
       >
-        View Seller Profile →
+        ${t("view_seller")}
       </a>
 
     `;
@@ -2688,7 +2695,7 @@ function productCard(product){
         class="seller-link"
         style="cursor:default;"
       >
-        Seller: Arewa Market
+        ${t("seller_admin")}
       </span>
 
     `;
@@ -2715,7 +2722,7 @@ function productCard(product){
       encodeURIComponent(product.price || "");
 
     messageBtn =
-      `<a class="message-seller" href="${escapeHtml(msgUrl)}">💬 Message Seller</a>`;
+      `<a class="message-seller" href="${escapeHtml(msgUrl)}">${t("msg_seller")}</a>`;
 
   }
 
@@ -2728,7 +2735,7 @@ function productCard(product){
         class="product-image"
         src="${escapeHtml(image)}"
         alt="${escapeHtml(
-          product.name || "Product"
+          product.name || t("product_alt")
         )}"
         loading="lazy"
         decoding="async"
@@ -2746,7 +2753,7 @@ function productCard(product){
         <h3>
           ${escapeHtml(
             product.name ||
-            "Unnamed Product"
+            t("unnamed")
           )}
         </h3>
 
@@ -2785,7 +2792,7 @@ function productCard(product){
           ${
             product.sellerId &&
             followingIds.has(product.sellerId)
-              ? '<span class="following-tag">✓ Following</span>'
+              ? '<span class="following-tag">' + t("following_tag") + '</span>'
               : ""
           }
         </div>
@@ -2819,7 +2826,7 @@ function productCard(product){
             product.id
           )}"
         >
-          View Product →
+          ${t("view_product")}
         </a>
         ${messageBtn}
 
@@ -2857,8 +2864,8 @@ function updateFollowingLabel(){
 
   tabFollowing.textContent =
     followingIds.size > 0
-      ? `★ Following (${followingIds.size})`
-      : "★ Following";
+      ? `${t("tab_following")} (${followingIds.size})`
+      : t("tab_following");
 
 }
 
@@ -3156,6 +3163,7 @@ const voiceBtn = document.getElementById("voiceBtn");
 })();
 
 window.addEventListener("langchange", () => {
+  updateFollowingLabel();
   renderProducts();
   if(nearbyOnly) openNearby();
 });
@@ -3355,6 +3363,7 @@ if ("serviceWorker" in navigator) {
   import { auth } from "./firebase.js";
   import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
   import { loadStatusGroups } from "./status-core.js";
+  import { t } from "./i18n.js";
   import { db } from "./firebase.js";
   import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -3368,9 +3377,9 @@ if ("serviceWorker" in navigator) {
       const u = d.exists() ? d.data() : {};
       if (u.sellerStatus === "approved" && u.isSeller === true) return;
       if (u.sellerStatus === "pending") {
-        banner.innerHTML = '<div class="sb-text"><b>Seller application pending</b>We are reviewing your application.</div><a href="seller-apply.html">View</a>';
+        banner.innerHTML = '<div class="sb-text"><b data-i18n="sb_pending_h">' + t("sb_pending_h") + '</b><span data-i18n="sb_pending_p">' + t("sb_pending_p") + '</span></div><a href="seller-apply.html" data-i18n="sb_view">' + t("sb_view") + '</a>';
       } else {
-        banner.innerHTML = '<div class="sb-text"><b>Want to sell on Arewa Market?</b>Open your shop and reach buyers across Arewa.</div><a href="seller-apply.html">Become a Seller</a>';
+        banner.innerHTML = '<div class="sb-text"><b data-i18n="sb_apply_h">' + t("sb_apply_h") + '</b><span data-i18n="sb_apply_p">' + t("sb_apply_p") + '</span></div><a href="seller-apply.html" data-i18n="become_seller">' + t("become_seller") + '</a>';
       }
       banner.classList.add("show");
     } catch (e) { console.error("seller banner", e); }
@@ -3389,7 +3398,7 @@ if ("serviceWorker" in navigator) {
     const mine = groups.find(g => g.isMe);
     let html = '<a class="st-item" href="' + (mine ? "status.html?view=" + user.uid : "status.html?new=1") + '">' +
       '<div class="st-ring ' + (mine ? "seen" : "mine") + '"><div class="st-av">' + av("Me", mine ? mine.photo : "") +
-      '<span class="st-plus">+</span></div></div><div class="st-name">My status</div></a>';
+      '<span class="st-plus">+</span></div></div><div class="st-name" data-i18n="my_status">' + t("my_status") + '</div></a>';
 
     groups.filter(g => !g.isMe).forEach(g => {
       html += '<a class="st-item" href="status.html?view=' + esc(g.ownerId) + '">' +
