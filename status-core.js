@@ -82,6 +82,26 @@ export async function markSeen(statusId) {
   await updateDoc(doc(db, "statuses", statusId), { seenBy: arrayUnion(me.uid) });
 }
 
+/* ---------- Ƙara sabbin abokai cikin status ɗin da ke raye ----------
+   viewerIds ana ɗaukarsa ne lokacin da aka saka status. Idan mutum ya zama abokinka
+   bayan haka, ba zai ga status ɗin ba. Wannan yana gyara hakan (mai status ne kaɗai ke yi). */
+async function syncMyStatusViewers(uid, myItems) {
+  try {
+    const friendIds = await getFriendIds(uid);
+    if (!friendIds.length) return;
+
+    await Promise.all(myItems.map(async s => {
+      const have = new Set(s.viewerIds || []);
+      const missing = friendIds.filter(id => !have.has(id));
+      if (!missing.length) return;
+      if (have.size + missing.length > 500) return;
+      await updateDoc(doc(db, "statuses", s.id), { viewerIds: arrayUnion(...missing) });
+    }));
+  } catch (e) {
+    console.warn("status viewers sync:", e && (e.code || e.message));
+  }
+}
+
 /* ---------- Karanta status na abokai (da nawa) ---------- */
 export async function loadStatusGroups(uid) {
   const snap = await getDocs(query(
@@ -95,6 +115,10 @@ export async function loadStatusGroups(uid) {
     .map(d => ({ id: d.id, ...d.data() }))
     .filter(s => (s.expiresAtMs || 0) > now)
     .sort((a, b) => (a.createdAtMs || 0) - (b.createdAtMs || 0));
+
+  // Abokan da aka ƙara bayan na saka status: a ƙara su cikin masu ganin status ɗina (ba tare da jira ba)
+  const mine = items.filter(s => s.ownerId === uid);
+  if (mine.length) syncMyStatusViewers(uid, mine).catch(() => {});
 
   const byOwner = new Map();
   items.forEach(s => {
