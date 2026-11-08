@@ -15,12 +15,30 @@ import {
 const style = document.createElement("style");
 style.textContent = `
 .bottom-nav .bn-icon{position:relative}
+.bottom-nav .bn-item{font-size:10.5px}
 .bottom-nav .bn-badge{
   position:absolute;top:-5px;right:-10px;min-width:16px;height:16px;
   padding:0 4px;border-radius:8px;background:#d93025;color:#fff;
   font-size:10px;font-weight:700;line-height:16px;text-align:center;
 }`;
 document.head.appendChild(style);
+
+// Maɓallin Feed: ana saka shi ta nan, don ya bayyana a duk shafuka ba tare da gyara kowanne ba
+function ensureFeedTab() {
+  const nav = document.querySelector(".bottom-nav");
+  if (!nav || nav.querySelector('a[href="feed.html"]')) return;
+  const a = document.createElement("a");
+  a.href = "feed.html";
+  a.className = "bn-item";
+  a.innerHTML =
+    '<span class="bn-icon"><i class="ti ti-news"></i></span>' +
+    '<span class="bn-label">Feed</span>';
+  const home = nav.querySelector('a[href="index.html"]');
+  if (home && home.nextSibling) nav.insertBefore(a, home.nextSibling);
+  else if (home) nav.appendChild(a);
+  else nav.insertBefore(a, nav.firstChild);
+}
+ensureFeedTab();
 
 function setBadge(page, count) {
   const link = document.querySelector('.bottom-nav a[href="' + page + '"] .bn-icon');
@@ -70,6 +88,8 @@ function updateActive(user){
   let target = null;
   if (file === "index.html" || file === "product.html" || file === "status.html" || file === "") {
     target = nav.querySelector('a[href="index.html"]');
+  } else if (file === "feed.html") {
+    target = nav.querySelector('a[href="feed.html"]');
   } else if (file === "friends.html") {
     target = nav.querySelector('a[href="friends.html"]');
   } else if (file === "messages.html") {

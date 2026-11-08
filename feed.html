@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script type="module" src="monitor.js"></script>
+<script src="splash.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arewa Market - Feed</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;letter-spacing:.2px}
+body{font-family:'Inter',Arial,sans-serif;background:#f8f6f3;color:#222;padding-bottom:84px}
+
+.header{background:#075e36;color:#fff;padding:16px;border-bottom:3px solid #c9a227;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.header a{color:#fff;text-decoration:none;font-size:22px}
+.header h1{font-size:20px;flex:1}
+
+.wrap{max-width:640px;margin:0 auto;padding:12px}
+
+/* ---------- Composer slot (Mataki na 3) ---------- */
+#composerSlot{margin-bottom:12px}
+
+/* ---------- Post card ---------- */
+.post{background:#fff;border-radius:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden}
+.p-head{display:flex;align-items:center;gap:10px;padding:12px 12px 8px}
+.avatar{width:42px;height:42px;border-radius:50%;background:#075e36;color:#fff;display:flex;align-items:center;justify-content:center;font:700 17px 'Inter',sans-serif;overflow:hidden;flex-shrink:0}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.p-who{flex:1;min-width:0}
+.p-name{font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-name a{color:inherit;text-decoration:none}
+.p-time{font-size:12px;color:#888;margin-top:1px}
+.p-more{border:0;background:transparent;font-size:22px;color:#777;padding:4px 8px;cursor:pointer}
+
+.p-text{padding:2px 14px 10px;font-size:15px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.p-text.clamp{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.p-seemore{display:block;border:0;background:transparent;color:#075e36;font:600 13px 'Inter',sans-serif;padding:0 14px 10px;cursor:pointer}
+
+/* ---------- Images grid ---------- */
+.imgs{display:grid;gap:2px;background:#eee}
+.imgs img{width:100%;height:100%;object-fit:cover;display:block;background:#e8e6e1;cursor:pointer}
+.imgs.n1{grid-template-columns:1fr}
+.imgs.n1 img{max-height:460px;height:auto;aspect-ratio:auto}
+.imgs.n2{grid-template-columns:1fr 1fr;aspect-ratio:2/1}
+.imgs.n3{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:1/1}
+.imgs.n3 img:first-child{grid-row:1/3}
+.imgs.n4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:1/1}
+
+/* ---------- Product chip ---------- */
+.p-product{display:flex;align-items:center;gap:8px;margin:10px 14px 0;padding:9px 12px;background:#fff4d6;border-radius:10px;color:#6b5400;font:600 13px 'Inter',sans-serif;text-decoration:none}
+
+/* ---------- Actions ---------- */
+.p-stats{display:flex;justify-content:space-between;padding:10px 14px 6px;font-size:12.5px;color:#777}
+.p-actions{display:flex;border-top:1px solid #eee;margin-top:6px}
+.p-actions button{flex:1;border:0;background:transparent;padding:11px 4px;font:600 13px 'Inter',sans-serif;color:#555;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.p-actions button.liked{color:#d93025}
+.p-actions button:active{background:#f3f1ec}
+.p-comments{display:none;border-top:1px solid #eee;padding:10px 14px}
+.p-comments.open{display:block}
+
+/* ---------- States ---------- */
+.sk{background:#fff;border-radius:14px;margin-bottom:12px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sk i{display:block;background:linear-gradient(90deg,#eee,#f6f4f0,#eee);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:6px}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.empty{text-align:center;color:#777;padding:40px 16px;font-size:14px;line-height:1.6}
+.more{display:block;margin:6px auto 0;border:0;border-radius:10px;background:#075e36;color:#fff;padding:11px 22px;font:600 14px 'Inter',sans-serif;cursor:pointer}
+.more:disabled{opacity:.55}
+.err{background:#fdecea;color:#b3261e;border-radius:10px;padding:12px;font-size:13px;margin-bottom:12px}
+
+/* ---------- Lightbox ---------- */
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:2000;display:none;align-items:center;justify-content:center}
+#lb.open{display:flex}
+#lb img{max-width:100%;max-height:100%;object-fit:contain}
+#lb button{position:absolute;top:14px;right:16px;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:22px;width:40px;height:40px;border-radius:50%}
+
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:3000}
+#toast.show{opacity:1}
+
+/* ---------- BOTTOM NAV (same as friends.html) ---------- */
+.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:999;justify-content:space-around;align-items:stretch;background:#fff;border-top:1px solid #e6e2da;padding:0 0 env(safe-area-inset-bottom,0px);box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.bottom-nav .bn-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:#8a8f8c;font-size:10.5px;flex:1;padding:12px 0 8px;font-weight:500;background:transparent;border:0;-webkit-tap-highlight-color:transparent}
+.bottom-nav .bn-item::before{content:"";position:absolute;top:0;left:25%;right:25%;height:3px;border-radius:2px;background:transparent;transition:background .2s}
+.bottom-nav .bn-item.active{color:#075e36;font-weight:700}
+.bottom-nav .bn-item.active::before{background:#c9a227}
+.bottom-nav .bn-icon{font-size:22px;line-height:1;display:flex}
+</style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10462d">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+</head>
+
+<body>
+
+<div class="header">
+  <a href="index.html" aria-label="Back"><i class="ti ti-arrow-left"></i></a>
+  <h1>Feed</h1>
+</div>
+
+<div class="wrap">
+  <!-- Mataki na 3: composer zai shiga nan -->
+  <div id="composerSlot"></div>
+
+  <div id="feedError"></div>
+  <div id="feed"></div>
+  <div id="feedEmpty" class="empty" style="display:none">
+    <i class="ti ti-news" style="font-size:36px;color:#c9a227"></i><br>
+    No posts yet. Be the first to share something!
+  </div>
+  <button id="btnMore" class="more" style="display:none">Show more</button>
+</div>
+
+<div id="lb"><button id="lbClose" aria-label="Close">&times;</button><img id="lbImg" alt=""></div>
+<div id="toast"></div>
+
+<nav class="bottom-nav">
+  <a href="index.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-home"></i></span>
+    <span class="bn-label">Home</span>
+  </a>
+  <a href="feed.html" class="bn-item active">
+    <span class="bn-icon"><i class="ti ti-news"></i></span>
+    <span class="bn-label">Feed</span>
+  </a>
+  <a href="friends.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-users"></i></span>
+    <span class="bn-label">Friends</span>
+  </a>
+  <a href="messages.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-message-circle"></i></span>
+    <span class="bn-label">Messages</span>
+  </a>
+  <a href="seller-dashboard.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-building-store"></i></span>
+    <span class="bn-label">Dashboard</span>
+  </a>
+  <a href="login.html" id="navProfileLink" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-user"></i></span>
+    <span class="bn-label">Profile</span>
+  </a>
+</nav>
+
+<script type="module" src="feed.js"></script>
+<script type="module" src="feed-compose.js"></script>
+<script type="module" src="feed-actions.js"></script>
+<script type="module" src="bottom-nav.js"></script>
+<script type="module" src="push-client.js"></script>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+}
+</script>
+</body>
+</html>
