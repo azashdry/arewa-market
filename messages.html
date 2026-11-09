@@ -1238,6 +1238,26 @@ header .logo small{opacity:.8;margin-top:2px}
 .chat-recording-stop{background:var(--g2)!important;color:#fff!important;border-radius:20px}
 .chat-media-preview{background:#eef6f1;border:0;border-top:1px solid var(--ln);border-radius:0;margin:0;color:var(--g2)}
 </style>
+<style id="msg-like-look">
+/* ===== Messenger-style composer: [clip][mic] [rubutu] [like | send] ===== */
+.chat-input #chatClipBtn{order:0}
+.chat-input #chatMicBtn{order:1}
+.chat-input textarea{order:2}
+.chat-input #sendBtn,.chat-input #chatLikeBtn{order:3}
+.chat-input #chatClipBtn,.chat-input #chatMicBtn,.chat-input #chatLikeBtn,.chat-input #sendBtn{
+  background:transparent;border-color:transparent;color:var(--g2);width:40px;height:40px;min-height:40px;padding:0;border-radius:50%}
+.chat-input #chatClipBtn .gi,.chat-input #chatMicBtn .gi,.chat-input #chatLikeBtn .gi,.chat-input #sendBtn .gi{width:25px;height:25px}
+.chat-input #chatMicBtn.recording{background:#b3261e;border-color:#b3261e;color:#fff}
+.chat-input #chatLikeBtn{display:flex;align-items:center;justify-content:center;cursor:pointer}
+.chat-input #chatLikeBtn:active,.chat-input #sendBtn:active{background:rgba(0,0,0,.06)}
+/* ===== Katin post da aka raba daga Feed ===== */
+.shared-post-card{display:block;width:240px;max-width:100%;background:rgba(0,0,0,.06);border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;margin:2px 0 4px}
+.shared-post-card img{display:block;width:100%;height:140px;object-fit:cover;background:#ddd}
+.spc-body{padding:8px 10px}
+.spc-who{font-weight:700;font-size:13px}
+.spc-text{font-size:13px;line-height:1.35;margin-top:2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.spc-open{font-size:11.5px;color:#6b7a72;margin-top:4px}
+</style>
 <style id="msg-file-css">
 .msg-file{display:flex;gap:8px;align-items:center;text-decoration:none;color:inherit;background:rgba(0,0,0,.06);padding:8px 10px;border-radius:8px;margin:2px 0 4px;cursor:pointer}
 .msg-file-info{min-width:0;display:flex;flex-direction:column}
@@ -1681,6 +1701,8 @@ body.chat-active .fab-stack{display:none!important}
           <button type="button" id="chatMicBtn" class="gic gb" aria-label="Voice note" title="Record voice note"><svg class="gi" viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/></svg></button>
 
           <button type="submit" id="sendBtn" class="gic gb send-btn" aria-label="Send" style="display:none"><svg class="gi" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+
+          <button type="button" id="chatLikeBtn" class="gic" aria-label="Like" title="Send a like"><svg class="gi" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></button>
 
         </form>
 
@@ -4164,6 +4186,81 @@ function renderMessage(
         : ""
     );
 
+  if(message.sharedPostId){
+
+    const card =
+      document.createElement("a");
+
+    card.className =
+      "shared-post-card";
+
+    card.href =
+      "feed.html?post=" +
+      encodeURIComponent(
+        message.sharedPostId
+      );
+
+    const sImg =
+      String(message.sharedPostImage || "");
+
+    if(sImg.indexOf("https://res.cloudinary.com/") === 0){
+
+      const im =
+        document.createElement("img");
+
+      im.src = sImg;
+      im.alt = "";
+      im.loading = "lazy";
+
+      card.appendChild(im);
+
+    }
+
+    const body =
+      document.createElement("div");
+
+    body.className = "spc-body";
+
+    const who =
+      document.createElement("div");
+
+    who.className = "spc-who";
+
+    who.textContent =
+      String(message.sharedPostAuthor || "Post");
+
+    body.appendChild(who);
+
+    if(message.sharedPostText){
+
+      const tx =
+        document.createElement("div");
+
+      tx.className = "spc-text";
+
+      tx.textContent =
+        String(message.sharedPostText);
+
+      body.appendChild(tx);
+
+    }
+
+    const op =
+      document.createElement("div");
+
+    op.className = "spc-open";
+
+    op.textContent =
+      "Tap to view post";
+
+    body.appendChild(op);
+
+    card.appendChild(body);
+
+    bubble.appendChild(card);
+
+  }
+
   if(message.text){
 
     bubble.appendChild(
@@ -5620,7 +5717,7 @@ if ("serviceWorker" in navigator) {
   $("attachVideo").addEventListener("click",function(){close();$("chatVideoAttachBtn").click()});
 
   // Mic when empty, Send when there is text / attachment / editing (like Groups)
-  var inp=$("messageInput"),mic=$("chatMicBtn"),snd=$("sendBtn");
+  var inp=$("messageInput"),mic=$("chatMicBtn"),snd=$("sendBtn"),lk=$("chatLikeBtn");
   function has(){
     if(inp.value.trim())return true;
     return ["chatImagePreviewBox","chatVideoPreviewBox","chatAudioPreviewBox","chatFilePreviewBox"].some(function(id){var e=$(id);return e&&e.classList.contains("show")});
@@ -5631,7 +5728,16 @@ if ("serviceWorker" in navigator) {
     var s=!rec&&(has()||editing);
     snd.style.display=s?"flex":"none";
     mic.style.display=s?"none":"flex";
+    // Babu rubutu: ɗan yatsa (like). An fara rubutu: send.
+    lk.style.display=(!s&&!rec)?"flex":"none";
   }
+  lk.addEventListener("click",function(){
+    if(inp.value.trim())return;
+    inp.value="\uD83D\uDC4D";
+    var f=$("messageForm");
+    if(f.requestSubmit)f.requestSubmit();else snd.click();
+    setTimeout(function(){if(inp.value==="\uD83D\uDC4D"){inp.value="";sync();}},2500);
+  });
   inp.addEventListener("input",sync);
   ["chatImagePreviewBox","chatVideoPreviewBox","chatAudioPreviewBox","chatFilePreviewBox","editMessageBox"].forEach(function(id){
     var e=$(id); if(e) new MutationObserver(sync).observe(e,{attributes:true,attributeFilter:["class"]});

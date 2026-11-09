@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script type="module" src="monitor.js"></script>
+<script src="splash.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arewa Market - Profile</title>
+<meta name="description" content="Profile on Arewa Market.">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Arewa Market">
+<meta property="og:title" content="Arewa Market - Profile">
+<meta property="og:image" content="https://azashdry.github.io/arewa-market/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',Arial,sans-serif;background:#f0f2f1;color:#222;padding-bottom:84px}
+.header{background:#075e36;color:#fff;padding:14px 16px;border-bottom:3px solid #c9a227;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50}
+.header a,.header button{color:#fff;text-decoration:none;font-size:22px;background:transparent;border:0;display:flex}
+.header h1{font:700 19px 'Playfair Display',Georgia,serif;flex:1}
+
+.wrap{max-width:680px;margin:0 auto}
+.cover{position:relative;height:200px;background:linear-gradient(135deg,#075e36,#1f7a4d 55%,#c9a227);overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.cover-btn{position:absolute;right:12px;bottom:12px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#222;font-size:20px;display:none;align-items:center;justify-content:center}
+.cover-btn.on{display:flex}
+.cover-btn:disabled{opacity:.6}
+
+.top{background:#fff;border-radius:22px 22px 0 0;margin-top:-22px;position:relative;padding:0 16px 12px}
+.top-row{display:flex;gap:14px;align-items:flex-end}
+.p-avatar{width:112px;height:112px;border-radius:50%;border:4px solid #fff;background:#075e36;color:#fff;margin-top:-56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font:700 40px 'Inter',sans-serif;overflow:hidden;cursor:pointer}
+.p-avatar img{width:100%;height:100%;object-fit:cover}
+.who{min-width:0;padding-bottom:4px;flex:1}
+.who h1{font:800 22px/1.2 'Inter',sans-serif;word-break:break-word}
+.badge{display:inline-block;background:#fff4d6;color:#6b5400;font:700 11px 'Inter',sans-serif;padding:3px 8px;border-radius:10px;margin-top:4px}
+.sub{font-size:13px;color:#65706b;margin-top:3px}
+.stats{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:12px;font-size:14px;color:#444}
+.stats button{border:0;background:transparent;font:inherit;color:inherit;padding:0;cursor:pointer}
+.stats b{color:#111}
+
+.actions{display:flex;gap:8px;margin-top:14px}
+.btn{flex:1;border:0;border-radius:10px;padding:12px 10px;font:700 14.5px 'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;cursor:pointer}
+.btn-p{background:#075e36;color:#fff}
+.btn-g{background:#e4e6e5;color:#111}
+.btn-f.following{background:#e4e6e5;color:#111}
+.btn:disabled{opacity:.6}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.links a{font:600 13px 'Inter',sans-serif;color:#075e36;background:#eaf3ee;border-radius:16px;padding:7px 13px;text-decoration:none;display:flex;align-items:center;gap:5px}
+
+.about{background:#fff;margin-top:8px;padding:14px 16px;font-size:14px;line-height:1.5}
+.about h3{font:700 16px 'Inter',sans-serif;margin-bottom:8px}
+.about .row{display:flex;gap:10px;align-items:flex-start;color:#333;margin-top:6px}
+.about .row i{color:#65706b;font-size:19px;margin-top:1px}
+
+.tabs{display:flex;gap:6px;background:#fff;margin-top:8px;padding:8px 12px;position:sticky;top:57px;z-index:20;border-bottom:1px solid #e6e2da}
+.tab{border:0;background:transparent;border-radius:18px;padding:9px 16px;font:600 14px 'Inter',sans-serif;color:#555;cursor:pointer}
+.tab.on{background:#e3f1e8;color:#075e36}
+.pad{padding:8px}
+.empty{text-align:center;color:#777;padding:34px 16px;font-size:14px}
+.err{background:#fdecea;color:#b3261e;border-radius:10px;padding:14px;margin:12px;font-size:14px}
+
+/* posts */
+.post{background:#fff;border-radius:12px;margin-bottom:8px;overflow:hidden}
+.po-h{padding:11px 14px 4px;font-size:12.5px;color:#888}
+.po-t{padding:2px 14px 10px;font-size:15px;line-height:1.5;white-space:pre-wrap;word-break:break-word;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.imgs{display:grid;gap:2px;background:#eee}
+.imgs img{width:100%;height:100%;object-fit:cover;display:block;background:#e8e6e1;cursor:pointer}
+.imgs.n1{grid-template-columns:1fr}.imgs.n1 img{max-height:420px;height:auto}
+.imgs.n2{grid-template-columns:1fr 1fr;aspect-ratio:2/1}
+.imgs.n3{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:1/1}
+.imgs.n3 img:first-child{grid-row:1/3}
+.imgs.n4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;aspect-ratio:1/1}
+.po-f{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:13px;color:#777}
+.po-f a{color:#075e36;font-weight:700;text-decoration:none}
+
+/* photos */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.grid3 img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#e8e6e1;cursor:pointer}
+
+/* products */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pc{background:#fff;border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;display:block}
+.pc img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:#e8e6e1}
+.pc div{padding:8px 10px}
+.pc b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc span{font-size:13px;color:#075e36;font-weight:700}
+
+/* sheet (connections) */
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2500;display:none;align-items:flex-end;justify-content:center}
+.sheet.on{display:flex}
+.sc{background:#fff;width:100%;max-width:640px;max-height:82vh;display:flex;flex-direction:column;border-radius:18px 18px 0 0;padding:12px 14px calc(14px + env(safe-area-inset-bottom))}
+.sc-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sc-h b{font:700 17px 'Playfair Display',Georgia,serif}
+.sc-x{border:0;background:#eef1ef;border-radius:50%;width:34px;height:34px;font-size:20px;color:#444}
+.sc-tabs{display:flex;gap:6px;margin-bottom:8px}
+.sc-list{overflow:auto;flex:1}
+.c-row{display:flex;align-items:center;gap:12px;padding:8px 2px;text-decoration:none;color:inherit}
+.c-av{width:44px;height:44px;border-radius:50%;background:#075e36;color:#fff;display:flex;align-items:center;justify-content:center;font:700 17px 'Inter',sans-serif;overflow:hidden;flex-shrink:0}
+.c-av img{width:100%;height:100%;object-fit:cover}
+.c-name{font:600 15px 'Inter',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:3000;display:none;align-items:center;justify-content:center}
+#lb.open{display:flex}
+#lb img{max-width:100%;max-height:100%;object-fit:contain}
+#lb button{position:absolute;top:14px;right:16px;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:22px;width:40px;height:40px;border-radius:50%}
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:3500}
+#toast.show{opacity:1}
+
+.sk{background:linear-gradient(90deg,#eee,#f6f4f0,#eee);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:6px;display:inline-block}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:999;justify-content:space-around;align-items:stretch;background:#fff;border-top:1px solid #e6e2da;padding:0 0 env(safe-area-inset-bottom,0px);box-shadow:0 -2px 12px rgba(0,0,0,.06)}
+.bottom-nav .bn-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:#8a8f8c;font-size:10.5px;flex:1;padding:12px 0 8px;font-weight:500;background:transparent;border:0;-webkit-tap-highlight-color:transparent}
+.bottom-nav .bn-item::before{content:"";position:absolute;top:0;left:25%;right:25%;height:3px;border-radius:2px;background:transparent;transition:background .2s}
+.bottom-nav .bn-item.active{color:#075e36;font-weight:700}
+.bottom-nav .bn-item.active::before{background:#c9a227}
+.bottom-nav .bn-icon{font-size:22px;line-height:1;display:flex}
+</style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10462d">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+</head>
+
+<body>
+
+<div class="header">
+  <button type="button" id="backBtn" aria-label="Back"><i class="ti ti-arrow-left"></i></button>
+  <h1>Profile</h1>
+</div>
+
+<div class="wrap">
+  <div id="pErr"></div>
+
+  <div class="cover" id="cover">
+    <button type="button" class="cover-btn" id="coverBtn" aria-label="Change cover photo"><i class="ti ti-camera"></i></button>
+  </div>
+  <input type="file" id="coverFile" accept="image/*" style="display:none">
+
+  <section class="top">
+    <div class="top-row">
+      <div class="p-avatar" id="pAvatar"></div>
+      <div class="who">
+        <h1 id="pName"><span class="sk" style="width:150px;height:22px"></span></h1>
+        <div id="pBadge"></div>
+        <div class="sub" id="pSub"></div>
+      </div>
+    </div>
+    <div class="stats" id="pStats"></div>
+    <div class="actions" id="pActions"></div>
+    <div class="links" id="pLinks"></div>
+  </section>
+
+  <section class="about" id="pAbout" style="display:none"></section>
+
+  <div class="tabs" id="pTabs">
+    <button type="button" class="tab on" data-tab="posts">Posts</button>
+    <button type="button" class="tab" data-tab="photos">Photos</button>
+    <button type="button" class="tab" data-tab="products" id="tabProducts" style="display:none">Products</button>
+  </div>
+  <div class="pad" id="pBody"></div>
+</div>
+
+<div class="sheet" id="connSheet">
+  <div class="sc">
+    <div class="sc-h"><b>Connections</b><button type="button" class="sc-x" id="connClose" aria-label="Close">&times;</button></div>
+    <div class="sc-tabs" id="connTabs"></div>
+    <div class="sc-list" id="connList"></div>
+  </div>
+</div>
+
+<div id="lb"><button id="lbClose" aria-label="Close">&times;</button><img id="lbImg" alt=""></div>
+<div id="toast"></div>
+
+<nav class="bottom-nav">
+  <a href="index.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-home"></i></span>
+    <span class="bn-label">Home</span>
+  </a>
+  <a href="feed.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-news"></i></span>
+    <span class="bn-label">Feed</span>
+  </a>
+  <a href="friends.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-users"></i></span>
+    <span class="bn-label">Friends</span>
+  </a>
+  <a href="messages.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-message-circle"></i></span>
+    <span class="bn-label">Messages</span>
+  </a>
+  <a href="seller-dashboard.html" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-building-store"></i></span>
+    <span class="bn-label">Dashboard</span>
+  </a>
+  <a href="login.html" id="navProfileLink" class="bn-item">
+    <span class="bn-icon"><i class="ti ti-user"></i></span>
+    <span class="bn-label">Profile</span>
+  </a>
+</nav>
+
+<script type="module" src="profile.js"></script>
+<script type="module" src="bottom-nav.js"></script>
+<script type="module" src="push-client.js"></script>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+}
+</script>
+</body>
+</html>

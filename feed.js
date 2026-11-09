@@ -113,7 +113,7 @@ function postHtml(p) {
       '<div class="p-head">' +
         avatarHtml(p.authorName, p.authorPhoto) +
         '<div class="p-who">' +
-          '<div class="p-name"><a href="seller-profile.html?id=' + encodeURIComponent(p.authorId) + '">' + esc(p.authorName) + "</a></div>" +
+          '<div class="p-name"><a href="profile.html?id=' + encodeURIComponent(p.authorId) + '">' + esc(p.authorName) + "</a></div>" +
           '<div class="p-time">' + esc(timeAgo(p.createdAtMs)) + "</div>" +
         "</div>" +
         (mine
@@ -279,7 +279,7 @@ onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.replace("login.html"); return; }
   state.me = user;
   const link = $("navProfileLink");
-  if (link) link.href = "seller-profile.html?id=" + user.uid;
+  if (link) link.href = "profile.html?id=" + user.uid;
 
   // Bayanan mai amfani (don suna/hoto a post daga baya). Karatu ɗaya ne.
   try {

@@ -83,6 +83,12 @@ html{background:#ebe7df}
 @media(max-width:360px){header h1{font-size:17px}.cmp{gap:6px;padding-left:8px;padding-right:8px}.cmp .ic{width:36px;height:36px}.sg{gap:10px 2px}.b{max-width:88%}}
 @media(max-height:480px){.sh .card{max-height:94dvh}}
 button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.spc{display:block;width:230px;max-width:100%;background:rgba(0,0,0,.07);border-radius:12px;overflow:hidden;text-decoration:none;color:inherit;margin:3px 0 5px}
+.spc img{display:block;width:100%;height:130px;object-fit:cover;background:#ddd}
+.spc-b{display:block;padding:8px 10px}
+.spc-b b{display:block;font-size:13px}
+.spc-t{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:13px;line-height:1.35;margin-top:2px;word-break:break-word}
+.spc-o{display:block;font-size:11.5px;opacity:.65;margin-top:4px}
 </style>
 </head>
 <body>
@@ -148,6 +154,15 @@ const IC = {
 };
 const icon = (n, c = "") => `<svg class="i ${c}" viewBox="0 0 24 24">${IC[n]}</svg>`;
 const mmss = s => { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+function sharedCard(x) {
+  if (!x.sharedPostId) return "";
+  const img = String(x.sharedPostImage || "");
+  return `<a class="spc" href="feed.html?post=${encodeURIComponent(x.sharedPostId)}">` +
+    (img.indexOf("https://res.cloudinary.com/") === 0 ? `<img src="${esc(img)}" alt="" loading="lazy">` : "") +
+    `<span class="spc-b"><b>${esc(x.sharedPostAuthor || "Post")}</b>` +
+    (x.sharedPostText ? `<span class="spc-t">${esc(x.sharedPostText)}</span>` : "") +
+    `<span class="spc-o">Tap to view post</span></span></a>`;
+}
 function media(x, id = "") {
   if (x.viewOnce) {
     const k = x.imageUrl ? "Photo" : x.videoUrl ? "Video" : "Voice message", mine = x.senderId === me.uid, op = x.openedBy?.includes(me.uid), n = x.openedBy?.length || 0;
@@ -342,7 +357,7 @@ function openGroup(id) {
     MSGS = {}; m.dataset.l = 1;
     m.innerHTML = s.docs.map(d => {
       const x = d.data(), mine = x.senderId === me.uid; MSGS[d.id] = { id: d.id, ...x };
-      return `<div class="b ${mine ? "me" : ""}" data-mid="${d.id}"><button class="mm" data-act="mm" data-id="${d.id}" aria-label="Message options">${icon("chev")}</button>${mine ? "" : `<b>${esc(x.senderName)}</b>`}${x.forwarded ? `<span class="fw">${icon("fwd")} Forwarded</span>` : ""}${media(x, d.id)}${esc(x.text || "")}<i>${x.editedAt ? "edited &middot; " : ""}${fmt(x.createdAt)}</i></div>`;
+      return `<div class="b ${mine ? "me" : ""}" data-mid="${d.id}"><button class="mm" data-act="mm" data-id="${d.id}" aria-label="Message options">${icon("chev")}</button>${mine ? "" : `<b>${esc(x.senderName)}</b>`}${x.forwarded ? `<span class="fw">${icon("fwd")} Forwarded</span>` : ""}${media(x, d.id)}${sharedCard(x)}${esc(x.text || "")}<i>${x.editedAt ? "edited &middot; " : ""}${fmt(x.createdAt)}</i></div>`;
     }).join("") || `<div class="empty">No messages yet. Say hello.</div>`;
     if (first || near) m.scrollTop = m.scrollHeight;
     if (AUid) vnUpd(AUid);
