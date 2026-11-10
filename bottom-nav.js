@@ -16,6 +16,7 @@ const style = document.createElement("style");
 style.textContent = `
 .bottom-nav .bn-icon{position:relative}
 .bottom-nav .bn-item{font-size:10.5px}
+.bottom-nav .bn-label{font-size:9.5px;letter-spacing:-.2px;white-space:nowrap}
 .bottom-nav .bn-badge{
   position:absolute;top:-5px;right:-10px;min-width:16px;height:16px;
   padding:0 4px;border-radius:8px;background:#d93025;color:#fff;
@@ -39,6 +40,23 @@ function ensureFeedTab() {
   else nav.insertBefore(a, nav.firstChild);
 }
 ensureFeedTab();
+
+// Maɓallin Reels: ana saka shi bayan Feed, a duk shafuka
+function ensureReelsTab() {
+  const nav = document.querySelector(".bottom-nav");
+  if (!nav || nav.querySelector('a[href="reels.html"]')) return;
+  const a = document.createElement("a");
+  a.href = "reels.html";
+  a.className = "bn-item";
+  a.innerHTML =
+    '<span class="bn-icon"><i class="ti ti-movie"></i></span>' +
+    '<span class="bn-label">Reels</span>';
+  const feed = nav.querySelector('a[href="feed.html"]');
+  if (feed && feed.nextSibling) nav.insertBefore(a, feed.nextSibling);
+  else if (feed) nav.appendChild(a);
+  else nav.insertBefore(a, nav.firstChild);
+}
+ensureReelsTab();
 
 function setBadge(page, count) {
   const link = document.querySelector('.bottom-nav a[href="' + page + '"] .bn-icon');
@@ -90,13 +108,15 @@ function updateActive(user){
     target = nav.querySelector('a[href="index.html"]');
   } else if (file === "feed.html") {
     target = nav.querySelector('a[href="feed.html"]');
+  } else if (file === "reels.html") {
+    target = nav.querySelector('a[href="reels.html"]');
   } else if (file === "friends.html") {
     target = nav.querySelector('a[href="friends.html"]');
   } else if (file === "messages.html") {
     target = nav.querySelector('a[href="messages.html"]');
   } else if (file === "seller-dashboard.html" || file === "seller-apply.html") {
     target = nav.querySelector("a[data-sell]");
-  } else if (file === "seller-profile.html" || file === "profile.html") {
+  } else if (file === "profile.html") {
     // Profile tab yana aiki ne kawai idan profile ɗinka ne ake kallo
     const id = new URLSearchParams(location.search).get("id");
     if (user && (!id || id === user.uid)) target = document.getElementById("navProfileLink");

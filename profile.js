@@ -136,7 +136,6 @@ function renderActions() {
     let wa = String(data.whatsapp || "").replace(/[^0-9]/g, "");
     if (wa.startsWith("0")) wa = "234" + wa.substring(1);
     if (wa) links.push('<a href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp"></i> WhatsApp</a>');
-    links.push('<a href="seller-profile.html?id=' + encodeURIComponent(targetId) + '"><i class="ti ti-building-store"></i> Seller page</a>');
   }
   $("pLinks").innerHTML = links.join("");
 }

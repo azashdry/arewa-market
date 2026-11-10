@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script type="module" src="monitor.js"></script>
+<script src="splash.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Arewa Market - Reels</title>
+<meta name="description" content="Short videos from the Arewa Market community.">
+<meta property="og:title" content="Arewa Market - Reels">
+<meta property="og:image" content="https://azashdry.github.io/arewa-market/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--nav:58px}
+html,body{height:100%;background:#000;color:#fff;font-family:'Inter',Arial,sans-serif;overflow:hidden}
+
+#reels{height:calc(100vh - var(--nav) - env(safe-area-inset-bottom));height:calc(100dvh - var(--nav) - env(safe-area-inset-bottom));overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#reels::-webkit-scrollbar{display:none}
+.reel{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;background:#000;overflow:hidden}
+.reel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.reel video.fit{object-fit:contain}
+.shade{position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(transparent,rgba(0,0,0,.72));pointer-events:none}
+.info{position:absolute;left:14px;right:78px;bottom:22px;z-index:3}
+.who{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+.av{width:40px;height:40px;border-radius:50%;background:#075e36;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font:700 16px 'Inter',sans-serif;overflow:hidden;flex-shrink:0}
+.av img{width:100%;height:100%;object-fit:cover}
+.who b{font-size:15px;text-shadow:0 1px 3px rgba(0,0,0,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cap{margin-top:10px;font-size:14px;line-height:1.4;text-shadow:0 1px 3px rgba(0,0,0,.6);word-break:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pi{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);width:76px;height:76px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;font-size:38px;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:4}
+.pi.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.spin{position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:rot .8s linear infinite;z-index:2;display:none}
+.reel.loading .spin{display:block}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+.top{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;z-index:20;pointer-events:none}
+.top .grp{display:flex;gap:10px}
+.tb{pointer-events:auto;width:42px;height:42px;border:0;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;text-decoration:none}
+.top h1{font:700 18px 'Inter',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.6);pointer-events:none}
+
+.empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:#bbb;gap:14px;font-size:15px;line-height:1.5}
+.empty button{border:0;border-radius:22px;background:#075e36;color:#fff;padding:12px 26px;font:700 15px 'Inter',sans-serif}
+
+#toast{position:fixed;left:50%;bottom:calc(var(--nav) + 30px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:3000;max-width:86%;text-align:center}
+#toast.show{opacity:1}
+
+/* Upload sheet */
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2500;display:none;align-items:flex-end;justify-content:center}
+.sheet.on{display:flex}
+.sc{background:#fff;color:#222;width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:14px 14px calc(16px + env(safe-area-inset-bottom))}
+.sc-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sc-h b{font:700 17px 'Inter',sans-serif}
+.sc-x{border:0;background:#eef1ef;border-radius:50%;width:34px;height:34px;font-size:20px;color:#444}
+.pick{display:flex;flex-direction:column;align-items:center;gap:8px;border:2px dashed #b8c4bd;border-radius:14px;padding:26px 12px;color:#555;font:600 14px 'Inter',sans-serif;text-align:center;width:100%;background:#f7faf8}
+.pick i{font-size:34px;color:#075e36}
+.pick small{font-weight:400;color:#888}
+.prev{display:none;margin-top:6px}
+.prev video{width:100%;max-height:300px;border-radius:12px;background:#000;display:block}
+.prev .meta{font-size:12.5px;color:#777;margin-top:6px}
+.cp{width:100%;border:0;outline:0;background:#f3f1ec;border-radius:12px;padding:11px 12px;font:15px/1.4 'Inter',sans-serif;resize:none;min-height:70px;margin-top:10px;color:#222}
+.cnt{text-align:right;font-size:12px;color:#888;margin-top:4px}
+.go{width:100%;border:0;border-radius:12px;background:#075e36;color:#fff;padding:13px;font:700 15px 'Inter',sans-serif;margin-top:10px}
+.go:disabled{opacity:.5}
+.msg{font-size:13px;margin-top:10px;color:#b3261e;display:none;line-height:1.4}
+.msg.on{display:block}
+.msg.info{color:#075e36}
+
+/* Bottom nav (duhu, don ya dace da Reels) */
+.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:999;justify-content:space-around;align-items:stretch;background:#000;border-top:1px solid rgba(255,255,255,.14);padding:0 0 env(safe-area-inset-bottom,0px)}
+.bottom-nav .bn-item{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:var(--nav);text-decoration:none;color:#8d9591;font-size:10.5px;flex:1;font-weight:500;background:transparent;border:0}
+.bottom-nav .bn-item::before{content:"";position:absolute;top:0;left:25%;right:25%;height:3px;border-radius:2px;background:transparent}
+.bottom-nav .bn-item.active{color:#fff;font-weight:700}
+.bottom-nav .bn-item.active::before{background:#c9a227}
+.bottom-nav .bn-icon{font-size:22px;line-height:1;display:flex}
+.bottom-nav .bn-label{font-size:9.5px;letter-spacing:-.2px;white-space:nowrap}
+</style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+</head>
+
+<body>
+
+<div class="top">
+  <a class="tb" href="feed.html" aria-label="Back"><i class="ti ti-arrow-left"></i></a>
+  <h1>Reels</h1>
+  <div class="grp">
+    <button type="button" class="tb" id="muteBtn" aria-label="Sound"><i class="ti ti-volume-off"></i></button>
+    <button type="button" class="tb" id="addBtn" aria-label="Post a reel"><i class="ti ti-plus"></i></button>
+  </div>
+</div>
+
+<div id="reels"></div>
+
+<div class="sheet" id="upSheet">
+  <div class="sc">
+    <div class="sc-h"><b>New reel</b><button type="button" class="sc-x" id="upClose" aria-label="Close">&times;</button></div>
+    <button type="button" class="pick" id="pickBtn">
+      <i class="ti ti-video-plus"></i>
+      Choose a video
+      <small>Up to 45 seconds and 50 MB</small>
+    </button>
+    <input type="file" id="vidFile" accept="video/*" style="display:none">
+    <div class="prev" id="prev">
+      <video id="prevVid" controls playsinline muted preload="metadata"></video>
+      <div class="meta" id="prevMeta"></div>
+    </div>
+    <textarea class="cp" id="cap" maxlength="200" placeholder="Write a caption..."></textarea>
+    <div class="cnt" id="capCnt">0/200</div>
+    <button type="button" class="go" id="goBtn" disabled>Post reel</button>
+    <div class="msg" id="upMsg"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<nav class="bottom-nav">
+  <a href="index.html" class="bn-item"><span class="bn-icon"><i class="ti ti-home"></i></span><span class="bn-label">Home</span></a>
+  <a href="feed.html" class="bn-item"><span class="bn-icon"><i class="ti ti-news"></i></span><span class="bn-label">Feed</span></a>
+  <a href="reels.html" class="bn-item active"><span class="bn-icon"><i class="ti ti-movie"></i></span><span class="bn-label">Reels</span></a>
+  <a href="friends.html" class="bn-item"><span class="bn-icon"><i class="ti ti-users"></i></span><span class="bn-label">Friends</span></a>
+  <a href="messages.html" class="bn-item"><span class="bn-icon"><i class="ti ti-message-circle"></i></span><span class="bn-label">Messages</span></a>
+  <a href="seller-dashboard.html" class="bn-item"><span class="bn-icon"><i class="ti ti-building-store"></i></span><span class="bn-label">Dashboard</span></a>
+  <a href="login.html" id="navProfileLink" class="bn-item"><span class="bn-icon"><i class="ti ti-user"></i></span><span class="bn-label">Profile</span></a>
+</nav>
+
+<script type="module" src="reels.js"></script>
+<script type="module" src="bottom-nav.js"></script>
+<script>
+if("serviceWorker" in navigator){
+  window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+}
+</script>
+</body>
+</html>
