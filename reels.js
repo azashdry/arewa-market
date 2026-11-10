@@ -1,14 +1,15 @@
 /* =========================================================
-   AREWA MARKET - REELS (Mataki na 2 / sashe na 1)
-   - Kallo: gungurawa tsaye, bidiyo yana kunna ga wanda ke kan allo kaɗai
-   - Ana saka src ne kawai ga bidiyon da ke kusa (don adana data)
-   - Aika bidiyo: har dakika 45 da 50MB, ta Cloudinary (cloudinary-upload.js)
-   - Hoton farko (poster) Cloudinary ne ke samar da shi daga bidiyon
+   AREWA MARKET - REELS (salon TikTok, duk abu yana aiki)
+   - Kallo: gungurawa tsaye; bidiyo DAYA kaɗai ke kunnawa a lokaci guda
+   - Tabs: For You / Following
+   - Like (da double-tap), Comment, Save, Share, Follow
+   - Aika bidiyo: har dakika 45 da 50MB, ta Cloudinary
 ========================================================= */
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {
-  collection, query, orderBy, limit, startAfter, getDocs, getDoc, addDoc, doc, serverTimestamp
+  collection, query, where, orderBy, limit, startAfter, getDocs, getDoc, addDoc, setDoc,
+  doc, serverTimestamp, writeBatch, increment
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const PAGE = 6;
@@ -21,8 +22,21 @@ const CLOUD = "https://res.cloudinary.com/";
 const $ = (id) => document.getElementById(id);
 const box = $("reels");
 
-const S = { me: null, myData: {}, last: null, more: false, loading: false, muted: true, reels: new Map(), lastPostAt: 0 };
+const S = {
+  me: null, myData: {}, last: null, more: false, loading: false, muted: true,
+  reels: new Map(), lastPostAt: 0, tab: "for",
+  liked: new Set(), saved: new Set(), following: new Set(), folKnown: new Set(),
+  busy: new Set(), cmId: null, lastCmAt: 0, speed: 1
+};
 let pickedFile = null, pickedUrl = "", pickedDur = 0, busy = false;
+
+const ICON = {
+  heart: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>',
+  chat: '<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/><circle cx="8" cy="10" r="1.3" fill="#000" fill-opacity=".55"/><circle cx="12" cy="10" r="1.3" fill="#000" fill-opacity=".55"/><circle cx="16" cy="10" r="1.3" fill="#000" fill-opacity=".55"/></svg>',
+  mark: '<svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>',
+  down: '<svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>',
+  share: '<svg viewBox="0 0 24 24"><path d="M14 9V4l8 8-8 8v-5.1c-5.5 0-9.2 1.7-12 5.1 1.1-5.4 4.4-10.2 12-11z"/></svg>'
+};
 
 /* ---------------- helpers ---------------- */
 function esc(s) {
@@ -35,13 +49,27 @@ function toast(m) {
   t.textContent = m; t.classList.add("show");
   clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 2400);
 }
-// Hoton farko daga bidiyon Cloudinary (frame na farko, .jpg)
+function fmt(n) {
+  n = Math.max(0, Number(n) || 0);
+  if (n < 1000) return String(n);
+  if (n < 1e6) return (n / 1000).toFixed(n < 10000 ? 1 : (n < 100000 ? 1 : 0)).replace(/\.0$/, "") + "K";
+  return (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+}
+function ago(ms) {
+  if (!ms) return "now";
+  const s = Math.max(1, Math.floor((Date.now() - ms) / 1000));
+  if (s < 60) return s + "s";
+  if (s < 3600) return Math.floor(s / 60) + "m";
+  if (s < 86400) return Math.floor(s / 3600) + "h";
+  return Math.floor(s / 86400) + "d";
+}
 function posterOf(url) {
   if (typeof url !== "string" || url.indexOf("res.cloudinary.com") < 0 || url.indexOf("/video/upload/") < 0) return "";
   return url.replace("/video/upload/", "/video/upload/so_0,f_jpg,w_540,q_auto/").replace(/\.[A-Za-z0-9]+(\?.*)?$/, ".jpg");
 }
 function httpUrl(u) { return typeof u === "string" && /^https?:\/\//.test(u) ? u : ""; }
 function tsMs(ts) { return ts && typeof ts.toMillis === "function" ? ts.toMillis() : 0; }
+function num(x) { return typeof x === "number" && isFinite(x) && x > 0 ? x : 0; }
 function avatarInner(name, photo) {
   const initial = esc((name || "?").trim().charAt(0).toUpperCase() || "?");
   return photo
@@ -57,7 +85,10 @@ function normalize(id, d) {
     caption: typeof d.caption === "string" ? d.caption : "",
     videoUrl: typeof d.videoUrl === "string" && d.videoUrl.indexOf(CLOUD) === 0 ? d.videoUrl : "",
     duration: typeof d.duration === "number" ? d.duration : 0,
-    likeCount: typeof d.likeCount === "number" ? d.likeCount : 0,
+    likeCount: num(d.likeCount),
+    commentCount: num(d.commentCount),
+    saveCount: num(d.saveCount),
+    shareCount: num(d.shareCount),
     createdAtMs: tsMs(d.createdAt) || d.createdAtMs || 0
   };
 }
@@ -71,6 +102,7 @@ function myPhoto() {
   for (const u of c) { const h = httpUrl(u); if (h && h.length <= 600) return h; }
   return "";
 }
+function reelEl(id) { return box.querySelector('.reel[data-id="' + id + '"]'); }
 
 /* ---------------- render ---------------- */
 function reelHtml(r) {
@@ -80,58 +112,256 @@ function reelHtml(r) {
         (posterOf(r.videoUrl) ? ' poster="' + esc(posterOf(r.videoUrl)) + '"' : "") +
         ' data-src="' + esc(r.videoUrl) + '"></video>' +
       '<div class="spin"></div>' +
-      '<div class="shade"></div>' +
+      '<div class="shade"></div><div class="shade t"></div>' +
       '<div class="pi"><i class="ti ti-player-play-filled"></i></div>' +
+      '<div class="hint"></div>' +
+      '<div class="rail">' +
+        '<div class="ra"><a class="av" href="profile.html?id=' + encodeURIComponent(r.authorId) + '">' + avatarInner(r.authorName, r.authorPhoto) + '</a>' +
+          '<button type="button" class="plus fol gone" aria-label="Follow"><i class="ti ti-plus"></i></button></div>' +
+        '<button type="button" class="rb lk" aria-label="Like">' + ICON.heart + '<span class="n">0</span></button>' +
+        '<button type="button" class="rb cm" aria-label="Comments">' + ICON.chat + '<span class="n">0</span></button>' +
+        '<button type="button" class="rb sv" aria-label="Save">' + ICON.mark + '<span class="n">0</span></button>' +
+        '<button type="button" class="rb shr" aria-label="Share">' + ICON.share + '<span class="n">0</span></button>' +
+        '<button type="button" class="rb dl" aria-label="Download">' + ICON.down + '<span style="font-size:11px">Download</span></button>' +
+      "</div>" +
       '<div class="info">' +
-        '<a class="who" href="profile.html?id=' + encodeURIComponent(r.authorId) + '">' +
-          '<span class="av">' + avatarInner(r.authorName, r.authorPhoto) + "</span><b>" + esc(r.authorName) + "</b></a>" +
+        '<a class="who" href="profile.html?id=' + encodeURIComponent(r.authorId) + '"><b>' + esc(r.authorName) + "</b></a>" +
         (r.caption ? '<div class="cap">' + esc(r.caption) + "</div>" : "") +
       "</div>" +
     "</section>"
   );
 }
 
+// Zana alamomin (zuciya, bookmark, counts, +) bisa ga halin yanzu
+function paint(id) {
+  const el = reelEl(id), r = S.reels.get(id);
+  if (!el || !r) return;
+  const lk = el.querySelector(".lk"), sv = el.querySelector(".sv");
+  lk.classList.toggle("on", S.liked.has(id));
+  sv.classList.toggle("on", S.saved.has(id));
+  lk.querySelector(".n").textContent = fmt(r.likeCount);
+  el.querySelector(".cm .n").textContent = fmt(r.commentCount);
+  sv.querySelector(".n").textContent = fmt(r.saveCount);
+  el.querySelector(".shr .n").textContent = fmt(r.shareCount);
+  paintFollow(el, r.authorId);
+}
+function paintFollow(el, authorId) {
+  const b = el.querySelector(".fol");
+  if (!b) return;
+  const hide = !S.me || authorId === S.me.uid || !S.folKnown.has(authorId) || S.following.has(authorId);
+  if (!b.classList.contains("done")) b.classList.toggle("gone", hide);
+}
+function paintAuthor(authorId) {
+  box.querySelectorAll(".reel").forEach((el) => {
+    const r = S.reels.get(el.dataset.id);
+    if (r && r.authorId === authorId) paintFollow(el, authorId);
+  });
+}
+
+// Duba ko na like/save, da wanda nake bi (a lokaci guda)
+async function hydrate(list) {
+  if (!S.me) return;
+  const uid = S.me.uid;
+  list.forEach((r) => paint(r.id));
+  const authors = Array.from(new Set(list.map((r) => r.authorId).filter((a) => a && a !== uid && !S.folKnown.has(a))));
+  await Promise.all([
+    ...list.map(async (r) => {
+      try {
+        const [l, s] = await Promise.all([
+          getDoc(doc(db, "reels", r.id, "likes", uid)),
+          getDoc(doc(db, "reels", r.id, "saves", uid))
+        ]);
+        if (l.exists()) S.liked.add(r.id);
+        if (s.exists()) S.saved.add(r.id);
+      } catch (e) { /* ba komai */ }
+      paint(r.id);
+    }),
+    ...authors.map(async (a) => {
+      try {
+        const f = await getDoc(doc(db, "follows", uid + "_" + a));
+        if (f.exists()) S.following.add(a);
+        S.folKnown.add(a);
+      } catch (e) { /* ba komai */ }
+      paintAuthor(a);
+    })
+  ]);
+}
+
+/* ---------------- gesture / wiring ---------------- */
+function togglePlay(el, v) {
+  const pi = el.querySelector(".pi");
+  if (v.paused) { activate(v); pi.querySelector("i").className = "ti ti-player-play-filled"; }
+  else { v.pause(); pi.querySelector("i").className = "ti ti-player-pause-filled"; }
+  pi.classList.add("on");
+  clearTimeout(pi._t);
+  pi._t = setTimeout(() => pi.classList.remove("on"), 450);
+}
+function burst(el, ev) {
+  const rect = el.getBoundingClientRect();
+  const h = document.createElement("div");
+  h.className = "hrt";
+  h.innerHTML = ICON.heart;
+  h.style.left = (ev.clientX - rect.left) + "px";
+  h.style.top = (ev.clientY - rect.top) + "px";
+  h.firstChild.style.cssText = "width:100%;height:100%;fill:inherit";
+  el.appendChild(h);
+  setTimeout(() => h.remove(), 850);
+}
+
 function wire(el) {
   const v = el.querySelector("video");
   v.addEventListener("loadedmetadata", () => {
-    // Bidiyon tsaye (9:16) cika allo; na kwance ana nuna duka
     v.classList.toggle("fit", v.videoWidth / (v.videoHeight || 1) > 0.8);
   });
   v.addEventListener("canplay", () => el.classList.remove("loading"));
   v.addEventListener("playing", () => el.classList.remove("loading"));
   v.addEventListener("waiting", () => el.classList.add("loading"));
   v.addEventListener("error", () => el.classList.remove("loading"));
-  el.addEventListener("click", (ev) => {
-    if (ev.target.closest("a")) return;
-    const pi = el.querySelector(".pi");
-    if (v.paused) { v.play().catch(() => {}); pi.querySelector("i").className = "ti ti-player-play-filled"; }
-    else { v.pause(); pi.querySelector("i").className = "ti ti-player-pause-filled"; }
-    pi.classList.add("on");
-    clearTimeout(pi._t);
-    pi._t = setTimeout(() => pi.classList.remove("on"), 450);
+  // Tsaro: idan wannan bidiyo ba shi ne mai aiki ba, kar ya taba yin sauti
+  v.addEventListener("play", () => { if (v !== activeVideo) { v.pause(); v.muted = true; } });
+
+  // ---- Gestures ----
+  // Tap daya: kunna/dakatar. Tap biyu: tsakiya = like, hagu = baya 10s, dama = gaba 10s.
+  // Rike dama = gaba da sauri. Rike hagu = komawa baya da sauri.
+  let tapT = null, lastTap = 0, lastZone = "", down = null, holdT = null, hold = null, justHeld = false;
+  let seekT = 0, seekAcc = 0, seekSide = "";
+  const hint = el.querySelector(".hint");
+  const zoneOf = (x) => {
+    const rc = el.getBoundingClientRect();
+    const p = (x - rc.left) / (rc.width || 1);
+    return p < 0.35 ? "l" : (p > 0.65 ? "r" : "c");
+  };
+  const showHint = (txt, cls, ms) => {
+    hint.className = "hint " + cls + " on";
+    hint.textContent = txt;
+    clearTimeout(hint._t);
+    if (ms) hint._t = setTimeout(() => hint.classList.remove("on"), ms);
+  };
+  const seek = (dir) => {
+    const d = v.duration;
+    if (!isFinite(d) || !d) return;
+    const now = Date.now();
+    seekAcc = (seekSide === dir && now - seekT < 800) ? seekAcc + 10 : 10;
+    seekSide = dir; seekT = now;
+    v.currentTime = dir === "r" ? Math.min(d - 0.1, v.currentTime + 10) : Math.max(0, v.currentTime - 10);
+    showHint((dir === "r" ? "+" : "-") + seekAcc + "s", dir, 700);
+  };
+  function endHold() {
+    clearTimeout(holdT);
+    if (!hold) return;
+    clearInterval(hold.iv);
+    v.playbackRate = S.speed;
+    if (hold.wasPlaying && v === activeVideo) v.play().catch(() => {});
+    hold = null;
+    hint.classList.remove("on");
+    justHeld = true;
+    setTimeout(() => { justHeld = false; }, 120);
+  }
+  el.addEventListener("pointerdown", (ev) => {
+    if (ev.target.closest("a, .rail, button")) return;
+    down = { x: ev.clientX, y: ev.clientY };
+    const z = zoneOf(ev.clientX);
+    if (z === "c") return;
+    clearTimeout(holdT);
+    holdT = setTimeout(() => {
+      if (!down || v !== activeVideo || !isFinite(v.duration)) return;
+      const wasPlaying = !v.paused;
+      if (z === "r") {
+        if (!wasPlaying) return;
+        hold = { z, wasPlaying };
+        v.playbackRate = S.speed >= 2 ? 3 : 2;
+        showHint((S.speed >= 2 ? "3x" : "2x") + " \u25B6\u25B6", "t");
+      } else {
+        hold = { z, wasPlaying };
+        v.pause();
+        hold.iv = setInterval(() => { v.currentTime = Math.max(0, v.currentTime - 0.3); }, 100);
+        showHint("\u25C0\u25C0 Rewind", "t");
+      }
+    }, 350);
   });
+  el.addEventListener("pointermove", (ev) => {
+    if (down && !hold && Math.hypot(ev.clientX - down.x, ev.clientY - down.y) > 12) clearTimeout(holdT);
+  });
+  ["pointerup", "pointercancel", "pointerleave"].forEach((n) => el.addEventListener(n, () => { down = null; endHold(); }));
+  el.addEventListener("contextmenu", (ev) => ev.preventDefault());
+
+  el.addEventListener("click", (ev) => {
+    if (ev.target.closest("a") || ev.target.closest(".rail") || justHeld) return;
+    const z = zoneOf(ev.clientX), now = Date.now();
+    // Idan ana ta seek, kowane tap na gaba a gefe daya yana ƙara 10s
+    if (z !== "c" && seekSide === z && now - seekT < 800) { clearTimeout(tapT); lastTap = 0; seek(z); return; }
+    if (now - lastTap < 300 && z === lastZone) {
+      clearTimeout(tapT); lastTap = 0;
+      if (z === "c") { burst(el, ev); setLike(el.dataset.id, true); }
+      else seek(z);
+      return;
+    }
+    lastTap = now; lastZone = z;
+    tapT = setTimeout(() => togglePlay(el, v), 300);
+  });
+
+  el.querySelector(".lk").addEventListener("click", () => setLike(el.dataset.id));
+  el.querySelector(".cm").addEventListener("click", () => openComments(el.dataset.id));
+  el.querySelector(".sv").addEventListener("click", () => toggleSave(el.dataset.id));
+  el.querySelector(".shr").addEventListener("click", () => shareReel(el.dataset.id));
+  el.querySelector(".dl").addEventListener("click", () => downloadReel(el.dataset.id));
+  el.querySelector(".fol").addEventListener("click", () => followAuthor(el.dataset.id));
+
   playObs.observe(el);
   loadObs.observe(el);
 }
 
 /* ---------------- observers ---------------- */
-// Kunna wanda yake kan allo (>=70%), dakatar da sauran
+// Bidiyo DAYA kaɗai ke aiki a lokaci guda. Duk sauran ana tsayar da su, a rufe sautinsu.
+let activeVideo = null;
+const ratios = new Map();
+
+function silenceAll(except) {
+  box.querySelectorAll("video").forEach((v) => {
+    if (v === except) return;
+    if (!v.paused) v.pause();
+    v.muted = true;
+  });
+}
+function activate(v) {
+  activeVideo = v;
+  silenceAll(v);
+  if (!v) return;
+  if (!v.src && v.dataset.src) v.src = v.dataset.src;
+  v.muted = S.muted;
+  v.defaultPlaybackRate = S.speed;
+  v.playbackRate = S.speed;
+  const p = v.play();
+  if (p && p.catch) p.catch(() => {
+    if (v !== activeVideo) return;
+    v.muted = true;            // browser ya hana sauti kai tsaye
+    v.play().catch(() => {});
+  });
+}
+function pickActive() {
+  let best = null, bestR = 0;
+  ratios.forEach((r, el) => { if (r > bestR) { bestR = r; best = el; } });
+  const v = best && bestR >= 0.6 ? best.querySelector("video") : null;
+  if (v === activeVideo) return;
+  activate(v);
+  if (best && S.more) {
+    const idx = Array.from(box.children).indexOf(best);
+    if (idx >= box.children.length - 3) loadMore();
+  }
+}
 const playObs = new IntersectionObserver((entries) => {
   entries.forEach((en) => {
-    const v = en.target.querySelector("video");
-    if (!v) return;
-    if (en.isIntersecting && en.intersectionRatio >= 0.7) {
-      if (!v.src && v.dataset.src) v.src = v.dataset.src;
-      v.muted = S.muted;
-      const p = v.play();
-      if (p && p.catch) p.catch(() => { v.muted = true; v.play().catch(() => {}); });
-      const idx = Array.from(box.children).indexOf(en.target);
-      if (S.more && idx >= box.children.length - 3) loadMore();
-    } else {
-      v.pause();
-    }
+    if (en.isIntersecting) ratios.set(en.target, en.intersectionRatio);
+    else ratios.delete(en.target);
   });
-}, { root: box, threshold: [0, 0.7] });
+  pickActive();
+}, { root: box, threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] });
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) silenceAll(null);
+  else if (activeVideo) activate(activeVideo);
+});
+window.addEventListener("pagehide", () => silenceAll(null));
 
 // Saka src ga bidiyon da ke kusa; cire ga na nesa (don adana data da memory)
 const loadObs = new IntersectionObserver((entries) => {
@@ -159,26 +389,50 @@ async function fetchPage(after) {
 }
 
 function addReels(list, atTop) {
-  const html = list.map(reelHtml).join("");
+  const fresh = list.filter((r) => !S.reels.has(r.id) || !reelEl(r.id));
+  if (!fresh.length) return;
+  const html = fresh.map(reelHtml).join("");
   const before = box.children.length;
   box.insertAdjacentHTML(atTop ? "afterbegin" : "beforeend", html);
-  const els = atTop ? Array.from(box.children).slice(0, list.length) : Array.from(box.children).slice(before);
-  list.forEach((r) => S.reels.set(r.id, r));
+  const els = atTop ? Array.from(box.children).slice(0, fresh.length) : Array.from(box.children).slice(before);
+  fresh.forEach((r) => S.reels.set(r.id, r));
   els.forEach(wire);
+  hydrate(fresh);
 }
 
-function showEmpty() {
-  box.innerHTML = '<div class="empty" id="emptyBox"><i class="ti ti-movie" style="font-size:48px;color:#c9a227"></i>No reels yet.<br>Be the first to share a short video!<button type="button" id="emptyAdd">Post a reel</button></div>';
-  $("emptyAdd").addEventListener("click", openUpload);
+function showEmpty(msg, withBtn) {
+  box.innerHTML = '<div class="empty" id="emptyBox"><i class="ti ti-movie" style="font-size:48px;color:#fff"></i>' + msg +
+    (withBtn ? '<button type="button" id="emptyAdd">Post a reel</button>' : "") + "</div>";
+  const b = $("emptyAdd"); if (b) b.addEventListener("click", openUpload);
+}
+
+function resetFeed() {
+  silenceAll(null);
+  activeVideo = null;
+  ratios.clear();
+  playObs.disconnect();
+  loadObs.disconnect();
+  box.innerHTML = "";
+  S.last = null; S.more = false;
 }
 
 async function loadFirst() {
   S.loading = true;
   try {
+    let pinned = null;
+    const want = new URLSearchParams(location.search).get("id");
+    if (want && /^[A-Za-z0-9]{4,40}$/.test(want)) {
+      try {
+        const d = await getDoc(doc(db, "reels", want));
+        if (d.exists()) { const n = normalize(d.id, d.data()); if (n.videoUrl) pinned = n; }
+      } catch (e) { /* ba komai */ }
+    }
     const p = await fetchPage(null);
     S.last = p.last; S.more = p.full;
     box.innerHTML = "";
-    if (!p.list.length) showEmpty(); else addReels(p.list, false);
+    const list = pinned ? [pinned].concat(p.list.filter((r) => r.id !== pinned.id)) : p.list;
+    if (!list.length) showEmpty("No reels yet.<br>Be the first to share a short video!", true);
+    else addReels(list, false);
   } catch (e) {
     console.error("reels load", e);
     box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<button type="button" onclick="location.reload()">Refresh</button></div>';
@@ -186,8 +440,32 @@ async function loadFirst() {
   S.loading = false;
 }
 
+// Tab na "Following": reels na mutanen da nake bi (ba pagination, ana jera su a client)
+async function loadFollowing() {
+  S.loading = true;
+  try {
+    const fs = await getDocs(query(collection(db, "follows"), where("followerId", "==", S.me.uid), limit(30)));
+    const ids = fs.docs.map((d) => d.data().followingId).filter(Boolean);
+    ids.forEach((a) => { S.following.add(a); S.folKnown.add(a); });
+    box.innerHTML = "";
+    if (!ids.length) { showEmpty("You are not following anyone yet.<br>Follow people to see their reels here.", false); S.loading = false; return; }
+    const chunks = [];
+    for (let i = 0; i < ids.length; i += 10) chunks.push(ids.slice(i, i + 10));
+    const snaps = await Promise.all(chunks.map((c) => getDocs(query(collection(db, "reels"), where("authorId", "in", c), limit(20)))));
+    const all = [];
+    snaps.forEach((s) => s.docs.forEach((d) => all.push(normalize(d.id, d.data()))));
+    const list = all.filter((r) => r.videoUrl).sort((a, b) => b.createdAtMs - a.createdAtMs);
+    if (!list.length) showEmpty("No reels from people you follow yet.", false);
+    else addReels(list, false);
+  } catch (e) {
+    console.error("following load", e);
+    box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<button type="button" onclick="location.reload()">Refresh</button></div>';
+  }
+  S.loading = false;
+}
+
 async function loadMore() {
-  if (S.loading || !S.more || !S.last) return;
+  if (S.loading || !S.more || !S.last || S.tab !== "for") return;
   S.loading = true;
   try {
     const p = await fetchPage(S.last);
@@ -197,12 +475,232 @@ async function loadMore() {
   S.loading = false;
 }
 
+function setTab(tab) {
+  if (S.tab === tab) { box.scrollTo({ top: 0, behavior: "smooth" }); return; }
+  S.tab = tab;
+  $("tabFor").classList.toggle("on", tab === "for");
+  $("tabFol").classList.toggle("on", tab === "following");
+  resetFeed();
+  if (tab === "for") loadFirst(); else loadFollowing();
+}
+$("tabFor").addEventListener("click", () => setTab("for"));
+$("tabFol").addEventListener("click", () => setTab("following"));
+
 /* ---------------- mute ---------------- */
 function paintMute() { $("muteBtn").querySelector("i").className = "ti " + (S.muted ? "ti-volume-off" : "ti-volume"); }
 $("muteBtn").addEventListener("click", () => {
   S.muted = !S.muted;
   paintMute();
-  box.querySelectorAll("video").forEach((v) => { if (!v.paused) v.muted = S.muted; });
+  if (activeVideo) activeVideo.muted = S.muted;
+  toast(S.muted ? "Sound off" : "Sound on");
+});
+
+/* ---------------- speed ---------------- */
+const SPEEDS = [1, 1.5, 2, 0.5];
+function paintSpeed() { $("spdBtn").querySelector("span").textContent = S.speed + "x"; }
+$("spdBtn").addEventListener("click", () => {
+  S.speed = SPEEDS[(SPEEDS.indexOf(S.speed) + 1) % SPEEDS.length];
+  paintSpeed();
+  if (activeVideo) { activeVideo.defaultPlaybackRate = S.speed; activeVideo.playbackRate = S.speed; }
+  toast("Speed " + S.speed + "x");
+});
+
+/* ---------------- download ---------------- */
+// Cloudinary fl_attachment yana tilasta saukewa maimakon kunnawa
+function downloadReel(id) {
+  const r = S.reels.get(id);
+  if (!r || !r.videoUrl) return;
+  const url = r.videoUrl.replace("/video/upload/", "/video/upload/fl_attachment:arewa-reel-" + String(id).slice(0, 8) + "/");
+  const a = document.createElement("a");
+  a.href = url; a.download = "arewa-reel.mp4"; a.rel = "noopener";
+  document.body.appendChild(a); a.click(); a.remove();
+  toast("Downloading...");
+}
+
+/* ---------------- like / save ---------------- */
+// Zuciya da bookmark: takarda daya ga kowane mutum + counter, a batch guda (kamar yadda rules suka bukata)
+async function toggleSub(id, col, field, set, onlyOn) {
+  const r = S.reels.get(id);
+  if (!r || !S.me) return;
+  const key = col + id;
+  if (S.busy.has(key)) return;
+  const was = set.has(id);
+  if (onlyOn && was) return;
+  S.busy.add(key);
+
+  // nuna nan take
+  if (was) { set.delete(id); r[field] = Math.max(0, r[field] - 1); }
+  else { set.add(id); r[field] += 1; }
+  paint(id);
+
+  try {
+    const b = writeBatch(db);
+    const sub = doc(db, "reels", id, col, S.me.uid);
+    if (was) b.delete(sub);
+    else b.set(sub, { uid: S.me.uid, createdAt: serverTimestamp() });
+    b.update(doc(db, "reels", id), { [field]: increment(was ? -1 : 1) });
+    await b.commit();
+  } catch (e) {
+    console.error(col, e);
+    // dawo da yadda yake
+    if (was) { set.add(id); r[field] += 1; } else { set.delete(id); r[field] = Math.max(0, r[field] - 1); }
+    paint(id);
+    toast(e && e.code === "permission-denied" ? "You are not allowed to do this right now." : "Could not update. Try again.");
+  }
+  S.busy.delete(key);
+}
+function setLike(id, onlyOn) { return toggleSub(id, "likes", "likeCount", S.liked, onlyOn); }
+async function toggleSave(id) {
+  const was = S.saved.has(id);
+  await toggleSub(id, "saves", "saveCount", S.saved, false);
+  if (S.saved.has(id) !== was) toast(was ? "Removed from saved" : "Saved");
+}
+
+/* ---------------- follow ---------------- */
+async function followAuthor(id) {
+  const r = S.reels.get(id), el = reelEl(id);
+  if (!r || !el || !S.me || r.authorId === S.me.uid) return;
+  const key = "fol" + r.authorId;
+  if (S.busy.has(key)) return;
+  S.busy.add(key);
+  const btn = el.querySelector(".fol");
+  try {
+    await setDoc(doc(db, "follows", S.me.uid + "_" + r.authorId), {
+      followerId: S.me.uid, followingId: r.authorId, createdAt: serverTimestamp()
+    });
+    S.following.add(r.authorId);
+    btn.classList.add("done");
+    btn.innerHTML = '<i class="ti ti-check"></i>';
+    toast("Following " + r.authorName);
+    setTimeout(() => { btn.classList.remove("done"); paintAuthor(r.authorId); }, 700);
+  } catch (e) {
+    console.error("follow", e);
+    toast("Could not follow. Try again.");
+  }
+  S.busy.delete(key);
+}
+
+/* ---------------- share ---------------- */
+async function shareReel(id) {
+  const r = S.reels.get(id);
+  if (!r || !S.me) return;
+  const url = location.origin + location.pathname.replace(/[^/]*$/, "") + "reels.html?id=" + encodeURIComponent(id);
+  let done = false;
+  try {
+    if (navigator.share) { await navigator.share({ title: "Arewa Market Reels", text: r.caption || "", url }); done = true; }
+    else if (navigator.clipboard) { await navigator.clipboard.writeText(url); toast("Link copied"); done = true; }
+    else { prompt("Copy this link:", url); done = true; }
+  } catch (e) { /* mutum ya fasa */ }
+  if (!done) return;
+
+  // Ana kirga share sau daya ga kowane mutum
+  const key = "shr" + id;
+  if (S.busy.has(key)) return;
+  S.busy.add(key);
+  try {
+    const mine = doc(db, "reels", id, "shares", S.me.uid);
+    const ex = await getDoc(mine);
+    if (!ex.exists()) {
+      const b = writeBatch(db);
+      b.set(mine, { uid: S.me.uid, createdAt: serverTimestamp() });
+      b.update(doc(db, "reels", id), { shareCount: increment(1) });
+      await b.commit();
+      r.shareCount += 1;
+      paint(id);
+    }
+  } catch (e) { console.error("share count", e); }
+  S.busy.delete(key);
+}
+
+/* ---------------- comments ---------------- */
+function cmHtml(c, reel) {
+  const mine = S.me && c.authorId === S.me.uid;
+  const canDel = mine || (S.me && reel && reel.authorId === S.me.uid);
+  return '<div class="cmi" data-id="' + esc(c.id) + '">' +
+    '<a class="av" href="profile.html?id=' + encodeURIComponent(c.authorId) + '">' + avatarInner(c.authorName, c.authorPhoto) + "</a>" +
+    '<div class="cmb"><div class="cmn">' + esc(c.authorName) + "<small>" + ago(c.createdAtMs) + "</small></div>" +
+    '<div class="cmt">' + esc(c.text) + "</div></div>" +
+    (canDel ? '<button type="button" class="cmd" data-del="' + esc(c.id) + '" aria-label="Delete"><i class="ti ti-trash"></i></button>' : "") +
+    "</div>";
+}
+
+async function openComments(id) {
+  const r = S.reels.get(id);
+  if (!r) return;
+  S.cmId = id;
+  $("cmSheet").classList.add("on");
+  $("cmTitle").textContent = fmt(r.commentCount) + " comments";
+  $("cmList").innerHTML = '<div class="cmempty">Loading...</div>';
+  $("cmInput").value = ""; $("cmSend").disabled = true;
+  try {
+    const snap = await getDocs(query(collection(db, "reels", id, "comments"), orderBy("createdAt", "desc"), limit(40)));
+    if (S.cmId !== id) return;
+    const list = snap.docs.map((d) => {
+      const x = d.data();
+      return { id: d.id, authorId: x.authorId || "", authorName: x.authorName || "User", authorPhoto: httpUrl(x.authorPhoto || ""), text: typeof x.text === "string" ? x.text : "", createdAtMs: tsMs(x.createdAt) };
+    });
+    $("cmList").innerHTML = list.length ? list.map((c) => cmHtml(c, r)).join("") : '<div class="cmempty">No comments yet. Be the first!</div>';
+  } catch (e) {
+    console.error("comments", e);
+    $("cmList").innerHTML = '<div class="cmempty">Could not load comments.</div>';
+  }
+}
+function closeComments() { $("cmSheet").classList.remove("on"); S.cmId = null; }
+
+$("cmClose").addEventListener("click", closeComments);
+$("cmSheet").addEventListener("click", (ev) => { if (ev.target === $("cmSheet")) closeComments(); });
+$("cmInput").addEventListener("input", () => { $("cmSend").disabled = !$("cmInput").value.trim(); });
+$("cmInput").addEventListener("keydown", (ev) => { if (ev.key === "Enter") { ev.preventDefault(); sendComment(); } });
+$("cmSend").addEventListener("click", sendComment);
+
+async function sendComment() {
+  const id = S.cmId, r = S.reels.get(id);
+  const text = $("cmInput").value.trim().slice(0, 500);
+  if (!id || !r || !text || !S.me || $("cmSend").disabled) return;
+  if (Date.now() - S.lastCmAt < 3000) { toast("Please wait a moment."); return; }
+  $("cmSend").disabled = true;
+  try {
+    const cref = doc(collection(db, "reels", id, "comments"));
+    const data = { authorId: S.me.uid, authorName: myName(), text, createdAt: serverTimestamp() };
+    const ph = myPhoto(); if (ph) data.authorPhoto = ph;
+    const b = writeBatch(db);
+    b.set(cref, data);
+    b.update(doc(db, "reels", id), { commentCount: increment(1) });
+    await b.commit();
+    S.lastCmAt = Date.now();
+    r.commentCount += 1; paint(id);
+    $("cmTitle").textContent = fmt(r.commentCount) + " comments";
+    $("cmInput").value = "";
+    const empty = $("cmList").querySelector(".cmempty"); if (empty) $("cmList").innerHTML = "";
+    $("cmList").insertAdjacentHTML("afterbegin", cmHtml({ id: cref.id, authorId: S.me.uid, authorName: myName(), authorPhoto: ph, text, createdAtMs: Date.now() }, r));
+    $("cmList").scrollTop = 0;
+  } catch (e) {
+    console.error("comment post", e);
+    toast(e && e.code === "permission-denied" ? "You are not allowed to comment right now." : "Could not post comment.");
+    $("cmSend").disabled = false;
+  }
+}
+
+$("cmList").addEventListener("click", async (ev) => {
+  const btn = ev.target.closest("[data-del]");
+  if (!btn) return;
+  const id = S.cmId, r = S.reels.get(id), cid = btn.dataset.del;
+  if (!id || !r || btn.disabled) return;
+  btn.disabled = true;
+  try {
+    const b = writeBatch(db);
+    b.delete(doc(db, "reels", id, "comments", cid));
+    b.update(doc(db, "reels", id), { commentCount: increment(-1) });
+    await b.commit();
+    r.commentCount = Math.max(0, r.commentCount - 1); paint(id);
+    $("cmTitle").textContent = fmt(r.commentCount) + " comments";
+    const row = btn.closest(".cmi"); if (row) row.remove();
+    if (!$("cmList").children.length) $("cmList").innerHTML = '<div class="cmempty">No comments yet. Be the first!</div>';
+  } catch (e) {
+    console.error("comment delete", e);
+    toast("Could not delete comment.");
+    btn.disabled = false;
+  }
 });
 
 /* ---------------- upload ---------------- */
@@ -299,6 +797,9 @@ $("goBtn").addEventListener("click", async () => {
       videoUrl: res.url,
       duration: Math.min(dur, 60),
       likeCount: 0,
+      commentCount: 0,
+      saveCount: 0,
+      shareCount: 0,
       createdAt: serverTimestamp()
     };
     const photo = myPhoto();
@@ -308,6 +809,7 @@ $("goBtn").addEventListener("click", async () => {
     S.lastPostAt = Date.now();
 
     const eb = $("emptyBox"); if (eb) box.innerHTML = "";
+    if (S.tab !== "for") setTab("for");
     addReels([normalize(ref.id, Object.assign({}, data, { createdAt: null, createdAtMs: Date.now() }))], true);
     busy = false;
     closeUpload();
@@ -326,6 +828,7 @@ onAuthStateChanged(auth, async (user) => {
   if (!user) { location.replace("login.html"); return; }
   S.me = user;
   paintMute();
+  paintSpeed();
   try {
     const s = await getDoc(doc(db, "users", user.uid));
     S.myData = s.exists() ? s.data() : {};
