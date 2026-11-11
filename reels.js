@@ -880,14 +880,15 @@ window.addEventListener("online", () => {
 window.addEventListener("offline", () => toast("You are offline"));
 
 /* ---------------- start ---------------- */
+showLoading();
 onAuthStateChanged(auth, async (user) => {
   if (!user) { location.replace("login.html"); return; }
   S.me = user;
   paintMute();
   paintSpeed();
-  try {
-    const s = await withTimeout(getDoc(doc(db, "users", user.uid)), 6000);
-    S.myData = s.exists() ? s.data() : {};
-  } catch (e) { console.error("user doc", e); }
   loadFirst();
+  // Bayanan mai amfani (don comments) suna zuwa a baya, ba sa hana reels
+  withTimeout(getDoc(doc(db, "users", user.uid)), 8000)
+    .then((s) => { S.myData = s.exists() ? s.data() : {}; })
+    .catch((e) => console.error("user doc", e));
 });

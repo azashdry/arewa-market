@@ -7,7 +7,7 @@
 // - BA a taɓa bidiyo, Firestore, Auth ko wani API.
 // =====================================================
 
-const VERSION = "v2";
+const VERSION = "v3";
 const SHELL = "arewa-shell-" + VERSION;
 const MEDIA = "arewa-media-" + VERSION;
 const MEDIA_MAX = 120;
@@ -70,7 +70,7 @@ async function networkFirst(req) {
   const cache = await caches.open(SHELL);
   const cached = await cache.match(req, { ignoreSearch: true });
 
-  const net = fetch(req).then((res) => {
+  const net = fetch(req, { cache: "no-cache" }).then((res) => {
     if (res && res.status === 200 && res.type === "basic") cache.put(req, res.clone()).catch(() => {});
     return res;
   });
