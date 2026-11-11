@@ -16,7 +16,7 @@ import {
   getFirestore,
   initializeFirestore,
   persistentLocalCache,
-  persistentMultipleTabManager
+  persistentSingleTabManager
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -73,8 +73,10 @@ let db;
 try {
   db = initializeFirestore(app, {
     localCache: persistentLocalCache({
-      tabManager: persistentMultipleTabManager()
-    })
+      tabManager: persistentSingleTabManager({ forceOwnership: true })
+    }),
+    // Yana hana tambayoyi su rataya a WebView / wasu network
+    experimentalAutoDetectLongPolling: true
   });
 } catch (e) {
   console.warn("Firestore offline cache unavailable:", e);

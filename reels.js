@@ -399,6 +399,20 @@ const loadObs = new IntersectionObserver((entries) => {
 }, { root: box, rootMargin: "100% 0px 100% 0px", threshold: 0 });
 
 /* ---------------- load ---------------- */
+function withTimeout(p, ms) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(Object.assign(new Error("timeout"), { code: "timeout" })), ms);
+    p.then((v) => { clearTimeout(t); resolve(v); }, (e) => { clearTimeout(t); reject(e); });
+  });
+}
+function showLoading() {
+  box.innerHTML = '<div class="empty"><div class="spin" style="display:block;position:relative;left:0;top:0;margin:0 0 6px"></div>Loading reels...</div>';
+}
+function errBox(e) {
+  const code = esc((e && (e.code || e.message)) || "unknown");
+  box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<small style="opacity:.5;font-size:11px">' + code + '</small><button type="button" id="retryBtn">Try again</button></div>';
+  const b = $("retryBtn"); if (b) b.addEventListener("click", () => (S.tab === "for" ? loadFirst() : loadFollowing()));
+}
 async function fetchPage(after) {
   const parts = [collection(db, "reels"), orderBy("createdAt", "desc")];
   if (after) parts.push(startAfter(after));
@@ -437,16 +451,17 @@ function resetFeed() {
 
 async function loadFirst() {
   S.loading = true;
+  showLoading();
   try {
     let pinned = null;
     const want = new URLSearchParams(location.search).get("id");
     if (want && /^[A-Za-z0-9]{4,40}$/.test(want)) {
       try {
-        const d = await getDoc(doc(db, "reels", want));
+        const d = await withTimeout(getDoc(doc(db, "reels", want)), 6000);
         if (d.exists()) { const n = normalize(d.id, d.data()); if (n.videoUrl) pinned = n; }
       } catch (e) { /* ba komai */ }
     }
-    const p = await fetchPage(null);
+    const p = await withTimeout(fetchPage(null), 15000);
     S.last = p.last; S.more = p.full;
     box.innerHTML = "";
     const list = pinned ? [pinned].concat(p.list.filter((r) => r.id !== pinned.id)) : p.list;
@@ -454,8 +469,7 @@ async function loadFirst() {
     else addReels(list, false);
   } catch (e) {
     console.error("reels load", e);
-    if (!navigator.onLine) offlineBox();
-    else box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<button type="button" onclick="location.reload()">Refresh</button></div>';
+    if (!navigator.onLine) offlineBox(); else errBox(e);
   }
   S.loading = false;
 }
@@ -463,8 +477,9 @@ async function loadFirst() {
 // Tab na "Following": reels na mutanen da nake bi (ba pagination, ana jera su a client)
 async function loadFollowing() {
   S.loading = true;
+  showLoading();
   try {
-    const fs = await getDocs(query(collection(db, "follows"), where("followerId", "==", S.me.uid), limit(30)));
+    const fs = await withTimeout(getDocs(query(collection(db, "follows"), where("followerId", "==", S.me.uid), limit(30))), 15000);
     const ids = fs.docs.map((d) => d.data().followingId).filter(Boolean);
     ids.forEach((a) => { S.following.add(a); S.folKnown.add(a); });
     box.innerHTML = "";
@@ -479,8 +494,7 @@ async function loadFollowing() {
     else addReels(list, false);
   } catch (e) {
     console.error("following load", e);
-    if (!navigator.onLine) offlineBox();
-    else box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<button type="button" onclick="location.reload()">Refresh</button></div>';
+    if (!navigator.onLine) offlineBox(); else errBox(e);
   }
   S.loading = false;
 }
@@ -872,7 +886,7 @@ onAuthStateChanged(auth, async (user) => {
   paintMute();
   paintSpeed();
   try {
-    const s = await getDoc(doc(db, "users", user.uid));
+    const s = await withTimeout(getDoc(doc(db, "users", user.uid)), 6000);
     S.myData = s.exists() ? s.data() : {};
   } catch (e) { console.error("user doc", e); }
   loadFirst();
