@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reels test</title>
+<style>
+body{background:#000;color:#ddd;font:13px/1.55 monospace;padding:14px}
+h3{color:#fff;margin-bottom:8px}
+.ok{color:#4ade80}.bad{color:#f87171}.w{color:#fbbf24}
+div.l{margin:3px 0;word-break:break-all}
+button{margin:10px 8px 0 0;padding:11px 14px;border:0;border-radius:8px;background:#fe2c55;color:#fff;font-weight:700;font-size:13px}
+button.g{background:#333}
+</style>
+<script>
+// Classic script: yana aiki koda module ya kasa
+window.L = function (msg, cls) {
+  var d = document.createElement("div");
+  d.className = "l " + (cls || "");
+  d.textContent = msg;
+  document.getElementById("out").appendChild(d);
+};
+window.addEventListener("error", function (e) {
+  var t = e.target && (e.target.src || e.target.href) || "";
+  window.L("ERROR: " + (e.message || "load error") + " " + t, "bad");
+}, true);
+window.addEventListener("unhandledrejection", function (e) {
+  var r = e.reason; window.L("PROMISE ERROR: " + ((r && (r.code || r.message)) || r), "bad");
+});
+</script>
+</head>
+<body>
+<h3>Reels test</h3>
+<div id="out"></div>
+<button id="fix">Clear cache + service worker, then reload</button>
+<button class="g" onclick="location.reload()">Run again</button>
+
+<script>
+window.L("Page: " + location.origin + location.pathname);
+window.L("Browser: " + navigator.userAgent.slice(0, 110));
+window.L("Online: " + navigator.onLine, navigator.onLine ? "ok" : "bad");
+</script>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+const L = window.L;
+const T = (p, ms) => new Promise((res, rej) => {
+  const t = setTimeout(() => rej(Object.assign(new Error("timeout " + ms + "ms"), { code: "timeout" })), ms);
+  p.then((v) => { clearTimeout(t); res(v); }, (e) => { clearTimeout(t); rej(e); });
+});
+L("firebase.js imported OK", "ok");
+
+document.getElementById("fix").onclick = async () => {
+  try {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (const r of regs) await r.unregister();
+    const ks = await caches.keys();
+    for (const k of ks) await caches.delete(k);
+  } catch (e) {}
+  location.replace("reels.html?fresh=" + Date.now());
+};
+
+// 1. Fayilolin da ke GitHub: sababbi ne?
+try {
+  const js = await (await fetch("reels.js?x=" + Date.now(), { cache: "no-store" })).text();
+  L("reels.js on server: " + (js.indexOf("showLoading") > -1 ? "NEW version" : "OLD version"), js.indexOf("showLoading") > -1 ? "ok" : "bad");
+  const html = await (await fetch("reels.html?x=" + Date.now(), { cache: "no-store" })).text();
+  L("reels.html on server: " + (html.indexOf("Reels did not start") > -1 ? "NEW version" : "OLD version"), html.indexOf("Reels did not start") > -1 ? "ok" : "bad");
+  L("reels.html loads reels.js as: " + ((html.match(/reels\.js[^"]*/) || ["?"])[0]));
+} catch (e) { L("Could not fetch files: " + e.message, "bad"); }
+
+// 2. Service worker
+try {
+  const regs = await navigator.serviceWorker.getRegistrations();
+  L("Service workers: " + regs.length + (navigator.serviceWorker.controller ? " (controlling this page)" : ""), "w");
+  const ks = await caches.keys();
+  L("Caches: " + (ks.join(", ") || "none"), "w");
+} catch (e) { L("SW info n/a: " + e.message, "w"); }
+
+// 3. Login
+const user = await new Promise((res) => {
+  const t = setTimeout(() => res("timeout"), 8000);
+  onAuthStateChanged(auth, (u) => { clearTimeout(t); res(u); });
+});
+if (user === "timeout") L("Auth: no answer in 8s", "bad");
+else if (!user) L("Auth: NOT logged in (login first, then run again)", "bad");
+else L("Auth: logged in (" + user.uid.slice(0, 6) + "...)", "ok");
+
+// 4. Firestore reels
+let reels = [];
+try {
+  const snap = await T(getDocs(query(collection(db, "reels"), orderBy("createdAt", "desc"), limit(3))), 12000);
+  reels = snap.docs.map((d) => d.data());
+  L("Firestore reels: " + snap.size + " found", snap.size ? "ok" : "bad");
+} catch (e) { L("Firestore reels FAILED: " + (e.code || e.message), "bad"); }
+
+// 5. Video
+function testVideo(url, label) {
+  return new Promise((res) => {
+    const v = document.createElement("video");
+    v.muted = true; v.playsInline = true; v.preload = "auto";
+    const t = setTimeout(() => { L(label + ": no answer in 15s", "bad"); v.removeAttribute("src"); res(); }, 15000);
+    v.addEventListener("loadeddata", () => { clearTimeout(t); L(label + ": OK (" + v.videoWidth + "x" + v.videoHeight + ", " + Math.round(v.duration) + "s)", "ok"); v.removeAttribute("src"); res(); });
+    v.addEventListener("error", () => { clearTimeout(t); const c = v.error ? v.error.code : "?"; L(label + ": FAILED (media error " + c + ")", "bad"); res(); });
+    v.src = url;
+  });
+}
+if (reels[0] && reels[0].videoUrl) {
+  const orig = reels[0].videoUrl;
+  const small = orig.replace("/video/upload/", "/video/upload/f_mp4,vc_h264,ac_aac,q_auto:eco,w_540,c_limit/");
+  L("Video host: " + new URL(orig).hostname);
+  await testVideo(small, "Video (light version)");
+  await testVideo(orig, "Video (original)");
+} else L("No video to test", "w");
+L("--- Done. Send a screenshot of this page ---", "w");
+</script>
+</body>
+</html>
