@@ -40,7 +40,7 @@ html,body{height:100%;background:#000;color:#fff;font-family:'Inter',Arial,sans-
 @keyframes rot{to{transform:rotate(360deg)}}
 
 .top{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;z-index:20;pointer-events:none}
-.tb{pointer-events:auto;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;text-decoration:none;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
+.tb{pointer-events:auto;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;text-decoration:none}
 .top h1{position:relative;font:700 17px 'Inter',sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.6);pointer-events:none;padding:6px 2px}
 .top h1::after{content:"";position:absolute;left:25%;right:25%;bottom:-2px;height:3px;border-radius:2px;background:#fff}
 
@@ -58,7 +58,7 @@ html,body{height:100%;background:#000;color:#fff;font-family:'Inter',Arial,sans-
 .rail .ra .plus{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:22px;height:22px;border:0;border-radius:50%;background:var(--tk-red);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;padding:0;transition:transform .2s,opacity .2s}
 .rail .ra .plus.done{background:#fff;color:var(--tk-red)}
 .rail .ra .plus.gone{display:none}
-.rail .rb{border:0;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;gap:2px;font:600 12.5px 'Inter',sans-serif;min-width:50px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.55))}
+.rail .rb{border:0;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;gap:2px;font:600 12.5px 'Inter',sans-serif;min-width:50px;text-shadow:0 1px 3px rgba(0,0,0,.7)}
 .rail .rb svg{width:36px;height:36px;fill:currentColor;transition:transform .15s}
 .rail .rb:active svg{transform:scale(.85)}
 .rail .rb.lk.on{color:var(--tk-red)}

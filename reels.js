@@ -12,7 +12,7 @@ import {
   doc, serverTimestamp, writeBatch, increment
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-const PAGE = 6;
+const PAGE = 5;
 const MAX_SEC = 45;
 const MAX_MB = 50;
 const MAX_CAPTION = 200;
@@ -26,7 +26,7 @@ const S = {
   me: null, myData: {}, last: null, more: false, loading: false, muted: true,
   reels: new Map(), lastPostAt: 0, tab: "for",
   liked: new Set(), saved: new Set(), following: new Set(), folKnown: new Set(),
-  busy: new Set(), cmId: null, lastCmAt: 0, speed: 1
+  busy: new Set(), cmId: null, lastCmAt: 0, speed: 1, hyd: new Set()
 };
 let pickedFile = null, pickedUrl = "", pickedDur = 0, busy = false;
 
@@ -66,6 +66,11 @@ function ago(ms) {
 function posterOf(url) {
   if (typeof url !== "string" || url.indexOf("res.cloudinary.com") < 0 || url.indexOf("/video/upload/") < 0) return "";
   return url.replace("/video/upload/", "/video/upload/so_0,f_jpg,w_540,q_auto/").replace(/\.[A-Za-z0-9]+(\?.*)?$/, ".jpg");
+}
+// Bidiyo mai sauki don kallo: 540px, H.264, ƙaramin bitrate (na asali ana ajiye shi don download)
+function playUrl(url) {
+  if (typeof url !== "string" || url.indexOf("/video/upload/") < 0) return url;
+  return url.replace("/video/upload/", "/video/upload/f_mp4,vc_h264,ac_aac,q_auto:eco,w_540,c_limit/");
 }
 function httpUrl(u) { return typeof u === "string" && /^https?:\/\//.test(u) ? u : ""; }
 function tsMs(ts) { return ts && typeof ts.toMillis === "function" ? ts.toMillis() : 0; }
@@ -110,7 +115,7 @@ function reelHtml(r) {
     '<section class="reel loading" data-id="' + esc(r.id) + '">' +
       '<video playsinline loop muted preload="none" webkit-playsinline' +
         (posterOf(r.videoUrl) ? ' poster="' + esc(posterOf(r.videoUrl)) + '"' : "") +
-        ' data-src="' + esc(r.videoUrl) + '"></video>' +
+        ' data-src="' + esc(playUrl(r.videoUrl)) + '" data-orig="' + esc(r.videoUrl) + '"></video>' +
       '<div class="spin"></div>' +
       '<div class="shade"></div><div class="shade t"></div>' +
       '<div class="pi"><i class="ti ti-player-play-filled"></i></div>' +
@@ -162,7 +167,8 @@ function paintAuthor(authorId) {
 async function hydrate(list) {
   if (!S.me) return;
   const uid = S.me.uid;
-  list.forEach((r) => paint(r.id));
+  list = list.filter((r) => !S.hyd.has(r.id));
+  list.forEach((r) => S.hyd.add(r.id));
   const authors = Array.from(new Set(list.map((r) => r.authorId).filter((a) => a && a !== uid && !S.folKnown.has(a))));
   await Promise.all([
     ...list.map(async (r) => {
@@ -216,7 +222,18 @@ function wire(el) {
   v.addEventListener("canplay", () => el.classList.remove("loading"));
   v.addEventListener("playing", () => el.classList.remove("loading"));
   v.addEventListener("waiting", () => el.classList.add("loading"));
-  v.addEventListener("error", () => el.classList.remove("loading"));
+  v.addEventListener("error", () => {
+    // Idan sigar mai sauki ta ki buɗewa, a koma ta asali (sau ɗaya kawai)
+    if (v.getAttribute("src") && v.dataset.fb !== "1" && v.dataset.orig && v.getAttribute("src") !== v.dataset.orig) {
+      v.dataset.fb = "1";
+      v.dataset.src = v.dataset.orig;
+      v.src = v.dataset.orig;
+      if (v === activeVideo) v.play().catch(() => {});
+      return;
+    }
+    el.classList.remove("loading");
+    if (!navigator.onLine && v === activeVideo) toast("No internet - video cannot play");
+  });
   // Tsaro: idan wannan bidiyo ba shi ne mai aiki ba, kar ya taba yin sauti
   v.addEventListener("play", () => { if (v !== activeVideo) { v.pause(); v.muted = true; } });
 
@@ -328,6 +345,7 @@ function activate(v) {
   silenceAll(v);
   if (!v) return;
   if (!v.src && v.dataset.src) v.src = v.dataset.src;
+  v.preload = "auto";
   v.muted = S.muted;
   v.defaultPlaybackRate = S.speed;
   v.playbackRate = S.speed;
@@ -344,6 +362,7 @@ function pickActive() {
   const v = best && bestR >= 0.6 ? best.querySelector("video") : null;
   if (v === activeVideo) return;
   activate(v);
+  if (best) { const rr = S.reels.get(best.dataset.id); if (rr) hydrate([rr]); }
   if (best && S.more) {
     const idx = Array.from(box.children).indexOf(best);
     if (idx >= box.children.length - 3) loadMore();
@@ -369,7 +388,7 @@ const loadObs = new IntersectionObserver((entries) => {
     const v = en.target.querySelector("video");
     if (!v) return;
     if (en.isIntersecting) {
-      if (!v.src && v.dataset.src) { v.src = v.dataset.src; v.preload = "auto"; }
+      if (!v.src && v.dataset.src) { v.src = v.dataset.src; v.preload = "metadata"; }
     } else if (v.src) {
       v.pause();
       v.removeAttribute("src");
@@ -377,7 +396,7 @@ const loadObs = new IntersectionObserver((entries) => {
       en.target.classList.add("loading");
     }
   });
-}, { root: box, rootMargin: "150% 0px 150% 0px", threshold: 0 });
+}, { root: box, rootMargin: "100% 0px 100% 0px", threshold: 0 });
 
 /* ---------------- load ---------------- */
 async function fetchPage(after) {
@@ -397,7 +416,7 @@ function addReels(list, atTop) {
   const els = atTop ? Array.from(box.children).slice(0, fresh.length) : Array.from(box.children).slice(before);
   fresh.forEach((r) => S.reels.set(r.id, r));
   els.forEach(wire);
-  hydrate(fresh);
+  fresh.forEach((r) => paint(r.id));
 }
 
 function showEmpty(msg, withBtn) {
@@ -435,7 +454,8 @@ async function loadFirst() {
     else addReels(list, false);
   } catch (e) {
     console.error("reels load", e);
-    box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<button type="button" onclick="location.reload()">Refresh</button></div>';
+    if (!navigator.onLine) offlineBox();
+    else box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<button type="button" onclick="location.reload()">Refresh</button></div>';
   }
   S.loading = false;
 }
@@ -459,7 +479,8 @@ async function loadFollowing() {
     else addReels(list, false);
   } catch (e) {
     console.error("following load", e);
-    box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<button type="button" onclick="location.reload()">Refresh</button></div>';
+    if (!navigator.onLine) offlineBox();
+    else box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<button type="button" onclick="location.reload()">Refresh</button></div>';
   }
   S.loading = false;
 }
@@ -522,6 +543,7 @@ function downloadReel(id) {
 async function toggleSub(id, col, field, set, onlyOn) {
   const r = S.reels.get(id);
   if (!r || !S.me) return;
+  if (!navigator.onLine) { toast("No internet connection"); return; }
   const key = col + id;
   if (S.busy.has(key)) return;
   const was = set.has(id);
@@ -560,6 +582,7 @@ async function toggleSave(id) {
 async function followAuthor(id) {
   const r = S.reels.get(id), el = reelEl(id);
   if (!r || !el || !S.me || r.authorId === S.me.uid) return;
+  if (!navigator.onLine) { toast("No internet connection"); return; }
   const key = "fol" + r.authorId;
   if (S.busy.has(key)) return;
   S.busy.add(key);
@@ -657,6 +680,7 @@ async function sendComment() {
   const id = S.cmId, r = S.reels.get(id);
   const text = $("cmInput").value.trim().slice(0, 500);
   if (!id || !r || !text || !S.me || $("cmSend").disabled) return;
+  if (!navigator.onLine) { toast("No internet connection"); return; }
   if (Date.now() - S.lastCmAt < 3000) { toast("Please wait a moment."); return; }
   $("cmSend").disabled = true;
   try {
@@ -822,6 +846,24 @@ $("goBtn").addEventListener("click", async () => {
     busy = false; refreshGo();
   }
 });
+
+/* ---------------- offline / online ---------------- */
+function offlineBox() {
+  box.innerHTML = '<div class="empty"><i class="ti ti-wifi-off" style="font-size:48px"></i>No internet connection.<br>Reels need data to load and play.<button type="button" id="retryBtn">Try again</button></div>';
+  const b = $("retryBtn"); if (b) b.addEventListener("click", () => (S.tab === "for" ? loadFirst() : loadFollowing()));
+}
+window.addEventListener("online", () => {
+  if (!S.me) return;
+  if (!box.querySelector(".reel")) { if (S.tab === "for") loadFirst(); else loadFollowing(); return; }
+  const v = activeVideo;
+  if (v && (v.error || v.readyState === 0)) {
+    v.dataset.fb = "";
+    v.removeAttribute("src");
+    v.load();
+    activate(v);
+  }
+});
+window.addEventListener("offline", () => toast("You are offline"));
 
 /* ---------------- start ---------------- */
 onAuthStateChanged(auth, async (user) => {

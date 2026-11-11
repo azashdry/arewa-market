@@ -13,7 +13,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
-  getFirestore
+  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -63,8 +66,20 @@ const auth =
 // FIRESTORE
 // =====================================================
 
-const db =
-  getFirestore(app);
+// Offline cache: bayanan da aka taɓa gani (posts, products, reels...)
+// suna bayyana koda babu data. Idan browser bai goyi bayan sa ba,
+// ana komawa ga na yau da kullum, don app ɗin ya ci gaba da aiki.
+let db;
+try {
+  db = initializeFirestore(app, {
+    localCache: persistentLocalCache({
+      tabManager: persistentMultipleTabManager()
+    })
+  });
+} catch (e) {
+  console.warn("Firestore offline cache unavailable:", e);
+  db = getFirestore(app);
+}
 
 
 // =====================================================
