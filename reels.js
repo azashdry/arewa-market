@@ -21,6 +21,8 @@ const CLOUD = "https://res.cloudinary.com/";
 
 const $ = (id) => document.getElementById(id);
 const box = $("reels");
+const dbg = (m) => { try { if (window.__dbg) window.__dbg(m); } catch (e) { /* ba komai */ } };
+dbg("reels.js running, box h=" + box.clientHeight + " w=" + box.clientWidth);
 
 const S = {
   me: null, myData: {}, last: null, more: false, loading: false, muted: true,
@@ -219,10 +221,12 @@ function wire(el) {
   v.addEventListener("loadedmetadata", () => {
     v.classList.toggle("fit", v.videoWidth / (v.videoHeight || 1) > 0.8);
   });
+  ["loadstart", "loadedmetadata", "canplay", "playing", "stalled"].forEach((n) => v.addEventListener(n, () => dbg("video " + n + " (" + el.dataset.id.slice(0, 4) + ")")));
   v.addEventListener("canplay", () => el.classList.remove("loading"));
   v.addEventListener("playing", () => el.classList.remove("loading"));
   v.addEventListener("waiting", () => el.classList.add("loading"));
   v.addEventListener("error", () => {
+    dbg("video error code=" + (v.error ? v.error.code : "?") + " src=" + (v.getAttribute("src") || "").slice(0, 60));
     // Idan sigar mai sauki ta ki buɗewa, a koma ta asali (sau ɗaya kawai)
     if (v.getAttribute("src") && v.dataset.fb !== "1" && v.dataset.orig && v.getAttribute("src") !== v.dataset.orig) {
       v.dataset.fb = "1";
@@ -360,6 +364,7 @@ function pickActive() {
   let best = null, bestR = 0;
   ratios.forEach((r, el) => { if (r > bestR) { bestR = r; best = el; } });
   const v = best && bestR >= 0.6 ? best.querySelector("video") : null;
+  dbg("pickActive ratio=" + bestR.toFixed(2) + " video=" + (v ? "yes" : "no"));
   if (v === activeVideo) return;
   activate(v);
   if (best) { const rr = S.reels.get(best.dataset.id); if (rr) hydrate([rr]); }
@@ -431,6 +436,7 @@ function addReels(list, atTop) {
   fresh.forEach((r) => S.reels.set(r.id, r));
   els.forEach(wire);
   fresh.forEach((r) => paint(r.id));
+  { const f0 = box.querySelector(".reel"); const rc = f0 ? f0.getBoundingClientRect() : null; dbg("rendered " + box.querySelectorAll(".reel").length + " reels; first rect=" + (rc ? Math.round(rc.width) + "x" + Math.round(rc.height) + " top=" + Math.round(rc.top) : "none")); }
 }
 
 function showEmpty(msg, withBtn) {
@@ -461,7 +467,9 @@ async function loadFirst() {
         if (d.exists()) { const n = normalize(d.id, d.data()); if (n.videoUrl) pinned = n; }
       } catch (e) { /* ba komai */ }
     }
+    dbg("loadFirst: fetching");
     const p = await withTimeout(fetchPage(null), 15000);
+    dbg("fetched " + p.list.length + " reels");
     S.last = p.last; S.more = p.full;
     box.innerHTML = "";
     const list = pinned ? [pinned].concat(p.list.filter((r) => r.id !== pinned.id)) : p.list;
@@ -882,6 +890,7 @@ window.addEventListener("offline", () => toast("You are offline"));
 /* ---------------- start ---------------- */
 showLoading();
 onAuthStateChanged(auth, async (user) => {
+  dbg("auth: " + (user ? "logged in" : "NO USER"));
   if (!user) { location.replace("login.html"); return; }
   S.me = user;
   paintMute();

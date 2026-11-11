@@ -5,9 +5,22 @@
 // Idan reels.js bai fara aiki ba, a nuna dalilin maimakon bakin allo
 (function(){
   var errs=[];
+  var t0=Date.now(), n=0, panel=null;
+  window.__dbg=function(m){
+    if(location.search.indexOf("debug")<0||n>60) return; n++;
+    if(!panel){
+      panel=document.createElement("div");
+      panel.style.cssText="position:fixed;left:0;right:0;top:64px;max-height:48vh;overflow:auto;z-index:99999;background:rgba(0,0,0,.88);color:#7CFC00;font:10px/1.4 monospace;padding:6px 8px;word-break:break-all;pointer-events:none";
+      (document.body||document.documentElement).appendChild(panel);
+    }
+    var l=document.createElement("div");
+    l.textContent=((Date.now()-t0)/1000).toFixed(1)+"s "+m;
+    panel.appendChild(l);
+  };
+  window.__dbg("html diag ready; SW controller="+(navigator.serviceWorker&&navigator.serviceWorker.controller?"yes":"no"));
   window.addEventListener("error",function(e){
     var t=e.target&&(e.target.src||e.target.href)||"";
-    errs.push((e.message||"load error")+(t?" "+t:""));
+    errs.push((e.message||"load error")+(t?" "+t:""));window.__dbg&&window.__dbg("ERR "+(e.message||"load error")+" "+t);
   },true);
   window.addEventListener("unhandledrejection",function(e){
     var r=e.reason;errs.push("promise: "+((r&&(r.code||r.message))||r));
@@ -221,7 +234,7 @@ html,body{height:100%;background:#000;color:#fff;font-family:'Inter',Arial,sans-
   <a href="login.html" id="navProfileLink" class="bn-item"><span class="bn-icon"><i class="ti ti-user"></i></span><span class="bn-label">Profile</span></a>
 </nav>
 
-<script type="module" src="reels.js?v=7"></script>
+<script type="module" src="reels.js?v=8"></script>
 <script type="module" src="bottom-nav.js"></script>
 <script>
 if("serviceWorker" in navigator){
