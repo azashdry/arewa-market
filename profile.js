@@ -2,7 +2,7 @@
    AREWA MARKET - PROFILE (irin Facebook)
    - Cover photo (mai asusu kaɗai ke canzawa) + hoton profile
    - Connections: followers / following (kowa) + friends (naka kaɗai)
-   - Tabs: Posts, Photos, Products (idan seller ne)
+   - Tabs: Posts, Photos, Reels, Products (idan seller ne)
    - Karatu kaɗan: counts ta getCountFromServer; posts <=30 sau ɗaya
 ========================================================= */
 import { auth, db } from "./firebase.js";
@@ -14,6 +14,10 @@ import {
 
 const $ = (id) => document.getElementById(id);
 const CLOUD = "https://res.cloudinary.com/";
+/* REELS: collection ɗin reels da field ɗin mai reel.
+   Idan naka daban ne (misali "userId" ko "sellerId"), canza nan kaɗai. */
+const REELS_COLLECTION = "reels";
+const REELS_OWNER_FIELD = "authorId";
 
 let me = null;
 let targetId = "";
@@ -21,9 +25,10 @@ let isOwn = false;
 let data = {};
 let isSeller = false;
 let following = false;
-let counts = { followers: null, following: null, posts: null, friends: null };
+let counts = { followers: null, following: null, posts: null, reels: null, friends: null };
 let postsCache = null;       // null = ba a ɗauko ba
 let productsCache = null;
+let reelsCache = null;
 let currentTab = "posts";
 const userCache = new Map();  // uid -> {name, photo}
 
@@ -110,6 +115,7 @@ function renderStats() {
   parts.push('<button data-conn="following"><b>' + fmt(counts.following) + "</b> following</button>");
   if (isOwn) parts.push('<button data-conn="friends"><b>' + fmt(counts.friends) + "</b> friends</button>");
   parts.push("<span><b>" + fmt(counts.posts) + "</b> posts</span>");
+  parts.push("<span><b>" + fmt(counts.reels) + "</b> reels</span>");
   $("pStats").innerHTML = parts.join("");
 }
 
@@ -164,7 +170,8 @@ async function loadCounts() {
   const jobs = [
     cnt(query(f, where("followingId", "==", targetId))),
     cnt(query(f, where("followerId", "==", targetId))),
-    cnt(query(collection(db, "posts"), where("authorId", "==", targetId)))
+    cnt(query(collection(db, "posts"), where("authorId", "==", targetId))),
+    cnt(query(collection(db, REELS_COLLECTION), where(REELS_OWNER_FIELD, "==", targetId)))
   ];
   if (isOwn) {
     const fr = collection(db, "friendRequests");
@@ -172,8 +179,8 @@ async function loadCounts() {
     jobs.push(cnt(query(fr, where("to", "==", me.uid), where("status", "==", "accepted"))));
   }
   const r = await Promise.all(jobs);
-  counts.followers = r[0]; counts.following = r[1]; counts.posts = r[2];
-  if (isOwn) counts.friends = r[3] == null || r[4] == null ? null : r[3] + r[4];
+  counts.followers = r[0]; counts.following = r[1]; counts.posts = r[2]; counts.reels = r[3];
+  if (isOwn) counts.friends = r[4] == null || r[5] == null ? null : r[4] + r[5];
   renderStats();
 }
 
@@ -310,6 +317,49 @@ async function loadProducts() {
   return productsCache;
 }
 
+/* ---------------- reels ---------------- */
+function reelThumb(x) {
+  const t = httpUrl(x.thumbnailUrl) || httpUrl(x.thumbnail) || httpUrl(x.thumb) || httpUrl(x.posterUrl);
+  if (t) return cld(t, 400);
+  // Cloudinary video: ɗauki frame na farko a matsayin hoto
+  const v = httpUrl(x.videoUrl) || httpUrl(x.url) || httpUrl(x.video);
+  if (v && v.indexOf("res.cloudinary.com") > -1 && v.indexOf("/video/upload/") > -1) {
+    return v.replace("/video/upload/", "/video/upload/so_0,w_400,h_711,c_fill,f_jpg,q_auto/").replace(/\.[a-z0-9]+(\?.*)?$/i, ".jpg");
+  }
+  return "";
+}
+
+async function loadReels() {
+  if (reelsCache) return reelsCache;
+  const snap = await getDocs(query(collection(db, REELS_COLLECTION), where(REELS_OWNER_FIELD, "==", targetId), limit(30)));
+  reelsCache = snap.docs.map((d) => {
+    const x = d.data();
+    return {
+      id: d.id,
+      thumb: reelThumb(x),
+      video: httpUrl(x.videoUrl) || httpUrl(x.url) || httpUrl(x.video),
+      views: Number(x.views != null ? x.views : (x.viewCount != null ? x.viewCount : 0)) || 0,
+      createdAtMs: tsMs(x.createdAt)
+    };
+  }).sort((a, b) => b.createdAtMs - a.createdAtMs);
+  return reelsCache;
+}
+
+function reelCard(r) {
+  const media = r.thumb
+    ? '<img src="' + esc(r.thumb) + '" alt="" loading="lazy" decoding="async">'
+    : (r.video ? '<video src="' + esc(r.video) + '#t=0.1" muted playsinline preload="metadata"></video>' : "");
+  return '<a class="rl" href="reels.html?id=' + encodeURIComponent(r.id) + '">' + media +
+    '<i class="ti ti-movie rl-play"></i>' +
+    '<span class="rl-v"><i class="ti ti-player-play-filled"></i>' + esc(fmtViews(r.views)) + "</span></a>";
+}
+
+function fmtViews(n) {
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M";
+  if (n >= 1e3) return (n / 1e3).toFixed(1).replace(/\.0$/, "") + "K";
+  return String(n);
+}
+
 async function showTab(tab) {
   currentTab = tab;
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("on", t.getAttribute("data-tab") === tab));
@@ -328,6 +378,12 @@ async function showTab(tab) {
       body.innerHTML = imgs.length
         ? '<div class="grid3">' + imgs.map((u) => '<img src="' + esc(cld(u, 400)) + '" data-full="' + esc(cld(u, 1600)) + '" alt="" loading="lazy" decoding="async">').join("") + "</div>"
         : '<div class="empty">No photos yet.</div>';
+    } else if (tab === "reels") {
+      const list = await loadReels();
+      if (currentTab !== tab) return;
+      body.innerHTML = list.length
+        ? '<div class="grid-reels">' + list.map(reelCard).join("") + "</div>"
+        : '<div class="empty">No reels yet.</div>';
     } else if (tab === "products") {
       const list = await loadProducts();
       if (currentTab !== tab) return;
