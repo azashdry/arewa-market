@@ -7,11 +7,11 @@
 // - BA a taɓa bidiyo, Firestore, Auth ko wani API.
 // =====================================================
 
-const VERSION = "v3";
+const VERSION = "v4";
 const SHELL = "arewa-shell-" + VERSION;
 const MEDIA = "arewa-media-" + VERSION;
 const MEDIA_MAX = 120;
-const SLOW_MS = 4000;
+const SLOW_MS = 6000;
 
 const PRECACHE = [
   "./",
@@ -83,8 +83,9 @@ async function networkFirst(req) {
     return Response.error();
   };
 
-  if (!cached) return net.catch(offline);
-  // Idan net ya yi jinkiri (> 4s), a nuna na cache yayin da sabon ke saukowa a baya
+  // Fayilolin JS/CSS ba a taɓa ba su tsoho idan net yana jinkiri (don kada tsohon JS ya haɗu da sabon HTML)
+  if (!cached || req.mode !== "navigate") return net.catch(offline);
+  // Shafi kaɗai: idan net ya yi jinkiri sosai, a nuna na cache yayin da sabon ke saukowa a baya
   return Promise.race([
     net,
     new Promise((resolve) => setTimeout(() => resolve(cached), SLOW_MS))
