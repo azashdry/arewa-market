@@ -58,8 +58,9 @@
 :root{--nav:58px;--tk-red:#fe2c55;--tk-cyan:#25f4ee}
 html,body{height:100%;background:#000;color:#fff;font-family:'Inter',Arial,sans-serif;overflow:hidden}
 
-#reels{height:calc(100vh - var(--nav) - env(safe-area-inset-bottom));height:calc(100dvh - var(--nav) - env(safe-area-inset-bottom));overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#reels{height:calc(100vh - var(--nav) - env(safe-area-inset-bottom));overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 #reels::-webkit-scrollbar{display:none}
+@supports (height:100dvh){#reels{height:calc(100dvh - var(--nav) - env(safe-area-inset-bottom))}}
 .reel{touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;background:#000;overflow:hidden}
 .reel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
 .reel video.fit{object-fit:contain}
