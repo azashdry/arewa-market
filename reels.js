@@ -18,6 +18,10 @@ const MAX_MB = 50;
 const MAX_CAPTION = 200;
 const COOLDOWN_MS = 30000;
 const CLOUD = "https://res.cloudinary.com/";
+const MEDIA = "https://arewa-reels-api.vercel.app/api/media?k=";
+function isReelUrl(u) {
+  return typeof u === "string" && ((u.indexOf(CLOUD) === 0 && u.indexOf("/video/upload/") > 0) || u.indexOf(MEDIA + "video%2F") === 0);
+}
 
 const $ = (id) => document.getElementById(id);
 const box = $("reels");
@@ -90,7 +94,7 @@ function normalize(id, d) {
     authorName: d.authorName || "User",
     authorPhoto: httpUrl(d.authorPhoto || ""),
     caption: typeof d.caption === "string" ? d.caption : "",
-    videoUrl: typeof d.videoUrl === "string" && d.videoUrl.indexOf(CLOUD) === 0 ? d.videoUrl : "",
+    videoUrl: typeof d.videoUrl === "string" && (d.videoUrl.indexOf(CLOUD) === 0 || d.videoUrl.indexOf(MEDIA) === 0) ? d.videoUrl : "",
     duration: typeof d.duration === "number" ? d.duration : 0,
     likeCount: num(d.likeCount),
     commentCount: num(d.commentCount),
@@ -553,6 +557,17 @@ $("spdBtn").addEventListener("click", () => {
 function downloadReel(id) {
   const r = S.reels.get(id);
   if (!r || !r.videoUrl) return;
+  if (r.videoUrl.indexOf(MEDIA) === 0) {
+    toast("Downloading...");
+    fetch(r.videoUrl).then((x) => { if (!x.ok) throw new Error("fail"); return x.blob(); }).then((blob) => {
+      const u = URL.createObjectURL(blob);
+      const l = document.createElement("a");
+      l.href = u; l.download = "arewa-reel.mp4";
+      document.body.appendChild(l); l.click(); l.remove();
+      setTimeout(() => URL.revokeObjectURL(u), 10000);
+    }).catch(() => toast("Could not download. Try again."));
+    return;
+  }
   const url = r.videoUrl.replace("/video/upload/", "/video/upload/fl_attachment:arewa-reel-" + String(id).slice(0, 8) + "/");
   const a = document.createElement("a");
   a.href = url; a.download = "arewa-reel.mp4"; a.rel = "noopener";
@@ -829,7 +844,7 @@ $("goBtn").addEventListener("click", async () => {
   try {
     const { uploadToCloudinary } = await import("./cloudinary-upload.js");
     const res = await uploadToCloudinary(pickedFile);
-    if (!res || typeof res.url !== "string" || res.url.indexOf(CLOUD) !== 0 || res.url.indexOf("/video/upload/") < 0) {
+    if (!res || !isReelUrl(res.url)) {
       throw new Error("Upload failed. Try again.");
     }
     const dur = Math.max(1, Math.round((res.duration && isFinite(res.duration) ? res.duration : pickedDur) || 1));

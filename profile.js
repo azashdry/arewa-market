@@ -14,6 +14,8 @@ import {
 
 const $ = (id) => document.getElementById(id);
 const CLOUD = "https://res.cloudinary.com/";
+const MEDIA = "https://arewa-reels-api.vercel.app/api/media?k=";
+function isMediaUrl(u) { return typeof u === "string" && (u.indexOf(CLOUD) === 0 || u.indexOf(MEDIA) === 0); }
 /* REELS: collection ɗin reels da field ɗin mai reel.
    Idan naka daban ne (misali "userId" ko "sellerId"), canza nan kaɗai. */
 const REELS_COLLECTION = "reels";
@@ -91,7 +93,7 @@ function renderTop() {
   const coverEl = $("cover");
   const old = coverEl.querySelector("img");
   if (old) old.remove();
-  if (cover && cover.indexOf(CLOUD) === 0) {
+  if (cover && isMediaUrl(cover)) {
     const im = document.createElement("img");
     im.src = cld(cover, 1200); im.alt = ""; im.decoding = "async";
     coverEl.insertBefore(im, coverEl.firstChild);
@@ -256,7 +258,7 @@ $("coverFile").addEventListener("change", async () => {
     const blob = await compress(file, 1600, 0.82);
     const { uploadToCloudinary } = await import("./cloudinary-upload.js");
     const res = await uploadToCloudinary(blob);
-    if (!res || typeof res.url !== "string" || res.url.indexOf(CLOUD) !== 0) throw new Error("Upload failed. Try again.");
+    if (!res || typeof res.url !== "string" || !isMediaUrl(res.url)) throw new Error("Upload failed. Try again.");
     await updateDoc(doc(db, "users", me.uid), { coverUrl: res.url });
     data.coverUrl = res.url;
     renderTop();
@@ -302,7 +304,7 @@ async function loadPosts() {
     return {
       id: d.id,
       text: typeof x.text === "string" ? x.text : "",
-      images: Array.isArray(x.images) ? x.images.filter((u) => typeof u === "string" && u.indexOf(CLOUD) === 0).slice(0, 4) : [],
+      images: Array.isArray(x.images) ? x.images.filter((u) => isMediaUrl(u)).slice(0, 4) : [],
       likeCount: typeof x.likeCount === "number" ? x.likeCount : 0,
       createdAtMs: tsMs(x.createdAt)
     };

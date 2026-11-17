@@ -26,17 +26,10 @@
    toshe user.
 ========================================================= */
 
-const CLOUD_NAME = "pelamtvq";
-const UPLOAD_PRESET = "Arewa market";
+import { auth } from "./firebase.js";
 
-// "auto" yana gane da kansa ko hoto ne, audio, ko video
-const UPLOAD_ENDPOINT =
-  `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
-
-// Takardu (PDF, Word, Excel, ZIP...) ana tura su a "raw" - hakan
-// yana kauce wa takaitawar PDF ta Cloudinary a free plan.
-const RAW_ENDPOINT =
-  `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`;
+// Adireshin Vercel ɗinka (a canza bayan an gama deploy)
+const API_BASE = "https://arewa-reels-api.vercel.app";
 
 // ---------- IYAKOKI (LIMITS) - GYARA ANAN IDAN KANA SO ----------
 const LIMITS = {
@@ -169,34 +162,51 @@ export async function uploadToCloudinary(file) {
     }
   }
 
-  // ---------- 3) TURA ZUWA CLOUDINARY ----------
-  const formData = new FormData();
+  // ---------- 3) TURA ZUWA BACKBLAZE B2 ----------
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("Ka shiga asusunka tukuna kafin ka turo fayil.");
+  }
+  const idToken = await user.getIdToken();
 
-  formData.append("file", file);
-  formData.append("upload_preset", UPLOAD_PRESET);
+  const contentType = file.type || "application/octet-stream";
+  const nameExt = (file.name && file.name.includes(".")) ? file.name.split(".").pop() : "";
+  const ext = nameExt || (contentType.split("/")[1] || "bin").split(";")[0];
 
-  const endpoint = category === "document" ? RAW_ENDPOINT : UPLOAD_ENDPOINT;
-
-  const response = await fetch(endpoint, {
+  // 3a) Nemi link na ɗan lokaci daga sabar
+  const signRes = await fetch(`${API_BASE}/api/upload-url`, {
     method: "POST",
-    body: formData
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${idToken}`
+    },
+    body: JSON.stringify({ contentType, size: file.size, category, ext })
   });
+  const signData = await signRes.json().catch(() => ({}));
+  if (!signRes.ok) {
+    throw new Error(signData.error || "Ba a iya shirya turo file din ba. Ka sake gwadawa.");
+  }
 
-  const data = await response.json();
+  // 3b) Ɗora fayil kai tsaye a B2
+  const putRes = await fetch(signData.uploadUrl, {
+    method: "PUT",
+    headers: { "Content-Type": contentType },
+    body: file
+  });
+  if (!putRes.ok) {
+    throw new Error("Ba a iya turo file din ba. Ka sake gwadawa.");
+  }
 
-  if (!response.ok) {
-    const msg =
-      (data && data.error && data.error.message) ||
-      "Ba a iya turo file din ba. Ka sake gwadawa.";
-
-    throw new Error(msg);
+  let duration = null;
+  if (category === "video" || category === "audio") {
+    duration = await getMediaDuration(file, category);
   }
 
   return {
-    url: data.secure_url,
-    resourceType: data.resource_type,
-    duration: data.duration || null,
-    bytes: data.bytes || file.size || null,
+    url: signData.url,
+    resourceType: category === "document" ? "raw" : category,
+    duration: duration,
+    bytes: file.size || null,
     name: file.name || null
   };
 
