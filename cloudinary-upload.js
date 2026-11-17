@@ -174,27 +174,37 @@ export async function uploadToCloudinary(file) {
   const ext = nameExt || (contentType.split("/")[1] || "bin").split(";")[0];
 
   // 3a) Nemi link na ɗan lokaci daga sabar
-  const signRes = await fetch(`${API_BASE}/api/upload-url`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${idToken}`
-    },
-    body: JSON.stringify({ contentType, size: file.size, category, ext })
-  });
+  let signRes;
+  try {
+    signRes = await fetch(`${API_BASE}/api/upload-url`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${idToken}`
+      },
+      body: JSON.stringify({ contentType, size: file.size, category, ext })
+    });
+  } catch (e) {
+    throw new Error("Kuskure A: ba a iya tuntubar sabar Vercel ba. Duba network ka sake gwadawa.");
+  }
   const signData = await signRes.json().catch(() => ({}));
   if (!signRes.ok) {
     throw new Error(signData.error || "Ba a iya shirya turo file din ba. Ka sake gwadawa.");
   }
 
   // 3b) Ɗora fayil kai tsaye a B2
-  const putRes = await fetch(signData.uploadUrl, {
-    method: "PUT",
-    headers: { "Content-Type": contentType },
-    body: file
-  });
+  let putRes;
+  try {
+    putRes = await fetch(signData.uploadUrl, {
+      method: "PUT",
+      headers: { "Content-Type": contentType },
+      body: file
+    });
+  } catch (e) {
+    throw new Error("Kuskure B: ba a iya ɗora fayil a Backblaze ba (CORS ko network).");
+  }
   if (!putRes.ok) {
-    throw new Error("Ba a iya turo file din ba. Ka sake gwadawa.");
+    throw new Error("Kuskure C: Backblaze ya ƙi fayil ɗin (lamba " + putRes.status + ").");
   }
 
   let duration = null;
