@@ -13,6 +13,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const PAGE = 5;
+const FETCH = 20;
+const WINDOW_MS = 60 * 24 * 3600 * 1000;
 const MAX_SEC = 45;
 const MAX_MB = 50;
 const MAX_CAPTION = 200;
@@ -32,7 +34,8 @@ const S = {
   me: null, myData: {}, last: null, more: false, loading: false, muted: true,
   reels: new Map(), lastPostAt: 0, tab: "for",
   liked: new Set(), saved: new Set(), following: new Set(), folKnown: new Set(),
-  busy: new Set(), cmId: null, lastCmAt: 0, speed: 1, hyd: new Set()
+  busy: new Set(), cmId: null, lastCmAt: 0, speed: 1, hyd: new Set(),
+  queue: [], pinUsed: false
 };
 let pickedFile = null, pickedUrl = "", pickedDur = 0, busy = false;
 
@@ -422,12 +425,21 @@ function errBox(e) {
   box.innerHTML = '<div class="empty">Could not load reels.<br>Check your internet and try again.<small style="opacity:.5;font-size:11px">' + code + '</small><button type="button" id="retryBtn">Try again</button></div>';
   const b = $("retryBtn"); if (b) b.addEventListener("click", () => (S.tab === "for" ? loadFirst() : loadFollowing()));
 }
+function shuffle(a) {
+  const b = a.slice();
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = b[i]; b[i] = b[j]; b[j] = t;
+  }
+  return b;
+}
+
 async function fetchPage(after) {
   const parts = [collection(db, "reels"), orderBy("createdAt", "desc")];
   if (after) parts.push(startAfter(after));
-  parts.push(limit(PAGE));
+  parts.push(limit(FETCH));
   const snap = await getDocs(query(...parts));
-  return { list: snap.docs.map((d) => normalize(d.id, d.data())).filter((r) => r.videoUrl), last: snap.docs.length ? snap.docs[snap.docs.length - 1] : null, full: snap.docs.length === PAGE };
+  return { list: snap.docs.map((d) => normalize(d.id, d.data())).filter((r) => r.videoUrl), last: snap.docs.length ? snap.docs[snap.docs.length - 1] : null, full: snap.docs.length === FETCH };
 }
 
 function addReels(list, atTop) {
@@ -456,7 +468,7 @@ function resetFeed() {
   playObs.disconnect();
   loadObs.disconnect();
   box.innerHTML = "";
-  S.last = null; S.more = false;
+  S.last = null; S.more = false; S.queue = [];
 }
 
 async function loadFirst() {
@@ -464,7 +476,8 @@ async function loadFirst() {
   showLoading();
   try {
     let pinned = null;
-    const want = new URLSearchParams(location.search).get("id");
+    const want = S.pinUsed ? null : new URLSearchParams(location.search).get("id");
+    S.pinUsed = true;
     if (want && /^[A-Za-z0-9]{4,40}$/.test(want)) {
       try {
         const d = await withTimeout(getDoc(doc(db, "reels", want)), 6000);
@@ -476,9 +489,21 @@ async function loadFirst() {
     dbg("fetched " + p.list.length + " reels");
     S.last = p.last; S.more = p.full;
     box.innerHTML = "";
-    const list = pinned ? [pinned].concat(p.list.filter((r) => r.id !== pinned.id)) : p.list;
+    // Ana ƙara reels daga wani wuri na bazuwar cikin kwanaki 60, sannan a hargitsa su
+    let pool = p.list;
+    try {
+      const ms = Date.now() - Math.floor(Math.random() * WINDOW_MS);
+      const w = await withTimeout(fetchPage(new Date(ms)), 8000);
+      pool = pool.concat(w.list);
+    } catch (e) { /* ba komai */ }
+    const seen = new Set();
+    pool = shuffle(pool.filter((r) => r && !seen.has(r.id) && seen.add(r.id)));
+    const list = pinned ? [pinned].concat(pool.filter((r) => r.id !== pinned.id)) : pool;
     if (!list.length) showEmpty("No reels yet.<br>Be the first to share a short video!", true);
-    else addReels(list, false);
+    else {
+      S.queue = list.slice(PAGE);
+      addReels(list.slice(0, PAGE), false);
+    }
   } catch (e) {
     console.error("reels load", e);
     if (!navigator.onLine) offlineBox(); else errBox(e);
@@ -512,12 +537,16 @@ async function loadFollowing() {
 }
 
 async function loadMore() {
-  if (S.loading || !S.more || !S.last || S.tab !== "for") return;
+  if (S.loading || S.tab !== "for") return;
+  if (S.queue.length) { addReels(S.queue.splice(0, PAGE), false); return; }
+  if (!S.more || !S.last) return;
   S.loading = true;
   try {
     const p = await fetchPage(S.last);
     S.last = p.last || S.last; S.more = p.full;
-    addReels(p.list, false);
+    const fresh = shuffle(p.list.filter((r) => !S.reels.has(r.id)));
+    S.queue = fresh.slice(PAGE);
+    addReels(fresh.slice(0, PAGE), false);
   } catch (e) { console.error("reels more", e); }
   S.loading = false;
 }
@@ -901,6 +930,64 @@ window.addEventListener("online", () => {
   }
 });
 window.addEventListener("offline", () => toast("You are offline"));
+
+/* ---------------- Jawo ƙasa don refresh (kamar TikTok) ---------------- */
+const ptrStyle = document.createElement("style");
+ptrStyle.textContent = "@keyframes ptrspin{to{transform:rotate(360deg)}}.ptr-spin{animation:ptrspin .8s linear infinite}";
+document.head.appendChild(ptrStyle);
+const ptr = document.createElement("div");
+ptr.style.cssText = "position:fixed;left:50%;top:72px;width:40px;height:40px;margin-left:-20px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;display:flex;align-items:center;justify-content:center;z-index:60;opacity:0;pointer-events:none;transform:translateY(-60px)";
+ptr.innerHTML = '<i class="ti ti-arrow-down" id="ptrIcon" style="font-size:22px"></i>';
+document.body.appendChild(ptr);
+let ptrY = 0, ptrPull = 0, ptrOn = false, ptrBusy = false;
+const PTR_GO = 60, PTR_MAX = 100;
+
+function ptrBlocked() {
+  return ptrBusy || S.loading || S.cmId || $("upSheet").classList.contains("on");
+}
+function ptrHide() {
+  ptr.style.transition = "opacity .2s, transform .2s";
+  ptr.style.opacity = "0";
+  ptr.style.transform = "translateY(-60px)";
+}
+async function ptrRefresh() {
+  ptrBusy = true;
+  const ic = $("ptrIcon");
+  ic.className = "ti ti-loader-2 ptr-spin";
+  ptr.style.transition = "transform .15s";
+  ptr.style.opacity = "1";
+  ptr.style.transform = "translateY(22px)";
+  try {
+    resetFeed();
+    box.scrollTop = 0;
+    if (S.tab === "for") await loadFirst(); else await loadFollowing();
+    toast("Refreshed");
+  } catch (e) { console.error("refresh", e); }
+  ic.className = "ti ti-arrow-down";
+  ptrHide();
+  ptrBusy = false;
+}
+box.addEventListener("touchstart", (e) => {
+  if (e.touches.length !== 1 || ptrBlocked() || box.scrollTop > 2) { ptrOn = false; return; }
+  ptrY = e.touches[0].clientY; ptrPull = 0; ptrOn = true;
+}, { passive: true });
+box.addEventListener("touchmove", (e) => {
+  if (!ptrOn) return;
+  const dy = e.touches[0].clientY - ptrY;
+  if (dy <= 0 || box.scrollTop > 2) { if (ptrPull) ptrHide(); ptrPull = 0; return; }
+  ptrPull = Math.min(dy * 0.5, PTR_MAX);
+  ptr.style.transition = "none";
+  ptr.style.opacity = String(Math.min(ptrPull / PTR_GO, 1));
+  ptr.style.transform = "translateY(" + (ptrPull - 30) + "px) rotate(" + (ptrPull * 3) + "deg)";
+}, { passive: true });
+function ptrEnd() {
+  if (!ptrOn) return;
+  ptrOn = false;
+  if (ptrPull >= PTR_GO) ptrRefresh(); else if (ptrPull > 0) ptrHide();
+  ptrPull = 0;
+}
+box.addEventListener("touchend", ptrEnd, { passive: true });
+box.addEventListener("touchcancel", ptrEnd, { passive: true });
 
 /* ---------------- start ---------------- */
 showLoading();
